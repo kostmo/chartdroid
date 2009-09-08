@@ -26,7 +26,7 @@
 
 	<Button
 	    android:layout_width="wrap_content"
-	    android:drawableTop="@drawable/icon"
+	    android:drawableTop="@drawable/pie_button"
 	    android:layout_height="wrap_content" 
 	    android:text="Pie Chart"
 	    android:id="@+id/button_pie_chart"/>

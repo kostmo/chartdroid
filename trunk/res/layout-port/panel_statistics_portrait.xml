@@ -8,13 +8,13 @@
     android:background="@drawable/panel_background"
     >
 
-	<include layout="@layout/panel_statistics"
+	<include layout="@layout/chart"
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_weight="0"
 	/>
 
-	<include layout="@layout/panel_statistics_key"
+	<include layout="@layout/key"
 		android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_weight="1"
