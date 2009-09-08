@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string-array name="colors_pine">
+        <item>@color/pine0</item>
+        <item>@color/pine1</item>
+        <item>@color/pine2</item>
+        <item>@color/pine3</item>
+        <item>@color/pine4</item>
+    </string-array>
+
+    <string-array name="colors_watermelon">
+        <item>@color/watermelon0</item>
+        <item>@color/watermelon1</item>
+        <item>@color/watermelon2</item>
+        <item>@color/watermelon3</item>
+        <item>@color/watermelon4</item>
+    </string-array>
+    
+
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="500px" height="500px" version="1.1">
+	<rect stroke="none" fill="#30587C" width="500" height="500"/>
+	<g stroke-linecap="round">
+		<g stroke="#FFFFFF">
+			<path stroke-width="30" d="M 303,49 l -12,18"/>
+			<path stroke-width="30" d="M 197,49 l 12,18"/>
+			<path stroke-width="60" d="M 216,300 v 38"/>
+			<path stroke-width="60" d="M 284,300 v 38"/>
+			<path stroke-width="60" d="M 136,162 v 77"/>
+			<path stroke-width="60" d="M 364,162 v 77"/>
+			<ellipse stroke-width="12" fill="#97C03D" rx="90" ry="75" cx="250" cy="132"/>
+			<path stroke-width="12" fill="#97C03D" d="M 340,138 h -180 v 138 a 25,25 0,0,0 25,25 h 130 a 25,25 0,0,0 25,-25 z"/>
+		</g>
+		<g fill="#FFFFFF" stroke="none">
+			<circle cx="214" cy="99" r="9"/>
+			<circle cx="286" cy="99" r="9"/>
+		</g>
+		<g stroke="#97C03D">
+			<path stroke-width="6" d="M 303,49 l -24,36"/>
+			<path stroke-width="6" d="M 197,49 l 24,36"/>
+			<path stroke-width="36" d="M 216,300 v 38"/>
+			<path stroke-width="36" d="M 284,300 v 38"/>
+			<path stroke-width="36" d="M 136,162 v 77"/>
+			<path stroke-width="36" d="M 364,162 v 77"/>
+		</g>
+	</g>
+	<g stroke="#FFFFFF" fill="none" stroke-width="12" stroke-linecap="square" transform="translate(28, 416)">
+		<path d="M 30,54 a 24,24 0,0,1 0,-48 h 24 v 48"/>
+		<path d="M 78,54 v -24 a 24,24 0,0,1 48,0 v 24"/>
+		<path d="M 150,54 h 24 a 24,24 0,0,0 0,-48 h -24"/>
+		<path d="M 270,54 a 18,18 0,0,0 -18,-18 m -30,0 h 33 a 15,15 0,0,0 0,-30 h -33"/>
+		<circle r="24" cx="318" cy="30"/>
+		<path d="M 366,54 v -48"/>
+		<path d="M 390,54 h 24 a 24,24 0,0,0 0,-48 h -24"/>
+	</g>
+</svg>
