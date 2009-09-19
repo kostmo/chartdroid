@@ -1,5 +1,8 @@
 package com.googlecode.chartdroid;
 
+import java.util.GregorianCalendar;
+import java.util.Random;
+
 import com.googlecode.chartdroid.calendar.Calendar;
 
 import android.app.Activity;
@@ -21,8 +24,8 @@ public class Demo extends Activity {
 			public void onClick(View v) {
 				
 		        String[] chart_key_labels = new String[] {
-		        		"People unimpressed by this chart",
-		        		"People impressed by this chart"
+	        		"People unimpressed by this chart",
+	        		"People impressed by this chart"
 		        };
 		        
 		        int[] data = new int[] {13, 81};
@@ -52,10 +55,30 @@ public class Demo extends Activity {
         
         findViewById(R.id.button_calendar).setOnClickListener(new OnClickListener() {
 
+
 			public void onClick(View v) {
 
+				
+				
+				GregorianCalendar cal = new GregorianCalendar();
+				Random r = new Random();
+				int event_count = 5;
+				long[] event_ids = new long[event_count];
+				long[] event_times = new long[event_count];
+				for (int event_id = 0; event_id < event_count; event_id++) {
+					event_ids[event_id] = event_id;
+					
+		    		cal.add(GregorianCalendar.DATE, r.nextInt(3));
+					event_times[event_id] = cal.getTimeInMillis();
+				}
+				
+				
 				Intent i = new Intent();
 				i.setClass(Demo.this, Calendar.class);
+				
+				i.putExtra(intent.EXTRA_EVENT_IDS, event_ids);
+				i.putExtra(intent.EXTRA_EVENT_TIMESTAMPS, event_times);
+				
 		    	startActivity(i);
 			}
         });

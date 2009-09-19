@@ -3,14 +3,12 @@ package com.googlecode.chartdroid;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.googlecode.chartdroid.ColorSwatchKeyAdapter.PieDataElement;
-
-
 import android.app.ListActivity;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.googlecode.chartdroid.ColorSwatchKeyAdapter.PieDataElement;
 
 
 public class ChartPanelActivity extends ListActivity {
@@ -39,16 +37,8 @@ public class ChartPanelActivity extends ListActivity {
        if (color_values == null) {
     	   color_values = getResources().getIntArray(R.array.colors_watermelon);
        }
-        
-	   switch (getResources().getConfiguration().orientation) {
-	   default:
-	   case Configuration.ORIENTATION_PORTRAIT:
-		   setContentView(R.layout.panel_statistics_portrait);
-		   break;
-	   case Configuration.ORIENTATION_LANDSCAPE:
-		   setContentView(R.layout.panel_statistics_landscape);
-		   break;
-	   }
+
+	   setContentView(R.layout.panel_statistics);
         
         
         

@@ -2,42 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent"
-	android:orientation="vertical"
+	android:orientation="horizontal"
 	>
 
-
-	 <TextView  
-		android:id="@+id/chart_title_placeholder"
-		android:text="Month"
-	     android:layout_width="fill_parent"  
-	     android:layout_height="wrap_content"  
-	     android:paddingTop="2dip"  
-	     android:paddingBottom="2dip"  
-	     android:paddingLeft="5dip"  
-	     style="?android:attr/listSeparatorTextViewStyle" />  
-
-	
-	<GridView android:id="@+id/myGrid"
+	<LinearLayout
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent"
 		android:layout_weight="1"
+		android:orientation="vertical"
+		>
+		 <TextView  
+			android:id="@+id/chart_title_placeholder"
+			android:text="Month"
+		     android:layout_width="fill_parent"  
+		     android:layout_height="wrap_content"  
+		     android:paddingTop="2dip"  
+		     android:paddingBottom="2dip"  
+		     android:paddingLeft="5dip"  
+		     style="?android:attr/listSeparatorTextViewStyle" />  
+	
 		
-	    android:padding="10dp"
-	    android:verticalSpacing="2dp"
-	    
-	    android:horizontalSpacing="2dp"
-	    android:numColumns="7"
-	    
-	    android:gravity="center"
-	    />
+		<GridView android:id="@+id/myGrid"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+			
+		    android:padding="10dp"
+		    android:verticalSpacing="2dp"
+		    
+		    android:horizontalSpacing="2dp"
+		    android:numColumns="7"
+		    
+		    android:gravity="center"
+		    />
 
+	</LinearLayout>
 
 	<LinearLayout
 		android:id="@+id/month_context_view"
-		android:layout_width="fill_parent"
+		android:layout_width="100dip"
 		android:layout_weight="0"
-		android:layout_height="100dip"
-		android:orientation="horizontal"
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
 		>
 
 
