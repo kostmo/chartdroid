@@ -2,6 +2,8 @@
 
 <resources>
 
+    <color name="barely_there">#2FFF</color>
+
     <color name="white">#fff</color>
     <color name="flickr_blue">#0465dc</color>
     <color name="flickr_pink">#fe0486</color>

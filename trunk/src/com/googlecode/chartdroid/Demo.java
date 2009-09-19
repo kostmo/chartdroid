@@ -1,5 +1,7 @@
 package com.googlecode.chartdroid;
 
+import com.googlecode.chartdroid.calendar.Calendar;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +41,21 @@ public class Demo extends Activity {
 //		    	i.putExtra(intent.EXTRA_COLORS, colors);
 		    	
 
+		    	startActivity(i);
+			}
+        });
+        
+        
+        
+        
+        
+        
+        findViewById(R.id.button_calendar).setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+
+				Intent i = new Intent();
+				i.setClass(Demo.this, Calendar.class);
 		    	startActivity(i);
 			}
         });

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	>
+
+
+	 <TextView  
+		android:id="@+id/chart_title_placeholder"
+		android:text="Month"
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />  
+
+	
+	<GridView android:id="@+id/myGrid"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:layout_weight="1"
+		
+	    android:padding="10dp"
+	    android:verticalSpacing="2dp"
+	    
+	    android:horizontalSpacing="2dp"
+	    android:numColumns="7"
+	    
+	    android:gravity="center"
+	    />
+
+
+	<LinearLayout
+		android:id="@+id/month_context_view"
+		android:layout_width="fill_parent"
+		android:layout_weight="0"
+		android:layout_height="100dip"
+		android:orientation="horizontal"
+		>
+
+
+		<include layout="@layout/context_months"></include>
+	
+	</LinearLayout>
+
+</LinearLayout>

@@ -7,7 +7,7 @@
 	<TextView 
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:id="@+id/chart_title_placeholder"
-		android:text="Chart Title "
+		android:text="Chart Title"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_horizontal"
@@ -20,7 +20,7 @@
 		android:layout_weight="0"
 		android:scaleType="center"
 		android:adjustViewBounds="false"
-		android:src="@drawable/icon"
+		android:src="@drawable/chartdroid_icon"
 	/>
 	
 
