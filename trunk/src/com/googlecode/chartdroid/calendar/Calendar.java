@@ -1,23 +1,18 @@
 package com.googlecode.chartdroid.calendar;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.intent;
@@ -57,7 +52,7 @@ public class Calendar extends Activity {
 	final static public String TAG = "Calendar";
 	
 
-    GridView mGrid;
+    GridView mGrid, weekday_labels_grid;
     private LayoutInflater mInflater;
     
     ImageView mini_calendar_prev, mini_calendar_curr, mini_calendar_next;
@@ -69,6 +64,8 @@ public class Calendar extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        
+        
         // Zip the events
         long[] event_ids = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_IDS);
         long[] event_timestamps = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_TIMESTAMPS);
@@ -82,11 +79,16 @@ public class Calendar extends Activity {
         
 
         setContentView(R.layout.calendar_month);
-        mGrid = (GridView) findViewById(R.id.myGrid);
         
-        CalendarDaysAdapter cda = new CalendarDaysAdapter();
+        mGrid = (GridView) findViewById(R.id.full_month);
+        CalendarDaysAdapter cda = new CalendarDaysAdapter(this, mInflater, events);
         mGrid.setAdapter(cda);
         
+        /*
+        weekday_labels_grid = (GridView) findViewById(R.id.weekday_labels);
+        WeekdayLabelsAdapter wda = new WeekdayLabelsAdapter(mInflater, this);
+        weekday_labels_grid.setAdapter(wda);
+		*/
         
         String month_string = new DateFormatSymbols().getMonths()[ cda.cal.getTime().getMonth() ];
         ((TextView) findViewById(R.id.chart_title_placeholder)).setText( month_string );
@@ -180,116 +182,6 @@ public class Calendar extends Activity {
     	cal.set(GregorianCalendar.MONTH, active_month);
     	
     	return active_month;
-    }
-    
-    
-    public class CalendarDaysAdapter extends BaseAdapter {
-    	
-    	public GregorianCalendar cal;
-    	public int active_month;
-        private List<CalendarDay> day_list = new ArrayList<CalendarDay>();
-    	
-    	
-        public CalendarDaysAdapter() {
-        	
-        	cal = new GregorianCalendar();
-        	// Zero the time of the calendar
-        	cal.set(
-        		cal.get(GregorianCalendar.YEAR),
-        		cal.get(GregorianCalendar.MONTH),
-        		cal.get(GregorianCalendar.DATE),
-        		0, 0, 0);
-
-        	
-        	int mo = cal.get(GregorianCalendar.MONTH);
-        	active_month = generate_days(cal, day_list, events, mo);
-        }
-
-
-        
-        
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ViewHolderCalendarDay holder;
-            if (convertView == null) {
-            	
-            	convertView = mInflater.inflate(R.layout.calendar_day_item, null);
-            	
-            	holder = new ViewHolderCalendarDay();
-            	holder.thumb = (ImageView) convertView.findViewById(R.id.thumb_holder);
-                holder.title = (TextView) convertView.findViewById(R.id.label_holder);
-                holder.datum = (TextView) convertView.findViewById(R.id.datum_holder);
-
-                convertView.setTag(holder);
-
-            } else {
-
-                // Get the ViewHolder back to get fast access to the View elements.
-                holder = (ViewHolderCalendarDay) convertView.getTag();
-            }
-
-            CalendarDay cal_day = (CalendarDay) getItem(position);
-            Date d = cal_day.d;
-            
-
-
-
-            
-            
-            // This doesn't work at all:
-//            convertView.setFocusable(d.getMonth() == active_month);
-            
-            holder.title.setText( Integer.toString( d.getDate() ) );
-            
-            int event_count = cal_day.day_events.size();
-            holder.datum.setText( event_count > 0 ? Integer.toString( event_count ) : "" );
-            
-
-            
-            
-            if (d.getMonth() != active_month) {
-            	holder.title.setTextColor(Color.DKGRAY);
-            	holder.datum.setTextColor(Color.DKGRAY);
-            } else {
-
-            	holder.title.setTextColor(Color.LTGRAY);
-            	holder.datum.setTextColor(Color.WHITE);
-            	
-                if (event_count > 0) {
-                	convertView.setBackgroundColor(Color.argb(0x40, 0xFF, 0xFF, 0));
-                } else {
-                	convertView.setBackgroundColor(Color.TRANSPARENT);
-                }
-            }
-            
-            return convertView;
-        }
-
-		@Override
-		public boolean areAllItemsEnabled() {
-
-			return false;
-		}
-		
-		@Override
-		public boolean isEnabled(int position) {
-			
-			CalendarDay day = (CalendarDay) getItem(position);
-			Log.d(TAG, "Current month: " + day.d.getMonth() + "; Active month: " + active_month);
-			return day.d.getMonth() == active_month;
-		}
-		
-        public final int getCount() {
-            return day_list.size();
-        }
-
-        public final Object getItem(int position) {
-            return day_list.get(position);
-        }
-
-        public final long getItemId(int position) {
-            return position;
-        }
     }
 
 }

@@ -16,21 +16,33 @@
 	     android:paddingLeft="5dip"  
 	     style="?android:attr/listSeparatorTextViewStyle" />  
 
-	
-	<GridView android:id="@+id/myGrid"
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent"
-		android:layout_weight="1"
+		 
+		<include layout="@layout/weekday_strip" />
 		
-	    android:padding="10dp"
-	    android:verticalSpacing="2dp"
-	    
-	    android:horizontalSpacing="2dp"
-	    android:numColumns="7"
-	    
-	    android:gravity="center"
-	    />
-
+		<!-- 
+		 <GridView android:id="@+id/weekday_labels"
+			android:layout_width="fill_parent" 
+			android:layout_height="40dip"
+			android:layout_weight="0"
+		    android:numColumns="7"
+		    android:padding="10dp"
+		    android:gravity="center"
+		    
+		    android:fadingEdge="none"
+		    android:fadingEdgeLength="0dip"
+		    />
+		  -->
+		 
+		<GridView android:id="@+id/full_month"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+			android:horizontalSpacing="1dp"
+			android:verticalSpacing="1dp"
+		    android:padding="5dp"
+		    android:numColumns="7"
+		    android:gravity="center"
+		    />
 
 	<LinearLayout
 		android:id="@+id/month_context_view"
