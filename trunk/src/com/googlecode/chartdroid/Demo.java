@@ -3,13 +3,17 @@ package com.googlecode.chartdroid;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
-import com.googlecode.chartdroid.calendar.Calendar;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.googlecode.chartdroid.calendar.Calendar;
 
 public class Demo extends Activity {
 	
@@ -84,4 +88,36 @@ public class Demo extends Activity {
         });
 
     }
+    
+    
+    
+    
+    
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_main, menu);
+        return true;
+    }
+    
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.menu_about:
+        {
+			Uri flickr_destination = Uri.parse( "http://chartdroid.googlecode.com/" );
+        	// Launches the standard browser.
+        	startActivity(new Intent(Intent.ACTION_VIEW, flickr_destination));
+
+            return true;
+        }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
