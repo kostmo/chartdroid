@@ -7,15 +7,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.googlecode.chartdroid.calendar.Calendar;
 
 public class Demo extends Activity {
+
+
+	static final String TAG = "ChartDroid"; 
+
+	final int RETURN_CODE_CALENDAR_SELECTION = 1;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,10 +92,12 @@ public class Demo extends Activity {
 				i.putExtra(intent.EXTRA_EVENT_IDS, event_ids);
 				i.putExtra(intent.EXTRA_EVENT_TIMESTAMPS, event_times);
 				
-		    	startActivity(i);
+		    	startActivityForResult(i, RETURN_CODE_CALENDAR_SELECTION);
 			}
         });
 
+        
+        ((TextView) findViewById(R.id.developer_note)).setMovementMethod(LinkMovementMethod.getInstance());
     }
     
     
@@ -118,6 +129,29 @@ public class Demo extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != RESULT_OK) {
+            Log.i(TAG, "==> result " + resultCode + " from subactivity!  Ignoring...");
+            Toast t = Toast.makeText(this, "Action cancelled!", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
+        
+  	   	switch (requestCode) {
+   		case RETURN_CODE_CALENDAR_SELECTION:
+   		{
+
+   			long id = data.getLongExtra(Calendar.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+   			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
+            break;
+        }
+  	   	}
     }
 
 }

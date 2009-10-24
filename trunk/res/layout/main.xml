@@ -41,7 +41,15 @@
 		    android:layout_height="wrap_content" 
 		    android:text="Calendar"
 		    android:id="@+id/button_calendar"/>
-	    
-	    
+
 	</LinearLayout>
+
+	<TextView
+		android:linksClickable="true"
+		android:id="@+id/developer_note"
+		android:layout_margin="5dip"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="@string/developer_note"
+	/>
 </LinearLayout>

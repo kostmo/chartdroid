@@ -8,18 +8,28 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.intent;
 
-
 public class Calendar extends Activity {
 
+	public static String INTENT_EXTRA_CALENDAR_SELECTION_ID = "INTENT_EXTRA_CALENDAR_SELECTION_ID";
+	
 	public static class SimpleEvent implements Comparable<SimpleEvent> {
 
 		long id;
@@ -28,6 +38,8 @@ public class Calendar extends Activity {
 		SimpleEvent(long id, long timestamp) {
 			this.id = id;
 			this.timestamp = new Date(timestamp);
+			
+//			Log.i(TAG, "Added Date: " + this.timestamp);
 		}
 		
 		SimpleEvent(long id, Date timestamp) {
@@ -65,12 +77,52 @@ public class Calendar extends Activity {
         super.onCreate(savedInstanceState);
 
         
-        
+        Uri intent_data = getIntent().getData();
+    	Log.d(TAG, "Intent data: " + intent_data);
+    	Log.d(TAG, "Intent type: " + getIntent().getType());
+
+    	Log.d(TAG, "Intent action: " + getIntent().getAction());
+    	
+    	
         // Zip the events
-        long[] event_ids = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_IDS);
-        long[] event_timestamps = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_TIMESTAMPS);
-        for (int i=0; i<event_timestamps.length; i++)
-        	events.add( new SimpleEvent(event_ids[i], event_timestamps[i]) );
+        if (intent_data != null) {
+        	// We have been passed a cursor to the data via a content provider.
+        	
+// 			Uri full_search = Uri.withAppendedPath(mySuggestion, "xyz");
+
+        	Log.d(TAG, "Querying content provider for: " + intent_data);
+
+ 			// Then query for this specific record:
+ 			Cursor cursor = managedQuery(intent_data,
+ 					new String[] {"_id", "KEY_TIMESTAMP", "KEY_CATEGORY_NAME"},
+ 					null, null, null);
+ 			
+ 			int id_column = cursor.getColumnIndex("_id");
+ 			int timestamp_column = cursor.getColumnIndex("KEY_TIMESTAMP");
+ 			
+// 			Log.e(TAG, "In calendar - rowcount: " + cursor.getCount());
+// 			Log.e(TAG, "In calendar - colcount: " + cursor.getColumnCount());
+ 			
+ 			cursor.moveToFirst();
+
+ 			do {
+ 				
+ 				long timestamp = cursor.getLong(timestamp_column) * 1000;
+// 				Log.d(TAG, "Adding event with timestamp: " + timestamp);
+
+	        	events.add( new SimpleEvent(
+	        			cursor.getLong(id_column),
+	        			timestamp) );
+	        	
+ 			} while (cursor.moveToNext());
+
+        } else {
+        	// We have been passed the data directly.
+	        long[] event_ids = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_IDS);
+	        long[] event_timestamps = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_TIMESTAMPS);
+	        for (int i=0; i<event_timestamps.length; i++)
+	        	events.add( new SimpleEvent(event_ids[i], event_timestamps[i]) );
+        }
         Collections.sort(events);
         
         
@@ -83,6 +135,25 @@ public class Calendar extends Activity {
         mGrid = (GridView) findViewById(R.id.full_month);
         CalendarDaysAdapter cda = new CalendarDaysAdapter(this, mInflater, events);
         mGrid.setAdapter(cda);
+        
+        mGrid.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+
+				Toast.makeText(Calendar.this, "Choice: " + id, Toast.LENGTH_SHORT).show();
+			}
+        });
+
+        mGrid.setOnItemLongClickListener(new OnItemLongClickListener() {
+        	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
+				Intent i = new Intent();
+				i.putExtra(INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+		        setResult(Activity.RESULT_OK, i);
+				finish();
+				
+				return true;
+			}
+        });
+        
         
         /*
         weekday_labels_grid = (GridView) findViewById(R.id.weekday_labels);
