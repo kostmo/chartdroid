@@ -15,13 +15,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.intent;
@@ -29,6 +29,9 @@ import com.googlecode.chartdroid.intent;
 public class Calendar extends Activity {
 
 	public static String INTENT_EXTRA_CALENDAR_SELECTION_ID = "INTENT_EXTRA_CALENDAR_SELECTION_ID";
+	public static String INTENT_EXTRA_DATE = "INTENT_EXTRA_DATE";
+
+	static final int RETURN_CODE_EVENT_SELECTION = 1;
 	
 	public static class SimpleEvent implements Comparable<SimpleEvent> {
 
@@ -76,6 +79,12 @@ public class Calendar extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+        setContentView(R.layout.calendar_month);
+        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.icon16);
+
+
+        
         
         Uri intent_data = getIntent().getData();
     	Log.d(TAG, "Intent data: " + intent_data);
@@ -92,13 +101,16 @@ public class Calendar extends Activity {
 
         	Log.d(TAG, "Querying content provider for: " + intent_data);
 
- 			// Then query for this specific record:
+
+ 		    String KEY_ROWID = "_id";
+        	String KEY_TIMESTAMP = "KEY_TIMESTAMP";
+        	String KEY_EVENT_TITLE = "KEY_EVENT_TITLE";
  			Cursor cursor = managedQuery(intent_data,
- 					new String[] {"_id", "KEY_TIMESTAMP", "KEY_CATEGORY_NAME"},
+ 					new String[] {KEY_ROWID, "strftime('%s', " + KEY_TIMESTAMP + ") AS " + KEY_TIMESTAMP, KEY_EVENT_TITLE},
  					null, null, null);
- 			
- 			int id_column = cursor.getColumnIndex("_id");
- 			int timestamp_column = cursor.getColumnIndex("KEY_TIMESTAMP");
+
+ 			int id_column = cursor.getColumnIndex(KEY_ROWID);
+ 			int timestamp_column = cursor.getColumnIndex(KEY_TIMESTAMP);
  			
 // 			Log.e(TAG, "In calendar - rowcount: " + cursor.getCount());
 // 			Log.e(TAG, "In calendar - colcount: " + cursor.getColumnCount());
@@ -130,19 +142,35 @@ public class Calendar extends Activity {
         mInflater = LayoutInflater.from(this);
         
 
-        setContentView(R.layout.calendar_month);
         
         mGrid = (GridView) findViewById(R.id.full_month);
-        CalendarDaysAdapter cda = new CalendarDaysAdapter(this, mInflater, events);
+        final CalendarDaysAdapter cda = new CalendarDaysAdapter(this, mInflater, events);
         mGrid.setAdapter(cda);
         
         mGrid.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-
-				Toast.makeText(Calendar.this, "Choice: " + id, Toast.LENGTH_SHORT).show();
+				
+				CalendarDay day = (CalendarDay) cda.getItem(position);
+				
+				Toast.makeText(Calendar.this, "Choice: " + day.d.getDate(), Toast.LENGTH_SHORT).show();
+				
+				// TODO: Get and pass selected date
+				
+				Uri data = getIntent().getData();
+				if (data != null) {
+					Intent i = new Intent();
+					i.setData(data);
+					
+					Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
+					
+					i.putExtra(INTENT_EXTRA_DATE, day.d.getTime());
+					i.setClass(Calendar.this, EventListActivity.class);
+					startActivityForResult(i, RETURN_CODE_EVENT_SELECTION);
+				}
 			}
         });
 
+        /*
         mGrid.setOnItemLongClickListener(new OnItemLongClickListener() {
         	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				Intent i = new Intent();
@@ -153,7 +181,7 @@ public class Calendar extends Activity {
 				return true;
 			}
         });
-        
+        */
         
         /*
         weekday_labels_grid = (GridView) findViewById(R.id.weekday_labels);
@@ -255,4 +283,35 @@ public class Calendar extends Activity {
     	return active_month;
     }
 
+    
+    
+    
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != RESULT_OK) {
+            Log.i(TAG, "==> result " + resultCode + " from subactivity!  Ignoring...");
+            Toast t = Toast.makeText(this, "Action cancelled!", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
+        
+  	   	switch (requestCode) {
+   		case RETURN_CODE_EVENT_SELECTION:
+   		{
+   			
+   			long id = data.getLongExtra(Calendar.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+
+			Intent i = new Intent();
+			i.putExtra(INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+	        setResult(Activity.RESULT_OK, i);
+			finish();
+
+//   			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
+            break;
+        }
+  	   	}
+    }
+    
 }

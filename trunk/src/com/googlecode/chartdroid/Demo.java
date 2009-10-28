@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +30,13 @@ public class Demo extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        
 
+        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+        setContentView(R.layout.main);
+        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.icon16);
+
+        
         
         findViewById(R.id.button_pie_chart).setOnClickListener(new OnClickListener() {
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,9 +25,15 @@ public class ChartPanelActivity extends ListActivity {
     int[] color_values;
     
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
+
+        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+ 	    setContentView(R.layout.panel_statistics);
+        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.icon16);
+
+
+        
         // Blurring is not a good idea when we animate the bird
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         
@@ -38,8 +45,6 @@ public class ChartPanelActivity extends ListActivity {
     	   color_values = getResources().getIntArray(R.array.colors_watermelon);
        }
 
-	   setContentView(R.layout.panel_statistics);
-        
         
         
         TextView title_holder = (TextView) findViewById(R.id.chart_title_placeholder);
