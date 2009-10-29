@@ -144,8 +144,8 @@ public class Demo extends Activity {
 
         if (resultCode != RESULT_OK) {
             Log.i(TAG, "==> result " + resultCode + " from subactivity!  Ignoring...");
-            Toast t = Toast.makeText(this, "Action cancelled!", Toast.LENGTH_SHORT);
-            t.show();
+//            Toast t = Toast.makeText(this, "Action cancelled!", Toast.LENGTH_SHORT);
+//            t.show();
             return;
         }
         
