@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.googlecode.chartdroid.R;
@@ -87,11 +86,11 @@ public class Calendar extends Activity {
         
         
         Uri intent_data = getIntent().getData();
-    	Log.d(TAG, "Intent data: " + intent_data);
-    	Log.d(TAG, "Intent type: " + getIntent().getType());
-
-    	Log.d(TAG, "Intent action: " + getIntent().getAction());
-    	
+//    	Log.d(TAG, "Intent data: " + intent_data);
+//    	Log.d(TAG, "Intent type: " + getIntent().getType());
+//
+//    	Log.d(TAG, "Intent action: " + getIntent().getAction());
+//    	
     	
         // Zip the events
         if (intent_data != null) {
@@ -100,7 +99,6 @@ public class Calendar extends Activity {
 // 			Uri full_search = Uri.withAppendedPath(mySuggestion, "xyz");
 
         	Log.d(TAG, "Querying content provider for: " + intent_data);
-
 
  		    String KEY_ROWID = "_id";
         	String KEY_TIMESTAMP = "KEY_TIMESTAMP";
@@ -129,11 +127,18 @@ public class Calendar extends Activity {
  			} while (cursor.moveToNext());
 
         } else {
+        	
         	// We have been passed the data directly.
+
+//        	Log.d(TAG, "We have been passed the data directly.");
+        	
+        	
 	        long[] event_ids = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_IDS);
 	        long[] event_timestamps = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_TIMESTAMPS);
 	        for (int i=0; i<event_timestamps.length; i++)
 	        	events.add( new SimpleEvent(event_ids[i], event_timestamps[i]) );
+	        
+//	        Log.d(TAG, "Added " + event_timestamps.length + " timestamps.");
         }
         Collections.sort(events);
         
@@ -144,6 +149,7 @@ public class Calendar extends Activity {
 
         
         mGrid = (GridView) findViewById(R.id.full_month);
+
         final CalendarDaysAdapter cda = new CalendarDaysAdapter(this, mInflater, events);
         mGrid.setAdapter(cda);
         
@@ -198,9 +204,7 @@ public class Calendar extends Activity {
         mini_calendar_next = (ImageView) findViewById(R.id.mini_calendar_next);
 
         
-        
 
-		
 		GregorianCalendar cal_prev = new GregorianCalendar();
 		cal_prev.add(GregorianCalendar.MONTH, -1);
 		
@@ -221,13 +225,15 @@ public class Calendar extends Activity {
     	public ImageView thumb;
     }
     
-    public static int generate_days(GregorianCalendar cal, List<CalendarDay> day_list, List<SimpleEvent> events, int active_month) {
+    public static int generate_days(GregorianCalendar cal, List<CalendarDay> day_list, List<SimpleEvent> events) {
 
+    	final int active_month = cal.get(GregorianCalendar.MONTH);
+    	final int active_year = cal.get(GregorianCalendar.YEAR);
     	
     	
     	int first_day_of_week = cal.getFirstDayOfWeek();
+//    	Log.e(TAG, "first day of week: " + first_day_of_week);
     	
-//    	cal.get(GregorianCalendar.MONTH);
 
 
     	
@@ -236,26 +242,34 @@ public class Calendar extends Activity {
     	int daydiff = cal.get(GregorianCalendar.DAY_OF_WEEK) - first_day_of_week;
 		cal.add(GregorianCalendar.DATE, -daydiff);
     	
-
-//    	int days_in_month = cal.get(cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH));
-//		Log.d(TAG, "Days in this month: " + days_in_month);
+//    	Log.e(TAG, "Month in calendar: " + cal.get(GregorianCalendar.MONTH));
+		
+//		int maximum_possible_day_of_month = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+//		Log.d(TAG, "Days in this month: " + maximum_possible_day_of_month);
     	
 		
+
+//		Log.d(TAG, "Size of day_list: " + day_list.size());
+//		Log.d(TAG, "Size of events: " + events.size());
+//		Log.d(TAG, "active_month: " + active_month);
+		
 		int event_index = 0;
-    	while (cal.get(GregorianCalendar.MONTH) <= active_month || cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week) {
-    		
+    	while ( (cal.get(GregorianCalendar.YEAR) <= active_year && cal.get(GregorianCalendar.MONTH) <= active_month) || cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week) {
+
     		CalendarDay cd = new CalendarDay();
     		cd.d = cal.getTime();
     		cd.day_events = new ArrayList<SimpleEvent>();
     		
     		
     		// Catch up the event list with the current date
-    		while ( event_index < events.size() && events.get(event_index).timestamp.compareTo( cal.getTime() ) <= 0 )
+    		while ( event_index < events.size() && events.get(event_index).timestamp.compareTo( cal.getTime() ) <= 0 ) {
     			event_index++;
+    		}
 
     		
     		// Advance calendar to the next day
     		cal.add(GregorianCalendar.DATE, 1);
+
     		
     		// Add all the events that occur before the next day
     		if (event_index < events.size()) {
@@ -263,7 +277,7 @@ public class Calendar extends Activity {
 				while ( scan_event.timestamp.compareTo( cal.getTime() ) <= 0 ) {
 					
 					cd.day_events.add( scan_event );
-	
+
 	    			event_index++;
 	    			if (event_index < events.size())
 	    				scan_event = events.get(event_index);
@@ -283,8 +297,6 @@ public class Calendar extends Activity {
     	return active_month;
     }
 
-    
-    
     
     
     @Override

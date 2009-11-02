@@ -43,9 +43,7 @@ public class CalendarDaysAdapter extends BaseAdapter {
     		cal.get(GregorianCalendar.DATE),
     		0, 0, 0);
 
-    	
-    	int mo = cal.get(GregorianCalendar.MONTH);
-    	active_month = Calendar.generate_days(cal, day_list, events, mo);
+    	active_month = Calendar.generate_days(cal, day_list, events);
     }
 
 

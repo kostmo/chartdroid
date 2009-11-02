@@ -55,7 +55,7 @@ public class MiniMonthDrawable extends Drawable {
 	int active_month;
 
 	
-	final static String TAG = "Crittr";
+	final static String TAG = "Chartdroid";
 
 	GregorianCalendar cal;
 	Context context;
@@ -66,9 +66,8 @@ public class MiniMonthDrawable extends Drawable {
 		view = v;
 		this.cal = cal;
 
-
-    	int mo = cal.get(GregorianCalendar.MONTH);
-    	active_month = Calendar.generate_days(cal, day_list, new ArrayList<SimpleEvent>(), mo );
+    	active_month = Calendar.generate_days(cal, day_list, new ArrayList<SimpleEvent>());
+    	
 	}
 	
 	
@@ -82,9 +81,7 @@ public class MiniMonthDrawable extends Drawable {
 		
 		
 	    List<CalendarDayCell> day_cells = new ArrayList<CalendarDayCell>();
-	    
-	    
-	    
+
 	    
 		Paint paint = new Paint();
 		paint.setColor(Color.GRAY);
@@ -109,11 +106,6 @@ public class MiniMonthDrawable extends Drawable {
 			
 			i++;
 		}
-		Log.d(TAG, "Day count: " + i);
-	    
-	    
-	    
-	    
 	    
 	    return day_cells;
 	}
@@ -121,9 +113,7 @@ public class MiniMonthDrawable extends Drawable {
 
 	
 	public void draw(Canvas canvas) {
-		
 
-		
 		int view_w = view.getWidth();
 		int view_h = view.getHeight();
 //		Log.e(TAG, "View dimensions: (" + view_w + ", " + view_h + ")");
@@ -154,15 +144,7 @@ public class MiniMonthDrawable extends Drawable {
 		String month_string = new DateFormatSymbols().getShortMonths()[ cal.getTime().getMonth() ];
 		canvas.drawText(month_string, view_w/2f, (view_h - capital_height)/2f, text_paint);
 
-		
-		
-		
-		
-		
-		
-
     	day_cells = arrange_day_cells(canvas, day_list, view);
-		
 	}
 
 	public int getOpacity() {
