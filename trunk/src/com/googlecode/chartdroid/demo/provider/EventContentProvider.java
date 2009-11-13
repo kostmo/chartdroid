@@ -67,7 +67,7 @@ public class EventContentProvider extends ContentProvider {
 		
 		// The "EVENT_TITLE" field is omitted (it will be NULL) for this demo.
 		for (EventWrapper event : generated_events)
-			c.newRow().add(event.id).add( event.timestamp );
+			c.newRow().add(event.id).add( event.timestamp/1000 );
 
 //		Log.i(TAG, "Generated cursor with " + c.getCount() + " rows.");
 		return c;

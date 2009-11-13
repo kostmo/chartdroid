@@ -22,6 +22,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.googlecode.chartdroid.ContentSchema;
 import com.googlecode.chartdroid.R;
@@ -114,8 +115,9 @@ public class Calendar extends Activity {
  			
  			if (cursor.moveToFirst()) {
 	 			do {
-	 				long timestamp = cursor.getLong(timestamp_column);
-//	 				Log.d(TAG, "Adding event with timestamp: " + timestamp);
+	 				long timestamp = cursor.getLong(timestamp_column)*1000;
+	 				Log.d(TAG, "Adding event with timestamp: " + timestamp);
+	 				Log.d(TAG, "Timestamp date is: " + new Date(timestamp));
 	
 		        	events.add(
 		        		new SimpleEvent(
@@ -156,8 +158,6 @@ public class Calendar extends Activity {
 				
 //				Toast.makeText(Calendar.this, "Choice: " + day.d.getDate(), Toast.LENGTH_SHORT).show();
 				
-				// TODO: Get and pass selected date
-				
 				Uri data = getIntent().getData();
 				if (data != null) {
 					Intent i = new Intent();
@@ -172,18 +172,23 @@ public class Calendar extends Activity {
 			}
         });
 
-        /*
+
         mGrid.setOnItemLongClickListener(new OnItemLongClickListener() {
         	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long id) {
+
+				CalendarDay day = (CalendarDay) cda.getItem(position);
+
+				Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
+
 				Intent i = new Intent();
-				i.putExtra(INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+				i.putExtra(INTENT_EXTRA_DATE, day.d.getTime());
 		        setResult(Activity.RESULT_OK, i);
 				finish();
 				
 				return true;
 			}
         });
-        */
+
         
         /*
         weekday_labels_grid = (GridView) findViewById(R.id.weekday_labels);

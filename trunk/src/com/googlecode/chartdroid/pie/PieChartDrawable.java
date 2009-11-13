@@ -43,7 +43,7 @@ public class PieChartDrawable extends Drawable {
 
 		int view_w = view.getWidth();
 		int view_h = view.getHeight();
-		Log.e(TAG, "View dimensions: (" + view_w + ", " + view_h + ")");
+//		Log.e(TAG, "View dimensions: (" + view_w + ", " + view_h + ")");
 		
 		
 		

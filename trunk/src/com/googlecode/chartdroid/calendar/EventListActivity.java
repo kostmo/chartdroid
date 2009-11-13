@@ -1,7 +1,11 @@
 package com.googlecode.chartdroid.calendar;
 
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Stack;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -13,13 +17,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -42,6 +49,37 @@ public class EventListActivity extends ListActivity {
 	public static final String KEY_EVENT_TITLE = ContentSchema.CalendarEvent.COLUMN_EVENT_TITLE;
 	
 	
+	Cursor requery() {
+
+        Uri intent_data = getIntent().getData();
+    	Log.d(TAG, "Querying content provider for: " + intent_data);
+    	
+        Date d = new Date(getIntent().getLongExtra(Calendar.INTENT_EXTRA_DATE, -1));
+        
+        
+        
+        
+        Log.e(TAG, "Received date: " + d.getDate());
+        long day_begin = d.getTime()/1000;
+        long day_end = day_begin + 86400;
+        
+        
+		
+		Cursor cursor = managedQuery(intent_data,
+				new String[] {
+					KEY_ROWID,
+//					"strftime('%s', " + KEY_TIMESTAMP + ") AS " + KEY_TIMESTAMP,
+					KEY_TIMESTAMP,	// XXX
+					KEY_EVENT_TITLE},
+				KEY_TIMESTAMP + " >= datetime(?, 'unixepoch') AND " + KEY_TIMESTAMP + " < datetime(?, 'unixepoch')",
+				new String[] {Long.toString(day_begin), Long.toString(day_end)}, constructOrderByString());
+
+		String header_text = cursor.getCount() + " event(s) on " + new DateFormatSymbols().getShortMonths()[d.getMonth()] + " " + d.getDate();
+		((TextView) findViewById(R.id.list_header)).setText(header_text);
+		
+		return cursor;
+	}
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,23 +89,14 @@ public class EventListActivity extends ListActivity {
         setContentView(R.layout.list_activity_event_list);
         getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.icon16);
 
+        // Initialize sort bucket
+        for (SortCriteria x : SortCriteria.values()) sorting_order.add(x);
 
-        Date d = new Date(getIntent().getLongExtra(Calendar.INTENT_EXTRA_DATE, -1));
-        Log.e(TAG, "Received date: " + d.getDate());
-        long day_begin = d.getTime()/1000;
-        long day_end = day_begin + 86400;
         
-        Uri intent_data = getIntent().getData();
-    	Log.d(TAG, "Querying content provider for: " + intent_data);
     	
-		Cursor cursor = managedQuery(intent_data,
-				new String[] {KEY_ROWID, "strftime('%s', " + KEY_TIMESTAMP + ") AS " + KEY_TIMESTAMP, KEY_EVENT_TITLE},
-				KEY_TIMESTAMP + " >= datetime(?, 'unixepoch') AND " + KEY_TIMESTAMP + " < datetime(?, 'unixepoch')",
-				new String[] {Long.toString(day_begin), Long.toString(day_end)}, null);
+    	Cursor cursor = requery();
+    	
 
-		String header_text = cursor.getCount() + " event(s) on " + new DateFormatSymbols().getShortMonths()[d.getMonth()] + " " + d.getDate();
-		((TextView) findViewById(R.id.list_header)).setText(header_text);
-		
         setListAdapter(new EventListAdapter(
         		this,
         		R.layout.list_item_event,
@@ -87,10 +116,13 @@ public class EventListActivity extends ListActivity {
 //			autocomplete_textview.setText( savedInstanceState.getString("search_text") );
 		}
 		
-/*		
+		
         final StateRetainer a = (StateRetainer) getLastNonConfigurationInstance();
-        if (a != null) ((CursorAdapter) getListAdapter()).changeCursor(a.cursor);
-*/
+        if (a != null) {
+        	sorting_order = a.sorting_order;
+        } else {
+        	
+        }
     }
     // =============================================
     
@@ -113,6 +145,7 @@ public class EventListActivity extends ListActivity {
     
     class StateRetainer {
     	Cursor cursor;
+    	Stack<SortCriteria> sorting_order;
     }
     
     @Override
@@ -120,8 +153,10 @@ public class EventListActivity extends ListActivity {
     	
     	StateRetainer state = new StateRetainer();
     	state.cursor = ((CursorAdapter) getListAdapter()).getCursor();
+    	state.sorting_order = sorting_order;
         return state;
     }
+    
     
     
     
@@ -161,16 +196,11 @@ public class EventListActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        return false;
-        /*
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_taxon_search, menu);
+        inflater.inflate(R.menu.options_event_list, menu);
 
-        
         return true;
-		*/
     }
-    
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -182,7 +212,23 @@ public class EventListActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
+        case R.id.menu_sort_alpha:
+        {
+        	sortList(SortCriteria.ALPHA);
+            return true;
+        }
+        case R.id.menu_sort_recent:
+        {
+        	sortList(SortCriteria.DATE);
+            return true;
+        }
+        /*
+        case R.id.menu_sort_usage:
+        {
+        	sortList(SortCriteria.FREQUENCY);
+            return true;
+        }
+        */
         }
 
         return super.onOptionsItemSelected(item);
@@ -190,25 +236,6 @@ public class EventListActivity extends ListActivity {
 
     // ========================================================   
 
-    enum SearchMode {ENDS_WITH, BEGINS_WITH, CONTAINS}
-    enum NameType {VERNACULAR, SCIENTIFIC}
-
-    
-	enum SearchStage {
-	    SEARCHING, RANK_FILTERING, DIALOG_CANCELLATION
-	};
-	
-	
-	class CustomProgressPacket {
-		SearchStage stage;
-		int stage_progress_max;
-		int stage_current_progress = 0;
-		
-		
-		CustomProgressPacket(SearchStage s) {
-			stage = s;
-		}
-	}
     
 
 
@@ -300,6 +327,43 @@ public class EventListActivity extends ListActivity {
 		    	break;
 		   }
 		}
+    }
+    
+    
+    
+    
+    
+    
+    // ========================================================
+    
+    // NOTE: The criteria are read from right-to-left in the queue; Highest priority is
+    // on top of the stack.
+    Stack<SortCriteria> sorting_order = new Stack<SortCriteria>();
+    enum SortCriteria {
+    	ALPHA, DATE
+    }
+    String[] sort_column_names = {
+		KEY_EVENT_TITLE,
+		KEY_TIMESTAMP
+	};
+    boolean[] default_ascending = {true, false};
+    
+    String constructOrderByString() {
+    	List<String> sort_pieces = new ArrayList<String>();
+    	for (int i=0; i<sorting_order.size(); i++) {
+    		int sort_col = sorting_order.get(i).ordinal();
+    		sort_pieces.add( sort_column_names[sort_col] + " " + (default_ascending[sort_col] ? "ASC" : "DESC") );
+    	}
+    	Collections.reverse(sort_pieces);
+    	return TextUtils.join(", ", sort_pieces);
+    }
+    
+    
+    void sortList(SortCriteria criteria) {
+    	sorting_order.remove(criteria);
+    	sorting_order.push(criteria);
+    	
+    	((ResourceCursorAdapter) getListAdapter()).changeCursor( requery() );		
     }
 }
 
