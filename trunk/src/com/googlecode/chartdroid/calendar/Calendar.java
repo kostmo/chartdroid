@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.googlecode.chartdroid.ContentSchema;
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.intent;
+import com.googlecode.chartdroid.IntentConstants;
+import com.googlecode.chartdroid.ContentSchema.CalendarEvent;
 
 public class Calendar extends Activity {
 
@@ -96,45 +99,38 @@ public class Calendar extends Activity {
         if (intent_data != null) {
         	// We have been passed a cursor to the data via a content provider.
         	
-// 			Uri full_search = Uri.withAppendedPath(mySuggestion, "xyz");
-
         	Log.d(TAG, "Querying content provider for: " + intent_data);
 
- 		    String KEY_ROWID = "_id";
-        	String KEY_TIMESTAMP = "KEY_TIMESTAMP";
-        	String KEY_EVENT_TITLE = "KEY_EVENT_TITLE";
+        	String KEY_EVENT_TITLE = ContentSchema.CalendarEvent.COLUMN_EVENT_TITLE;
  			Cursor cursor = managedQuery(intent_data,
- 					new String[] {KEY_ROWID, "strftime('%s', " + KEY_TIMESTAMP + ") AS " + KEY_TIMESTAMP, KEY_EVENT_TITLE},
+ 					new String[] {BaseColumns._ID, CalendarEvent.COLUMN_EVENT_TIMESTAMP, CalendarEvent.COLUMN_EVENT_TITLE},
  					null, null, null);
 
- 			int id_column = cursor.getColumnIndex(KEY_ROWID);
- 			int timestamp_column = cursor.getColumnIndex(KEY_TIMESTAMP);
+ 			int id_column = cursor.getColumnIndex(BaseColumns._ID);
+ 			int timestamp_column = cursor.getColumnIndex(ContentSchema.CalendarEvent.COLUMN_EVENT_TIMESTAMP);
  			
 // 			Log.e(TAG, "In calendar - rowcount: " + cursor.getCount());
 // 			Log.e(TAG, "In calendar - colcount: " + cursor.getColumnCount());
  			
- 			cursor.moveToFirst();
-
- 			do {
- 				
- 				long timestamp = cursor.getLong(timestamp_column) * 1000;
-// 				Log.d(TAG, "Adding event with timestamp: " + timestamp);
-
-	        	events.add( new SimpleEvent(
-	        			cursor.getLong(id_column),
-	        			timestamp) );
-	        	
- 			} while (cursor.moveToNext());
-
+ 			if (cursor.moveToFirst()) {
+	 			do {
+	 				long timestamp = cursor.getLong(timestamp_column);
+//	 				Log.d(TAG, "Adding event with timestamp: " + timestamp);
+	
+		        	events.add(
+		        		new SimpleEvent(
+		        			cursor.getLong(id_column),
+		        			timestamp) );
+		        	
+	 			} while (cursor.moveToNext());
+ 			}
         } else {
-        	
         	// We have been passed the data directly.
 
 //        	Log.d(TAG, "We have been passed the data directly.");
         	
-        	
-	        long[] event_ids = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_IDS);
-	        long[] event_timestamps = getIntent().getLongArrayExtra(intent.EXTRA_EVENT_TIMESTAMPS);
+	        long[] event_ids = getIntent().getLongArrayExtra(IntentConstants.EXTRA_EVENT_IDS);
+	        long[] event_timestamps = getIntent().getLongArrayExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS);
 	        for (int i=0; i<event_timestamps.length; i++)
 	        	events.add( new SimpleEvent(event_ids[i], event_timestamps[i]) );
 	        

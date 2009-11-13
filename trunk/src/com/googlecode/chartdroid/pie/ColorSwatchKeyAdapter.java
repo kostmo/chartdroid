@@ -1,7 +1,11 @@
-package com.googlecode.chartdroid;
+package com.googlecode.chartdroid.pie;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.R.id;
+import com.googlecode.chartdroid.R.layout;
 
 import android.content.Context;
 import android.graphics.drawable.PaintDrawable;

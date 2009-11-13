@@ -30,6 +30,7 @@
 	
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+        	android:textAppearance="?android:attr/textAppearanceSmall"
 	
 			android:textStyle="bold"
 	        android:gravity="center_vertical"
@@ -38,8 +39,9 @@
 	    <TextView
 	        android:id="@+id/datum_holder"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content" 
-
+	        android:layout_height="wrap_content"
+        	android:textAppearance="?android:attr/textAppearanceSmall" 
+			android:textColor="@color/white"
 	        android:text="Datum" />
 	
 

@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.googlecode.chartdroid.ContentSchema;
 import com.googlecode.chartdroid.R;
 
 
@@ -35,9 +37,9 @@ public class EventListActivity extends ListActivity {
 
     
 	
-	public static final String KEY_ROWID = "_id";
-	public static final String KEY_TIMESTAMP = "KEY_TIMESTAMP";
-	public static final String KEY_EVENT_TITLE = "KEY_EVENT_TITLE";
+	public static final String KEY_ROWID = BaseColumns._ID;
+	public static final String KEY_TIMESTAMP = ContentSchema.CalendarEvent.COLUMN_EVENT_TIMESTAMP;
+	public static final String KEY_EVENT_TITLE = ContentSchema.CalendarEvent.COLUMN_EVENT_TITLE;
 	
 	
 	

@@ -23,25 +23,64 @@
 	    android:text="Select a chart style.  Try viewing each chart in portrait and landscape mode."
 	/>
 	
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+  	<TextView
+	     android:text="Via Intent Extras"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />
+	
+	<LinearLayout
 	    android:orientation="horizontal"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    >
 		<Button
 		    android:layout_width="wrap_content"
-		    android:drawableTop="@drawable/pie_button"
 		    android:layout_height="wrap_content" 
+		    android:drawableTop="@drawable/pie_button"
 		    android:text="Pie Chart"
 		    android:id="@+id/button_pie_chart"/>
 		    
 		<Button
 		    android:layout_width="wrap_content"
-		    android:drawableTop="@drawable/calendar_button"
 		    android:layout_height="wrap_content" 
+		    android:drawableTop="@drawable/calendar_button"
 		    android:text="Calendar"
 		    android:id="@+id/button_calendar"/>
-
+	</LinearLayout>
+	
+	<TextView
+	     android:text="Via Content Providers"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />
+	     
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    >
+		<Button
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:drawableTop="@drawable/pie_button"
+		    android:text="Pie Chart"
+		    android:id="@+id/button_pie_chart_provider"/>
+		    
+		<Button
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:drawableTop="@drawable/calendar_button"
+		    android:text="Calendar"
+		    android:id="@+id/button_calendar_provider"/>
 	</LinearLayout>
 
 	<TextView

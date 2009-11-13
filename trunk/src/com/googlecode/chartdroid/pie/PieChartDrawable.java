@@ -1,20 +1,4 @@
-/*
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.googlecode.chartdroid;
+package com.googlecode.chartdroid.pie;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -30,7 +14,7 @@ import android.view.View;
 
 public class PieChartDrawable extends Drawable {
 
-	final static String TAG = "Crittr";
+	final static String TAG = "ChartDroid";
 	
 	int padding_top = 10;
 	int padding_bottom = 10;
@@ -51,46 +35,36 @@ public class PieChartDrawable extends Drawable {
 		this.color_values = color_values;
 		
 		paint = new Paint();
-
-		
-		
-		
-		/*
-		Rect bounds = new Rect(
-				0,
-				0,
-				150,
-				150
-				);
-		this.setBounds(bounds);
-		*/
 	}
 	
+	@Override
 	public void draw(Canvas canvas) {
 		
 
 		int view_w = view.getWidth();
 		int view_h = view.getHeight();
-//		Log.e(TAG, "View dimensions: (" + view_w + ", " + view_h + ")");
+		Log.e(TAG, "View dimensions: (" + view_w + ", " + view_h + ")");
 		
 		
-//		int size = Math.min(view_w, view_h);
-		
-//		int size = 150;
 		
 		int padded_horizontal_room = view_w - (padding_left + padding_right);
 		int padded_vertical_room = view_h - (padding_top + padding_bottom);
-		
 
+		int size = Math.min(padded_horizontal_room, padded_vertical_room);
+
+		boolean stretch = false;
+		int left_edge = padding_left + (padded_horizontal_room - size)/2;
+		int right_edge = left_edge + (stretch ? padded_horizontal_room : size);
+		int top_edge = padding_top + (padded_vertical_room - size)/2;
+		int bottom_edge = top_edge + (stretch ? padded_vertical_room : size);
+		
 		RectF arc_bounds = new RectF(
-				padding_left,
-				padding_top,
-				padded_horizontal_room + padding_left,
-				padded_vertical_room + padding_top
-				);
-		
-		
-		
+			left_edge,
+			top_edge,
+			right_edge,
+			bottom_edge
+		);
+
 		int value_sum = 0;
 		for (int datum : data_values)
 			value_sum += datum;
@@ -128,14 +102,17 @@ public class PieChartDrawable extends Drawable {
 		}
 	}
 
+	@Override
 	public int getOpacity() {
 		return paint.getAlpha();
 	}
 
+	@Override
 	public void setAlpha(int alpha) {
 		paint.setAlpha(alpha);
 	}
 
+	@Override
 	public void setColorFilter(ColorFilter cf) {
 		paint.setColorFilter(cf);
 	}

@@ -1,6 +1,8 @@
-package com.googlecode.chartdroid;
+package com.googlecode.chartdroid.demo;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
@@ -18,7 +20,11 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.IntentConstants;
 import com.googlecode.chartdroid.calendar.Calendar;
+import com.googlecode.chartdroid.demo.provider.DataContentProvider;
+import com.googlecode.chartdroid.demo.provider.EventContentProvider;
 
 public class Demo extends Activity {
 
@@ -26,6 +32,15 @@ public class Demo extends Activity {
 	static final String TAG = "ChartDroid"; 
 
 	final int RETURN_CODE_CALENDAR_SELECTION = 1;
+	
+	
+    public static final String[] demo_pie_labels = new String[] {
+    		"People unimpressed by this chart",
+    		"People impressed by this chart"
+        };
+        
+    public static final int[] demo_pie_data = new int[] {13, 81};
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,25 +56,18 @@ public class Demo extends Activity {
         findViewById(R.id.button_pie_chart).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				
-		        String[] chart_key_labels = new String[] {
-	        		"People unimpressed by this chart",
-	        		"People impressed by this chart"
-		        };
-		        
-		        int[] data = new int[] {13, 81};
-		        
+
 		/*
 		        int[] colors = new int[chart_key_labels.length];
 		    	for (int j=0; j<chart_key_labels.length; j++)
 					colors[j] = Color.HSVToColor(new float[] {360 * j / (float) colors.length, 0.6f, 1});
 		*/    
 		        
-		    	Intent i = new Intent(intent.ACTION_PLOT);
-		    	i.addCategory(intent.CATEGORY_PIE_CHART);
-		    	i.putExtra(intent.EXTRA_TITLE, "Impressions");
-		    	i.putExtra(intent.EXTRA_LABELS, chart_key_labels);
-		    	i.putExtra(intent.EXTRA_DATA, data);
+		    	Intent i = new Intent(IntentConstants.ACTION_PLOT);
+		    	i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
+		    	i.putExtra(Intent.EXTRA_TITLE, "Impressions");
+		    	i.putExtra(IntentConstants.EXTRA_LABELS, demo_pie_labels);
+		    	i.putExtra(IntentConstants.EXTRA_DATA, demo_pie_data);
 //		    	i.putExtra(intent.EXTRA_COLORS, colors);
 		    	
 
@@ -67,43 +75,79 @@ public class Demo extends Activity {
 			}
         });
         
-        
-        
-        
-        
+
         
         findViewById(R.id.button_calendar).setOnClickListener(new OnClickListener() {
 
-
 			public void onClick(View v) {
 
-				
-				
-				GregorianCalendar cal = new GregorianCalendar();
-				Random r = new Random();
-				int event_count = 5;
+				List<EventWrapper> generated_events = generateRandomEvents(5);
+				int event_count = generated_events.size();
 				long[] event_ids = new long[event_count];
 				long[] event_times = new long[event_count];
-				for (int event_id = 0; event_id < event_count; event_id++) {
-					event_ids[event_id] = event_id;
-					
-		    		cal.add(GregorianCalendar.DATE, r.nextInt(3));
-					event_times[event_id] = cal.getTimeInMillis();
+				for (int i = 0; i < event_count; i++) {
+					EventWrapper event = generated_events.get(i);
+					event_ids[i] = event.id;
+					event_times[i] = event.timestamp;
 				}
 				
 				
 				Intent i = new Intent();
 				i.setClass(Demo.this, Calendar.class);
 				
-				i.putExtra(intent.EXTRA_EVENT_IDS, event_ids);
-				i.putExtra(intent.EXTRA_EVENT_TIMESTAMPS, event_times);
+				i.putExtra(IntentConstants.EXTRA_EVENT_IDS, event_ids);
+				i.putExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS, event_times);
 				
 		    	startActivityForResult(i, RETURN_CODE_CALENDAR_SELECTION);
 			}
         });
 
         
+        findViewById(R.id.button_pie_chart_provider).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+		    	Uri u = DataContentProvider.constructUri(12345);
+				Intent i = new Intent(Intent.ACTION_VIEW, u);
+				i.putExtra(Intent.EXTRA_TITLE, "This is a really long title, isn't it?");
+		    	startActivity(i);
+			}
+        });
+        
+        
+        findViewById(R.id.button_calendar_provider).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+		    	Uri u = EventContentProvider.constructUri(12345);
+				Intent i = new Intent(Intent.ACTION_VIEW, u);
+		    	startActivityForResult(i, RETURN_CODE_CALENDAR_SELECTION);
+			}
+        });
+        
+
+        
         ((TextView) findViewById(R.id.developer_note)).setMovementMethod(LinkMovementMethod.getInstance());
+    }
+    
+    
+    
+    public static class EventWrapper {
+    	public long id, timestamp;
+    	public String title;
+    }
+    
+    public static List<EventWrapper> generateRandomEvents(int event_count) {
+    	
+    	List<EventWrapper> events = new ArrayList<EventWrapper>();
+		GregorianCalendar cal = new GregorianCalendar();
+		Random r = new Random();
+
+		for (int event_id = 0; event_id < event_count; event_id++) {
+			EventWrapper event = new EventWrapper();
+    		cal.roll(GregorianCalendar.DATE, r.nextInt(3));
+    		event.timestamp = cal.getTimeInMillis();
+			event.id = event_id;
+    		events.add(event);
+		}
+		
+		return events;
     }
     
     
