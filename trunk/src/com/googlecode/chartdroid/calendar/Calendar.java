@@ -244,8 +244,8 @@ public class Calendar extends Activity {
 		cal_min_upper_limit.add(GregorianCalendar.MONTH, 1);
 //		Log.i(TAG, "Minimum upper limit: " + cal_min_upper_limit.getTime());
 
-		GregorianCalendar cal_max_upper_limit = (GregorianCalendar) cal_min_upper_limit.clone();
-		cal_max_upper_limit.add(GregorianCalendar.DATE, 7);
+//		GregorianCalendar cal_max_upper_limit = (GregorianCalendar) cal_min_upper_limit.clone();
+//		cal_max_upper_limit.add(GregorianCalendar.DATE, 7);
 //    	Log.i(TAG, "Maximum upper limit: " + cal_max_upper_limit.getTime());
     	
     	
@@ -260,7 +260,7 @@ public class Calendar extends Activity {
     	
 //    	Log.i(TAG, "Month of starting day in calendar: " + cal.get(GregorianCalendar.MONTH));
 		
-		int maximum_possible_day_of_month = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+//		int maximum_possible_day_of_month = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 //		Log.d(TAG, "Days in this month: " + maximum_possible_day_of_month);
     	
 		
@@ -271,7 +271,7 @@ public class Calendar extends Activity {
 		
 		int event_index = 0;
     	while ( cal.before(cal_min_upper_limit)
-    			|| (cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week && cal.before(cal_max_upper_limit))) {
+    			|| cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week) {
 
 //    		Log.i(TAG, "Cal date: " + cal.getTime());
 //    		Log.d(TAG, "Before min end date? " + cal.before(cal_min_upper_limit));
