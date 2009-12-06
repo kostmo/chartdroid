@@ -87,7 +87,7 @@ public class EventListActivity extends ListActivity {
 
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.list_activity_event_list);
-        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.icon16);
+        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.titlebar_icon);
 
         // Initialize sort bucket
         for (SortCriteria x : SortCriteria.values()) sorting_order.add(x);

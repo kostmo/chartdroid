@@ -49,7 +49,7 @@ public class Demo extends Activity {
 
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.main);
-        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.icon16);
+        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.titlebar_icon);
 
         
         
