@@ -18,12 +18,8 @@ package com.googlecode.chartdroid.calendar;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import com.googlecode.chartdroid.calendar.Calendar.CalendarDay;
-import com.googlecode.chartdroid.calendar.Calendar.SimpleEvent;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -35,9 +31,10 @@ import android.graphics.RectF;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.View;
+
+import com.googlecode.chartdroid.calendar.Calendar.CalendarDay;
+import com.googlecode.chartdroid.calendar.Calendar.SimpleEvent;
 
 public class MiniMonthDrawable extends Drawable {
 

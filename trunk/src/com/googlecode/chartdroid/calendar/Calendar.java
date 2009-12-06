@@ -163,7 +163,7 @@ public class Calendar extends Activity {
 					Intent i = new Intent();
 					i.setData(data);
 					
-					Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
+//					Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
 					
 					i.putExtra(INTENT_EXTRA_DATE, day.d.getTime());
 					i.setClass(Calendar.this, EventListActivity.class);
@@ -178,7 +178,7 @@ public class Calendar extends Activity {
 
 				CalendarDay day = (CalendarDay) cda.getItem(position);
 
-				Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
+//				Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
 
 				Intent i = new Intent();
 				i.putExtra(INTENT_EXTRA_DATE, day.d.getTime());
@@ -209,17 +209,22 @@ public class Calendar extends Activity {
 		GregorianCalendar cal_prev = new GregorianCalendar();
 		cal_prev.add(GregorianCalendar.MONTH, -1);
 		
+		GregorianCalendar cal_curr = new GregorianCalendar();
+		
 		GregorianCalendar cal_next = new GregorianCalendar();
 		cal_next.add(GregorianCalendar.MONTH, 1);
 		
+//		Log.d(TAG, "Previous month...");
         mini_calendar_prev.setImageDrawable(new MiniMonthDrawable(this, mini_calendar_prev, cal_prev));
-        mini_calendar_curr.setImageDrawable(new MiniMonthDrawable(this, mini_calendar_curr, cda.cal));
+        
+//        Log.d(TAG, "Current month...");
+        mini_calendar_curr.setImageDrawable(new MiniMonthDrawable(this, mini_calendar_curr, cal_curr));
+        
+//        Log.d(TAG, "Next month...");
         mini_calendar_next.setImageDrawable(new MiniMonthDrawable(this, mini_calendar_next, cal_next));
     }
 
 
-
-    
     static class ViewHolderCalendarDay {
     	
     	public TextView title, datum;
@@ -229,23 +234,33 @@ public class Calendar extends Activity {
     public static int generate_days(GregorianCalendar cal, List<CalendarDay> day_list, List<SimpleEvent> events) {
 
     	final int active_month = cal.get(GregorianCalendar.MONTH);
-    	final int active_year = cal.get(GregorianCalendar.YEAR);
+
+    	cal.set(GregorianCalendar.DAY_OF_MONTH, 1);
+
     	
     	
+    	
+		GregorianCalendar cal_min_upper_limit = (GregorianCalendar) cal.clone();
+		cal_min_upper_limit.add(GregorianCalendar.MONTH, 1);
+//		Log.i(TAG, "Minimum upper limit: " + cal_min_upper_limit.getTime());
+
+		GregorianCalendar cal_max_upper_limit = (GregorianCalendar) cal_min_upper_limit.clone();
+		cal_max_upper_limit.add(GregorianCalendar.DATE, 7);
+//    	Log.i(TAG, "Maximum upper limit: " + cal_max_upper_limit.getTime());
+    	
+    	
+
+
+
     	int first_day_of_week = cal.getFirstDayOfWeek();
 //    	Log.e(TAG, "first day of week: " + first_day_of_week);
-    	
-
-
-    	
-    	cal.set(GregorianCalendar.DAY_OF_MONTH, 1);
     	
     	int daydiff = cal.get(GregorianCalendar.DAY_OF_WEEK) - first_day_of_week;
 		cal.add(GregorianCalendar.DATE, -daydiff);
     	
-//    	Log.e(TAG, "Month in calendar: " + cal.get(GregorianCalendar.MONTH));
+//    	Log.i(TAG, "Month of starting day in calendar: " + cal.get(GregorianCalendar.MONTH));
 		
-//		int maximum_possible_day_of_month = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+		int maximum_possible_day_of_month = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 //		Log.d(TAG, "Days in this month: " + maximum_possible_day_of_month);
     	
 		
@@ -255,8 +270,15 @@ public class Calendar extends Activity {
 //		Log.d(TAG, "active_month: " + active_month);
 		
 		int event_index = 0;
-    	while ( (cal.get(GregorianCalendar.YEAR) <= active_year && cal.get(GregorianCalendar.MONTH) <= active_month) || cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week) {
+    	while ( cal.before(cal_min_upper_limit)
+    			|| (cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week && cal.before(cal_max_upper_limit))) {
 
+//    		Log.i(TAG, "Cal date: " + cal.getTime());
+//    		Log.d(TAG, "Before min end date? " + cal.before(cal_min_upper_limit));
+//    		Log.w(TAG, "After first day of week? " + (cal.get(GregorianCalendar.DAY_OF_WEEK) > first_day_of_week));
+//    		Log.e(TAG, "Before uppper limit? " + cal.before(cal_max_upper_limit));
+    		
+    		
     		CalendarDay cd = new CalendarDay();
     		cd.d = cal.getTime();
     		cd.day_events = new ArrayList<SimpleEvent>();
@@ -286,8 +308,6 @@ public class Calendar extends Activity {
 	    				break;
 				}
     		}
-    		
-    		
     		
     		day_list.add(cd);
     	}
