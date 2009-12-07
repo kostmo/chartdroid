@@ -1,0 +1,7 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+[chrome://browser/content/preferences/cookies.xul foo]
+[https://checkout.google.com/sell/orders bar]
+[http://google.com blah]
