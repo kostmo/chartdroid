@@ -5,4 +5,9 @@
          android:alphabeticShortcut="a"
          android:icon="@android:drawable/ic_menu_info_details" />
 
+          
+    <item android:id="@+id/menu_more_apps"
+          android:title="More apps"
+          android:alphabeticShortcut="m"
+          android:icon="@drawable/ic_menu_star" />
 </menu>
