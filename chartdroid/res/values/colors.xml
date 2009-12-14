@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="barely_there">#2FFF</color>
+
+
+    <color name="transparent">#0000</color>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+    
+    <color name="flickr_blue">#0465dc</color>
+    <color name="flickr_pink">#fe0486</color>
+
+	<color name="pine0">#468966</color>
+	<color name="pine1">#fff0a5</color>
+	<color name="pine2">#ffb03b</color>
+	<color name="pine3">#b64926</color>
+	<color name="pine4">#8e2800</color>
+
+	<color name="watermelon0">#7d8a2e</color>
+	<color name="watermelon1">#c9d787</color>
+	<color name="watermelon2">#ffffff</color>
+	<color name="watermelon3">#ffc0a9</color>
+	<color name="watermelon4">#ff8598</color>
+	
+
+</resources>

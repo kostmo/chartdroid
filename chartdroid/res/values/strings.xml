@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Demo!</string>
+    <string name="app_name">ChartDroid</string>
+	<string name="developer_note"><b>Developers:</b> Check out the <a href="http://code.google.com/p/chartdroid/">Intent specification</a></string>
+</resources>
