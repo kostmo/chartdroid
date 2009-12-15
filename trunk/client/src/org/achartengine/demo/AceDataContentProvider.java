@@ -20,11 +20,11 @@ import android.util.Log;
 public class AceDataContentProvider extends ContentProvider {
 	
 
-	static final String TAG = "AChartEngine Demo";
+	static final String TAG = "ChartDroid Demo";
 	
 	// This must be the same as what as specified as the Content Provider authority
 	// in the manifest file.
-	public static final String AUTHORITY = "org.achartengine.demo.provider.test";
+	public static final String AUTHORITY = "com.googlecode.chartdroid.demo.provider.data2";
 	
 	
 	public static Uri BASE_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).build();

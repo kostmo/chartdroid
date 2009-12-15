@@ -6,7 +6,7 @@
         <!-- The following are DEMO providers that you should place in your own apps. -->
       	<provider android:label="Some random data"
    			android:name="AceDataContentProvider"
-	        android:authorities="org.achartengine.demo.provider.test"
+	        android:authorities="com.googlecode.chartdroid.demo.provider.data2"
 		/>
 		
 		
