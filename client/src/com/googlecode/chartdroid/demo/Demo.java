@@ -4,7 +4,10 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import com.googlecode.chartdroid.demo.provider.DataContentProvider;
 import com.googlecode.chartdroid.demo.provider.EventContentProvider;
 
+import org.achartengine.demo.AceDataContentProvider;
 import org.achartengine.demo.R;
+import org.achartengine.demo.data.DonutData;
+import org.achartengine.demo.data.TemperatureData;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -59,6 +61,55 @@ public class Demo extends Activity {
 
         
         
+        
+        
+        
+        
+        
+        
+        
+        findViewById(R.id.button_multiseries_data_provider).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+//              Uri u = DataContentProvider.constructUri(DataContentProvider.CHART_DATA_MULTISERIES_PATH, 12345);
+                
+                Uri u = AceDataContentProvider.BASE_URI.buildUpon()
+                    .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
+                    .appendPath(AceDataContentProvider.CHART_DATA_UNLABELED_PATH).build();              
+                
+                Intent i = new Intent(Intent.ACTION_VIEW, u);
+                i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
+                startActivity(i);
+            }
+        });
+        
+        
+        findViewById(R.id.button_labeled_multiseries_data_provider).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                
+                Uri u = AceDataContentProvider.BASE_URI.buildUpon()
+                    .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
+                    .appendPath(AceDataContentProvider.CHART_DATA_LABELED_PATH).build(); 
+                
+                Intent i = new Intent(Intent.ACTION_VIEW, u);
+                i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+                startActivity(i);
+            }
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         findViewById(R.id.button_pie_chart).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -80,7 +131,7 @@ public class Demo extends Activity {
 		    	startActivity(i);
 			}
         });
-        
+
 
         
         findViewById(R.id.button_calendar).setOnClickListener(new OnClickListener() {
@@ -98,8 +149,8 @@ public class Demo extends Activity {
 				}
 				
 				
-				Intent i = new Intent();
-				i.setClass(Demo.this, Calendar.class);
+                Intent i = new Intent(IntentConstants.ACTION_PLOT);
+                i.addCategory(IntentConstants.CATEGORY_CALENDAR);
 				
 				i.putExtra(IntentConstants.EXTRA_EVENT_IDS, event_ids);
 				i.putExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS, event_times);
@@ -210,7 +261,7 @@ public class Demo extends Activity {
    		case RETURN_CODE_CALENDAR_SELECTION:
    		{
 
-   			long id = data.getLongExtra(Calendar.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
    			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
             break;
         }

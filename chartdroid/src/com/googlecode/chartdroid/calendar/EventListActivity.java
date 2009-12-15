@@ -1,11 +1,8 @@
 package com.googlecode.chartdroid.calendar;
 
-import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Stack;
+import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.IntentConstants;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,8 +27,12 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ContentSchema;
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Stack;
 
 
 public class EventListActivity extends ListActivity {
@@ -54,7 +55,7 @@ public class EventListActivity extends ListActivity {
         Uri intent_data = getIntent().getData();
     	Log.d(TAG, "Querying content provider for: " + intent_data);
     	
-        Date d = new Date(getIntent().getLongExtra(Calendar.INTENT_EXTRA_DATE, -1));
+        Date d = new Date(getIntent().getLongExtra(IntentConstants.INTENT_EXTRA_DATE, -1));
         
         
         
@@ -135,7 +136,7 @@ public class EventListActivity extends ListActivity {
 //			long rowid = c.getLong(rowid_column);
 			
 			Intent i = new Intent();
-			i.putExtra(Calendar.INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+			i.putExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
 	        setResult(Activity.RESULT_OK, i);
 			finish();
 		}
