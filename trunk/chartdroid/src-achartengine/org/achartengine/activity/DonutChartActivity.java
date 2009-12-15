@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.achartengine.activity;
+
+import com.googlecode.chartdroid.R;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalActivity;
-import org.achartengine.R;
 import org.achartengine.chart.AbstractChart;
-import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.ScatterChart;
-import org.achartengine.chart.XYChart;
-import org.achartengine.consumer.DoubleDatumExtractor;
+import org.achartengine.chart.DoughnutChart;
+import org.achartengine.consumer.LabeledDoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.model.MultipleCategorySeries;
+import org.achartengine.renderer.DefaultRenderer;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -42,36 +39,46 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class ScatterChartActivity extends GraphicalActivity {
-
+public class DonutChartActivity extends GraphicalActivity {
   
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
     super.onCreate(savedInstanceState);
-    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.typepointline);
+    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.typepie);
   }
+  
+
 
   // ---------------------------------------------
   @Override
   protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
     
-    List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new DoubleDatumExtractor());
+    List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDoubleDatumExtractor());
+    
+    
     
     assert( sorted_series_list.size() >= 1 );
+    
+
+    List<List<String>> datam_labels = new ArrayList<List<String>>();
+    
     
     List<List<Number>> x_axis_series, y_axis_series = null;
     if (sorted_series_list.size() == 1) {
         // Let the Y-axis carry the only data.
         x_axis_series = new ArrayList<List<Number>>();
-        y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
+        y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels );
         
     } else {
-        x_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.X_AXIS_INDEX );
-        y_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.Y_AXIS_INDEX );    
+        x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ContentSchema.X_AXIS_INDEX ), datam_labels );
+        y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ContentSchema.Y_AXIS_INDEX ), datam_labels );
     }
+    
+    
+    
     
     
     assert (x_axis_series.size() == y_axis_series.size()
@@ -86,7 +93,7 @@ public class ScatterChartActivity extends GraphicalActivity {
       assert (titles.length == y_axis_series.get(0).size());
       
       
-      // If there is no x-axis data, just fill it in by numbering the y-elements.
+      // If there is no x-axis data, just number the y-elements.
       List<Number> prototypical_x_values; 
       if (x_axis_series.size() == 0) {
         for (int i=0; i < y_axis_series.size(); i++) {
@@ -107,14 +114,18 @@ public class ScatterChartActivity extends GraphicalActivity {
           x_axis_series.add( prototypical_x_values );
       }
       
-
-
       
-      int[] colors = new int[titles.length];
-      PointStyle[] styles =  new PointStyle[titles.length];
-      for (int i=0; i<titles.length; i++) {
+      
+      // Use the first series as the representative series
+      int series_length = y_axis_series.get(0).size();
+      // TODO: Assert that all series are the same length?
+      
+      // There should be the same number of colors as the number of elements
+      // in the series, NOT the number of series.
+      
+      int[] colors = new int[series_length];
+      for (int i=0; i<series_length; i++) {
           colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-          styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
       }
 
       
@@ -125,33 +136,26 @@ public class ScatterChartActivity extends GraphicalActivity {
       
       
       
-      XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
-      int length = renderer.getSeriesRendererCount();
-      
-      for (int i = 0; i < length; i++) {
-        ((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
-      }
-      
+
       
 
       String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-      String x_label = axis_labels.get( ContentSchema.X_AXIS_INDEX );
-      String y_label = axis_labels.get( ContentSchema.Y_AXIS_INDEX );
-      Log.d(TAG, "X LABEL: " + x_label);
-      Log.d(TAG, "X LABEL: " + y_label);
+      // NOTE: Axes labels are not applicable to the donut chart. 
       Log.d(TAG, "chart_title: " + chart_title);
       
-      org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, 0.5, 12.5, 0, 32,
-          Color.LTGRAY, Color.GRAY);
-      renderer.setXLabels(12);
-      renderer.setYLabels(10);
-      
-      
-      XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset2(titles, x_axis_series, y_axis_series);
 
+      
+      MultipleCategorySeries dataset = org.achartengine.ChartGenHelper.buildMultipleCategoryDataset(chart_title, titles, datam_labels, y_axis_series);
+
+      DefaultRenderer renderer = org.achartengine.ChartGenHelper.buildCategoryRenderer(colors);
+      renderer.setApplyBackgroundColor(true);
+      renderer.setBackgroundColor(Color.BLACK);
+
+      DoughnutChart chart = new DoughnutChart(dataset, renderer);
+      
+      
       ChartFactory.checkParameters(dataset, renderer);
 
-      XYChart chart = new ScatterChart(dataset, renderer);
       return chart;
 
   }
