@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -30,7 +31,7 @@ import android.graphics.Color;
 /**
  * Sales growth demo chart.
  */
-public class SalesGrowthChart extends AbstractChart {
+public class SalesGrowthChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * @return the chart name

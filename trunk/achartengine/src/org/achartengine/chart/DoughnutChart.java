@@ -94,17 +94,20 @@ public class DoughnutChart extends AbstractChart {
       double total = 0;
       String[] titles = new String[sLength];
       for (int i = 0; i < sLength; i++) {
-        total += mDataset.getValues(category)[i];
-        titles[i] = mDataset.getTitles(category)[i];
+        total += mDataset.getValues(category).get(i).doubleValue();
+        titles[i] = mDataset.getTitles(category).get(i);
       }
       float currentAngle = 0;
       RectF oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
       for (int i = 0; i < sLength; i++) {
         paint.setColor(mRenderer.getSeriesRendererAt(i).getColor());
-        float value = (float) mDataset.getValues(category)[i];
+        float value = mDataset.getValues(category).get(i).floatValue();
         float angle = (float) (value / total * 360);
         canvas.drawArc(oval, currentAngle, angle, true, paint);
-        if (mRenderer.isShowLabels()) {
+        
+
+        String datum_label = mDataset.getTitles(category).get(i);
+        if (mRenderer.isShowLabels() && datum_label != null) {
           paint.setColor(mRenderer.getLabelsColor());
           double rAngle = Math.toRadians(90 - (currentAngle + angle / 2));
           double sinValue = Math.sin(rAngle);
@@ -121,7 +124,7 @@ public class DoughnutChart extends AbstractChart {
             paint.setTextAlign(Align.RIGHT);
           }
           canvas.drawLine(x2, y2, x2 + extra, y2, paint);
-          canvas.drawText(mDataset.getTitles(category)[i], x2 + extra, y2 + 5, paint);
+          canvas.drawText(datum_label, x2 + extra, y2 + 5, paint);
         }
         currentAngle += angle;
       }

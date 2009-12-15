@@ -75,7 +75,7 @@ public class PieChart extends AbstractChart {
     double total = 0;
     String[] titles = new String[sLength];
     for (int i = 0; i < sLength; i++) {
-      total += mDataset.getValue(i);
+      total += mDataset.getValue(i).doubleValue();
       titles[i] = mDataset.getCategory(i);
     }
     float currentAngle = 0;
@@ -88,7 +88,7 @@ public class PieChart extends AbstractChart {
     RectF oval = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
     for (int i = 0; i < sLength; i++) {
       paint.setColor(mRenderer.getSeriesRendererAt(i).getColor());
-      float value = (float) mDataset.getValue(i);
+      float value = mDataset.getValue(i).floatValue();
       float angle = (float) (value / total * 360);
       canvas.drawArc(oval, currentAngle, angle, true, paint);
       if (mRenderer.isShowLabels()) {

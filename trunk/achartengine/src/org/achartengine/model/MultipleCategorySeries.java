@@ -30,10 +30,10 @@ public class MultipleCategorySeries implements Serializable {
   private List<String> mCategories = new ArrayList<String>();
   
   /** The series' individual data labels. */
-  private List<String[]> mTitles = new ArrayList<String[]>();
+  private List<List<String>> mTitles = new ArrayList<List<String> >();
   
   /** The series data values. */
-  private List<double[]> mValues = new ArrayList<double[]>();
+  private List<List<Number>> mValues = new ArrayList<List<Number>>();
 
   /**
    * Builds a new category series.
@@ -48,7 +48,7 @@ public class MultipleCategorySeries implements Serializable {
    * @param titles the titles to be used as labels
    * @param values the new value
    */
-  public void add(String[] titles, double[] values) {
+  public void add(List<String> titles, List<Number> values) {
     add(mCategories.size() + "", titles, values);
   }
 
@@ -58,7 +58,7 @@ public class MultipleCategorySeries implements Serializable {
    * @param titles the titles to be used as labels
    * @param values the new value
    */
-  public void add(String category, String[] titles, double[] values) {
+  public void add(String category, List<String> titles, List<Number> values) {
     mCategories.add(category);
     mTitles.add(titles);
     mValues.add(values);
@@ -88,7 +88,7 @@ public class MultipleCategorySeries implements Serializable {
    * @param index the index
    * @return the value at the index
    */
-  public double[] getValues(int index) {
+  public List<Number> getValues(int index) {
     return mValues.get(index);
   }
   
@@ -115,7 +115,7 @@ public class MultipleCategorySeries implements Serializable {
    * @return the series item count
    */
   public int getItemCount(int index) {
-    return mValues.get(index).length;
+    return mValues.get(index).size();
   }
   
   /**
@@ -123,7 +123,7 @@ public class MultipleCategorySeries implements Serializable {
    * @param index the index
    * @return the series titles
    */
-  public String[] getTitles(int index) {
+  public List<String> getTitles(int index) {
     return mTitles.get(index);
   }
   

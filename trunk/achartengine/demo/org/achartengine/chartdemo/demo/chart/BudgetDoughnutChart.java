@@ -18,6 +18,7 @@ package org.achartengine.chartdemo.demo.chart;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.renderer.DefaultRenderer;
 
@@ -28,7 +29,7 @@ import android.graphics.Color;
 /**
  * Budget demo pie chart.
  */
-public class BudgetDoughnutChart extends AbstractChart {
+public class BudgetDoughnutChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * @return the chart name
@@ -61,7 +62,11 @@ public class BudgetDoughnutChart extends AbstractChart {
     DefaultRenderer renderer = buildCategoryRenderer(colors);
     renderer.setApplyBackgroundColor(true);
     renderer.setBackgroundColor(Color.BLACK);
+    // FIXME: Delete me!
+    /*
     return ChartFactory.getDoughnutChartIntent(context, buildMultipleCategoryDataset("Project budget", titles, values), renderer, "Doughnut chart demo");
+    */
+    return null;
   }
 
 }

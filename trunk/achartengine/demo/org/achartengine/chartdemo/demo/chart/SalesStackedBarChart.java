@@ -18,6 +18,7 @@ package org.achartengine.chartdemo.demo.chart;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart.Type;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -30,7 +31,7 @@ import android.graphics.Color;
 /**
  * Sales demo bar chart.
  */
-public class SalesStackedBarChart extends AbstractChart {
+public class SalesStackedBarChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * @return the chart name

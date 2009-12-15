@@ -16,6 +16,7 @@
 package org.achartengine;
 
 import org.achartengine.chart.AbstractChart;
+import org.achartengine.chart.PointStyle;
 import org.achartengine.consumer.DatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.intent.ContentSchema.PlotData;
@@ -23,6 +24,7 @@ import org.achartengine.intent.ContentSchema.PlotData;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -50,6 +52,13 @@ public class GraphicalActivity extends Activity {
   
   /** The chart to be drawn. */
   protected AbstractChart mChart;
+  
+  
+  
+  protected PointStyle[] DEFAULT_STYLES = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND,
+          PointStyle.TRIANGLE, PointStyle.SQUARE };
+      protected int[] DEFAULT_COLORS = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
+  
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -287,16 +296,50 @@ public class GraphicalActivity extends Activity {
   
   
   
-  
-  protected List<List<Number>> stripSeriesDatumLabels(List<List<LabeledDatum>> sorted_labeled_series_list) {
+  // Outermost list: all series
+  // Inner list: individual series
+  protected List<List<Number>> unzipSeriesDatumLabels(List<List<LabeledDatum>> sorted_labeled_series_list, List<List<String>> datum_labels) {
     
-    // Discard the datum labels
+    // Don't just discard the datum labels; store them in an auxilliary array.
+    // Since we haven't specified which axis the labels should be stored with,
+    // we have to check each axis, taking care to preserve labels from previous
+    // axes.
+      
     List<List<Number>> sorted_series_list = new ArrayList<List<Number>>();
+
+    int i=0;
     for (List<LabeledDatum> labeled_series : sorted_labeled_series_list) {
       List<Number> series = new ArrayList<Number>();
       sorted_series_list.add( series );
-      for (LabeledDatum labeled_datum : labeled_series)
+      
+
+      List<String> individual_series_labels;
+      // Grow the datum labels series list if need be
+      if (datum_labels.size() < sorted_series_list.size()) {
+          individual_series_labels = new ArrayList<String>();
+          datum_labels.add(individual_series_labels);
+      } else {
+          individual_series_labels = datum_labels.get(i);
+      }
+      
+      int j=0;
+      for (LabeledDatum labeled_datum : labeled_series) {
         series.add(labeled_datum.datum);
+        
+        
+        
+        if (individual_series_labels.size() < labeled_series.size()) {
+            individual_series_labels.add(labeled_datum.label);
+        } else {
+//            String current_label = individual_series_labels.get(j);
+            if (labeled_datum.label != null)
+                individual_series_labels.set(j, labeled_datum.label);
+        }
+        
+        j++;
+      }
+      
+      i++;
     }
     return sorted_series_list;
   }

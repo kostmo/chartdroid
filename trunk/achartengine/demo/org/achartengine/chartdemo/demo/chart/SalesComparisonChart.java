@@ -18,6 +18,7 @@ package org.achartengine.chartdemo.demo.chart;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -31,7 +32,7 @@ import android.graphics.Color;
 /**
  * Sales comparison demo chart.
  */
-public class SalesComparisonChart extends AbstractChart {
+public class SalesComparisonChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * 

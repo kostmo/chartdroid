@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 SC 4ViewSoft SRL
+ * Copyright (C) 2009 Karl Ostmo
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.achartengine.activity;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalActivity;
-import org.achartengine.GraphicalView;
 import org.achartengine.R;
 import org.achartengine.chart.AbstractChart;
 import org.achartengine.chart.LineChart;
@@ -59,8 +59,20 @@ public class LineChartActivity extends GraphicalActivity {
 
     
     List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new DoubleDatumExtractor());
-    List<List<Number>> x_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.X_AXIS_INDEX );
-    List<List<Number>> y_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.Y_AXIS_INDEX );
+    
+    assert( sorted_series_list.size() >= 1 );
+    
+    List<List<Number>> x_axis_series, y_axis_series = null;
+    if (sorted_series_list.size() == 1) {
+        // Let the Y-axis carry the only data.
+        x_axis_series = new ArrayList<List<Number>>();
+        y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
+        
+    } else {
+        x_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.X_AXIS_INDEX );
+        y_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.Y_AXIS_INDEX );    
+    }
+    
     
     assert (x_axis_series.size() == y_axis_series.size()
         || x_axis_series.size() == 1
@@ -74,7 +86,7 @@ public class LineChartActivity extends GraphicalActivity {
       assert (titles.length == y_axis_series.get(0).size());
       
       
-      // If there is no x-axis data, just number the y-elements.
+      // If there is no x-axis data, just fill it in by numbering the y-elements.
       List<Number> prototypical_x_values; 
       if (x_axis_series.size() == 0) {
         for (int i=0; i < y_axis_series.size(); i++) {
@@ -95,10 +107,15 @@ public class LineChartActivity extends GraphicalActivity {
           x_axis_series.add( prototypical_x_values );
       }
       
+
+
       
-      int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.CYAN, Color.YELLOW };
-      PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND,
-          PointStyle.TRIANGLE, PointStyle.SQUARE };
+      int[] colors = new int[titles.length];
+      PointStyle[] styles =  new PointStyle[titles.length];
+      for (int i=0; i<titles.length; i++) {
+          colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+          styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
+      }
 
       
       
@@ -108,8 +125,9 @@ public class LineChartActivity extends GraphicalActivity {
       
       
       
-      XYMultipleSeriesRenderer renderer = org.achartengine.chartdemo.demo.chart.AbstractChart.buildRenderer(colors, styles);
+      XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
       int length = renderer.getSeriesRendererCount();
+      
       for (int i = 0; i < length; i++) {
         ((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
       }
@@ -123,13 +141,13 @@ public class LineChartActivity extends GraphicalActivity {
       Log.d(TAG, "X LABEL: " + y_label);
       Log.d(TAG, "chart_title: " + chart_title);
       
-      org.achartengine.chartdemo.demo.chart.AbstractChart.setChartSettings(renderer, chart_title, x_label, y_label, 0.5, 12.5, 0, 32,
+      org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, 0.5, 12.5, 0, 32,
           Color.LTGRAY, Color.GRAY);
       renderer.setXLabels(12);
       renderer.setYLabels(10);
       
       
-      XYMultipleSeriesDataset dataset = org.achartengine.chartdemo.demo.chart.AbstractChart.buildDataset2(titles, x_axis_series, y_axis_series);
+      XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset2(titles, x_axis_series, y_axis_series);
 
       ChartFactory.checkParameters(dataset, renderer);
 
