@@ -1,0 +1,11 @@
+#summary Intent specification
+
+====Actions====
+  * com.googlecode.chartdroid.intent.action.PLOT
+====Categories====
+  * com.googlecode.chartdroid.intent.category.PIE_CHART
+====Extras====
+  * `int[]` com.googlecode.chartdroid.intent.extra.DATA (required)
+  * `String[]` com.googlecode.chartdroid.intent.extra.LABELS
+  * `int[]` com.googlecode.chartdroid.intent.extra.COLORS (optional)
+  * `String` com.googlecode.chartdroid.intent.extra.TITLE (Intent.EXTRA_TITLE as of version 1.2.2)
