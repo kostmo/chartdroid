@@ -16,9 +16,9 @@ import android.view.View.OnClickListener;
 
 public class Demo extends Activity {
 
-    static final String TAG = "AChartEngine"; 
+    static final String TAG = "ChartDroid"; 
     
-    static final String GOOGLE_CODE_URL = "http://achartengine.googlecode.com/";
+    static final String GOOGLE_CODE_URL = "http://chartdroid.googlecode.com/";
     
     
 	public static final String MARKET_AUTHOR_SEARCH_PREFIX = "pub:";
@@ -43,9 +43,9 @@ public class Demo extends Activity {
 			public void onClick(View v) {
 //		    	Uri u = DataContentProvider.constructUri(DataContentProvider.CHART_DATA_MULTISERIES_PATH, 12345);
 			    
-			    Uri u = DataContentProvider.BASE_URI.buildUpon()
-			        .appendPath(DataContentProvider.CHART_DATA_MULTISERIES_PATH)
-			        .appendPath(DataContentProvider.CHART_DATA_UNLABELED_PATH).build();			    
+			    Uri u = AceDataContentProvider.BASE_URI.buildUpon()
+			        .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
+			        .appendPath(AceDataContentProvider.CHART_DATA_UNLABELED_PATH).build();			    
 			    
 				Intent i = new Intent(Intent.ACTION_VIEW, u);
 				i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
@@ -57,9 +57,9 @@ public class Demo extends Activity {
         findViewById(R.id.button_labeled_multiseries_data_provider).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 
-                Uri u = DataContentProvider.BASE_URI.buildUpon()
-                    .appendPath(DataContentProvider.CHART_DATA_MULTISERIES_PATH)
-                    .appendPath(DataContentProvider.CHART_DATA_LABELED_PATH).build(); 
+                Uri u = AceDataContentProvider.BASE_URI.buildUpon()
+                    .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
+                    .appendPath(AceDataContentProvider.CHART_DATA_LABELED_PATH).build(); 
                 
                 Intent i = new Intent(Intent.ACTION_VIEW, u);
                 i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);

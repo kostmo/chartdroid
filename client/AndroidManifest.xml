@@ -5,9 +5,26 @@
 
         <!-- The following are DEMO providers that you should place in your own apps. -->
       	<provider android:label="Some random data"
-   			android:name="DataContentProvider"
+   			android:name="AceDataContentProvider"
 	        android:authorities="org.achartengine.demo.provider.test"
 		/>
+		
+		
+
+        <!-- The following are DEMO providers that you should place in your own apps. -->
+      	<provider android:label="Some random data"
+   			android:name="com.googlecode.chartdroid.demo.provider.DataContentProvider"
+	        android:authorities="com.googlecode.chartdroid.demo.provider.data"
+		/>
+        
+      	<provider android:label="Some random event"
+   			android:name="com.googlecode.chartdroid.demo.provider.EventContentProvider"
+	        android:authorities="com.googlecode.chartdroid.demo.provider.events"
+		/>
+
+		
+		
+		
 
 
         <activity android:name="Demo"

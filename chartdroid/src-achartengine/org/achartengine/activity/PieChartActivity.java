@@ -15,9 +15,10 @@
  */
 package org.achartengine.activity;
 
+import com.googlecode.chartdroid.R;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalActivity;
-import org.achartengine.R;
 import org.achartengine.chart.AbstractChart;
 import org.achartengine.chart.PieChart;
 import org.achartengine.consumer.LabeledDoubleDatumExtractor;
