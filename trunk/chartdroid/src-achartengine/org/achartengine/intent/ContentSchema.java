@@ -23,7 +23,7 @@ public final class ContentSchema {
   
   public static final class PlotData implements BaseColumns {
 
-      public static final String VND_TYPE_DECLARATION = "vnd.org.achartengine.data.test";
+      public static final String VND_TYPE_DECLARATION = "vnd.com.googlecode.chartdroid.graphable";
       
       // ==== CONTENT TYPES ====
       
