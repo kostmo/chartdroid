@@ -16,7 +16,6 @@
 package org.achartengine;
 
 import org.achartengine.chart.PointStyle;
-import org.achartengine.chartdemo.demo.chart.IChart;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
@@ -34,7 +33,7 @@ import java.util.List;
 /**
  * An abstract class for the demo charts to extend.
  */
-public abstract class ChartGenHelper implements IChart {
+public abstract class ChartGenHelper {
 
   static final String TAG = "AChartEngine";
   

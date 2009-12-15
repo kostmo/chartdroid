@@ -234,7 +234,6 @@ public class DataContentProvider extends ContentProvider {
                         c.newRow()
                             .add( row_index )
                             .add( ContentSchema.Y_AXIS_INDEX )  // XXX Since we're only populating one axis, it probably doesn't matter whether it's the X or Y axis.
-                            .add( row_index )
                             .add( i )
                             .add( DonutData.DEMO_SERIES_LIST[i][j] )
                             .add( DonutData.DEMO_SERIES_LABELS_LIST[i][j] );
