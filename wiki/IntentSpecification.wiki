@@ -2,12 +2,21 @@
 #labels Featured
 
 ==2.x Charts==
+
+===Data type===
+
+The `getType()` method of your Content Provider should respond with the string:
+
+`vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable`
+
 ===Content Provider Columns===
 
 Your Content Provider should respond to three types of queries:
-  * data
-  * meta
-  * axes
+  * `data`
+  * `meta`
+  * `axes`
+
+When displaying a chart, these strings will be appended to the source Uri as a "callback" to retrieve the chart data. Therefore, a Content Provider should examine the last path component of the Uri and serve the appropriate columns below.
 
 ===="data" Columns====
 
