@@ -54,7 +54,7 @@
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
-				<data android:mimeType="vnd.android.cursor.dir/vnd.org.achartengine.data.test"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
         <activity android:name="org.achartengine.activity.ScatterChartActivity" 
@@ -62,15 +62,15 @@
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
-				<data android:mimeType="vnd.android.cursor.dir/vnd.org.achartengine.data.test"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
-        </activity>   
+        </activity>
         <activity android:name="org.achartengine.activity.BarChartActivity" 
         	android:label="Bar Chart" android:icon="@drawable/icon_type_bar">
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
-				<data android:mimeType="vnd.android.cursor.dir/vnd.org.achartengine.data.test"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
         <activity android:name="org.achartengine.activity.DonutChartActivity" 
@@ -78,7 +78,7 @@
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
-				<data android:mimeType="vnd.android.cursor.dir/vnd.org.achartengine.data.test"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
          <activity android:name="org.achartengine.activity.PieChartActivity" 
@@ -86,7 +86,7 @@
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
-				<data android:mimeType="vnd.android.cursor.dir/vnd.org.achartengine.data.test"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
         
