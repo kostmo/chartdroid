@@ -5,7 +5,6 @@ import com.googlecode.chartdroid.demo.provider.DataContentProvider;
 import com.googlecode.chartdroid.demo.provider.EventContentProvider;
 
 import org.achartengine.demo.AceDataContentProvider;
-import org.achartengine.demo.R;
 import org.achartengine.demo.data.DonutData;
 import org.achartengine.demo.data.TemperatureData;
 
@@ -33,10 +32,7 @@ public class Demo extends Activity {
     
     static final String GOOGLE_CODE_URL = "http://chartdroid.googlecode.com/";
 
-	public static final String MARKET_AUTHOR_SEARCH_PREFIX = "pub:";
-	public static final String MARKET_AUTHOR_NAME = "Karl Ostmo";
-	public static final String MARKET_AUTHOR_SEARCH_STRING = MARKET_AUTHOR_SEARCH_PREFIX + "\"" + MARKET_AUTHOR_NAME + "\"";
-	
+
 	static final String TAG = "ChartDroid"; 
 
 	final int RETURN_CODE_CALENDAR_SELECTION = 1;
@@ -59,26 +55,18 @@ public class Demo extends Activity {
         setContentView(R.layout.main);
         getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.titlebar_icon);
 
-        
-        
-        
-        
-        
-        
-        
-        
+
         
         findViewById(R.id.button_multiseries_data_provider).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-//              Uri u = DataContentProvider.constructUri(DataContentProvider.CHART_DATA_MULTISERIES_PATH, 12345);
-                
+
                 Uri u = AceDataContentProvider.BASE_URI.buildUpon()
                     .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
                     .appendPath(AceDataContentProvider.CHART_DATA_UNLABELED_PATH).build();              
                 
                 Intent i = new Intent(Intent.ACTION_VIEW, u);
                 i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
-                startActivity(i);
+                Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
             }
         });
         
@@ -92,20 +80,13 @@ public class Demo extends Activity {
                 
                 Intent i = new Intent(Intent.ACTION_VIEW, u);
                 i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
-                startActivity(i);
+                Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
             }
         });
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
+
         
         
         
@@ -113,13 +94,11 @@ public class Demo extends Activity {
         findViewById(R.id.button_pie_chart).setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-
 		/*
 		        int[] colors = new int[chart_key_labels.length];
 		    	for (int j=0; j<chart_key_labels.length; j++)
 					colors[j] = Color.HSVToColor(new float[] {360 * j / (float) colors.length, 0.6f, 1});
 		*/    
-		        
 		    	Intent i = new Intent(IntentConstants.ACTION_PLOT);
 		    	i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
 		    	i.putExtra(Intent.EXTRA_TITLE, "Impressions");
@@ -127,8 +106,7 @@ public class Demo extends Activity {
 		    	i.putExtra(IntentConstants.EXTRA_DATA, demo_pie_data);
 //		    	i.putExtra(intent.EXTRA_COLORS, colors);
 		    	
-
-		    	startActivity(i);
+                Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
 			}
         });
 
@@ -148,14 +126,13 @@ public class Demo extends Activity {
 					event_times[i] = event.timestamp;
 				}
 				
-				
                 Intent i = new Intent(IntentConstants.ACTION_PLOT);
                 i.addCategory(IntentConstants.CATEGORY_CALENDAR);
 				
 				i.putExtra(IntentConstants.EXTRA_EVENT_IDS, event_ids);
 				i.putExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS, event_times);
 				
-		    	startActivityForResult(i, RETURN_CODE_CALENDAR_SELECTION);
+                Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, RETURN_CODE_CALENDAR_SELECTION);
 			}
         });
 
@@ -165,7 +142,7 @@ public class Demo extends Activity {
 		    	Uri u = DataContentProvider.constructUri(12345);
 				Intent i = new Intent(Intent.ACTION_VIEW, u);
 				i.putExtra(Intent.EXTRA_TITLE, "This is a really long title, isn't it?");
-		    	startActivity(i);
+				Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
 			}
         });
         
@@ -174,7 +151,7 @@ public class Demo extends Activity {
 			public void onClick(View v) {
 		    	Uri u = EventContentProvider.constructUri(12345);
 				Intent i = new Intent(Intent.ACTION_VIEW, u);
-		    	startActivityForResult(i, RETURN_CODE_CALENDAR_SELECTION);
+				Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, RETURN_CODE_CALENDAR_SELECTION);
 			}
         });
         
@@ -235,7 +212,7 @@ public class Demo extends Activity {
         }
         case R.id.menu_more_apps:
         {
-	    	Uri market_uri = Uri.parse("market://search?q=" + MARKET_AUTHOR_SEARCH_STRING);
+	    	Uri market_uri = Uri.parse("market://search?q=" + Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
             return true;
