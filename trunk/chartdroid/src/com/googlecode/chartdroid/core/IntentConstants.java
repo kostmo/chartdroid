@@ -2,9 +2,22 @@ package com.googlecode.chartdroid.core;
 
 public class IntentConstants {
 
+    
+    
+    
+    public static String INTENT_EXTRA_CALENDAR_SELECTION_ID = "INTENT_EXTRA_CALENDAR_SELECTION_ID";
+    public static String INTENT_EXTRA_DATE = "INTENT_EXTRA_DATE";
+    
+    
+    
+    
+    
+    
+    
 	public static final String ACTION_PLOT = "com.googlecode.chartdroid.intent.action.PLOT";
 	
 	public static final String CATEGORY_PIE_CHART = "com.googlecode.chartdroid.intent.category.PIE_CHART";
+	public static final String CATEGORY_CALENDAR = "com.googlecode.chartdroid.intent.category.CALENDAR";
 	
 	// Pie chart extras
 	public static final String EXTRA_COLORS = "com.googlecode.chartdroid.intent.extra.COLORS";

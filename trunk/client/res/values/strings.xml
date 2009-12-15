@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">ACE Demo</string>
-	<string name="developer_note"><b>Developers:</b> Check out the <a href="http://achartengine.googlecode.com/">Intent specification</a></string>
+    <string name="app_name">ChartDroid Demo</string>
+    
+	<string name="developer_note"><b>Developers:</b> Check out the <a href="http://code.google.com/p/chartdroid/">Intent specification</a></string>
 </resources>

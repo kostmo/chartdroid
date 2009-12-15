@@ -31,8 +31,7 @@ import com.googlecode.chartdroid.core.ContentSchema.CalendarEvent;
 
 public class Calendar extends Activity {
 
-	public static String INTENT_EXTRA_CALENDAR_SELECTION_ID = "INTENT_EXTRA_CALENDAR_SELECTION_ID";
-	public static String INTENT_EXTRA_DATE = "INTENT_EXTRA_DATE";
+
 
 	static final int RETURN_CODE_EVENT_SELECTION = 1;
 	
@@ -165,7 +164,7 @@ public class Calendar extends Activity {
 					
 //					Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
 					
-					i.putExtra(INTENT_EXTRA_DATE, day.d.getTime());
+					i.putExtra(IntentConstants.INTENT_EXTRA_DATE, day.d.getTime());
 					i.setClass(Calendar.this, EventListActivity.class);
 					startActivityForResult(i, RETURN_CODE_EVENT_SELECTION);
 				}
@@ -181,7 +180,7 @@ public class Calendar extends Activity {
 //				Log.d(TAG, "Hours: " + day.d.getHours() + "; Minutes: " + day.d.getMinutes());
 
 				Intent i = new Intent();
-				i.putExtra(INTENT_EXTRA_DATE, day.d.getTime());
+				i.putExtra(IntentConstants.INTENT_EXTRA_DATE, day.d.getTime());
 		        setResult(Activity.RESULT_OK, i);
 				finish();
 				
@@ -334,10 +333,10 @@ public class Calendar extends Activity {
    		case RETURN_CODE_EVENT_SELECTION:
    		{
    			
-   			long id = data.getLongExtra(Calendar.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
 
 			Intent i = new Intent();
-			i.putExtra(INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+			i.putExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
 	        setResult(Activity.RESULT_OK, i);
 			finish();
 

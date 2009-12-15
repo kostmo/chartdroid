@@ -20,9 +20,17 @@
 	    </activity>
 
         <activity android:name=".calendar.Calendar">
+        
+            <intent-filter>
+		    	<action android:name="com.googlecode.chartdroid.intent.action.PLOT" />
+		    	<category android:name="android.intent.category.DEFAULT" />
+		    	<category android:name="com.googlecode.chartdroid.intent.category.CALENDAR" />
+		    </intent-filter>
+        
 	        <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<action android:name="android.intent.action.PICK"/>
+
 				<category android:name="android.intent.category.DEFAULT"/>
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.event"/>
 			</intent-filter>

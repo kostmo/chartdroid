@@ -1,9 +1,8 @@
 package org.achartengine.demo;
 
+import org.achartengine.demo.ContentSchema.PlotData;
 import org.achartengine.demo.data.DonutData;
 import org.achartengine.demo.data.TemperatureData;
-import org.achartengine.intent.ContentSchema;
-import org.achartengine.intent.ContentSchema.PlotData;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;

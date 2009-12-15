@@ -27,7 +27,7 @@
 		
 
 
-        <activity android:name="Demo"
+        <activity android:name="com.googlecode.chartdroid.demo.Demo"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
