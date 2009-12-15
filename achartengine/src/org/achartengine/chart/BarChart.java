@@ -51,6 +51,15 @@ public class BarChart extends XYChart {
     super(dataset, renderer);
     mType = type;
   }
+  
+  
+  public Type getType() {
+      return mType;
+  }
+  
+  public void setType(Type type) {
+      mType = type;
+  }
 
   /**
    * The graphical representation of a series.

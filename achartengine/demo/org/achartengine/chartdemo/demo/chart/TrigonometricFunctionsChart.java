@@ -18,6 +18,7 @@ package org.achartengine.chartdemo.demo.chart;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -30,7 +31,7 @@ import android.graphics.Color;
 /**
  * Trigonometric functions demo chart.
  */
-public class TrigonometricFunctionsChart extends AbstractChart {
+public class TrigonometricFunctionsChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * @return the chart name

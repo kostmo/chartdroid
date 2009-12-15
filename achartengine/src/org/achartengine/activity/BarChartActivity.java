@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 SC 4ViewSoft SRL
+ * Copyright (C) 2009 Karl Ostmo
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.achartengine.activity;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalActivity;
 import org.achartengine.R;
 import org.achartengine.chart.AbstractChart;
-import org.achartengine.chart.LineChart;
+import org.achartengine.chart.BarChart;
 import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.XYChart;
+import org.achartengine.chart.BarChart.Type;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 
 import java.util.ArrayList;
@@ -56,8 +59,20 @@ public class BarChartActivity extends GraphicalActivity {
 
     
     List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new DoubleDatumExtractor());
-    List<List<Number>> x_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.X_AXIS_INDEX );
-    List<List<Number>> y_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.Y_AXIS_INDEX );
+    
+    assert( sorted_series_list.size() >= 1 );
+    
+    List<List<Number>> x_axis_series, y_axis_series = null;
+    if (sorted_series_list.size() == 1) {
+        // Let the Y-axis carry the only data.
+        x_axis_series = new ArrayList<List<Number>>();
+        y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
+        
+    } else {
+        x_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.X_AXIS_INDEX );
+        y_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.Y_AXIS_INDEX );    
+    }
+    
     
     assert (x_axis_series.size() == y_axis_series.size()
         || x_axis_series.size() == 1
@@ -71,7 +86,7 @@ public class BarChartActivity extends GraphicalActivity {
       assert (titles.length == y_axis_series.get(0).size());
       
       
-      // If there is no x-axis data, just number the y-elements.
+      // If there is no x-axis data, just fill it in by numbering the y-elements.
       List<Number> prototypical_x_values; 
       if (x_axis_series.size() == 0) {
         for (int i=0; i < y_axis_series.size(); i++) {
@@ -91,11 +106,14 @@ public class BarChartActivity extends GraphicalActivity {
         while (x_axis_series.size() < titles.length)
           x_axis_series.add( prototypical_x_values );
       }
+
       
-      
-      int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.CYAN, Color.YELLOW };
-      PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND,
-          PointStyle.TRIANGLE, PointStyle.SQUARE };
+      int[] colors = new int[titles.length];
+      PointStyle[] styles =  new PointStyle[titles.length];
+      for (int i=0; i<titles.length; i++) {
+          colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+          styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
+      }
 
       
       
@@ -105,11 +123,7 @@ public class BarChartActivity extends GraphicalActivity {
       
       
       
-      XYMultipleSeriesRenderer renderer = org.achartengine.chartdemo.demo.chart.AbstractChart.buildRenderer(colors, styles);
-      int length = renderer.getSeriesRendererCount();
-      for (int i = 0; i < length; i++) {
-        ((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
-      }
+      XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
       
       
 
@@ -120,17 +134,57 @@ public class BarChartActivity extends GraphicalActivity {
       Log.d(TAG, "X LABEL: " + y_label);
       Log.d(TAG, "chart_title: " + chart_title);
       
-      org.achartengine.chartdemo.demo.chart.AbstractChart.setChartSettings(renderer, chart_title, x_label, y_label, 0.5, 12.5, 0, 32,
+      org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, 0.5, 12.5, 0, 32,
           Color.LTGRAY, Color.GRAY);
       renderer.setXLabels(12);
-      renderer.setYLabels(10);
+
       
       
-      XYMultipleSeriesDataset dataset = org.achartengine.chartdemo.demo.chart.AbstractChart.buildDataset2(titles, x_axis_series, y_axis_series);
+      XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset2(titles, y_axis_series);
 
       ChartFactory.checkParameters(dataset, renderer);
 
-      XYChart chart = new LineChart(dataset, renderer);
+      BarChart chart = new BarChart(dataset, renderer, Type.DEFAULT);
+
       return chart;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+      super.onCreateOptionsMenu(menu);
+
+      MenuInflater inflater = getMenuInflater();
+      inflater.inflate(R.menu.options_bar_chart, menu);
+      return true;
+  }
+  
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+      case R.id.menu_toggle_stacked:
+      {
+
+          BarChart bc = (BarChart) mChart;
+          bc.setType( bc.getType().equals(Type.DEFAULT) ? Type.STACKED : Type.DEFAULT);
+
+          mView.repaint();
+          return true;
+      }
+      }
+
+      return super.onOptionsItemSelected(item);
   }
 }

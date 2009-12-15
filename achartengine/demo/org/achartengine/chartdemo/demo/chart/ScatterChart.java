@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -31,7 +32,7 @@ import android.graphics.Color;
 /**
  * Scatter demo chart.
  */
-public class ScatterChart extends AbstractChart {
+public class ScatterChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * @return the chart name

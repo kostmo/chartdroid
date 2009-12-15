@@ -32,11 +32,17 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * Utility methods for creating chart views or intents.
  */
 public class ChartFactory {
+    
+
+    protected static final String TAG = "AChartEngine"; 
+    
+    
   /** The key for the chart data. */
   public static final String CHART = "chart";
 
@@ -466,6 +472,12 @@ public class ChartFactory {
       XYMultipleSeriesRenderer renderer) {
     if (dataset == null || renderer == null
         || dataset.getSeriesCount() != renderer.getSeriesRendererCount()) {
+        
+        Log.e(TAG, "dataset: " + dataset);
+        Log.e(TAG, "renderer: " + renderer);
+
+        Log.e(TAG, "Dataset series count: " + dataset.getSeriesCount() + "; Series renderer count: " + renderer.getSeriesRendererCount());
+        
       throw new IllegalArgumentException(
           "Dataset and renderer should be not null and should have the same number of series");
     }
@@ -480,7 +492,7 @@ public class ChartFactory {
    *           if the dataset number of items is different than the number of
    *           series renderers
    */
-  private static void checkParameters(CategorySeries dataset, DefaultRenderer renderer) {
+  public static void checkParameters(CategorySeries dataset, DefaultRenderer renderer) {
     if (dataset == null || renderer == null
         || dataset.getItemCount() != renderer.getSeriesRendererCount()) {
       throw new IllegalArgumentException(
@@ -497,7 +509,7 @@ public class ChartFactory {
    *           if the dataset number of items is different than the number of
    *           series renderers
    */
-  private static void checkParameters(MultipleCategorySeries dataset, DefaultRenderer renderer) {
+  public static void checkParameters(MultipleCategorySeries dataset, DefaultRenderer renderer) {
     if (dataset == null || renderer == null
         || !checkMultipleSeriesItems(dataset, renderer.getSeriesRendererCount())) {
       throw new IllegalArgumentException(
@@ -509,7 +521,7 @@ public class ChartFactory {
     int count = dataset.getCategoriesCount();
     boolean equal = true;
     for (int k = 0; k < count && equal; k++) {
-      equal = dataset.getValues(k).length == dataset.getTitles(k).length;
+      equal = dataset.getValues(k).size() == dataset.getTitles(k).size();
     }
     return equal;
   }

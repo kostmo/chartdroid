@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.achartengine.chartdemo.demo.chart;
+package org.achartengine;
 
 import org.achartengine.chart.PointStyle;
+import org.achartengine.chartdemo.demo.chart.IChart;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * An abstract class for the demo charts to extend.
  */
-public abstract class AbstractChart implements IChart {
+public abstract class ChartGenHelper implements IChart {
 
   static final String TAG = "AChartEngine";
   
@@ -158,6 +159,17 @@ public abstract class AbstractChart implements IChart {
     return dataset;
   }
   
+  
+  public static CategorySeries buildCategoryDataset2(String title, List<Number> values) {
+      CategorySeries series = new CategorySeries(title);
+      int k = 0;
+      for (Number value : values) {
+        series.add("Project " + ++k, value);
+      }
+      
+      return series;
+    }
+  
   /**
    * Builds a category series using the provided values.
    * @param titles the series titles
@@ -176,15 +188,15 @@ public abstract class AbstractChart implements IChart {
 
   /**
    * Builds a multiple category series using the provided values.
-   * @param titles the series titles
-   * @param values the values
+   * @param datum_labels the series titles
+   * @param series_set the values
    * @return the category series
    */
-  public static MultipleCategorySeries buildMultipleCategoryDataset(String title, List<String[]> titles, List<double[]> values) {
+  public static MultipleCategorySeries buildMultipleCategoryDataset(String title, String[] series_labels, List<List<String>> datum_labels, List<List<Number>> series_set) {
     MultipleCategorySeries series = new MultipleCategorySeries(title);
     int k = 0;
-    for (double[] value : values) {
-      series.add(2007 + k + "", titles.get(k), value);
+    for (List<Number> series_values : series_set) {
+      series.add(series_labels[k], datum_labels.get(k), series_values);
       k++;
     }
     return series;
@@ -195,7 +207,7 @@ public abstract class AbstractChart implements IChart {
    * @param colors the colors
    * @return the category renderer
    */
-  protected DefaultRenderer buildCategoryRenderer(int[] colors) {
+  public static DefaultRenderer buildCategoryRenderer(int[] colors) {
     DefaultRenderer renderer = new DefaultRenderer();
     for (int color : colors) {
       SimpleSeriesRenderer r = new SimpleSeriesRenderer();
@@ -204,6 +216,28 @@ public abstract class AbstractChart implements IChart {
     }
     return renderer;
   }
+  
+
+  
+  
+  
+  
+  
+  public static XYMultipleSeriesDataset buildBarDataset2(String[] titles, List<List<Number>> values) {
+      XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+      int length = titles.length;
+      for (int i = 0; i < length; i++) {
+        CategorySeries series = new CategorySeries(titles[i]);
+        List<Number> v = values.get(i);
+        int seriesLength = v.size();
+        for (int k = 0; k < seriesLength; k++) {
+          series.add(v.get(k));
+        }
+        dataset.addSeries(series.toXYSeries());
+      }
+      return dataset;
+    }
+  
   
   /**
    * Builds a bar multiple series dataset using the provided values.

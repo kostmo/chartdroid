@@ -19,10 +19,10 @@ import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalActivity;
 import org.achartengine.R;
 import org.achartengine.chart.AbstractChart;
-import org.achartengine.chart.DoughnutChart;
+import org.achartengine.chart.PieChart;
 import org.achartengine.consumer.LabeledDoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
-import org.achartengine.model.MultipleCategorySeries;
+import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 
 import android.content.Intent;
@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class DonutChartActivity extends GraphicalActivity {
+public class PieChartActivity extends GraphicalActivity {
   
   
   @Override
@@ -51,6 +51,7 @@ public class DonutChartActivity extends GraphicalActivity {
 
 
   // ---------------------------------------------
+  // NOTE: This chart type will ignore all but the first series on the first axis.
   @Override
   protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
@@ -143,19 +144,17 @@ public class DonutChartActivity extends GraphicalActivity {
       Log.d(TAG, "chart_title: " + chart_title);
       
 
-      
-      MultipleCategorySeries dataset = org.achartengine.ChartGenHelper.buildMultipleCategoryDataset(chart_title, titles, datam_labels, y_axis_series);
+      List<Number> first_series = y_axis_series.get(0);
+      CategorySeries dataset = org.achartengine.ChartGenHelper.buildCategoryDataset2(chart_title, first_series);
 
       DefaultRenderer renderer = org.achartengine.ChartGenHelper.buildCategoryRenderer(colors);
       renderer.setApplyBackgroundColor(true);
       renderer.setBackgroundColor(Color.BLACK);
 
-      DoughnutChart chart = new DoughnutChart(dataset, renderer);
-      
+
       
       ChartFactory.checkParameters(dataset, renderer);
 
-      return chart;
-
+      return new PieChart(dataset, renderer);
   }
 }

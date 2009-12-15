@@ -15,6 +15,7 @@
  */
 package org.achartengine.chartdemo.demo.chart;
 
+import org.achartengine.ChartGenHelper;
 import org.achartengine.ChartFactory;
 import org.achartengine.renderer.DefaultRenderer;
 
@@ -25,7 +26,7 @@ import android.graphics.Color;
 /**
  * Budget demo pie chart.
  */
-public class BudgetPieChart extends AbstractChart {
+public class BudgetPieChart extends ChartGenHelper {
   /**
    * Returns the chart name.
    * @return the chart name

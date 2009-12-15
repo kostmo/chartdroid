@@ -28,7 +28,7 @@ public class CategorySeries implements Serializable {
   /** The series categories. */
   private List<String> mCategories = new ArrayList<String>();
   /** The series values. */
-  private List<Double> mValues = new ArrayList<Double>();
+  private List<Number> mValues = new ArrayList<Number>();
 
   /**
    * Builds a new category series.
@@ -50,7 +50,7 @@ public class CategorySeries implements Serializable {
    * Adds a new value to the series
    * @param value the new value
    */
-  public void add(double value) {
+  public void add(Number value) {
     add(mCategories.size() + "", value);
   }
 
@@ -59,7 +59,7 @@ public class CategorySeries implements Serializable {
    * @param category the category
    * @param value the new value
    */
-  public void add(String category, double value) {
+  public void add(String category, Number value) {
     mCategories.add(category);
     mValues.add(value);
   }
@@ -86,7 +86,7 @@ public class CategorySeries implements Serializable {
    * @param index the index
    * @return the value at the index
    */
-  public double getValue(int index) {
+  public Number getValue(int index) {
     return mValues.get(index);
   }
   
@@ -114,7 +114,7 @@ public class CategorySeries implements Serializable {
   public XYSeries toXYSeries() {
     XYSeries xySeries = new XYSeries(mTitle);
     int k = 0;
-    for (double value : mValues) {
+    for (Number value : mValues) {
       xySeries.add(++k, value);
     }
     return xySeries;
