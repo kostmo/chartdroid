@@ -21,9 +21,11 @@ import com.googlecode.chartdroid.R;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalActivity;
 import org.achartengine.chart.AbstractChart;
+import org.achartengine.chart.BarChart;
 import org.achartengine.chart.LineChart;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.chart.XYChart;
+import org.achartengine.chart.BarChart.Type;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.XYMultipleSeriesDataset;
@@ -35,6 +37,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 
 import java.util.ArrayList;
@@ -155,5 +160,43 @@ public class LineChartActivity extends GraphicalActivity {
       XYChart chart = new LineChart(dataset, renderer);
       return chart;
 
+  }
+  
+  
+  
+  
+  
+  
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+      super.onCreateOptionsMenu(menu);
+
+      MenuInflater inflater = getMenuInflater();
+      inflater.inflate(R.menu.options_bar_chart, menu);
+      
+      menu.findItem(R.id.menu_toggle_stacked).setVisible(false);
+      
+      return true;
+  }
+  
+  
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+      case R.id.menu_toggle_orientation:
+      {
+
+          XYMultipleSeriesRenderer renderer = ((XYChart) mChart).getRenderer();
+          renderer.setOrientation( renderer.getOrientation().equals(
+                  XYMultipleSeriesRenderer.Orientation.HORIZONTAL)
+                  ? XYMultipleSeriesRenderer.Orientation.VERTICAL
+                  : XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
+
+          mView.repaint();
+          return true;
+      }
+      }
+
+      return super.onOptionsItemSelected(item);
   }
 }
