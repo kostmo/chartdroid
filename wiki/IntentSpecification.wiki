@@ -32,9 +32,9 @@ db.query(MY_TABLE, projection, ...);
 
 ===="data" Columns====
 
-Each datum element must be identified by axis and series.  The axis and series numbering scheme is arbitrary.  Datum values will be interpreted as `double` type.  If multiple axes are specified, datum elements from each axis are combined in the order they appear to form a complete multi-dimensional datum (e.g. a 2D point).
+Each datum component must be identified by axis and series.  The axis and series numbering scheme is arbitrary.  Datum component values will be interpreted as `double` type.  If multiple axes are specified, datum components from each axis are combined in the order they appear to form a complete multi-dimensional datum (e.g. a 2D point).
 
-Datum labels may be specified or left `null`.  If a label is specified (non-null) for the same datum in multiple axes, the label corresponding to the highest axis index will take precedence.
+Datum labels may be specified or left `null`.  If a label is specified (non-null) for components of the same datum in multiple axes, the label corresponding to the highest axis index will take precedence.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
