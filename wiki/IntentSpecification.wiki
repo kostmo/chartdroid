@@ -5,7 +5,7 @@
 
 ===Data type===
 
-The `getType()` method of your Content Provider should respond with the string:
+The [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should respond with the string:
 
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable`
 
@@ -17,6 +17,18 @@ Your Content Provider should respond to three types of queries:
   * `axes`
 
 When displaying a chart, these strings will be appended to the source Uri as a "callback" to retrieve the chart data. Therefore, a Content Provider should examine the last path component of the Uri and serve the appropriate columns below.
+
+*Note:* The data to chart may be generated dynamically in the client by populating a [http://developer.android.com/reference/android/database/MatrixCursor.html MatrixCursor].  If your data already exists in an SQLite-backed database, it is simple to translate the column names.  Use a query such as:
+{{{
+String[] projection = new String[] {
+    "ROWID AS " + BaseColumns._ID,    // ROWID is the implicit Primary Key generator in SQLite
+    MY_AXIS_INDEX_COLUMN + " AS " + "COLUMN_AXIS_INDEX",
+    MY_SERIES_INDEX_COLUMN + " AS " + "COLUMN_SERIES_INDEX",
+    ...
+};
+
+db.query(MY_TABLE, projection, ...);
+}}}
 
 ===="data" Columns====
 
