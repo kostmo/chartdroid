@@ -16,7 +16,7 @@ Your Content Provider should respond to three types of queries:
   * `meta`
   * `axes`
 
-When displaying a chart, these strings will be appended to the source Uri as a "callback" to retrieve the chart data. Therefore, a Content Provider should examine the last path component of the Uri and serve the appropriate columns below.
+When displaying a chart, these strings will be appended to the source Uri as a "callback" to retrieve the various chart data. Therefore, a Content Provider should examine the last path component of the Uri and serve the appropriate columns below.
 
 *Note:* The data to chart may be generated dynamically in the client by populating a [http://developer.android.com/reference/android/database/MatrixCursor.html MatrixCursor].  If your data already exists in an SQLite-backed database, it is simple to translate the column names.  Use a query such as:
 {{{
