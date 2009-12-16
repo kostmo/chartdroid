@@ -32,6 +32,7 @@ import com.googlecode.chartdroid.core.ContentSchema.CalendarEvent;
 public class Calendar extends Activity {
 
 
+    final static public String TAG = "Calendar";
 
 	static final int RETURN_CODE_EVENT_SELECTION = 1;
 	
@@ -65,8 +66,6 @@ public class Calendar extends Activity {
 		List<SimpleEvent> day_events;
 	}
 	
-	
-	final static public String TAG = "Calendar";
 	
 
     GridView mGrid, weekday_labels_grid;

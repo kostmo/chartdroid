@@ -27,14 +27,28 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.Paint.Align;
+import android.util.Log;
 
 import java.util.List;
+
+
+
 
 /**
  * The XY chart rendering class.
  */
 public abstract class XYChart extends AbstractChart {
+    
+
+    final static public String TAG = "XYChart";
+    
+    
+  public XYMultipleSeriesRenderer getRenderer() {
+      return mRenderer;
+  }
+    
   /** The multiple series dataset. */
   protected XYMultipleSeriesDataset mDataset;
   /** The multiple series renderer. */
@@ -76,17 +90,13 @@ public abstract class XYChart extends AbstractChart {
     if (mRenderer.isShowLegend()) {
       legendSize = height / 5;
     }
-    int left = x + 20;
-    int top = y + 10;
-    int right = x + width;
-    int bottom = y + height - legendSize;
+
     drawBackground(mRenderer, canvas, x, y, width, height, paint);
 
+    
+
+    
     Orientation or = mRenderer.getOrientation();
-    if (or == Orientation.VERTICAL) {
-      right -= legendSize;
-      bottom += legendSize - 20;
-    }
     int angle = or.getAngle();
     boolean rotate = angle == 90;
     mScale = (float) (height) / width;
@@ -133,51 +143,104 @@ public abstract class XYChart extends AbstractChart {
         maxY = Math.max(maxY, maximumY.doubleValue());
       }
     }
-    if (maxX - minX != 0) {
-      xPixelsPerUnit = (right - left) / (maxX - minX);
-    }
-    if (maxY - minY != 0) {
-      yPixelsPerUnit = (float) ((bottom - top) / (maxY - minY));
-    }
+    
+    
 
-    boolean hasValues = false;
-    for (int i = 0; i < sLength; i++) {
-      XYSeries series = mDataset.getSeriesAt(i);
-      if (series.getItemCount() == 0) {
-        continue;
-      }
-      hasValues = true;
-      SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(i);
-      int originalValuesLength = series.getItemCount();
-      float[] points = null;
-      int valuesLength = originalValuesLength;
-      int length = valuesLength * 2;
-      points = new float[length];
-      for (int j = 0; j < length; j += 2) {
-        int index = j / 2;
-        points[j] = (float) (left + xPixelsPerUnit * (series.getX(index).doubleValue() - minX));
-        points[j + 1] = (float) (bottom - yPixelsPerUnit * (series.getY(index).doubleValue() - minY));
-      }
-      drawSeries(canvas, paint, points, seriesRenderer, Math.min(bottom,
-          (float) (bottom + yPixelsPerUnit * minY)), i);
-      if (isRenderPoints(seriesRenderer)) {
-        ScatterChart pointsChart = new ScatterChart(mDataset, mRenderer);
-        pointsChart.drawSeries(canvas, paint, points, seriesRenderer, 0, i);
-      }
-      paint.setTextSize(9);
-      if (or == Orientation.HORIZONTAL) {
-        paint.setTextAlign(Align.CENTER);
-      } else {
-        paint.setTextAlign(Align.LEFT);
-      }
-      if (mRenderer.isDisplayChartValues()) {
-        drawChartValuesText(canvas, series, paint, points, i);
-      }
-    }
 
-    boolean showLabels = mRenderer.isShowLabels() && hasValues;
+//  boolean showLabels = mRenderer.isShowLabels() && hasValues;
+    boolean showLabels = mRenderer.isShowLabels();
     boolean showGrid = mRenderer.isShowGrid();
+    
+
+    Rect y_title_bounds = new Rect();
     if (showLabels || showGrid) {
+
+        if (showLabels) {
+          paint.setColor(mRenderer.getLabelsColor());
+          paint.setTextSize(12);
+          paint.setTextAlign(Align.CENTER);
+          
+          String y_title = mRenderer.getYTitle();
+          paint.getTextBounds(y_title, 0, y_title.length(), y_title_bounds);
+        }
+    }
+    
+    
+    
+    Log.d(TAG, "Y-title rect top: " + y_title_bounds.top);
+    Log.d(TAG, "Y-title rect bottom: " + y_title_bounds.bottom);
+    Log.d(TAG, "Y-title rect left: " + y_title_bounds.left);
+    Log.d(TAG, "Y-title rect right: " + y_title_bounds.right);
+
+    int y_label_height = y_title_bounds.bottom - y_title_bounds.top;
+
+    float hash_mark_width = 0;
+    float label_clearance = 2;
+    // Measure all y-axis label widths to determine the axis line position
+    if (showLabels) {
+
+        List<Double> yLabels = MathHelper.getLabels(minY, maxY, mRenderer.getYLabels());
+        int length = yLabels.size();
+        
+        float[] label_widths = new float[length];
+        float max_label_width = 0;
+        for (int i = 0; i < length; i++) {
+            float label_width = paint.measureText( getLabel( yLabels.get(i) ) );
+            label_widths[i] = width;
+            max_label_width = Math.max(label_width, max_label_width);
+        }
+    
+        
+        hash_mark_width = max_label_width + label_clearance;
+    }
+    
+    int left = x + y_label_height + (int) Math.ceil(hash_mark_width);
+//    int left = x + 20;
+    int top = y + 10;
+    int right = x + width;
+    int bottom = y + height - legendSize;
+    if (or == Orientation.VERTICAL) {
+        right -= legendSize;
+        bottom += legendSize - 20;
+    }
+    
+    
+    if (maxX - minX != 0) {
+        xPixelsPerUnit = (right - left) / (maxX - minX);
+      }
+      if (maxY - minY != 0) {
+        yPixelsPerUnit = (float) ((bottom - top) / (maxY - minY));
+      }
+    
+    if (showLabels || showGrid) {
+        
+        
+
+        if (showLabels) {
+            
+
+            String y_title = mRenderer.getYTitle();
+            
+          if (or == Orientation.HORIZONTAL) {
+            drawText(canvas, mRenderer.getXTitle(), x + width / 2, bottom + 24, paint, 0);
+            drawText(canvas, y_title, x + y_label_height, y + height / 2, paint, -90);
+            paint.setTextSize(15);
+            drawText(canvas, mRenderer.getChartTitle(), x + width / 2, top + 10, paint, 0);
+            
+          } else if (or == Orientation.VERTICAL) {
+            drawText(canvas, mRenderer.getXTitle(), x + width / 2, y + height - 10, paint, -90);
+            drawText(canvas, y_title, right + y_label_height, y + height / 2, paint, 0);
+            paint.setTextSize(15);
+            drawText(canvas, mRenderer.getChartTitle(), x + 14, top + height / 2, paint, 0);
+          }
+        }
+        
+        
+        
+        
+        
+        
+        
       List<Double> xLabels = MathHelper.getLabels(minX, maxX, mRenderer.getXLabels());
       List<Double> yLabels = MathHelper.getLabels(minY, maxY, mRenderer.getYLabels());
       if (showLabels) {
@@ -189,48 +252,61 @@ public abstract class XYChart extends AbstractChart {
       drawXLabels(xLabels, mRenderer.getXTextLabelLocations(), canvas, paint, left, top, bottom,
           xPixelsPerUnit, minX);
       int length = yLabels.size();
+      
+      
+
+      
+      
+      paint.setTextAlign(Align.RIGHT);
       for (int i = 0; i < length; i++) {
         double label = yLabels.get(i);
         float yLabel = (float) (bottom - yPixelsPerUnit * (label - minY));
+
+        
+        float grid_line_startx, grid_line_stopx, hash_mark_startx, hash_mark_stopx;
+        float label_x_offset;
+
         if (or == Orientation.HORIZONTAL) {
-          if (showLabels) {
+            grid_line_startx = left;
+            grid_line_stopx = right;
+            hash_mark_startx = grid_line_startx - hash_mark_width;
+            hash_mark_stopx = grid_line_startx;
+            
+            label_x_offset = left - label_clearance;
+
+//      } else if (or == Orientation.VERTICAL) {
+        } else { 
+            grid_line_startx = right;
+            grid_line_stopx = left;
+            hash_mark_startx = grid_line_startx + hash_mark_width;
+            hash_mark_stopx = grid_line_startx;
+
+//            label_x_offset = right + 10;
+            label_x_offset = right - label_clearance;
+        }
+        
+        if (showLabels) {
             paint.setColor(mRenderer.getLabelsColor());
-            canvas.drawLine(left - 4, yLabel, left, yLabel, paint);
-            drawText(canvas, getLabel(label), left - 2, yLabel - 2, paint, 0);
+//            paint.setColor(Color.MAGENTA);    // FIXME
+            canvas.drawLine(hash_mark_startx, yLabel, hash_mark_stopx, yLabel, paint);
+            
+            String label_string = getLabel(label);
+            paint.measureText(label_string);
+            drawText(canvas, getLabel(label), label_x_offset, yLabel - 2, paint, 0);
           }
-          if (showGrid) {
+        
+        if (showGrid) {
             paint.setColor(GRID_COLOR);
-            canvas.drawLine(left, yLabel, right, yLabel, paint);
-          }
-        } else if (or == Orientation.VERTICAL) {
-          if (showLabels) {
-            paint.setColor(mRenderer.getLabelsColor());
-            canvas.drawLine(right + 4, yLabel, right, yLabel, paint);
-            drawText(canvas, getLabel(label), right + 10, yLabel - 2, paint, 0);
-          }
-          if (showGrid) {
-            paint.setColor(GRID_COLOR);
-            canvas.drawLine(right, yLabel, left, yLabel, paint);
-          }
+//            paint.setColor(Color.GREEN);    // FIXME
+            canvas.drawLine(grid_line_startx, yLabel, grid_line_stopx, yLabel, paint);
         }
       }
 
-      if (showLabels) {
-        paint.setColor(mRenderer.getLabelsColor());
-        paint.setTextSize(12);
-        paint.setTextAlign(Align.CENTER);
-        if (or == Orientation.HORIZONTAL) {
-          drawText(canvas, mRenderer.getXTitle(), x + width / 2, bottom + 24, paint, 0);
-          drawText(canvas, mRenderer.getYTitle(), x + 10, y + height / 2, paint, -90);
-          paint.setTextSize(15);
-          drawText(canvas, mRenderer.getChartTitle(), x + width / 2, top + 10, paint, 0);
-        } else if (or == Orientation.VERTICAL) {
-          drawText(canvas, mRenderer.getXTitle(), x + width / 2, y + height - 10, paint, -90);
-          drawText(canvas, mRenderer.getYTitle(), right + 20, y + height / 2, paint, 0);
-          paint.setTextSize(15);
-          drawText(canvas, mRenderer.getChartTitle(), x + 14, top + height / 2, paint, 0);
-        }
-      }
+      
+
+      
+      
+      
     }
 
     if (or == Orientation.HORIZONTAL) {
@@ -249,6 +325,63 @@ public abstract class XYChart extends AbstractChart {
         canvas.drawLine(right, top, right, bottom, paint);
       }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+      boolean hasValues = false;
+      for (int i = 0; i < sLength; i++) {
+        XYSeries series = mDataset.getSeriesAt(i);
+        if (series.getItemCount() == 0) {
+          continue;
+        }
+        hasValues = true;
+        SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(i);
+        int originalValuesLength = series.getItemCount();
+        float[] points = null;
+        int valuesLength = originalValuesLength;
+        int length = valuesLength * 2;
+        points = new float[length];
+        for (int j = 0; j < length; j += 2) {
+          int index = j / 2;
+          points[j] = (float) (left + xPixelsPerUnit * (series.getX(index).doubleValue() - minX));
+          points[j + 1] = (float) (bottom - yPixelsPerUnit * (series.getY(index).doubleValue() - minY));
+        }
+        drawSeries(canvas, paint, points, seriesRenderer, Math.min(bottom,
+            (float) (bottom + yPixelsPerUnit * minY)), i);
+        if (isRenderPoints(seriesRenderer)) {
+          ScatterChart pointsChart = new ScatterChart(mDataset, mRenderer);
+          pointsChart.drawSeries(canvas, paint, points, seriesRenderer, 0, i);
+        }
+        paint.setTextSize(9);
+        if (or == Orientation.HORIZONTAL) {
+          paint.setTextAlign(Align.CENTER);
+        } else {
+          paint.setTextAlign(Align.LEFT);
+        }
+        if (mRenderer.isDisplayChartValues()) {
+          drawChartValuesText(canvas, series, paint, points, i);
+        }
+      }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (rotate) {
       transform(canvas, angle, true);
     }

@@ -23,6 +23,7 @@ import org.achartengine.GraphicalActivity;
 import org.achartengine.chart.AbstractChart;
 import org.achartengine.chart.BarChart;
 import org.achartengine.chart.PointStyle;
+import org.achartengine.chart.XYChart;
 import org.achartengine.chart.BarChart.Type;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
@@ -180,6 +181,18 @@ public class BarChartActivity extends GraphicalActivity {
 
           BarChart bc = (BarChart) mChart;
           bc.setType( bc.getType().equals(Type.DEFAULT) ? Type.STACKED : Type.DEFAULT);
+
+          mView.repaint();
+          return true;
+      }
+      case R.id.menu_toggle_orientation:
+      {
+
+          XYMultipleSeriesRenderer renderer = ((XYChart) mChart).getRenderer();
+          renderer.setOrientation( renderer.getOrientation().equals(
+                  XYMultipleSeriesRenderer.Orientation.HORIZONTAL)
+                  ? XYMultipleSeriesRenderer.Orientation.VERTICAL
+                  : XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
 
           mView.repaint();
           return true;
