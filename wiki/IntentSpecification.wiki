@@ -60,14 +60,15 @@ The "axes" query provides labels for each axis.
 || `COLUMN_AXIS_LABEL` || `String` ||
 
 
-===1.x Pie Charts===
-====Actions====
+==1.x Charts==
+===Actions===
   * com.googlecode.chartdroid.intent.action.PLOT
-====Categories====
+===Categories===
   * com.googlecode.chartdroid.intent.category.PIE_CHART
   * com.googlecode.chartdroid.intent.category.CALENDAR
-====Extras====
+===Extras===
 
+====Pie Chart====
 || *Key* || *Data type* || *Required? ||
 || `com.googlecode.chartdroid.intent.extra.DATA` || `int[]` || Y ||
 || `com.googlecode.chartdroid.intent.extra.LABELS` || `String[]` || N ||
