@@ -76,7 +76,7 @@ public class ScatterChartActivity extends XYChartActivity {
         || x_axis_series.size() == 1
         || x_axis_series.size() == 0);
 
-      String[] titles = getSortedSeriesTitles(intent_data);
+      String[] titles = getSortedSeriesTitles();
 
       assert (titles.length == y_axis_series.size());
 
@@ -117,7 +117,7 @@ public class ScatterChartActivity extends XYChartActivity {
 
       
       
-      List<String> axis_labels = getAxisTitles(intent_data);
+      List<String> axis_labels = getAxisTitles();
       
       
       

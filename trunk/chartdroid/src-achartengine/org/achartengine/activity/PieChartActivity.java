@@ -22,12 +22,14 @@ import org.achartengine.consumer.LabeledDoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.view.PredicateLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PieChart;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -43,9 +45,18 @@ public class PieChartActivity extends GraphicalActivity {
 		return R.drawable.typepie;
 	}
 
-  
 
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		PredicateLayout predicate_layout = (PredicateLayout) findViewById(R.id.predicate_layout);
+		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
+		populateLegend(predicate_layout, series_attributes_list);
+	}
+	
+	
   // ---------------------------------------------
   // NOTE: This chart type will ignore all but the first series on the first axis.
   @Override
@@ -81,7 +92,7 @@ public class PieChartActivity extends GraphicalActivity {
         || x_axis_series.size() == 1
         || x_axis_series.size() == 0);
 
-      String[] titles = getSortedSeriesTitles(intent_data);
+      String[] titles = getSortedSeriesTitles();
 
       assert (titles.length == y_axis_series.size());
 
@@ -124,16 +135,6 @@ public class PieChartActivity extends GraphicalActivity {
           colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
       }
 
-      
-      
-      List<String> axis_labels = getAxisTitles(intent_data);
-      
-      
-      
-      
-      
-
-      
 
       String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
       // NOTE: Axes labels are not applicable to the donut chart. 
@@ -159,7 +160,28 @@ public class PieChartActivity extends GraphicalActivity {
 
 @Override
 protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
-	// TODO Auto-generated method stub
-	return null;
+
+	PieChart pie_chart = (PieChart) chart;
+	
+	// Zip the series attributes
+	List<DataSeriesAttributes> series_attributes_list = new ArrayList<DataSeriesAttributes>();
+
+	DefaultRenderer renderer = pie_chart.getRenderer();
+	
+	for (int i=0; i<pie_chart.getDataset().getItemCount(); i++) {
+		String category_title = pie_chart.getDataset().getCategory(i);
+		DataSeriesAttributes series = new DataSeriesAttributes();
+		
+		
+		 
+		series.color = renderer.getSeriesRendererAt(i).getColor();
+		series.title = category_title;
+		
+		Log.d(TAG, "Series: " + i + "; Title: " + series.title + "; Color: " + series.color);
+		
+		series_attributes_list.add( series );
+	}
+	
+	return series_attributes_list;
 }
 }

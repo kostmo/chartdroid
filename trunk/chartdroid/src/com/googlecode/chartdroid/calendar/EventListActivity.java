@@ -1,7 +1,7 @@
 package com.googlecode.chartdroid.calendar;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import android.app.Activity;
@@ -46,8 +46,8 @@ public class EventListActivity extends ListActivity {
     
 	
 	public static final String KEY_ROWID = BaseColumns._ID;
-	public static final String KEY_TIMESTAMP = ContentSchema.CalendarEvent.COLUMN_EVENT_TIMESTAMP;
-	public static final String KEY_EVENT_TITLE = ContentSchema.CalendarEvent.COLUMN_EVENT_TITLE;
+	public static final String KEY_TIMESTAMP = ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TIMESTAMP;
+	public static final String KEY_EVENT_TITLE = ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TITLE;
 	
 	
 	Cursor requery() {

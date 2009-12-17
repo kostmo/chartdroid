@@ -16,15 +16,10 @@
 package org.achartengine.view.chart;
 
 import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.SimpleSeriesRenderer;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYMultipleSeriesRenderer.Orientation;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 
 import java.io.Serializable;
@@ -62,74 +57,7 @@ public abstract class AbstractChart implements Serializable {
     }
   }
 
-  /**
-   * Draws the chart legend.
-   * @param canvas the canvas to paint to
-   * @param renderer the series renderer
-   * @param titles the titles to go to the legend
-   * @param left the left X value of the area to draw to
-   * @param right the right X value of the area to draw to 
-   * @param y the y value of the area to draw to
-   * @param width the width of the area to draw to
-   * @param height the height of the area to draw to
-   * @param legendSize the legend size
-   * @param paint the paint to be used for drawing
-   */
-  protected void drawLegend(Canvas canvas, DefaultRenderer renderer, String[] titles, int left, int right, int y, int width, int height, int legendSize, Paint paint) {
-    if (renderer.isShowLegend()) {
-      float currentX = left;
-      float currentY = y + height - legendSize + 32;
-      final float lineSize = getLegendShapeWidth();
-      paint.setTextAlign(Align.LEFT);
-      paint.setTextSize(12);
-      int sLength = Math.min(titles.length, renderer.getSeriesRendererCount());
-      for (int i = 0; i < sLength; i++) {
-        String text = titles[i];
-        if (titles.length == renderer.getSeriesRendererCount()) {
-          paint.setColor(renderer.getSeriesRendererAt(i).getColor());
-        } else {
-          paint.setColor(Color.LTGRAY);
-        }
-        float[] widths = new float[text.length()];
-        paint.getTextWidths(text, widths);
-        float sum = 0;
-        for (float value : widths) {
-          sum += value;
-        }
-        float extraSize = lineSize + 10 + sum;
-        float currentWidth = currentX + extraSize;
-        
-        if (i > 0 && getExceed(currentWidth, renderer, right, width)) {
-          currentX = left;
-          currentY += 15;
-          currentWidth = currentX + extraSize;
-        }
-        if (getExceed(currentWidth, renderer, right, width)) {
-          float maxWidth = right - currentX - lineSize - 10;
-          if (isVertical(renderer)) {
-            maxWidth = width - currentX - lineSize - 10;
-          }
-          int nr = paint.breakText(text, true, maxWidth, widths);
-          text = text.substring(0, nr) + "...";
-        }
-        drawLegendShape(canvas, renderer.getSeriesRendererAt(i), currentX, currentY, paint);
-        canvas.drawText(text, currentX + lineSize + 5, currentY + 5, paint);
-        currentX += extraSize;
-      }
-    }
-  }
-  
-  private boolean getExceed(float currentWidth, DefaultRenderer renderer, int right, int width) {
-    boolean exceed = currentWidth > right;
-    if (isVertical(renderer)) {
-      exceed = currentWidth > width; 
-    }
-    return exceed;
-  }
-  
-  private boolean isVertical(DefaultRenderer renderer) {
-    return renderer instanceof XYMultipleSeriesRenderer && ((XYMultipleSeriesRenderer) renderer).getOrientation() == Orientation.VERTICAL;
-  }
+
   
   /**
    * The graphical representation of a path.
@@ -149,24 +77,6 @@ public abstract class AbstractChart implements Serializable {
     }
     canvas.drawPath(path, paint);
   }
-  
-  /**
-   * Returns the legend shape width.
-   * @return the legend shape width 
-   */
-  public abstract int getLegendShapeWidth();
-
-  /**
-   * The graphical representation of the legend shape.
-   * @param canvas the canvas to paint to
-   * @param renderer the series renderer
-   * @param x the x value of the point the shape should be drawn at
-   * @param y the y value of the point the shape should be drawn at
-   * @param paint the paint to be used for drawing
-   */
-  public abstract void drawLegendShape(Canvas canvas, SimpleSeriesRenderer renderer, float x,
-      float y, Paint paint);
-
 
   private boolean is_anti_aliased = true;
   protected boolean getAntiAliased() {

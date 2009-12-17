@@ -53,7 +53,7 @@ abstract public class XYChartActivity extends GraphicalActivity implements Chart
 		
 		PredicateLayout predicate_layout = (PredicateLayout) findViewById(R.id.predicate_layout);
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
-		generateLegend(predicate_layout, series_attributes_list);
+		populateLegend(predicate_layout, series_attributes_list);
 	}
 
 
