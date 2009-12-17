@@ -80,7 +80,7 @@ The "axes" query provides labels for each axis.
 
 ===Intent Extras===
 
-The only reallly "mandatory" query in your Content Provider is `data`; other aspects of the chart may be delivered through Intent extras.  The Intent extras, if present, take precedence over the Content Provider.
+The only really "mandatory" query in your Content Provider is `data`; other aspects of the chart may be delivered through Intent extras.  The Intent extras, if present, take precedence over the Content Provider.
 
 || *Key* || *Data type* ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_COLORS` || `int[]` ||
