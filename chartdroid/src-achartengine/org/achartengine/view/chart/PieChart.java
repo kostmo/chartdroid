@@ -17,7 +17,6 @@ package org.achartengine.view.chart;
 
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -30,12 +29,19 @@ import android.graphics.Paint.Style;
  * The pie chart rendering class.
  */
 public class PieChart extends AbstractChart {
-  /** The legend shape width. */
-  private static final int SHAPE_WIDTH = 10;
+
   /** The series dataset. */
   private CategorySeries mDataset;
   /** The series renderer. */
   private DefaultRenderer mRenderer;  
+
+	public DefaultRenderer getRenderer() {
+		return mRenderer;
+	}
+  
+  public CategorySeries getDataset() {
+	  return mDataset;
+  }
   
   /**
    * Builds a new pie chart instance.
@@ -61,22 +67,17 @@ public class PieChart extends AbstractChart {
     paint.setAntiAlias(getAntiAliased());
     paint.setStyle(Style.FILL);
     paint.setTextSize(10);
-    int legendSize = 30;
-    if (mRenderer.isShowLegend()) {
-      legendSize = height / 5;
-    }
+
     int left = x + 15;
     int top = y + 5;
     int right = x + width - 5;
-    int bottom = y + height - legendSize;
+    int bottom = y + height;
     drawBackground(mRenderer, canvas, x, y, width, height, paint);
     
     int sLength = mDataset.getItemCount();
     double total = 0;
-    String[] titles = new String[sLength];
     for (int i = 0; i < sLength; i++) {
       total += mDataset.getValue(i).doubleValue();
-      titles[i] = mDataset.getCategory(i);
     }
     float currentAngle = 0;
     int mRadius = Math.min(Math.abs(right - left), Math.abs(bottom - top));
@@ -112,28 +113,7 @@ public class PieChart extends AbstractChart {
       }
       currentAngle += angle;
     }
-    drawLegend(canvas, mRenderer, titles, left, right, y, width, height, legendSize, paint);
   }
 
-  /**
-   * Returns the legend shape width.
-   * @return the legend shape width 
-   */
-  public int getLegendShapeWidth() {
-    return SHAPE_WIDTH;
-  }
-
-  /**
-   * The graphical representation of the legend shape.
-   * @param canvas the canvas to paint to
-   * @param renderer the series renderer
-   * @param x the x value of the point the shape should be drawn at
-   * @param y the y value of the point the shape should be drawn at
-   * @param paint the paint to be used for drawing
-   */
-  public void drawLegendShape(Canvas canvas, SimpleSeriesRenderer renderer, float x,
-      float y, Paint paint) {
-    canvas.drawRect(x, y - SHAPE_WIDTH / 2, x + SHAPE_WIDTH, y + SHAPE_WIDTH / 2, paint);
-  }
 
 }

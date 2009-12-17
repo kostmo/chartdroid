@@ -16,6 +16,7 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.consumer.DatumExtractor;
 import org.achartengine.intent.ContentSchema;
@@ -28,13 +29,21 @@ import org.achartengine.view.chart.PointStyle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
@@ -71,7 +80,7 @@ abstract public class GraphicalActivity extends Activity {
 	
 	protected abstract int getTitlebarIconResource();
 	
-	// TODO: Implement for Pie and Donut
+	// TODO: Implement for Donut chart
 	abstract protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart);
 	
 
@@ -85,13 +94,16 @@ abstract public class GraphicalActivity extends Activity {
 	}
 
 
+	public void populateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list) {
+		populateLegend(predicate_layout, series_attributes_list, false);
+	}
 	
-	public void generateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list) {
+	public void populateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list, boolean donut_style) {
 		
 		PredicateLayout.LayoutParams lp = new PredicateLayout.LayoutParams(5, 1);
 		predicate_layout.setPredicateLayoutParams(lp);
 
-
+		int i=0;
 		for (DataSeriesAttributes series : series_attributes_list) {
 
 			Button b = new Button(this);
@@ -100,25 +112,54 @@ abstract public class GraphicalActivity extends Activity {
 					ViewGroup.LayoutParams.WRAP_CONTENT));
 			b.setGravity(Gravity.CENTER_VERTICAL);
 			b.setText( series.title );
-			b.setTextColor( series.color );
 			b.setBackgroundDrawable(null);
 			b.setPadding(0, 0, 0, 0);
 
-			PaintDrawable swatch = new PaintDrawable( series.color );
-			swatch.setIntrinsicWidth(15);
-			swatch.setIntrinsicHeight(15);
-			//	      swatch.setBounds(0, 0, 15, 15);
-			swatch.setCornerRadius(3);
+			
+			int icon_width = 16;
+			Drawable icon;
+			int color;
+			if (donut_style) {
+				color = Color.WHITE;
+				PaintDrawable swatch = new PaintDrawable( color );
+				int width = icon_width * (series_attributes_list.size() - i)/series_attributes_list.size();
+				swatch.setIntrinsicWidth(width);
+				swatch.setIntrinsicHeight(width);
+				swatch.setCornerRadius(width/2f);
+				icon = swatch;
+			} else {
+				color = series.color;
+				PaintDrawable swatch = new PaintDrawable( color );
+				swatch.setIntrinsicWidth(icon_width);
+				swatch.setIntrinsicHeight(icon_width);
+				swatch.setCornerRadius(icon_width/4);
+				icon = swatch;
+			}
+			
+
+			b.setTextColor( color );
+			
+			
+			
 			b.setCompoundDrawablePadding(3);
-			b.setCompoundDrawablesWithIntrinsicBounds(swatch, null, null, null);
+			b.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 			predicate_layout.addView(b);
+			
+			i++;
 		}
 	}
 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 	    getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+		if (getIntent().getBooleanExtra(IntentConstants.EXTRA_FULLSCREEN, false))
+			getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+		
+	    
+	    
 		super.onCreate(savedInstanceState);
 
 
@@ -153,8 +194,6 @@ abstract public class GraphicalActivity extends Activity {
 
 
 	// ---------------------------------------------
-
-
 	Comparator<Entry<Integer, ?>> integer_keyed_entry_comparator = new Comparator<Entry<Integer, ?>>() {
 
 		@Override
@@ -164,7 +203,6 @@ abstract public class GraphicalActivity extends Activity {
 	};
 
 	// ---------------------------------------------
-
 	<T> List<T> sortAndSimplify(Map<Integer, T> input_map) {
 		// Sort the axes by index
 		ArrayList<Entry<Integer,T>> sorted_axes_series_map = new ArrayList<Entry<Integer, T>>(input_map.entrySet());
@@ -205,8 +243,59 @@ abstract public class GraphicalActivity extends Activity {
 	}
 
 	// ---------------------------------------------
-	protected String[] getSortedSeriesTitles(Uri intent_data) {
+	//  Retrieve Axes data
+	protected List<String> getAxisTitles() {
 
+		Intent intent = getIntent();
+		List<String> extra_series_titles = intent.getStringArrayListExtra(IntentConstants.EXTRA_AXIS_TITLES);
+		if (extra_series_titles != null)
+			return extra_series_titles;
+		
+		
+
+		Uri intent_data = intent.getData();
+		Uri axes_uri = intent_data.buildUpon().appendEncodedPath( ContentSchema.DATASET_ASPECT_AXES ).build();
+		Log.d(TAG, "Querying content provider for: " + axes_uri);
+
+		List<String> axis_labels = new ArrayList<String>();
+		{
+
+			Cursor meta_cursor = managedQuery(axes_uri,
+					new String[] {BaseColumns._ID, PlotData.COLUMN_AXIS_LABEL},
+					null, null, null);
+
+			int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
+			int label_column = meta_cursor.getColumnIndex(PlotData.COLUMN_AXIS_LABEL);
+
+			int i=0;
+			if (meta_cursor.moveToFirst()) {
+				// TODO: This could also be used to set color, line style, marker shape, etc.
+				do {
+					//            int axis_index = meta_cursor.getInt(axis_column);
+					String axis_label = meta_cursor.getString(label_column);
+
+
+					axis_labels.add(axis_label);
+
+
+					i++;
+				} while (meta_cursor.moveToNext());
+			}
+		}
+
+		return axis_labels;
+	}
+
+	// ---------------------------------------------
+	protected String[] getSortedSeriesTitles() {
+
+		Intent intent = getIntent();
+		String[] extra_series_titles = intent.getStringArrayExtra(IntentConstants.EXTRA_SERIES_LABELS);
+		if (extra_series_titles != null)
+			return extra_series_titles;
+		
+		Uri intent_data = intent.getData();
+		
 		Uri meta_uri = intent_data.buildUpon().appendEncodedPath( ContentSchema.DATASET_ASPECT_META ).build();
 		Log.d(TAG, "Querying content provider for: " + meta_uri);
 
@@ -301,41 +390,6 @@ abstract public class GraphicalActivity extends Activity {
 	}
 
 	// ---------------------------------------------
-	//  Retrieve Axes data
-	protected List<String> getAxisTitles(Uri intent_data) {
-
-		Uri axes_uri = intent_data.buildUpon().appendEncodedPath( ContentSchema.DATASET_ASPECT_AXES ).build();
-		Log.d(TAG, "Querying content provider for: " + axes_uri);
-
-		List<String> axis_labels = new ArrayList<String>();
-		{
-
-			Cursor meta_cursor = managedQuery(axes_uri,
-					new String[] {BaseColumns._ID, PlotData.COLUMN_AXIS_LABEL},
-					null, null, null);
-
-			int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
-			int label_column = meta_cursor.getColumnIndex(PlotData.COLUMN_AXIS_LABEL);
-
-			int i=0;
-			if (meta_cursor.moveToFirst()) {
-				// TODO: This could also be used to set color, line style, marker shape, etc.
-				do {
-					//            int axis_index = meta_cursor.getInt(axis_column);
-					String axis_label = meta_cursor.getString(label_column);
-
-
-					axis_labels.add(axis_label);
-
-
-					i++;
-				} while (meta_cursor.moveToNext());
-			}
-		}
-
-		return axis_labels;
-	}
-
 
 
 	// Outermost list: all series
@@ -389,4 +443,56 @@ abstract public class GraphicalActivity extends Activity {
 
 	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data);
 
+	
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.options_chart, menu);
+//
+//		menu.findItem(R.id.menu_toggle_stacked).setVisible(false);
+
+		return true;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_share_chart:
+		{
+			View view = findViewById(R.id.full_chart_view);
+			Bitmap image = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.RGB_565);
+			
+			// Next create a canvas with the bitmap and pass that into the draw() method of the view. This will ask the view to draw it's contents onto the canvas and therefore the associated bitmap.
+			view.draw(new Canvas(image));
+
+			// Next insert the image into the Media library. This returns a URI that refers to the stored image and can be reused across applications. In our case we could pass this URL to the MMS application to have it embed the image in a message.  I'll post some sample code of how to send this image via MMS shortly.
+			String url = Images.Media.insertImage(getContentResolver(), image, getIntent().getStringExtra(Intent.EXTRA_TITLE), null);
+			Uri uri = Uri.parse(url);
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("image/*");
+			i.putExtra(Intent.EXTRA_STREAM, uri);
+			startActivity(i);
+			
+			return true;
+		}
+		
+		case R.id.menu_fullscreen:
+		{
+			Intent i = getIntent();
+			boolean fullscreen = getIntent().getBooleanExtra(IntentConstants.EXTRA_FULLSCREEN, false);
+			i.putExtra(IntentConstants.EXTRA_FULLSCREEN, !fullscreen);
+			startActivity(i);
+			finish();
+			return true;
+		}
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 }

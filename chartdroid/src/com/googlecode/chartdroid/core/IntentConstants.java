@@ -1,8 +1,14 @@
 package com.googlecode.chartdroid.core;
 
 public class IntentConstants {
+	
+
+	public static final String EXTRA_FULLSCREEN = "com.googlecode.chartdroid.intent.extra.FULLSCREEN";
 
     
+	public static final String EXTRA_SERIES_COLORS = "com.googlecode.chartdroid.intent.extra.SERIES_COLORS";
+	public static final String EXTRA_SERIES_LABELS = "com.googlecode.chartdroid.intent.extra.SERIES_LABELS";
+	public static final String EXTRA_AXIS_TITLES = "com.googlecode.chartdroid.intent.extra.AXIS_TITLES";
     
     
     public static String INTENT_EXTRA_CALENDAR_SELECTION_ID = "INTENT_EXTRA_CALENDAR_SELECTION_ID";

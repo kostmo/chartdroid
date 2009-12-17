@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.provider.BaseColumns;
 
 
-public final class ContentSchema {
+public final class ContentSchemaOld {
 	
 //    public static final String AUTHORITY = "org.crittr.provider.TaxonSearch";
 

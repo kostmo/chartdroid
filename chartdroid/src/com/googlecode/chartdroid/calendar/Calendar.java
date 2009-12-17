@@ -25,9 +25,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.core.IntentConstants;
-import com.googlecode.chartdroid.core.ContentSchema.CalendarEvent;
+import com.googlecode.chartdroid.core.ContentSchemaOld.CalendarEvent;
 
 public class Calendar extends Activity {
 
@@ -100,13 +100,13 @@ public class Calendar extends Activity {
         	
         	Log.d(TAG, "Querying content provider for: " + intent_data);
 
-        	String KEY_EVENT_TITLE = ContentSchema.CalendarEvent.COLUMN_EVENT_TITLE;
+        	String KEY_EVENT_TITLE = ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TITLE;
  			Cursor cursor = managedQuery(intent_data,
  					new String[] {BaseColumns._ID, CalendarEvent.COLUMN_EVENT_TIMESTAMP, CalendarEvent.COLUMN_EVENT_TITLE},
  					null, null, null);
 
  			int id_column = cursor.getColumnIndex(BaseColumns._ID);
- 			int timestamp_column = cursor.getColumnIndex(ContentSchema.CalendarEvent.COLUMN_EVENT_TIMESTAMP);
+ 			int timestamp_column = cursor.getColumnIndex(ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TIMESTAMP);
  			
 // 			Log.e(TAG, "In calendar - rowcount: " + cursor.getCount());
 // 			Log.e(TAG, "In calendar - colcount: " + cursor.getColumnCount());

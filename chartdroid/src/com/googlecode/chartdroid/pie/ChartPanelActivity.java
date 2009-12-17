@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.IntentConstants;
-import com.googlecode.chartdroid.core.ContentSchema.PlotData;
+import com.googlecode.chartdroid.core.ContentSchemaOld.PlotData;
 import com.googlecode.chartdroid.pie.ColorSwatchKeyAdapter.PieDataElement;
 
 

@@ -4,6 +4,7 @@
     android:gravity="center_horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/full_chart_view"
     >
 
 	<TextView 
@@ -15,11 +16,11 @@
 		android:gravity="center_horizontal"
 		/>
 
-	
 	<org.achartengine.view.GraphicalView
 		android:id="@+id/chart_view"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:layout_weight="1"
 		android:src="@drawable/chartdroid_icon"
 	/>
 
