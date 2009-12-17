@@ -15,7 +15,7 @@
  */
 package org.achartengine.renderer;
 
-import org.achartengine.chart.PointStyle;
+import org.achartengine.view.chart.PointStyle;
 
 import android.graphics.Color;
 

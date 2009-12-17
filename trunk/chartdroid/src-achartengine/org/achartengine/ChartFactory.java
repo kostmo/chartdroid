@@ -15,20 +15,22 @@
  */
 package org.achartengine;
 
-import org.achartengine.chart.BarChart;
-import org.achartengine.chart.BubbleChart;
-import org.achartengine.chart.DoughnutChart;
-import org.achartengine.chart.LineChart;
-import org.achartengine.chart.PieChart;
-import org.achartengine.chart.ScatterChart;
-import org.achartengine.chart.TimeChart;
-import org.achartengine.chart.XYChart;
-import org.achartengine.chart.BarChart.Type;
+import org.achartengine.activity.GraphicalActivity;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.view.GraphicalView;
+import org.achartengine.view.chart.BarChart;
+import org.achartengine.view.chart.BubbleChart;
+import org.achartengine.view.chart.DoughnutChart;
+import org.achartengine.view.chart.LineChart;
+import org.achartengine.view.chart.PieChart;
+import org.achartengine.view.chart.ScatterChart;
+import org.achartengine.view.chart.TimeChart;
+import org.achartengine.view.chart.XYChart;
+import org.achartengine.view.chart.BarChart.Type;
 
 import android.content.Context;
 import android.content.Intent;

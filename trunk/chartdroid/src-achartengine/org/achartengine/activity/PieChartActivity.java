@@ -18,20 +18,17 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalActivity;
-import org.achartengine.chart.AbstractChart;
-import org.achartengine.chart.PieChart;
 import org.achartengine.consumer.LabeledDoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.view.chart.AbstractChart;
+import org.achartengine.view.chart.PieChart;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +38,11 @@ import java.util.List;
  */
 public class PieChartActivity extends GraphicalActivity {
   
-  
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-    super.onCreate(savedInstanceState);
-    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.typepie);
-  }
+	@Override
+	protected int getTitlebarIconResource() {
+		return R.drawable.typepie;
+	}
+
   
 
 
@@ -158,4 +153,13 @@ public class PieChartActivity extends GraphicalActivity {
 
       return new PieChart(dataset, renderer);
   }
+
+
+
+
+@Override
+protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

@@ -19,26 +19,21 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalActivity;
-import org.achartengine.chart.AbstractChart;
-import org.achartengine.chart.BarChart;
-import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.XYChart;
-import org.achartengine.chart.BarChart.Type;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.view.chart.AbstractChart;
+import org.achartengine.view.chart.BarChart;
+import org.achartengine.view.chart.PointStyle;
+import org.achartengine.view.chart.BarChart.Type;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +41,13 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class BarChartActivity extends GraphicalActivity {
+public class BarChartActivity extends XYChartActivity {
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-    super.onCreate(savedInstanceState);
-    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.typebar);
-  }
+	@Override
+	protected int getTitlebarIconResource() {
+		return R.drawable.typebar;
+	}
+
   
   // ---------------------------------------------
   @Override
@@ -167,8 +161,8 @@ public class BarChartActivity extends GraphicalActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
       super.onCreateOptionsMenu(menu);
 
-      MenuInflater inflater = getMenuInflater();
-      inflater.inflate(R.menu.options_bar_chart, menu);
+
+	menu.findItem(R.id.menu_toggle_stacked).setVisible(true);
       return true;
   }
   
@@ -181,18 +175,6 @@ public class BarChartActivity extends GraphicalActivity {
 
           BarChart bc = (BarChart) mChart;
           bc.setType( bc.getType().equals(Type.DEFAULT) ? Type.STACKED : Type.DEFAULT);
-
-          mView.repaint();
-          return true;
-      }
-      case R.id.menu_toggle_orientation:
-      {
-
-          XYMultipleSeriesRenderer renderer = ((XYChart) mChart).getRenderer();
-          renderer.setOrientation( renderer.getOrientation().equals(
-                  XYMultipleSeriesRenderer.Orientation.HORIZONTAL)
-                  ? XYMultipleSeriesRenderer.Orientation.VERTICAL
-                  : XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
 
           mView.repaint();
           return true;

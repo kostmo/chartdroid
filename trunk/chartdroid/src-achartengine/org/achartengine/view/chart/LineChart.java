@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.achartengine.chart;
+package org.achartengine.view.chart;
 
 import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYValueSeries;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
@@ -25,32 +24,25 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
+
 /**
- * The bubble chart rendering class.
+ * The line chart rendering class.
  */
-public class BubbleChart extends XYChart {
+public class LineChart extends XYChart {
   /** The legend shape width. */
-  private static final int SHAPE_WIDTH = 10;
-
-  /** The minimum bubble size. */
-  private static final int MIN_BUBBLE_SIZE = 2;
-
-  /** The maximum bubble size. */
-  private static final int MAX_BUBBLE_SIZE = 20;
+  private static final int SHAPE_WIDTH = 30;
 
   /**
-   * Builds a new bubble chart instance.
-   * 
+   * Builds a new line chart instance.
    * @param dataset the multiple series dataset
    * @param renderer the multiple series renderer
    */
-  public BubbleChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+  public LineChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
     super(dataset, renderer);
   }
 
   /**
    * The graphical representation of a series.
-   * 
    * @param canvas the canvas to paint to
    * @param paint the paint to be used for drawing
    * @param points the array of points to be used for drawing the series
@@ -60,24 +52,29 @@ public class BubbleChart extends XYChart {
    */
   public void drawSeries(Canvas canvas, Paint paint, float[] points,
       SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
-    XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
-    paint.setColor(renderer.getColor());
-    paint.setStyle(Style.FILL);
     int length = points.length;
-    XYValueSeries series = (XYValueSeries) mDataset.getSeriesAt(seriesIndex);
-    double max = series.getMaxValue();
-
-    double coef = MAX_BUBBLE_SIZE / max;
-    for (int i = 0; i < length; i += 2) {
-      double size = series.getValue(i / 2) * coef + MIN_BUBBLE_SIZE;
-      drawCircle(canvas, paint, points[i], points[i + 1], (float) size);
+    XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
+    if (renderer.isFillBelowLine()) {
+      paint.setColor(renderer.getFillBelowLineColor());
+      int pLength = points.length;
+      float[] fillPoints = new float[pLength + 4];
+      System.arraycopy(points, 0, fillPoints, 0, length);
+      fillPoints[0] = points[0] + 1;
+      fillPoints[length] = fillPoints[length - 2];
+      fillPoints[length + 1] = yAxisValue;
+      fillPoints[length + 2] = fillPoints[0];
+      fillPoints[length + 3] = fillPoints[length + 1];
+      paint.setStyle(Style.FILL);
+      drawPath(canvas, fillPoints, paint, true);
     }
+    paint.setColor(seriesRenderer.getColor());
+    paint.setStyle(Style.STROKE);
+    drawPath(canvas, points, paint, false);
   }
 
   /**
    * Returns the legend shape width.
-   * 
-   * @return the legend shape width
+   * @return the legend shape width 
    */
   public int getLegendShapeWidth() {
     return SHAPE_WIDTH;
@@ -85,7 +82,6 @@ public class BubbleChart extends XYChart {
 
   /**
    * The graphical representation of the legend shape.
-   * 
    * @param canvas the canvas to paint to
    * @param renderer the series renderer
    * @param x the x value of the point the shape should be drawn at
@@ -94,21 +90,15 @@ public class BubbleChart extends XYChart {
    */
   public void drawLegendShape(Canvas canvas, SimpleSeriesRenderer renderer, float x, float y,
       Paint paint) {
-    paint.setStyle(Style.FILL);
-    drawCircle(canvas, paint, x + SHAPE_WIDTH, y, 3);
+    canvas.drawLine(x, y, x + SHAPE_WIDTH, y, paint);
   }
 
   /**
-   * The graphical representation of a circle point shape.
-   * 
-   * @param canvas the canvas to paint to
-   * @param paint the paint to be used for drawing
-   * @param x the x value of the point the shape should be drawn at
-   * @param y the y value of the point the shape should be drawn at
-   * @param radius the bubble radius
+   * Returns if the chart should display the points as a certain shape.
+   * @param renderer the series renderer
    */
-  private void drawCircle(Canvas canvas, Paint paint, float x, float y, float radius) {
-    canvas.drawCircle(x, y, radius, paint);
+  public boolean isRenderPoints(SimpleSeriesRenderer renderer) {
+    return ((XYSeriesRenderer) renderer).getPointStyle() != PointStyle.POINT;
   }
 
 }

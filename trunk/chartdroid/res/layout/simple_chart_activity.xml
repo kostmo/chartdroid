@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<TextView 
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/chart_title_placeholder"
+		android:text="Chart Title"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		/>
+
+	
+	<org.achartengine.view.GraphicalView
+		android:id="@+id/chart_view"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:src="@drawable/chartdroid_icon"
+	/>
+
+	<org.achartengine.view.PredicateLayout
+		android:layoutAnimation="@anim/sequential_spin"
+	    android:id="@+id/predicate_layout"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	>
+	</org.achartengine.view.PredicateLayout>
+
+</LinearLayout>
