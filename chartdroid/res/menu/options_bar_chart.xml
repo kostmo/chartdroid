@@ -1,6 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_toggle_stacked"
+    	android:visible="false"
          android:title="Toggle stacked"
          android:alphabeticShortcut="s"
          android:icon="@android:drawable/ic_menu_info_details" />

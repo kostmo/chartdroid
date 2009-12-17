@@ -15,7 +15,6 @@
  */
 package org.achartengine;
 
-import org.achartengine.chart.PointStyle;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
@@ -24,6 +23,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.view.chart.PointStyle;
 
 import android.util.Log;
 

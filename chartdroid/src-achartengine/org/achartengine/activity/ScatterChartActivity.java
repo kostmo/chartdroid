@@ -19,26 +19,23 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalActivity;
-import org.achartengine.chart.AbstractChart;
-import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.ScatterChart;
-import org.achartengine.chart.XYChart;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.view.chart.AbstractChart;
+import org.achartengine.view.chart.PointStyle;
+import org.achartengine.view.chart.ScatterChart;
+import org.achartengine.view.chart.XYChart;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,16 +43,13 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class ScatterChartActivity extends GraphicalActivity {
+public class ScatterChartActivity extends XYChartActivity {
 
-  
-  
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-    super.onCreate(savedInstanceState);
-    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.typepointline);
-  }
+	@Override
+	protected int getTitlebarIconResource() {
+		return R.drawable.typepointline;
+	}
+
 
   // ---------------------------------------------
   @Override

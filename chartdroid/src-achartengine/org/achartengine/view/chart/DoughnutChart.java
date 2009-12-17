@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.achartengine.chart;
+package org.achartengine.view.chart;
 
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.renderer.DefaultRenderer;

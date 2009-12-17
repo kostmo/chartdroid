@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.achartengine.chart;
-
-import java.io.Serializable;
+package org.achartengine.view.chart;
 
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
@@ -28,6 +26,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+
+import java.io.Serializable;
 
 /**
  * An abstract class to be implemented by the chart rendering classes.

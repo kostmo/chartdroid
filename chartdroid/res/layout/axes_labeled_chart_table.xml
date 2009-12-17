@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.googlecode.chartdroid"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:layout_weight="1"
+	android:stretchColumns="1"
+    >
+
+
+	<TableRow
+		android:layout_weight="1"
+		android:gravity="center_vertical">
+
+		<org.achartengine.view.LabelView
+			android:id="@+id/chart_y_axis_title"
+			app:text="y axis label"
+			app:textColor="@android:color/primary_text_dark"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>
+	
+		<org.achartengine.view.GraphicalView
+			android:id="@+id/chart_view"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:src="@drawable/chartdroid_icon"
+		/>
+
+	</TableRow>
+	
+	<TableRow>
+	
+		<!-- Spacer element -->
+		<FrameLayout
+			android:visibility="invisible"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>
+
+			
+		<TextView
+			android:id="@+id/chart_x_axis_title"
+			android:text="x axis label"
+			android:textColor="@android:color/primary_text_dark"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			/>
+			
+	</TableRow>
+		
+</TableLayout>

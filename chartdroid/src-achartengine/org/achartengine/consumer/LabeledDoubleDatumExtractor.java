@@ -16,7 +16,7 @@
 
 package org.achartengine.consumer;
 
-import org.achartengine.GraphicalActivity.LabeledDatum;
+import org.achartengine.activity.GraphicalActivity.LabeledDatum;
 
 import android.database.Cursor;
 

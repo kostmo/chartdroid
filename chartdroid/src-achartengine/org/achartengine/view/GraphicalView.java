@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.achartengine;
+package org.achartengine.view;
 
-import org.achartengine.chart.AbstractChart;
+import org.achartengine.view.chart.AbstractChart;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.view.View;
 
 /**
@@ -40,10 +41,24 @@ public class GraphicalView extends View {
    * @param context the context
    * @param chart the chart to be drawn
    */
+  public GraphicalView(Context context, AttributeSet attributes) {
+	    super(context, attributes);
+	    
+	    mHandler = new Handler();
+	  }
+  
   public GraphicalView(Context context, AbstractChart chart) {
-    super(context);
-    mChart = chart;
-    mHandler = new Handler();
+
+	  super(context);
+
+	    mHandler = new Handler();
+	    setChart(chart);
+  }
+  
+
+  public void setChart(AbstractChart chart) {
+
+	    mChart = chart;
   }
 
   @Override
