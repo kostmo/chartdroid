@@ -1,4 +1,4 @@
-#summary Interface specification for Intents and ContentProviders
+#summary Interface specification for Intents and Content Providers
 #labels Featured
 
 ==2.x Charts==
