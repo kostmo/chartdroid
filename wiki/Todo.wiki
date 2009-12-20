@@ -1,0 +1,9 @@
+#summary Task list
+#labels Featured
+
+== Near term ==
+
+  * Automatic bounds with Intent parameter overrides
+
+== Long term ==
+  * Chart interactivity
