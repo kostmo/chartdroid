@@ -5,6 +5,7 @@
 
   * Automatic bounds for all charts with Intent parameter overrides
   * Date format string as intent extra
+  * Show Toast (don't crash) when no/not enough data is provided
 
 == Long term ==
   * Chart interactivity
