@@ -3,7 +3,8 @@
 
 == Near term ==
 
-  * Automatic bounds with Intent parameter overrides
+  * Automatic bounds for all charts with Intent parameter overrides
+  * Date format string as intent extra
 
 == Long term ==
   * Chart interactivity
