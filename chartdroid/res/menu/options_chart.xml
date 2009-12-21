@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_share_chart"
+         android:title="Share"
+         android:alphabeticShortcut="h"
+         android:icon="@android:drawable/ic_menu_share" />
+
+    <item android:id="@+id/menu_fullscreen"
+         android:title="Toggle Fullscreen"
+         android:alphabeticShortcut="f"
+         android:icon="@android:drawable/ic_menu_view" />
+
+</menu>
