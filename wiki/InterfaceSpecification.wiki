@@ -1,16 +1,15 @@
 #summary Interface specification for Intents and Content Providers
 #labels Featured
 
-==2.x Charts==
+=Charts in version 2.x=
 
-===Data type===
+==Data type==
 
 The [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should respond with the string:
 
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable`
 
-===Content Provider Columns===
-
+==Content Provider==
 Your Content Provider should respond to three types of queries:
   * `data`
   * `meta`
@@ -30,6 +29,48 @@ String[] projection = new String[] {
 db.query(MY_TABLE, projection, ...);
 }}}
 
+
+==="data" Columns===
+
+Datum component values will be interpreted as `double` type.
+
+Datum labels may be specified or left `null`.  If a label is specified (non-null) for components of the same datum in multiple axes, the label corresponding to the highest axis index will take precedence.
+
+====Column Scheme #1====
+
+In this scheme, all datum components are in the same row.  This scheme is used if there exist any columns that start with the prefix `AXIS_`.  Axes are ordered lexographically.
+
+|| *Column name* || *Data type* ||
+|| `_id` || `long` ||
+|| `COLUMN_SERIES_INDEX` || `int` ||
+|| `COLUMN_DATUM_LABEL` || `String` ||
+|| `AXIS_A` || `double` ||
+|| `AXIS_B` || `double` ||
+|| `AXIS_C` || `double` ||
+|| `...` || `double` ||
+
+Here is an example results table that could be produced in response to a "data" query:
+
+|| `_id` || `COLUMN_SERIES_INDEX` || `COLUMN_DATUM_LABEL` || `AXIS_X`  || `AXIS_Y` ||
+|| 3546 || 0 || "beef" || 17 || 4 ||
+|| 3548 || 0 || "chicken" || 24 || 6 ||
+|| 3550 || 0 || "pork" || 13 || 8 ||
+|| 3552 || 1 || "apples" || 30 || 10 ||
+|| 3554 || 1 || "oranges" || 12 || 4 ||
+|| 3556 || 1 || "pears" || 5 || 2 ||
+
+====Column Scheme #2====
+
+Each datum component must be identified by axis and series.  The axis and series numbering scheme is arbitrary.  If multiple axes are specified, datum components from each axis are combined in the order they appear to form a complete multi-dimensional datum (e.g. a 2D point).
+
+|| *Column name* || *Data type* ||
+|| `_id` || `long` ||
+|| `COLUMN_AXIS_INDEX` || `int` ||
+|| `COLUMN_SERIES_INDEX` || `int` ||
+|| `COLUMN_DATUM_VALUE` || `double` ||
+|| `COLUMN_DATUM_LABEL` || `String` ||
+
+
 Here is an example results table that could be produced in response to a "data" query:
 
 || `_id` || `COLUMN_AXIS_INDEX` || `COLUMN_SERIES_INDEX` || `COLUMN_DATUM_VALUE` || `COLUMN_DATUM_LABEL` ||
@@ -48,21 +89,9 @@ Here is an example results table that could be produced in response to a "data" 
 
 This dataset could be plotted on a line chart with two series of four labeled points apiece.  It could also be plotted in a donut chart, where values from the second axis would be ignored.
 
-===="data" Columns====
-
-Each datum component must be identified by axis and series.  The axis and series numbering scheme is arbitrary.  Datum component values will be interpreted as `double` type.  If multiple axes are specified, datum components from each axis are combined in the order they appear to form a complete multi-dimensional datum (e.g. a 2D point).
-
-Datum labels may be specified or left `null`.  If a label is specified (non-null) for components of the same datum in multiple axes, the label corresponding to the highest axis index will take precedence.
-
-|| *Column name* || *Data type* ||
-|| `_id` || `long` ||
-|| `COLUMN_AXIS_INDEX` || `int` ||
-|| `COLUMN_SERIES_INDEX` || `int` ||
-|| `COLUMN_DATUM_VALUE` || `double` ||
-|| `COLUMN_DATUM_LABEL` || `String` ||
 
 
-===="meta" Columns====
+==="meta" Columns===
 The "meta" query provides labels for each data series.
 
 || *Column name* || *Data type* ||
@@ -70,7 +99,7 @@ The "meta" query provides labels for each data series.
 || `COLUMN_SERIES_LABEL` || `String` ||
 
 
-===="axes" Columns====
+==="axes" Columns===
 The "axes" query provides labels for each axis.
 
 || *Column name* || *Data type* ||
@@ -78,7 +107,7 @@ The "axes" query provides labels for each axis.
 || `COLUMN_AXIS_LABEL` || `String` ||
 
 
-===Intent Extras===
+==Intent Extras==
 
 The only really "mandatory" query in your Content Provider is `data`; other aspects of the chart may be delivered through Intent extras.  The Intent extras, if present, take precedence over the Content Provider.
 
