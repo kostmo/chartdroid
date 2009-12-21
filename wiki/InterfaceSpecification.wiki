@@ -36,9 +36,11 @@ Datum component values will be interpreted as `double` type.
 
 Datum labels may be specified or left `null`.
 
+Developers may choose between the following two schemes.  Currently the "`_id`" column is ignored in both schemes.
+
 ====Column Scheme #1====
 
-In this scheme, all datum components are in the same row.  This scheme is used if there exist any columns that start with the prefix `AXIS_`.  Axes are ordered lexographically.
+In this scheme, all datum components are in the same row.  This scheme is used if there exist any columns that start with the prefix "`AXIS_`".  Axes are ordered lexographically.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
