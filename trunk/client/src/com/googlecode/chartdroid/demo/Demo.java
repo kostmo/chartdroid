@@ -4,9 +4,9 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import com.googlecode.chartdroid.demo.provider.DataContentProvider;
 import com.googlecode.chartdroid.demo.provider.EventContentProvider;
 
-import org.achartengine.demo.AceDataContentProvider;
 import org.achartengine.demo.data.DonutData;
 import org.achartengine.demo.data.TemperatureData;
+import org.achartengine.demo.data.TimelineData;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -57,14 +57,19 @@ public class Demo extends Activity {
 
 
         
+        findViewById(R.id.button_timeline_data_provider).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Intent i = new Intent(Intent.ACTION_VIEW, TimelineData.uri);
+                i.putExtra(Intent.EXTRA_TITLE, TimelineData.DEMO_CHART_TITLE);
+                Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            }
+        });
+        
         findViewById(R.id.button_multiseries_data_provider).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
 
-                Uri u = AceDataContentProvider.BASE_URI.buildUpon()
-                    .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
-                    .appendPath(AceDataContentProvider.CHART_DATA_UNLABELED_PATH).build();              
-                
-                Intent i = new Intent(Intent.ACTION_VIEW, u);
+                Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
                 i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
                 Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
             }
@@ -74,11 +79,7 @@ public class Demo extends Activity {
         findViewById(R.id.button_labeled_multiseries_data_provider).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 
-                Uri u = AceDataContentProvider.BASE_URI.buildUpon()
-                    .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
-                    .appendPath(AceDataContentProvider.CHART_DATA_LABELED_PATH).build(); 
-                
-                Intent i = new Intent(Intent.ACTION_VIEW, u);
+                Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
                 i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
                 Market.intentLaunchMarketFallback(Demo.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
             }

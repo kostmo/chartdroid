@@ -1,8 +1,18 @@
 package org.achartengine.demo.data;
 
+import org.achartengine.demo.AceDataContentProvider;
+
+import android.net.Uri;
+
 
 public class DonutData {
     
+    
+	public static Uri uri = AceDataContentProvider.BASE_URI.buildUpon()
+        .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
+        .appendPath(AceDataContentProvider.CHART_DATA_LABELED_PATH).build(); 
+	
+	
     // Note: The axes labels are not really applicable
     public static String[] DEMO_AXES_LABELS = { "Datum label", "datum" };
     

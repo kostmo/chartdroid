@@ -17,10 +17,10 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.core.ContentSchema;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DoubleDatumExtractor;
-import org.achartengine.intent.ContentSchema;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
@@ -135,10 +135,16 @@ public class LineChartActivity extends XYChartActivity {
 	      Log.d(TAG, "X LABEL: " + y_label);
 	      Log.d(TAG, "chart_title: " + chart_title);
 	      
-	      org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, 0.5, 12.5, 0, 32,
+	      
+	      
+	      
+	      org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label,
 	          Color.LTGRAY, Color.GRAY);
 	      renderer.setXLabels(12);
 	      renderer.setYLabels(10);
+	      
+	      // FIXME: Generate dynamically
+			org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
 	      
 	      
 	      XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset2(titles, x_axis_series, y_axis_series);

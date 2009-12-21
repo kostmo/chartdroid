@@ -16,10 +16,10 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.core.ContentSchema;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.consumer.LabeledDoubleDatumExtractor;
-import org.achartengine.intent.ContentSchema;
+import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.view.PredicateLayout;
@@ -63,7 +63,7 @@ public class PieChartActivity extends GraphicalActivity {
   protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
     
-    List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDoubleDatumExtractor());
+    List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDatumExtractor());
     
     
     

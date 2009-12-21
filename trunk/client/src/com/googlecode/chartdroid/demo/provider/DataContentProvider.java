@@ -1,7 +1,8 @@
 package com.googlecode.chartdroid.demo.provider;
 
-import com.googlecode.chartdroid.core.ContentSchema;
 import com.googlecode.chartdroid.demo.Demo;
+
+import org.achartengine.demo.ContentSchema;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;

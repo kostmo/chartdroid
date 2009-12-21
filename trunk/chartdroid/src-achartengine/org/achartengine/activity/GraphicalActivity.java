@@ -16,11 +16,11 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.core.ContentSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
+import com.googlecode.chartdroid.core.ContentSchema.PlotData;
 
 import org.achartengine.consumer.DatumExtractor;
-import org.achartengine.intent.ContentSchema;
-import org.achartengine.intent.ContentSchema.PlotData;
 import org.achartengine.view.GraphicalView;
 import org.achartengine.view.PredicateLayout;
 import org.achartengine.view.chart.AbstractChart;
@@ -391,7 +391,6 @@ abstract public class GraphicalActivity extends Activity {
 
 	// ---------------------------------------------
 
-
 	// Outermost list: all series
 	// Inner list: individual series
 	protected List<List<Number>> unzipSeriesDatumLabels(List<List<LabeledDatum>> sorted_labeled_series_list, List<List<String>> datum_labels) {
@@ -420,14 +419,12 @@ abstract public class GraphicalActivity extends Activity {
 
 			int j=0;
 			for (LabeledDatum labeled_datum : labeled_series) {
-				series.add(labeled_datum.datum);
-
-
+				
+				series.add( labeled_datum.datum );
 
 				if (individual_series_labels.size() < labeled_series.size()) {
 					individual_series_labels.add(labeled_datum.label);
 				} else {
-					//            String current_label = individual_series_labels.get(j);
 					if (labeled_datum.label != null)
 						individual_series_labels.set(j, labeled_datum.label);
 				}
@@ -453,8 +450,6 @@ abstract public class GraphicalActivity extends Activity {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.options_chart, menu);
-//
-//		menu.findItem(R.id.menu_toggle_stacked).setVisible(false);
 
 		return true;
 	}

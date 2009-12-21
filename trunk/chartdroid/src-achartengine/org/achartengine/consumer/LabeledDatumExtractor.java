@@ -20,14 +20,14 @@ import org.achartengine.activity.GraphicalActivity.LabeledDatum;
 
 import android.database.Cursor;
 
-public class LabeledDoubleDatumExtractor implements DatumExtractor<LabeledDatum> {
+public class LabeledDatumExtractor implements DatumExtractor<LabeledDatum> {
 
-  public LabeledDatum getDatum(Cursor cursor, int data_column, int label_column) {
-    
-    LabeledDatum labeled_datum = new LabeledDatum();
-    double datum = cursor.getDouble(data_column);
-    labeled_datum.datum = datum;
-    labeled_datum.label = cursor.getString(label_column);
-    return labeled_datum;
-  }
+	@Override
+	public LabeledDatum getDatum(Cursor cursor, int dataColumn, int labelColumn) {
+		LabeledDatum labeled_datum = new LabeledDatum();
+		
+		labeled_datum.datum = new DualNumber(cursor, dataColumn);
+		labeled_datum.label = cursor.getString(labelColumn);
+		return labeled_datum;
+	}
 }
