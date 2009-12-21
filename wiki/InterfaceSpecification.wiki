@@ -122,15 +122,15 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `Intent.EXTRA_TITLE` || `String` ||
 
 
-==1.x Charts==
-===Actions===
+=Charts in version 1.x=
+==Actions==
   * com.googlecode.chartdroid.intent.action.PLOT
-===Categories===
+==Categories==
   * com.googlecode.chartdroid.intent.category.PIE_CHART
   * com.googlecode.chartdroid.intent.category.CALENDAR
-===Extras===
+==Extras==
 
-====Pie Chart====
+===Pie Chart===
 || *Key* || *Data type* || *Required? ||
 || `com.googlecode.chartdroid.intent.extra.DATA` || `int[]` || Y ||
 || `com.googlecode.chartdroid.intent.extra.LABELS` || `String[]` || N ||
