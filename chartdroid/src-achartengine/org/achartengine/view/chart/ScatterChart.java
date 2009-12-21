@@ -97,52 +97,6 @@ public class ScatterChart extends XYChart {
     }
   }
 
-  /**
-   * Returns the legend shape width.
-   * 
-   * @return the legend shape width
-   */
-  public int getLegendShapeWidth() {
-    return SHAPE_WIDTH;
-  }
-
-  /**
-   * The graphical representation of the legend shape.
-   * 
-   * @param canvas the canvas to paint to
-   * @param renderer the series renderer
-   * @param x the x value of the point the shape should be drawn at
-   * @param y the y value of the point the shape should be drawn at
-   * @param paint the paint to be used for drawing
-   */
-  public void drawLegendShape(Canvas canvas, SimpleSeriesRenderer renderer, float x, float y,
-      Paint paint) {
-    if (((XYSeriesRenderer) renderer).isFillPoints()) {
-      paint.setStyle(Style.FILL);
-    } else {
-      paint.setStyle(Style.STROKE);
-    }
-    switch (((XYSeriesRenderer) renderer).getPointStyle()) {
-    case X:
-      drawX(canvas, paint, x + SHAPE_WIDTH, y);
-      break;
-    case CIRCLE:
-      drawCircle(canvas, paint, x + SHAPE_WIDTH, y);
-      break;
-    case TRIANGLE:
-      drawTriangle(canvas, paint, new float[6], x + SHAPE_WIDTH, y);
-      break;
-    case SQUARE:
-      drawSquare(canvas, paint, x + SHAPE_WIDTH, y);
-      break;
-    case DIAMOND:
-      drawDiamond(canvas, paint, new float[8], x + SHAPE_WIDTH, y);
-      break;
-    case POINT:
-      canvas.drawPoint(x + SHAPE_WIDTH, y, paint);
-      break;
-    }
-  }
 
   /**
    * The graphical representation of an X point shape.

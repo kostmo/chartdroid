@@ -1,8 +1,10 @@
 package com.googlecode.chartdroid.demo.provider;
 
-import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.demo.Demo;
 import com.googlecode.chartdroid.demo.Demo.EventWrapper;
+
+import org.achartengine.demo.ContentSchema;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -46,7 +48,7 @@ public class EventContentProvider extends ContentProvider {
 
    @Override
    public String getType(Uri uri) {
-	   return ContentSchema.CalendarEvent.CONTENT_TYPE_CALENDAR_EVENT;
+	   return ContentSchemaOld.CalendarEvent.CONTENT_TYPE_CALENDAR_EVENT;
    }
 
    @Override
@@ -59,8 +61,8 @@ public class EventContentProvider extends ContentProvider {
 
 		MatrixCursor c = new MatrixCursor(new String[] {
 				BaseColumns._ID,
-				ContentSchema.CalendarEvent.COLUMN_EVENT_TIMESTAMP,
-				ContentSchema.CalendarEvent.COLUMN_EVENT_TITLE});
+				ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TIMESTAMP,
+				ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TITLE});
 
 		List<EventWrapper> generated_events = Demo.generateRandomEvents(5);
 //		Log.i(TAG, "Generated " + generated_events.size() + " events.");

@@ -11,6 +11,15 @@
 	    android:layout_height="wrap_content"
 	    >
 	   
+	   
+	   
+	   	<Button
+			android:layout_weight="1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" 
+		    android:text="Timeline"
+		    android:id="@+id/button_timeline_data_provider"/>
+	   
 	   	<Button
 			android:layout_weight="1"
 		    android:layout_width="fill_parent"

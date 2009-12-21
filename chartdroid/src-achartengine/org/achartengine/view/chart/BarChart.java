@@ -112,30 +112,6 @@ public class BarChart extends XYChart {
     }
   }
 
-  /**
-   * Returns the legend shape width.
-   * 
-   * @return the legend shape width
-   */
-  public int getLegendShapeWidth() {
-    return SHAPE_WIDTH;
-  }
-
-  /**
-   * The graphical representation of the legend shape.
-   * 
-   * @param canvas the canvas to paint to
-   * @param renderer the series renderer
-   * @param x the x value of the point the shape should be drawn at
-   * @param y the y value of the point the shape should be drawn at
-   * @param paint the paint to be used for drawing
-   */
-  public void drawLegendShape(Canvas canvas, SimpleSeriesRenderer renderer, float x, float y,
-      Paint paint) {
-    float halfShapeWidth = SHAPE_WIDTH / 2;
-    canvas.drawRect(x, y - halfShapeWidth, x + SHAPE_WIDTH, y + halfShapeWidth, paint);
-  }
-
   private float getHalfDiffX(float[] points, int length, int seriesNr) {
     float halfDiffX = (points[length - 2] - points[0]) / length;
     if (halfDiffX == 0) {

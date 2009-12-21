@@ -18,7 +18,6 @@ package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
 
-import org.achartengine.ChartPreparer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.view.LabelView;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-abstract public class XYChartActivity extends GraphicalActivity implements ChartPreparer {
+abstract public class XYChartActivity extends GraphicalActivity {
 
 	protected int getLayoutResourceId() {
 		return R.layout.xy_chart_activity;
@@ -114,10 +113,4 @@ abstract public class XYChartActivity extends GraphicalActivity implements Chart
 
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	public void prepareChart() {
-		// TODO Auto-generated method stub
-
-	};
 }

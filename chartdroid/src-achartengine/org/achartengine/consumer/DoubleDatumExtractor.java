@@ -18,10 +18,12 @@ package org.achartengine.consumer;
 
 import android.database.Cursor;
 
+
 public class DoubleDatumExtractor implements DatumExtractor<Double> {
 
-  public Double getDatum(Cursor cursor, int data_column, int label_column) {
-    
-    return cursor.getDouble(data_column);
-  }
+	@Override
+	public Double getDatum(Cursor cursor, int dataColumn, int labelColumn) {
+		// TODO Auto-generated method stub
+		return cursor.getDouble(dataColumn);
+	}
 }

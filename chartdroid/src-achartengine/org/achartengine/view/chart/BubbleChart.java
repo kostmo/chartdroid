@@ -75,30 +75,6 @@ public class BubbleChart extends XYChart {
   }
 
   /**
-   * Returns the legend shape width.
-   * 
-   * @return the legend shape width
-   */
-  public int getLegendShapeWidth() {
-    return SHAPE_WIDTH;
-  }
-
-  /**
-   * The graphical representation of the legend shape.
-   * 
-   * @param canvas the canvas to paint to
-   * @param renderer the series renderer
-   * @param x the x value of the point the shape should be drawn at
-   * @param y the y value of the point the shape should be drawn at
-   * @param paint the paint to be used for drawing
-   */
-  public void drawLegendShape(Canvas canvas, SimpleSeriesRenderer renderer, float x, float y,
-      Paint paint) {
-    paint.setStyle(Style.FILL);
-    drawCircle(canvas, paint, x + SHAPE_WIDTH, y, 3);
-  }
-
-  /**
    * The graphical representation of a circle point shape.
    * 
    * @param canvas the canvas to paint to
