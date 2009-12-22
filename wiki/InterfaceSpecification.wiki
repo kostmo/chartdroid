@@ -40,7 +40,7 @@ Developers may choose between the following two schemes.  Currently the "`_id`" 
 
 ====Column Scheme #1====
 
-In this scheme, all datum components are in the same row.  This scheme is used if there exist any columns that start with the prefix "`AXIS_`".  Axes are ordered lexographically.
+In this scheme, all datum components are in the same row.  This scheme is assumed if there exist any column names that start with the prefix "`AXIS_`".  Axes are ordered lexographically.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
