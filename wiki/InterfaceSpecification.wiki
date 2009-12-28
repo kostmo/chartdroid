@@ -107,7 +107,7 @@ The "meta" query provides labels for each data series.
 The "axes" query provides labels for each axis.
 
 || *Column name* || *Data type* || *Optional* ||
-|| `_id` || `long` ||
+|| `_id` || `long` || Y ||
 || `COLUMN_AXIS_LABEL` || `String` || N ||
 || `COLUMN_AXIS_MIN` (todo) || `double` || Y ||
 || `COLUMN_AXIS_MAX` (todo) || `double` || Y ||
