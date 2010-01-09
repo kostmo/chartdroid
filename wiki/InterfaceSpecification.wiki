@@ -38,7 +38,7 @@ Datum labels may be specified or left `null`.
 
 Developers may choose between the following two schemes.  Currently the "`_id`" column is ignored in both schemes.
 
-====Column Scheme #1 (todo)====
+====Column Scheme #1====
 
 In this scheme, all datum components are in the same row.  This scheme is assumed if there exist any column names that start with the prefix "`AXIS_`".  Axes are ordered lexographically.
 
