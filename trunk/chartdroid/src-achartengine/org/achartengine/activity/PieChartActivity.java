@@ -16,7 +16,7 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.LabeledDatumExtractor;
@@ -80,8 +80,8 @@ public class PieChartActivity extends GraphicalActivity {
         y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels );
         
     } else {
-        x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ContentSchema.X_AXIS_INDEX ), datam_labels );
-        y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ContentSchema.Y_AXIS_INDEX ), datam_labels );
+        x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
+        y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
     }
     
     

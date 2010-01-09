@@ -217,4 +217,44 @@ public class MathHelper {
     return values;
   }
 
+  
+  
+  
+  
+  
+
+	public static class MinMax {
+		
+		public Number min;
+		public Number max;
+
+		public MinMax(List<List<Number>> all_series) {
+			 min = Double.POSITIVE_INFINITY;
+			 max = Double.NEGATIVE_INFINITY;
+			// We iterate through all values of all series
+			 for (List<Number> series : all_series) {
+				for (Number datum : series) {
+					if (datum.doubleValue() < min.doubleValue())
+						min = datum;
+					
+					// NOTE: This cannot be "else if"; it will fail with one data point.
+					if (datum.doubleValue() > max.doubleValue())
+						max = datum;
+				}
+			}
+		}
+		
+		public MinMax(Number min, Number max) {
+			this.min = min;
+			this.max = max;
+		}
+		
+		public double getSpan() {
+			return this.max.doubleValue() - this.min.doubleValue();
+		}
+		
+		public static MinMax getAxisMinMax(List<List<Number>> all_series) {
+			return new MinMax(all_series);
+		}
+	}
 }

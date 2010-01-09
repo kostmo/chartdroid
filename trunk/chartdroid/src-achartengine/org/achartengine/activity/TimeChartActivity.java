@@ -17,13 +17,14 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 import org.achartengine.view.chart.TimeChart;
@@ -32,6 +33,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +44,9 @@ import java.util.List;
  */
 public class TimeChartActivity extends XYChartActivity {
 
+	// This is what fraction of the data span the axes limits will be padded by
+	public static double HEADROOM_FOOTROOM_FRACTION = 0.1;
+	
 	@Override
 	protected int getTitlebarIconResource() {
 		return R.drawable.typepointline;
@@ -58,10 +63,6 @@ public class TimeChartActivity extends XYChartActivity {
 				long long_value = number.longValue();
 				Log.d(TAG, "Long value pre-conversion: " + long_value);
 				
-
-//				long long_value_scaled = long_value/1000;
-//				Log.i(TAG, "Long value scaled down by 1000: " + long_value_scaled);
-				
 				Date date = new Date( long_value );
 				Log.w(TAG, "Date value post-conversion: " + date);
 				converted_series.add( date );
@@ -69,6 +70,7 @@ public class TimeChartActivity extends XYChartActivity {
 		}
 		return output;
 	}
+
 	
 	// ---------------------------------------------
 	@Override
@@ -77,7 +79,11 @@ public class TimeChartActivity extends XYChartActivity {
 		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDatumExtractor());
 
 
-		assert( sorted_series_list.size() >= 1 );
+		if (! (sorted_series_list.size() >= 1) ) {
+
+	        Toast.makeText(TimeChartActivity.this, "There are no series!", Toast.LENGTH_LONG).show();
+			return null;
+		}
 
 
 		List<List<String>> datam_labels = new ArrayList<List<String>>();
@@ -91,8 +97,8 @@ public class TimeChartActivity extends XYChartActivity {
 			y_axis_series = new ArrayList<List<Number>>();
 
 		} else {
-			x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ContentSchema.X_AXIS_INDEX ), datam_labels );
-			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ContentSchema.Y_AXIS_INDEX ), datam_labels );
+			x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
+			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
 		}
 
 
@@ -132,8 +138,8 @@ public class TimeChartActivity extends XYChartActivity {
 
 
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-		String x_label = axis_labels.get( ContentSchema.X_AXIS_INDEX );
-		String y_label = axis_labels.get( ContentSchema.Y_AXIS_INDEX );
+		String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
+		String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
 		Log.d(TAG, "X LABEL: " + x_label);
 		Log.d(TAG, "X LABEL: " + y_label);
 		Log.d(TAG, "chart_title: " + chart_title);
@@ -142,12 +148,20 @@ public class TimeChartActivity extends XYChartActivity {
 
 		
 		List<List<Date>> x_axis_date_series = convertNumberToDateSeries(x_axis_series);
-		
-		org.achartengine.ChartGenHelper.setAxesExtents(renderer, x_axis_date_series.get(0).get(0).getTime(),
-				x_axis_date_series.get(0).get(x_axis_date_series.get(0).size() - 1).getTime(), -4, 11);
 
+		MinMax x_axis_limits = getTimeAxisLimits(x_axis_series);
+		MinMax y_axis_limits = getYAxisLimits(y_axis_series);
+		Log.d(TAG, "Y axis bottom: " + y_axis_limits.min.doubleValue());
+		Log.d(TAG, "Y axis top: " + y_axis_limits.max.doubleValue());
 		
 		
+		org.achartengine.ChartGenHelper.setAxesExtents(
+				renderer,
+				x_axis_limits.min.longValue(),
+				x_axis_limits.max.longValue(),
+				y_axis_limits.min.doubleValue(),
+				y_axis_limits.max.doubleValue());
+
 		
 		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDateDataset(titles, x_axis_date_series, y_axis_series);
 
@@ -155,7 +169,43 @@ public class TimeChartActivity extends XYChartActivity {
 
 		TimeChart chart = new TimeChart(dataset, renderer);
 		chart.setDateFormat("MM/dd/yyyy");
+		chart.setYFormat("%.1f%%");
 		
 		return chart;
+	}
+
+	// =========================
+	MinMax getTimeAxisLimits(List<List<Number>> time_axis_series) {
+		
+		MinMax time_minmax = new MinMax(time_axis_series);
+		long time_values_span = (long) time_minmax.getSpan();
+		long padding;
+		if (time_values_span > 0) {
+			padding = (long) (time_values_span*HEADROOM_FOOTROOM_FRACTION);
+		} else {
+			// Pad by one day.
+			long day_ms = 1000*60*60*24;
+			padding = day_ms;
+		}
+		
+		long time_axis_lower_limit = time_minmax.min.longValue() - padding;
+		long time_axis_upper_limit = time_minmax.max.longValue() + padding;
+		return new MinMax(time_axis_lower_limit, time_axis_upper_limit);
+	}
+	// =========================
+	MinMax getYAxisLimits(List<List<Number>> y_axis_series) {
+		
+		MinMax y_minmax = new MinMax(y_axis_series);
+		double y_values_span = y_minmax.getSpan();
+		double padding;
+		if (y_values_span > 0) {
+			padding = y_values_span*HEADROOM_FOOTROOM_FRACTION;
+		} else {
+			padding = y_minmax.min.doubleValue()*HEADROOM_FOOTROOM_FRACTION;
+		}
+		
+		double y_axis_lower_limit = y_minmax.min.doubleValue() - padding;
+		double y_axis_upper_limit = y_minmax.max.doubleValue() + padding;
+		return new MinMax(y_axis_lower_limit, y_axis_upper_limit);
 	}
 }
