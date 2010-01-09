@@ -67,6 +67,17 @@ public abstract class XYChart extends AbstractChart {
 	/** The grid color. */
 	protected static final int GRID_COLOR = Color.argb(75, 200, 200, 200);
 
+	private String y_format;
+	public void setYFormat(String format_string) {
+		this.y_format = format_string;
+	}
+	
+	public String getYFormat() {
+		return this.y_format;
+	}
+	
+	
+	
 	/**
 	 * Builds a new XY chart instance.
 	 * 
@@ -395,6 +406,10 @@ public abstract class XYChart extends AbstractChart {
 	 * @return the label without the useless fraction digit
 	 */
 	protected String getLabel(Number label) {
+		String format_string = getYFormat();
+		if (format_string != null)
+			return String.format(format_string, label);
+			
 		String text = "";
 		if (label.intValue() == label.doubleValue()) {
 			text = label.intValue() + "";

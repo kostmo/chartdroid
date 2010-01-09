@@ -29,8 +29,6 @@ import android.graphics.Paint.Style;
  * The line chart rendering class.
  */
 public class LineChart extends XYChart {
-	/** The legend shape width. */
-	private static final int SHAPE_WIDTH = 30;
 
 	/**
 	 * Builds a new line chart instance.

@@ -17,7 +17,7 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ContentSchema;
+import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DoubleDatumExtractor;
@@ -67,8 +67,8 @@ public class ScatterChartActivity extends XYChartActivity {
         y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
         
     } else {
-        x_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.X_AXIS_INDEX );
-        y_axis_series = (List<List<Number>>) sorted_series_list.get( ContentSchema.Y_AXIS_INDEX );    
+        x_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.X_AXIS_INDEX );
+        y_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX );    
     }
     
     
@@ -133,8 +133,8 @@ public class ScatterChartActivity extends XYChartActivity {
       
 
       String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-      String x_label = axis_labels.get( ContentSchema.X_AXIS_INDEX );
-      String y_label = axis_labels.get( ContentSchema.Y_AXIS_INDEX );
+      String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
+      String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
       Log.d(TAG, "X LABEL: " + x_label);
       Log.d(TAG, "X LABEL: " + y_label);
       Log.d(TAG, "chart_title: " + chart_title);
