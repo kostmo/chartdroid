@@ -55,8 +55,7 @@ abstract public class XYChartActivity extends GraphicalActivity {
 
 	
 	@Override
-	protected
-	void postChartPopulationCallback() {
+	protected void postChartPopulationCallback() {
 		XYChart xy_chart = (XYChart) mChart;
 		
 		if (xy_chart == null) {

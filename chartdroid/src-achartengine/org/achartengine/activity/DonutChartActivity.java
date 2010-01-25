@@ -19,18 +19,22 @@ import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.activity.GraphicalActivity.DataSeriesAttributes;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.view.LabelView;
 import org.achartengine.view.PredicateLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.DoughnutChart;
+import org.achartengine.view.chart.XYChart;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +49,20 @@ public class DonutChartActivity extends GraphicalActivity {
 		return R.drawable.typepie;
 	}
 
+	// ---------------------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+
+	}
+
+	// ---------------------------------------------
+	@Override
+	protected void postChartPopulationCallback() {
+
 		PredicateLayout predicate_layout = (PredicateLayout) findViewById(R.id.predicate_layout);
+
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list, true);
 	}
@@ -160,7 +173,6 @@ public class DonutChartActivity extends GraphicalActivity {
 		ChartFactory.checkParameters(dataset, renderer);
 
 		return chart;
-
 	}
 
 
@@ -169,33 +181,28 @@ public class DonutChartActivity extends GraphicalActivity {
 	protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
 
 		DoughnutChart donut_chart = (DoughnutChart) chart;
-		
+
 		// Zip the series attributes
 		List<DataSeriesAttributes> series_attributes_list = new ArrayList<DataSeriesAttributes>();
 
 		DefaultRenderer renderer = donut_chart.getRenderer();
-		
+
 		for (int i=0; i<donut_chart.getDataset().getCategoriesCount(); i++) {
 			String category_title = donut_chart.getDataset().getCategory(i);
 			DataSeriesAttributes series = new DataSeriesAttributes();
-			
-			
-			 
+
+
+
 			series.color = renderer.getSeriesRendererAt(i).getColor();
 			series.title = category_title;
-			
+
 			Log.d(TAG, "Series: " + i + "; Title: " + series.title + "; Color: " + series.color);
-			
+
 			series_attributes_list.add( series );
 		}
-		
+
 		return series_attributes_list;
-		
+
 	}
 
-	@Override
-	protected void postChartPopulationCallback() {
-		// TODO Auto-generated method stub
-		
-	}
 }
