@@ -33,7 +33,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,10 +60,10 @@ public class TimeChartActivity extends XYChartActivity {
 			for (Number number : individual_series) {
 				
 				long long_value = number.longValue();
-				Log.d(TAG, "Long value pre-conversion: " + long_value);
+//				Log.d(TAG, "Long value pre-conversion: " + long_value);
 				
 				Date date = new Date( long_value );
-				Log.w(TAG, "Date value post-conversion: " + date);
+//				Log.d(TAG, "Date value post-conversion: " + date);
 				converted_series.add( date );
 			}
 		}
@@ -74,15 +73,13 @@ public class TimeChartActivity extends XYChartActivity {
 	
 	// ---------------------------------------------
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException {
 
 		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDatumExtractor());
 
 
 		if (! (sorted_series_list.size() >= 1) ) {
-
-	        Toast.makeText(TimeChartActivity.this, "There are no series!", Toast.LENGTH_LONG).show();
-			return null;
+			throw new IllegalArgumentException("There are no series!");
 		}
 
 
@@ -103,16 +100,17 @@ public class TimeChartActivity extends XYChartActivity {
 
 
 		String[] titles = getSortedSeriesTitles();
-
-		assert (titles.length == x_axis_series.size());
-		assert (titles.length == y_axis_series.size());
+		if (titles.length != x_axis_series.size()) {
+			throw new IllegalArgumentException("Titles count must match series count (X)!");
+		} else if (titles.length != y_axis_series.size()) {
+			throw new IllegalArgumentException("Titles count must match series count (Y)!");
+		}
 
 
 		// TODO: If there is no y-axis data, we probably want a histogram of the events.
 		// Otherwise we could draw a timeline that consists of labeled vertical event bars
 		// a la Firebug, or we could nix the bars and just draw labels at 45 degrees
 		// like a historical timeline.
-
 
 		int[] colors = new int[titles.length];
 		PointStyle[] styles =  new PointStyle[titles.length];
@@ -141,14 +139,17 @@ public class TimeChartActivity extends XYChartActivity {
 		String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
 		String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
 		Log.d(TAG, "X LABEL: " + x_label);
-		Log.d(TAG, "X LABEL: " + y_label);
+		Log.d(TAG, "Y LABEL: " + y_label);
 		Log.d(TAG, "chart_title: " + chart_title);
 
 		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, Color.LTGRAY, Color.GRAY);
 
-		
+
+//		Log.i(TAG, "About to convert numbers to date series...");
 		List<List<Date>> x_axis_date_series = convertNumberToDateSeries(x_axis_series);
 
+//		Log.i(TAG, "Getting the axis limits...");
+		
 		MinMax x_axis_limits = getTimeAxisLimits(x_axis_series);
 		MinMax y_axis_limits = getYAxisLimits(y_axis_series);
 		Log.d(TAG, "Y axis bottom: " + y_axis_limits.min.doubleValue());
@@ -162,11 +163,15 @@ public class TimeChartActivity extends XYChartActivity {
 				y_axis_limits.min.doubleValue(),
 				y_axis_limits.max.doubleValue());
 
-		
+
+//		Log.i(TAG, "About to build date dataset...");
 		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDateDataset(titles, x_axis_date_series, y_axis_series);
 
+//		Log.i(TAG, "Checking parameters...");
 		ChartFactory.checkParameters(dataset, renderer);
 
+
+//		Log.i(TAG, "Instantiating TimeChart...");
 		TimeChart chart = new TimeChart(dataset, renderer);
 		chart.setDateFormat("MM/dd/yyyy");
 		chart.setYFormat("%.1f%%");

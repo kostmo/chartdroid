@@ -69,7 +69,8 @@ public class GraphicalView extends View {
     int left = mRect.left;
     int width = mRect.width();
     int height = mRect.height();
-    mChart.draw(canvas, left, top, width, height);
+    if (mChart != null)
+    	mChart.draw(canvas, left, top, width, height);
   }
 
   /**

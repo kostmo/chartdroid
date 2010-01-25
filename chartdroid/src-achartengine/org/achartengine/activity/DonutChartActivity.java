@@ -192,4 +192,10 @@ public class DonutChartActivity extends GraphicalActivity {
 		return series_attributes_list;
 		
 	}
+
+	@Override
+	protected void postChartPopulationCallback() {
+		// TODO Auto-generated method stub
+		
+	}
 }

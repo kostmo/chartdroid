@@ -45,8 +45,6 @@ public class PieChartActivity extends GraphicalActivity {
 		return R.drawable.typepie;
 	}
 
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -183,5 +181,13 @@ protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart
 	}
 	
 	return series_attributes_list;
+}
+
+
+
+@Override
+protected void postChartPopulationCallback() {
+	// TODO Auto-generated method stub
+	
 }
 }

@@ -26,6 +26,7 @@ import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.XYChart;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,13 +51,23 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		getWindow().setFlags(
         		WindowManager.LayoutParams.FLAG_FULLSCREEN, 
                 WindowManager.LayoutParams.FLAG_FULLSCREEN );
-		
+	}
 
+	
+	@Override
+	protected
+	void postChartPopulationCallback() {
 		XYChart xy_chart = (XYChart) mChart;
+		
 		if (xy_chart == null) {
+			
+			Log.e(TAG, "Chart is null; finishing activity.");
+			
 			finish();
 			return;
 		}
+		
+		
 		((TextView) findViewById(R.id.chart_x_axis_title)).setText( xy_chart.getRenderer().getXTitle() );
 		((LabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );
 
@@ -65,8 +76,9 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list);
 	}
-
-
+	
+	
+	
 	@Override
 	protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
 		
