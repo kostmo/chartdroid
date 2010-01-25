@@ -20,6 +20,7 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.consumer.DatumExtractor;
+import org.achartengine.util.SemaphoreHost;
 import org.achartengine.view.GraphicalView;
 import org.achartengine.view.PredicateLayout;
 import org.achartengine.view.chart.AbstractChart;
@@ -34,9 +35,11 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore.Images;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +49,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,11 +59,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-abstract public class GraphicalActivity extends Activity {
+abstract public class GraphicalActivity extends Activity implements SemaphoreHost {
 
 
 	protected static final String TAG = "ChartDroid"; 
@@ -71,11 +76,20 @@ abstract public class GraphicalActivity extends Activity {
 	protected AbstractChart mChart;
 
 
+	private AtomicInteger retrieval_tasks_semaphore = new AtomicInteger();
 
 	protected PointStyle[] DEFAULT_STYLES = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND,
 			PointStyle.TRIANGLE, PointStyle.SQUARE };
 	protected int[] DEFAULT_COLORS = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
 
+	
+	
+	
+	
+
+	DataQueryTask data_query_task;
+	
+	
 	
 	protected abstract int getTitlebarIconResource();
 	
@@ -93,10 +107,65 @@ abstract public class GraphicalActivity extends Activity {
 	}
 
 
+	// =============================================
+	public class DataQueryTask extends AsyncTask<Void, Void, AbstractChart> {
+
+		private Uri chart_data_uri;
+		private String error_message;
+		DataQueryTask(Uri chart_data_uri) {
+			this.chart_data_uri = chart_data_uri;
+		}
+
+		@Override
+		protected void  onPreExecute  () {
+			incSemaphore();
+		}
+
+		@Override
+		protected AbstractChart doInBackground(Void... params) {
+			try {
+				return generateChartFromContentProvider(this.chart_data_uri);
+			} catch (IllegalArgumentException e) {
+				this.error_message = e.getLocalizedMessage();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(AbstractChart chart) {
+
+			decSemaphore();
+			
+			if (error_message != null) {
+				Toast.makeText(GraphicalActivity.this, "There are no series!", Toast.LENGTH_LONG).show();
+				
+				
+				Log.e(TAG, "Error in chart; finishing activity. Chart: " + chart);
+				
+				finish();
+				
+				return;
+			}
+			
+			mChart = chart;
+			mView.setChart(mChart);
+			
+			
+			postChartPopulationCallback();
+			
+		}
+	}
+
+	// =============================================
+	
+	protected abstract void postChartPopulationCallback();
+	
+	// =============================================
 	public void populateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list) {
 		populateLegend(predicate_layout, series_attributes_list, false);
 	}
-	
+
+	// =============================================
 	public void populateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list, boolean donut_style) {
 		
 		PredicateLayout.LayoutParams lp = new PredicateLayout.LayoutParams(5, 1);
@@ -148,7 +217,8 @@ abstract public class GraphicalActivity extends Activity {
 		}
 	}
 
-	
+
+	// ---------------------------------------------
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -161,6 +231,9 @@ abstract public class GraphicalActivity extends Activity {
 	    
 		super.onCreate(savedInstanceState);
 
+
+		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
 
 		Uri intent_data = getIntent().getData();
 
@@ -177,7 +250,6 @@ abstract public class GraphicalActivity extends Activity {
 		setContentView( getLayoutResourceId() );
 	    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, getTitlebarIconResource());
 
-		mChart = generateChartFromContentProvider(intent_data);
 		
 
 		mView = (GraphicalView) findViewById(R.id.chart_view);
@@ -185,12 +257,9 @@ abstract public class GraphicalActivity extends Activity {
 		((TextView) findViewById(R.id.chart_title_placeholder)).setText(title);
 		
 		
-		mView.setChart(mChart);
-
+		data_query_task = new DataQueryTask(intent_data);
+		data_query_task.execute();
 	}
-
-
-
 
 	// ---------------------------------------------
 	Comparator<Entry<?, ?>> map_key_comparator = new Comparator<Entry<?, ?>>() {
@@ -404,7 +473,11 @@ abstract public class GraphicalActivity extends Activity {
 		// Innermost list: Data for a single series
 		Map<Integer, Map<Integer, List<T>>> axes_series_map = new HashMap<Integer, Map<Integer, List<T>>>();
 
-		Cursor cursor = managedQuery(data_uri,
+		
+		
+
+		Cursor cursor = getContentResolver().query(data_uri,
+//		Cursor cursor = managedQuery(data_uri,
 				null,	// Note that the author of the ContentProvider should specify their own projection,
 						// so it is irrelevant what we specify here.
 				/*
@@ -493,6 +566,8 @@ abstract public class GraphicalActivity extends Activity {
 				} while (cursor.moveToNext());
 			}
 		}
+		
+		cursor.close();
 
 		// Sort each axis map by key; that is, sort by the series index - then add it to the simplified axis list
 		for (Map<Integer, List<T>> series_map : sortAndSimplify(axes_series_map, map_key_comparator))
@@ -551,7 +626,7 @@ abstract public class GraphicalActivity extends Activity {
 	}
 
 
-	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data);
+	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException;
 
 	
 	
@@ -589,7 +664,6 @@ abstract public class GraphicalActivity extends Activity {
 			
 			return true;
 		}
-		
 		case R.id.menu_fullscreen:
 		{
 			Intent i = getIntent();
@@ -602,5 +676,35 @@ abstract public class GraphicalActivity extends Activity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+    
+	// ========================================================================
+	@Override
+	public void incSemaphore() {
+
+		setProgressBarIndeterminateVisibility(true);
+		retrieval_tasks_semaphore.incrementAndGet();
+	}
+
+	@Override
+	public void decSemaphore() {
+
+		boolean still_going = retrieval_tasks_semaphore.decrementAndGet() > 0;
+		setProgressBarIndeterminateVisibility(still_going);
+	}
+	
+	
+	
+	// =============================================
+
+	@Override
+	protected void onDestroy() {
+
+		if (data_query_task != null)
+			data_query_task.cancel(true);
+		
+		super.onDestroy();
 	}
 }
