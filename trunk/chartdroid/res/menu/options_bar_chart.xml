@@ -7,6 +7,7 @@
          android:icon="@android:drawable/ic_menu_info_details" />
 
     <item android:id="@+id/menu_toggle_orientation"
+    	android:visible="false"
          android:title="Toggle orientation"
          android:alphabeticShortcut="o"
          android:icon="@android:drawable/ic_menu_info_details" />

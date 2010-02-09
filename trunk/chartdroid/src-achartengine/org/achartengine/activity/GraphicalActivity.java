@@ -20,6 +20,9 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.consumer.DatumExtractor;
+import org.achartengine.renderer.AxesManager;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.SemaphoreHost;
 import org.achartengine.view.GraphicalView;
 import org.achartengine.view.PredicateLayout;
@@ -360,6 +363,30 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		return series;
 	}
 
+	
+	
+	protected void assignChartLabels(List<String> axis_labels, AxesManager renderer) {
+		
+		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
+		
+		String x_label = "X-Axis";
+		String y_label = "Y-Axis";
+		if (axis_labels != null) {
+			if (axis_labels.size() - 1 >= ColumnSchema.X_AXIS_INDEX)
+				x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
+			
+			if (axis_labels.size() - 1 >= ColumnSchema.Y_AXIS_INDEX)
+				y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
+		}
+ 
+		Log.d(TAG, "X LABEL: " + x_label);
+		Log.d(TAG, "Y LABEL: " + y_label);
+		Log.d(TAG, "chart_title: " + chart_title);
+
+		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, Color.LTGRAY, Color.GRAY);
+
+	}
+	
 	// ---------------------------------------------
 	//  Retrieve Axes data
 	protected List<String> getAxisTitles() {
@@ -382,6 +409,8 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 					new String[] {BaseColumns._ID, ColumnSchema.COLUMN_AXIS_LABEL},
 					null, null, null);
 
+			if (meta_cursor == null) return null;
+			
 			int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
 			int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_LABEL);
 

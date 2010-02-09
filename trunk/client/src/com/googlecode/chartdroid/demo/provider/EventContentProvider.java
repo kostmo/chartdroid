@@ -2,9 +2,8 @@ package com.googlecode.chartdroid.demo.provider;
 
 import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.demo.Demo;
-import com.googlecode.chartdroid.demo.Demo.EventWrapper;
-
-import org.achartengine.demo.ContentSchema;
+import com.googlecode.chartdroid.demo.OldChartsActivity;
+import com.googlecode.chartdroid.demo.OldChartsActivity.EventWrapper;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -64,7 +63,7 @@ public class EventContentProvider extends ContentProvider {
 				ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TIMESTAMP,
 				ContentSchemaOld.CalendarEvent.COLUMN_EVENT_TITLE});
 
-		List<EventWrapper> generated_events = Demo.generateRandomEvents(5);
+		List<EventWrapper> generated_events = OldChartsActivity.generateRandomEvents(5);
 //		Log.i(TAG, "Generated " + generated_events.size() + " events.");
 		
 		// The "EVENT_TITLE" field is omitted (it will be NULL) for this demo.

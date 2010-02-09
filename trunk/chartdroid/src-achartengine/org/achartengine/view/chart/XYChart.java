@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Paint.Align;
+import android.text.TextPaint;
 
 import java.util.List;
 
@@ -99,12 +100,15 @@ public abstract class XYChart extends AbstractChart {
 	 * @param height the height of the view to draw to
 	 */
 	@Override
-	public void draw(Canvas canvas, int x, int y, int width, int height) {
-		Paint paint = new Paint();
-		paint.setAntiAlias(getAntiAliased());
+	public void draw(Canvas canvas, int width, int height) {
+		
+		TextPaint hash_mark_label_paint = new TextPaint();
+		hash_mark_label_paint.setTextSize(9);
+		hash_mark_label_paint.setTypeface(DefaultRenderer.REGULAR_TEXT_FONT);
+		hash_mark_label_paint.setAntiAlias(getAntiAliased());
 
 
-		drawBackground(mRenderer, canvas, x, y, width, height, paint);
+//		drawBackground(mRenderer, canvas, width, height, hash_mark_label_paint);
 
 
 
@@ -117,7 +121,7 @@ public abstract class XYChart extends AbstractChart {
 		if (mScale < 1) {
 			mTranslate *= -1;
 		}
-		mCenter = new PointF((x + width) / 2, (y + height) / 2);
+		mCenter = new PointF(width / 2, height / 2);
 		if (rotate) {
 			transform(canvas, angle, false);
 		}
@@ -164,7 +168,7 @@ public abstract class XYChart extends AbstractChart {
 
 
 		float hash_mark_width = 0;
-		int label_clearance = 2;    // Separation of tick label from axis line
+		int label_clearance = 2;    // Separation of tick label from vertical axis line
 		// Measure all y-axis label widths to determine the axis line position
 		if (showLabels) {
 
@@ -174,27 +178,28 @@ public abstract class XYChart extends AbstractChart {
 			float[] label_widths = new float[length];
 			float max_label_width = 0;
 			for (int i = 0; i < length; i++) {
-				float label_width = paint.measureText( getLabel( yLabels.get(i) ) );
+				float label_width = hash_mark_label_paint.measureText( getLabel( yLabels.get(i) ) );
 				label_widths[i] = width;
 				max_label_width = Math.max(label_width, max_label_width);
 			}
-
 
 			hash_mark_width = max_label_width + label_clearance;
 		}
 
 
-		int left = x + (int) Math.ceil(hash_mark_width);
-		int top = 0;
-		int right = x + width;
-		int bottom = y + height -20;	// XXX - Makes space for the horizontal tick labels;
+		
+		int frame_left = (int) Math.ceil(hash_mark_width);
+		int frame_top = 0;
+		int frame_right = width;
+		int frame_bottom = height - 20;	// XXX - Makes space for the tick labels for the horizontal axis;
+
 
 
 		if (maxX - minX != 0) {
-			xPixelsPerUnit = (right - left) / (maxX - minX);
+			xPixelsPerUnit = (frame_right - frame_left) / (maxX - minX);
 		}
 		if (maxY - minY != 0) {
-			yPixelsPerUnit = (float) ((bottom - top) / (maxY - minY));
+			yPixelsPerUnit = (float) ((frame_bottom - frame_top) / (maxY - minY));
 		}
 
 		if (showLabels || showGrid) {
@@ -204,12 +209,10 @@ public abstract class XYChart extends AbstractChart {
 			List<Double> xLabels = MathHelper.getLabels(minX, maxX, mRenderer.getXLabels());
 			List<Double> yLabels = MathHelper.getLabels(minY, maxY, mRenderer.getYLabels());
 			if (showLabels) {
-				paint.setColor(mRenderer.getLabelsColor());
-				paint.setTextSize(9);
-				paint.setTypeface(DefaultRenderer.REGULAR_TEXT_FONT);
-				paint.setTextAlign(Align.CENTER);
+				hash_mark_label_paint.setColor(mRenderer.getLabelsColor());
+				hash_mark_label_paint.setTextAlign(Align.CENTER);
 			}
-			drawXLabels(xLabels, mRenderer.getXTextLabelLocations(), canvas, paint, left, top, bottom,
+			drawXLabels(xLabels, mRenderer.getXTextLabelLocations(), canvas, hash_mark_label_paint, frame_left, frame_top, frame_bottom,
 					xPixelsPerUnit, minX);
 			int length = yLabels.size();
 
@@ -217,48 +220,48 @@ public abstract class XYChart extends AbstractChart {
 
 
 
-			paint.setTextAlign(Align.RIGHT);
+			hash_mark_label_paint.setTextAlign(Align.RIGHT);
 			for (int i = 0; i < length; i++) {
 				double label = yLabels.get(i);
-				float yLabel = (float) (bottom - yPixelsPerUnit * (label - minY));
+				float yLabel = (float) (frame_bottom - yPixelsPerUnit * (label - minY));
 
 
 				float grid_line_startx, grid_line_stopx, hash_mark_startx, hash_mark_stopx;
 				float label_x_offset;
 
 				if (or == Orientation.HORIZONTAL) {
-					grid_line_startx = left;
-					grid_line_stopx = right;
+					grid_line_startx = frame_left;
+					grid_line_stopx = frame_right;
 					hash_mark_startx = grid_line_startx - hash_mark_width;
 					hash_mark_stopx = grid_line_startx;
 
-					label_x_offset = left - label_clearance;
+					label_x_offset = frame_left - label_clearance;
 
 					//      } else if (or == Orientation.VERTICAL) {
 					} else { 
-						grid_line_startx = right;
-						grid_line_stopx = left;
+						grid_line_startx = frame_right;
+						grid_line_stopx = frame_left;
 						hash_mark_startx = grid_line_startx + hash_mark_width;
 						hash_mark_stopx = grid_line_startx;
 
 						//            label_x_offset = right + 10;
-						label_x_offset = right - label_clearance;
+						label_x_offset = frame_right - label_clearance;
 					}
 
 				if (showLabels) {
-					paint.setColor(mRenderer.getLabelsColor());
+					hash_mark_label_paint.setColor(mRenderer.getLabelsColor());
 					//            paint.setColor(Color.MAGENTA);    // FIXME
-					canvas.drawLine(hash_mark_startx, yLabel, hash_mark_stopx, yLabel, paint);
+					canvas.drawLine(hash_mark_startx, yLabel, hash_mark_stopx, yLabel, hash_mark_label_paint);
 
 					String label_string = getLabel(label);
-					paint.measureText(label_string);
-					drawText(canvas, getLabel(label), label_x_offset, yLabel - 2, paint, 0);
+					hash_mark_label_paint.measureText(label_string);
+					drawText(canvas, getLabel(label), label_x_offset, yLabel - 2, hash_mark_label_paint, 0);
 				}
 
 				if (showGrid) {
-					paint.setColor(GRID_COLOR);
+					hash_mark_label_paint.setColor(GRID_COLOR);
 					//            paint.setColor(Color.GREEN);    // FIXME
-					canvas.drawLine(grid_line_startx, yLabel, grid_line_stopx, yLabel, paint);
+					canvas.drawLine(grid_line_startx, yLabel, grid_line_stopx, yLabel, hash_mark_label_paint);
 				}
 			}
 
@@ -269,12 +272,12 @@ public abstract class XYChart extends AbstractChart {
 
 				}
 		if (mRenderer.isShowAxes()) {
-			paint.setColor(mRenderer.getAxesColor());
-			canvas.drawLine(left, bottom, right, bottom, paint);
+			hash_mark_label_paint.setColor(mRenderer.getAxesColor());
+			canvas.drawLine(frame_left, frame_bottom, frame_right, frame_bottom, hash_mark_label_paint);
 			if (or == Orientation.HORIZONTAL) {
-				canvas.drawLine(left, top, left, bottom, paint);
+				canvas.drawLine(frame_left, frame_top, frame_left, frame_bottom, hash_mark_label_paint);
 			} else if (or == Orientation.VERTICAL) {
-				canvas.drawLine(right, top, right, bottom, paint);
+				canvas.drawLine(frame_right, frame_top, frame_right, frame_bottom, hash_mark_label_paint);
 			}
 		}
 
@@ -304,23 +307,23 @@ public abstract class XYChart extends AbstractChart {
 			points = new float[length];
 			for (int j = 0; j < length; j += 2) {
 				int index = j / 2;
-				points[j] = (float) (left + xPixelsPerUnit * (series.getX(index).doubleValue() - minX));
-				points[j + 1] = (float) (bottom - yPixelsPerUnit * (series.getY(index).doubleValue() - minY));
+				points[j] = (float) (frame_left + xPixelsPerUnit * (series.getX(index).doubleValue() - minX));
+				points[j + 1] = (float) (frame_bottom - yPixelsPerUnit * (series.getY(index).doubleValue() - minY));
 			}
-			drawSeries(canvas, paint, points, seriesRenderer, Math.min(bottom,
-					(float) (bottom + yPixelsPerUnit * minY)), i);
+			drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer, Math.min(frame_bottom,
+					(float) (frame_bottom + yPixelsPerUnit * minY)), i);
 			if (isRenderPoints(seriesRenderer)) {
 				ScatterChart pointsChart = new ScatterChart(mDataset, mRenderer);
-				pointsChart.drawSeries(canvas, paint, points, seriesRenderer, 0, i);
+				pointsChart.drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer, 0, i);
 			}
-			paint.setTextSize(9);
+			hash_mark_label_paint.setTextSize(9);
 			if (or == Orientation.HORIZONTAL) {
-				paint.setTextAlign(Align.CENTER);
+				hash_mark_label_paint.setTextAlign(Align.CENTER);
 			} else {
-				paint.setTextAlign(Align.LEFT);
+				hash_mark_label_paint.setTextAlign(Align.LEFT);
 			}
 			if (mRenderer.isDisplayChartValues()) {
-				drawChartValuesText(canvas, series, paint, points, i);
+				drawChartValuesText(canvas, series, hash_mark_label_paint, points, i);
 			}
 		}
 

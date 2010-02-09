@@ -22,9 +22,33 @@ import android.graphics.Color;
 /**
  * A simple series renderer.
  */
-public class SimpleSeriesRenderer implements Serializable {
+public class SimpleSeriesRenderer implements Serializable, AxesManager {
   private int mColor = Color.BLUE;
-	
+
+  /** The default color for text. */
+  public static final int TEXT_COLOR = Color.LTGRAY;
+  
+  /** If the axes are visible. */
+  protected boolean mShowAxes = true;
+  /** The axes color. */
+  protected int mAxesColor = TEXT_COLOR;
+  /** If the labels are visible. */
+  protected boolean mShowLabels = true;
+  /** The labels color. */
+  protected int mLabelsColor = TEXT_COLOR;
+  /** If the legend is visible. */
+  protected boolean mShowLegend = true;
+  /** If the grid should be displayed. */
+  protected boolean mShowGrid = false;
+  
+  
+  /** The chart title. */
+  private String mChartTitle = "";
+  /** The X axis title. */
+  private String mXTitle = "";
+  /** The Y axis title. */
+  private String mYTitle = "";
+  
   /**
    * Returns the series color.
    * @return the series color
@@ -40,5 +64,101 @@ public class SimpleSeriesRenderer implements Serializable {
   public void setColor(int color) {
     mColor = color;
   }
+  
 
+  
+
+  @Override
+  public String getChartTitle() {
+	    return mChartTitle;
+	  }
+
+
+  @Override
+	  public void setChartTitle(String title) {
+	    mChartTitle = title;
+	  }
+
+
+	  @Override
+	  public String getXTitle() {
+	    return mXTitle;
+	  }
+
+
+	  @Override
+	  public void setXTitle(String title) {
+	    mXTitle = title;
+	  }
+
+
+	  @Override
+	  public String getYTitle() {
+	    return mYTitle;
+	  }
+
+
+	  @Override
+	  public void setYTitle(String title) {
+	    mYTitle = title;
+	  }
+
+	@Override
+	  public int getAxesColor() {
+	    return mAxesColor;
+	  }
+
+
+	@Override
+	  public void setAxesColor(int color) {
+	    mAxesColor = color;
+	  }
+
+
+	@Override
+	  public int getLabelsColor() {
+	    return mLabelsColor;
+	  }
+
+
+	@Override
+	  public void setLabelsColor(int color) {
+	    mLabelsColor = color;
+	  }
+
+
+	@Override
+	  public boolean isShowAxes() {
+	    return mShowAxes;
+	  }
+
+
+	@Override
+	  public void setShowAxes(boolean showAxes) {
+	    mShowAxes = showAxes;
+	  }
+
+
+	@Override
+	  public boolean isShowLabels() {
+	    return mShowLabels;
+	  }
+
+
+	@Override
+	  public void setShowLabels(boolean showLabels) {
+	    mShowLabels = showLabels;
+	  }
+
+
+	@Override
+	  public boolean isShowGrid() {
+	    return mShowGrid;
+	  }
+
+
+	@Override
+	  public void setShowGrid(boolean showGrid) {
+	    mShowGrid = showGrid;
+	  }
 }
