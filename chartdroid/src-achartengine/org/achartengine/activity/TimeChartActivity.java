@@ -134,15 +134,7 @@ public class TimeChartActivity extends XYChartActivity {
 			((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
 		}
 
-
-		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-		String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
-		String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
-		Log.d(TAG, "X LABEL: " + x_label);
-		Log.d(TAG, "Y LABEL: " + y_label);
-		Log.d(TAG, "chart_title: " + chart_title);
-
-		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, Color.LTGRAY, Color.GRAY);
+		assignChartLabels(axis_labels, renderer);
 
 
 //		Log.i(TAG, "About to convert numbers to date series...");

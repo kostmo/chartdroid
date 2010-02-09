@@ -25,7 +25,7 @@ import android.graphics.Typeface;
 /**
  * An abstract renderer to be extended by the multiple series classes.
  */
-public class DefaultRenderer implements Serializable {
+public class DefaultRenderer implements Serializable, LabelsManager {
   /** The default background color. */
   public static final int BACKGROUND_COLOR = Color.BLACK;
   /** The default color for text. */
@@ -39,17 +39,17 @@ public class DefaultRenderer implements Serializable {
   /** If the background color is applied. */
   private boolean mApplyBackgroundColor;
   /** If the axes are visible. */
-  private boolean mShowAxes = true;
+  protected boolean mShowAxes = true;
   /** The axes color. */
-  private int mAxesColor = TEXT_COLOR;
+  protected int mAxesColor = TEXT_COLOR;
   /** If the labels are visible. */
-  private boolean mShowLabels = true;
+  protected boolean mShowLabels = true;
   /** The labels color. */
-  private int mLabelsColor = TEXT_COLOR;
+  protected int mLabelsColor = TEXT_COLOR;
   /** If the legend is visible. */
-  private boolean mShowLegend = true;
+  protected boolean mShowLegend = true;
   /** If the grid should be displayed. */
-  private boolean mShowGrid = false;
+  protected boolean mShowGrid = false;
   /** The simple renderers that are included in this multiple series renderer. */
   private List<SimpleSeriesRenderer> mRenderers = new ArrayList<SimpleSeriesRenderer>();
 
@@ -135,95 +135,7 @@ public class DefaultRenderer implements Serializable {
     mApplyBackgroundColor = apply;
   }
 
-  /**
-   * Returns the axes color.
-   * 
-   * @return the axes color
-   */
-  public int getAxesColor() {
-    return mAxesColor;
-  }
 
-  /**
-   * Sets the axes color.
-   * 
-   * @param color the axes color
-   */
-  public void setAxesColor(int color) {
-    mAxesColor = color;
-  }
-
-  /**
-   * Returns the labels color.
-   * 
-   * @return the labels color
-   */
-  public int getLabelsColor() {
-    return mLabelsColor;
-  }
-
-  /**
-   * Sets the labels color.
-   * 
-   * @param color the labels color
-   */
-  public void setLabelsColor(int color) {
-    mLabelsColor = color;
-  }
-
-  /**
-   * Returns if the axes should be visible.
-   * 
-   * @return the visibility flag for the axes
-   */
-  public boolean isShowAxes() {
-    return mShowAxes;
-  }
-
-  /**
-   * Sets if the axes should be visible.
-   * 
-   * @param showAxes the visibility flag for the axes
-   */
-  public void setShowAxes(boolean showAxes) {
-    mShowAxes = showAxes;
-  }
-
-  /**
-   * Returns if the labels should be visible.
-   * 
-   * @return the visibility flag for the labels
-   */
-  public boolean isShowLabels() {
-    return mShowLabels;
-  }
-
-  /**
-   * Sets if the labels should be visible.
-   * 
-   * @param showLabels the visibility flag for the labels
-   */
-  public void setShowLabels(boolean showLabels) {
-    mShowLabels = showLabels;
-  }
-
-  /**
-   * Returns if the grid should be visible.
-   * 
-   * @return the visibility flag for the grid
-   */
-  public boolean isShowGrid() {
-    return mShowGrid;
-  }
-
-  /**
-   * Sets if the grid should be visible.
-   * 
-   * @param showGrid the visibility flag for the grid
-   */
-  public void setShowGrid(boolean showGrid) {
-    mShowGrid = showGrid;
-  }
 
   /**
    * Returns if the legend should be visible.
@@ -243,4 +155,34 @@ public class DefaultRenderer implements Serializable {
     mShowLegend = showLegend;
   }
 
+  
+  
+  
+  
+  
+
+	@Override
+	  public int getLabelsColor() {
+	    return mLabelsColor;
+	  }
+
+
+	@Override
+	  public void setLabelsColor(int color) {
+	    mLabelsColor = color;
+	  }
+
+
+
+	@Override
+	  public boolean isShowLabels() {
+	    return mShowLabels;
+	  }
+
+
+	@Override
+	  public void setShowLabels(boolean showLabels) {
+	    mShowLabels = showLabels;
+	  }
+  
 }

@@ -20,6 +20,7 @@ import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.AxesManager;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -148,7 +149,7 @@ public abstract class ChartGenHelper {
 	 * @param axesColor the axes color
 	 * @param labelsColor the labels color
 	 */
-	public static void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
+	public static void setChartSettings(AxesManager renderer, String title, String xTitle,
 			String yTitle, int axesColor,
 			int labelsColor) {
 		renderer.setChartTitle(title);

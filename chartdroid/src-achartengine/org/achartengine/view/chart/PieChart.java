@@ -62,17 +62,17 @@ public class PieChart extends AbstractChart {
    * @param height the height of the view to draw to
    */
   @Override
-  public void draw(Canvas canvas, int x, int y, int width, int height) {
+  public void draw(Canvas canvas, int width, int height) {
     Paint paint = new Paint();
     paint.setAntiAlias(getAntiAliased());
     paint.setStyle(Style.FILL);
     paint.setTextSize(10);
 
-    int left = x + 15;
-    int top = y + 5;
-    int right = x + width - 5;
-    int bottom = y + height;
-    drawBackground(mRenderer, canvas, x, y, width, height, paint);
+    int left = 15;
+    int top = 5;
+    int right = width - 5;
+    int bottom = height;
+//    drawBackground(mRenderer, canvas, width, height, paint);
     
     int sLength = mDataset.getItemCount();
     double total = 0;
@@ -114,6 +114,4 @@ public class PieChart extends AbstractChart {
       currentAngle += angle;
     }
   }
-
-
 }

@@ -1,6 +1,7 @@
 package com.googlecode.chartdroid.demo.provider;
 
 import com.googlecode.chartdroid.demo.Demo;
+import com.googlecode.chartdroid.demo.OldChartsActivity;
 
 import org.achartengine.demo.ContentSchema;
 
@@ -65,9 +66,8 @@ public class DataContentProvider extends ContentProvider {
 				ContentSchema.PlotData.COLUMN_DATUM_VALUE,
 				ContentSchema.PlotData.COLUMN_DATUM_LABEL});
 
-
-		for (int i=0; i<Demo.demo_pie_data.length; i++)
-			c.newRow().add( i ).add( 0 ).add( Demo.demo_pie_data[i] ).add( Demo.demo_pie_labels[i] );
+		for (int i=0; i<OldChartsActivity.demo_pie_data.length; i++)
+			c.newRow().add( i ).add( 0 ).add( OldChartsActivity.demo_pie_data[i] ).add( OldChartsActivity.demo_pie_labels[i] );
 
 //		Log.i(TAG, "Generated cursor with " + c.getCount() + " rows.");
 		return c;

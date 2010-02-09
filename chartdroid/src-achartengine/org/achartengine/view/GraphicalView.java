@@ -65,12 +65,11 @@ public class GraphicalView extends View {
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     canvas.getClipBounds(mRect);
-    int top = mRect.top;
-    int left = mRect.left;
+
     int width = mRect.width();
     int height = mRect.height();
     if (mChart != null)
-    	mChart.draw(canvas, left, top, width, height);
+    	mChart.draw(canvas, width, height);
   }
 
   /**

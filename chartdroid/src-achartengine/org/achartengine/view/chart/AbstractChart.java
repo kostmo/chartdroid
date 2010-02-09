@@ -37,7 +37,7 @@ public abstract class AbstractChart implements Serializable {
    * @param width the width of the view to draw to
    * @param height the height of the view to draw to
    */
-  public abstract void draw(Canvas canvas, int x, int y, int width, int height);
+  public abstract void draw(Canvas canvas, int width, int height);
   
   /**
    * Draws the chart background.

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+ 
+	
+  	<TextView
+	     android:text="Content Provider Data sets"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />
+
+
+	   
+	   	<Button
+
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+		    android:text="Timeline"
+		    android:id="@+id/button_timeline_data_provider"/>
+	   
+	   	<Button
+
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+		    android:text="Multi-series (temperature data)"
+		    android:id="@+id/button_multiseries_data_provider"/>
+		    
+		<Button
+
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+		    android:text="Labeled Multi-series (budget data)"
+		    android:id="@+id/button_labeled_multiseries_data_provider"/>
+
+</LinearLayout>

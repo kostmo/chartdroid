@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<TextView android:text="Manual data entry"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingTop="2dip" android:paddingBottom="2dip"
+		android:paddingLeft="5dip" style="?android:attr/listSeparatorTextViewStyle" />
+
+
+	<include layout="@layout/manual_timeseries_datum_input"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	/>
+
+
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Plot this data"
+		android:id="@+id/button_graph_manual_data" />
+
+	<ListView
+		android:id="@android:id/list"
+			android:layout_weight="1"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+	/>
+	
+	<TextView
+		android:id="@android:id/empty"
+		android:gravity="center"
+		android:text="No items."
+		android:layout_weight="1"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />
+		
+</LinearLayout>

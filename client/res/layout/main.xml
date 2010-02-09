@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+   
+   	<TextView
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textStyle="bold"
+		android:textColor="@color/white"
+		android:layout_margin="5dip"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="Welcome!"
+	/>
+   
+   	<TextView
+		android:linksClickable="true"
+		android:id="@+id/developer_note"
+		android:layout_margin="5dip"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="@string/developer_note"
+	/>
+ 
+   	<Button
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:text="Sample Datasets"
+	    android:id="@+id/button_sample_datasets"/>
+	    
+	    
+	    
+   	<Button
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:text="Manual data entry"
+	    android:id="@+id/button_manual_entry"/>
+	    
+	    
+	    
+   	<Button
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:text="Old style charts"
+	    android:id="@+id/button_old_style"/>
+
+</LinearLayout>

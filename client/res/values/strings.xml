@@ -2,6 +2,5 @@
 <resources>
     
     <string name="app_name">ChartDroid Demo</string>
-    
-	<string name="developer_note"><b>Developers:</b> Check out the <a href="http://code.google.com/p/chartdroid/">Intent specification</a></string>
+	<string name="developer_note"><b>Developers:</b> Check out the <a href="http://code.google.com/p/chartdroid/wiki/InterfaceSpecification">Intent specification</a></string>
 </resources>

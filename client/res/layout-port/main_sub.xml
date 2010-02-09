@@ -4,62 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-	<TextView
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:textStyle="bold"
-		android:textColor="@color/white"
-		android:layout_margin="5dip"
-	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content"
-	    android:text="Welcome!"
-	/>
-
-
-   	<LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    >
-   	<LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-   	    android:gravity="center_vertical"
-	    >
-
-	   	<Button
-			android:layout_weight="1"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" 
-		    android:text="Timeline"
-		    android:id="@+id/button_timeline_data_provider"/>
-	   
-	   	<Button
-			android:layout_weight="1"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" 
-		    android:text="Multi-series (temperature data)"
-		    android:id="@+id/button_multiseries_data_provider"/>
-		    
-		<Button
-			android:layout_weight="1"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" 
-		    android:text="Labeled Multi-series (budget data)"
-		    android:id="@+id/button_labeled_multiseries_data_provider"/>
-    </LinearLayout>
-    </LinearLayout>
-
-
-	<TextView
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:textStyle="bold"
-		android:layout_margin="5dip"
-	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content"
-	    android:text="Select a chart style.  Try viewing each chart in portrait and landscape mode."
-	/>
-	
 
 
   	<TextView
@@ -120,12 +64,5 @@
 		    android:id="@+id/button_calendar_provider"/>
 	</LinearLayout>
 
-	<TextView
-		android:linksClickable="true"
-		android:id="@+id/developer_note"
-		android:layout_margin="5dip"
-	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content"
-	    android:text="@string/developer_note"
-	/>
+
 </LinearLayout>

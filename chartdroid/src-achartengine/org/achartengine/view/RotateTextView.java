@@ -17,7 +17,7 @@ public class RotateTextView extends TextView
 
 
 	@Override
-	protected void  onMeasure  (int widthMeasureSpec, int heightMeasureSpec) {
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 //		setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
@@ -33,11 +33,11 @@ public class RotateTextView extends TextView
 		Log.d("Foo", "Canvas width: " + canvas.getWidth() + "; height: " + canvas.getHeight());
 		Log.d("Foo", "View width: " + getWidth() + "; height: " + getHeight());
 		
-//		canvas.rotate(90, getWidth()/2f, getHeight()/2f);	// Rotates over to the right side of the square
 		canvas.translate(-getHeight()/2f, -getWidth()/2f);
-		canvas.rotate(-90);	// Half the first couple letters are visible
-//		canvas.rotate(90);
+		canvas.rotate(-90);
+		
 		super.onDraw(canvas);
+		
 		canvas.restore();
 	} 
 }

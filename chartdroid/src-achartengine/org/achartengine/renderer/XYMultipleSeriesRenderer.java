@@ -23,7 +23,7 @@ import org.achartengine.util.MathHelper;
 /**
  * Multiple XY series renderer.
  */
-public class XYMultipleSeriesRenderer extends DefaultRenderer {
+public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesManager {
   /** The chart title. */
   private String mChartTitle = "";
   /** The X axis title. */
@@ -329,4 +329,39 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer {
     mDisplayChartValues = display;
   }
 
+	@Override
+	  public int getAxesColor() {
+	    return mAxesColor;
+	  }
+
+
+	@Override
+	  public void setAxesColor(int color) {
+	    mAxesColor = color;
+	  }
+
+
+
+	@Override
+	  public boolean isShowAxes() {
+	    return mShowAxes;
+	  }
+
+
+	@Override
+	  public void setShowAxes(boolean showAxes) {
+	    mShowAxes = showAxes;
+	  }
+
+
+	@Override
+	  public boolean isShowGrid() {
+	    return mShowGrid;
+	  }
+
+
+	@Override
+	  public void setShowGrid(boolean showGrid) {
+	    mShowGrid = showGrid;
+	  }
 }
