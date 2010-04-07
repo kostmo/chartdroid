@@ -4,10 +4,18 @@
 =Charts in version 2.x=
 
 ==Data type==
-
-The [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should respond with the string:
-
+There are several ways to present data with ChartDroid. To give the user a choice among all of them, the [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should respond with the string:
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable`
+
+For event data (values plotted against a time axis; timelines), getType() should return:
+`vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.timeline`
+
+To limit the presentation options, categories may be added to the Intent:
+  * Radial
+    * Pie charts and donut charts
+  * X-Y
+    * Bar charts, line charts
+
 
 ==Content Provider==
 Your Content Provider should respond to three types of queries:
