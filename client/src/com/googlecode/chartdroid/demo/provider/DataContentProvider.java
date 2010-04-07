@@ -1,6 +1,6 @@
 package com.googlecode.chartdroid.demo.provider;
 
-import com.googlecode.chartdroid.demo.Demo;
+import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.demo.OldChartsActivity;
 
 import org.achartengine.demo.ContentSchema;
@@ -49,7 +49,7 @@ public class DataContentProvider extends ContentProvider {
 
    @Override
    public String getType(Uri uri) {
-	   return ContentSchema.PlotData.CONTENT_TYPE_PLOT_DATA;
+	   return ContentSchemaOld.PlotData.CONTENT_TYPE_PLOT_DATA;
    }
 
    @Override

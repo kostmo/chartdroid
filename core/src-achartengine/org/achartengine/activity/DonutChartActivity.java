@@ -19,22 +19,18 @@ import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.activity.GraphicalActivity.DataSeriesAttributes;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.view.LabelView;
 import org.achartengine.view.PredicateLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.DoughnutChart;
-import org.achartengine.view.chart.XYChart;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,8 @@
 package com.googlecode.chartdroid.demo.provider;
 
+import com.googlecode.chartdroid.core.ColumnSchema.EventData;
+
 import org.achartengine.demo.ContentSchema;
-import org.achartengine.demo.ContentSchema.PlotData;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -27,6 +28,7 @@ public class LocalStorageContentProvider extends ContentProvider {
 
 	public static Uri BASE_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).build();
 
+	static final String MESSAGE_UNSUPPORTED_FEATURE = "Not supported by this provider";
 
 	public static Uri constructUri(long data_id) {
 		return ContentUris.withAppendedId(BASE_URI, data_id);
@@ -50,17 +52,18 @@ public class LocalStorageContentProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String s, String[] as) {
-		throw new UnsupportedOperationException("Not supported by this provider");
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
 	}
 
 	@Override
 	public String getType(Uri uri) {
-		return PlotData.CONTENT_TYPE_PLOT_DATA;
+//		return PlotData.CONTENT_TYPE_PLOT_DATA;
+		return EventData.CONTENT_TYPE_PLOT_DATA;
 	}
 
 	@Override
 	public Uri insert(Uri uri, ContentValues contentvalues) {
-		throw new UnsupportedOperationException("Not supported by this provider");
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
 	}
 
 	@Override
@@ -77,15 +80,11 @@ public class LocalStorageContentProvider extends ContentProvider {
 		{
 		default:
 		{
-			String mangled_uri_string = uri.toString();
-			Uri stripped_uri = Uri.parse(mangled_uri_string.substring(0, mangled_uri_string.lastIndexOf("/")));
-			long dataset_id = ContentUris.parseId(stripped_uri);
-			
-			Log.d(TAG, "Mangled uri string: " + dataset_id);
-			Log.d(TAG, "Stripped uri string: " + dataset_id);
+
+			long dataset_id = ContentUris.parseId(uri);
 			Log.d(TAG, "Dataset ID: " + dataset_id);
 			
-			if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_AXES )) {
+			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				/*
 				DatabaseStoredData database = new DatabaseStoredData(getContext());
@@ -102,7 +101,7 @@ public class LocalStorageContentProvider extends ContentProvider {
 				
 				return null;
 				
-			} else if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_META )) {
+			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
@@ -146,6 +145,6 @@ public class LocalStorageContentProvider extends ContentProvider {
 
 	@Override
 	public int update(Uri uri, ContentValues contentvalues, String s, String[] as) {
-		throw new UnsupportedOperationException("Not supported by this provider");
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
 	}
 }

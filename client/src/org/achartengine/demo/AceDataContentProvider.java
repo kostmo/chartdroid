@@ -1,5 +1,7 @@
 package org.achartengine.demo;
 
+import com.googlecode.chartdroid.core.ColumnSchema.EventData;
+
 import org.achartengine.demo.ContentSchema.PlotData;
 import org.achartengine.demo.data.DonutData;
 import org.achartengine.demo.data.TemperatureData;
@@ -27,13 +29,14 @@ public class AceDataContentProvider extends ContentProvider {
 	static final String TAG = "ChartDroid Demo";
 
 	// This must be the same as what as specified as the Content Provider authority
-	// in the manifest file.
+	// in this app's AndroidManifest file.
 	public static final String AUTHORITY = "com.googlecode.chartdroid.demo.provider.data2";
 
 
 	public static Uri BASE_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).build();
 
 
+	static final String MESSAGE_UNSUPPORTED_FEATURE = "Not supported by this provider";
 
 	// Let the appended ID represent a unique dataset, so that the Chart can come
 	// back and query for the auxiliary (meta) data (e.g. axes labels, colors, etc.).
@@ -68,16 +71,16 @@ public class AceDataContentProvider extends ContentProvider {
 	static {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-		sUriMatcher.addURI(AUTHORITY, CHART_DATA_SERIES_PATH + "/" + CHART_DATA_UNLABELED_PATH + "/*", CHART_DATA_SERIES);
-		sUriMatcher.addURI(AUTHORITY, CHART_DATA_MULTISERIES_PATH + "/" + CHART_DATA_UNLABELED_PATH + "/*", CHART_DATA_MULTISERIES);
+		sUriMatcher.addURI(AUTHORITY, CHART_DATA_SERIES_PATH + "/" + CHART_DATA_UNLABELED_PATH, CHART_DATA_SERIES);
+		sUriMatcher.addURI(AUTHORITY, CHART_DATA_MULTISERIES_PATH + "/" + CHART_DATA_UNLABELED_PATH, CHART_DATA_MULTISERIES);
 
-		sUriMatcher.addURI(AUTHORITY, CHART_DATA_SERIES_PATH + "/" + CHART_DATA_LABELED_PATH + "/*", CHART_DATA_LABELED_SERIES);
+		sUriMatcher.addURI(AUTHORITY, CHART_DATA_SERIES_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_LABELED_SERIES);
 
-		String labeled_multiseries_path = CHART_DATA_MULTISERIES_PATH + "/" + CHART_DATA_LABELED_PATH + "/*";
+		String labeled_multiseries_path = CHART_DATA_MULTISERIES_PATH + "/" + CHART_DATA_LABELED_PATH;
 		Log.d(TAG, "UriMatcher labeled_multiseries_path: " + labeled_multiseries_path);
 
 
-		sUriMatcher.addURI(AUTHORITY, CHART_DATA_TIMELINE_PATH + "/" + CHART_DATA_LABELED_PATH + "/*", CHART_DATA_LABELED_TIMELINE);
+		sUriMatcher.addURI(AUTHORITY, CHART_DATA_TIMELINE_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_LABELED_TIMELINE);
 
 		sUriMatcher.addURI(AUTHORITY, labeled_multiseries_path, CHART_DATA_LABELED_MULTISERIES);
 	}
@@ -90,38 +93,34 @@ public class AceDataContentProvider extends ContentProvider {
 		return true;
 	}
 
-	@Override
-	public int delete(Uri uri, String s, String[] as) {
-		throw new UnsupportedOperationException("Not supported by this provider");
-	}
 
 	@Override
 	public String getType(Uri uri) {
 
+		int match = sUriMatcher.match(uri);
+		Log.d(TAG, "getType() UriMatcher match: " + match);
 
-		// TODO: Re-implement with UriMatcher - Distinguish between "Meta" and "Data" type
-		// based on the Uri extension
-
-		return PlotData.CONTENT_TYPE_PLOT_DATA;
+		switch (match)
+		{
+		case CHART_DATA_LABELED_TIMELINE:
+			return EventData.CONTENT_TYPE_PLOT_DATA;
+		default:
+			return PlotData.CONTENT_TYPE_PLOT_DATA;
+		}
 	}
 
-	@Override
-	public Uri insert(Uri uri, ContentValues contentvalues) {
-		throw new UnsupportedOperationException("Not supported by this provider");
-	}
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
-		// TODO: Re-implement UriMatcher
 		int match = sUriMatcher.match(uri);
-		Log.d(TAG, "UriMatcher match: " + match);
+		Log.d(TAG, "query() UriMatcher match: " + match);
 
 		switch (match)
 		{
 		case CHART_DATA_MULTISERIES:
 		{
-			if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_AXES )) {
+			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
@@ -135,7 +134,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_META )) {
+			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
@@ -200,7 +199,7 @@ public class AceDataContentProvider extends ContentProvider {
 		}
 		case CHART_DATA_LABELED_TIMELINE:
 		{
-			if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_AXES )) {
+			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
@@ -214,7 +213,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_META )) {
+			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
@@ -285,7 +284,7 @@ public class AceDataContentProvider extends ContentProvider {
 		}
 		case CHART_DATA_LABELED_MULTISERIES:
 		{
-			if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_AXES )) {
+			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
@@ -299,7 +298,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (uri.getLastPathSegment().equals( ContentSchema.DATASET_ASPECT_META )) {
+			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
@@ -349,7 +348,17 @@ public class AceDataContentProvider extends ContentProvider {
 	}
 
 	@Override
+	public Uri insert(Uri uri, ContentValues contentvalues) {
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
+	}
+
+	@Override
+	public int delete(Uri uri, String s, String[] as) {
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
+	}
+	
+	@Override
 	public int update(Uri uri, ContentValues contentvalues, String s, String[] as) {
-		throw new UnsupportedOperationException("Not supported by this provider");
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
 	}
 }
