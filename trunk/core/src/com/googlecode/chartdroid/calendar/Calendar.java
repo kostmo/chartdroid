@@ -34,7 +34,7 @@ public class Calendar extends Activity {
 
     final static public String TAG = "Calendar";
 
-	static final int RETURN_CODE_EVENT_SELECTION = 1;
+	static final int REQUEST_CODE_EVENT_SELECTION = 1;
 	
 	public static class SimpleEvent implements Comparable<SimpleEvent> {
 
@@ -165,7 +165,7 @@ public class Calendar extends Activity {
 					
 					i.putExtra(IntentConstants.INTENT_EXTRA_DATE, day.d.getTime());
 					i.setClass(Calendar.this, EventListActivity.class);
-					startActivityForResult(i, RETURN_CODE_EVENT_SELECTION);
+					startActivityForResult(i, REQUEST_CODE_EVENT_SELECTION);
 				}
 			}
         });
@@ -329,7 +329,7 @@ public class Calendar extends Activity {
         }
         
   	   	switch (requestCode) {
-   		case RETURN_CODE_EVENT_SELECTION:
+   		case REQUEST_CODE_EVENT_SELECTION:
    		{
    			
    			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);

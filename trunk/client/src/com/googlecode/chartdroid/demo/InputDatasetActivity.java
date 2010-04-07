@@ -3,8 +3,6 @@ package com.googlecode.chartdroid.demo;
 import com.googlecode.chartdroid.demo.provider.DatabaseStoredData;
 import com.googlecode.chartdroid.demo.provider.LocalStorageContentProvider;
 
-import org.achartengine.demo.data.TimelineData;
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,12 +40,13 @@ public class InputDatasetActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
 
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.manual_datasets_activity);
         getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.titlebar_icon);
 
+        
+        final InputMethodManager input = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
     	final EditText edit_text = (EditText) findViewById(R.id.datum_value_field);
     	final DatePicker date_picker = (DatePicker) findViewById(R.id.date_picker_widget);
@@ -61,12 +63,36 @@ public class InputDatasetActivity extends ListActivity {
             	event_datum.timestamp = date.getTime();
             	event_datum.value = Float.parseFloat(edit_text.getText().toString());
             	event_list.add(event_datum);
-            	
             	((BaseAdapter) getListView().getAdapter()).notifyDataSetChanged();
+            	
+//            	input.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
         
-
+        
+        edit_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                	input.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+//        input.hideSoftInputFromWindow(edit_text.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY); 
+        
+        
+        findViewById(R.id.button_clear_manual_data).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	
+            	event_list.clear();
+            	((BaseAdapter) getListView().getAdapter()).notifyDataSetChanged();
+            	
+            	DatabaseStoredData database = new DatabaseStoredData(InputDatasetActivity.this);
+            	int deleted_count = database.deleteAllData();
+            	Toast.makeText(InputDatasetActivity.this, "Deleted " + deleted_count + " old records.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
         findViewById(R.id.button_graph_manual_data).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
 
@@ -96,7 +122,12 @@ public class InputDatasetActivity extends ListActivity {
     	public String label;
     }
     
-    
+    @Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+    	event_list.remove(position);
+    	((BaseAdapter) getListView().getAdapter()).notifyDataSetChanged();
+    	
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -78,6 +78,25 @@ public class DatabaseStoredData extends SQLiteOpenHelper
     }
 
     // ============================================================
+    public int deleteAllData() {
+
+    	SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+		
+		int deletion_count = db.delete(TABLE_DATA, null, null);
+		int deleted_dataset_count = db.delete(TABLE_DATASETS, null, null);
+
+	    try {
+	    	db.setTransactionSuccessful();
+	    } finally {
+	    	db.endTransaction();
+	    }
+	    db.close();
+	    
+	    return deletion_count;
+    }
+    
+    // ============================================================
     public long storeEvents(List<EventDatum> event_list) {
     	
     	SQLiteDatabase db = getWritableDatabase();

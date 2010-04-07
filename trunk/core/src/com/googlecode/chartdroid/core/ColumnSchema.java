@@ -1,14 +1,14 @@
-package org.achartengine.demo;
+package com.googlecode.chartdroid.core;
 
 import android.content.ContentResolver;
 import android.provider.BaseColumns;
 
 
-public final class ContentSchema {
-
+public final class ColumnSchema {
 
 	public static final int X_AXIS_INDEX = 0;
 	public static final int Y_AXIS_INDEX = 1;
+
 
 	public static final String DATASET_ASPECT_PARAMETER = "aspect";
 	public static final String DATASET_ASPECT_DATA = "data";
@@ -21,6 +21,18 @@ public final class ContentSchema {
 
 
 
+
+	// ==== COLUMNS ====
+
+	public static final String COLUMN_SERIES_INDEX = "COLUMN_SERIES_INDEX";
+	public static final String COLUMN_SERIES_LABEL = "COLUMN_SERIES_LABEL";
+
+	public static final String COLUMN_AXIS_INDEX = "COLUMN_AXIS_INDEX";
+	public static final String COLUMN_AXIS_LABEL = "COLUMN_AXIS_LABEL";
+
+	public static final String COLUMN_DATUM_VALUE = "COLUMN_DATUM_VALUE";
+	public static final String COLUMN_DATUM_LABEL = "COLUMN_DATUM_LABEL";
+
 	public static final class PlotData implements BaseColumns {
 
 		public static final String VND_TYPE_DECLARATION = "vnd.com.googlecode.chartdroid.graphable";
@@ -29,16 +41,16 @@ public final class ContentSchema {
 
 		public static final String CONTENT_TYPE_PLOT_DATA = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + VND_TYPE_DECLARATION;
 		public static final String CONTENT_TYPE_ITEM_PLOT_DATA = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + VND_TYPE_DECLARATION;
+	}
 
-		// ==== COLUMNS ====
 
-		public static final String COLUMN_SERIES_INDEX = "COLUMN_SERIES_INDEX";
-		public static final String COLUMN_SERIES_LABEL = "COLUMN_SERIES_LABEL";
+	public static final class EventData implements BaseColumns {
 
-		public static final String COLUMN_AXIS_INDEX = "COLUMN_AXIS_INDEX";
-		public static final String COLUMN_AXIS_LABEL = "COLUMN_AXIS_LABEL";
+		public static final String VND_TYPE_DECLARATION = "vnd.com.googlecode.chartdroid.timeline";
 
-		public static final String COLUMN_DATUM_VALUE = "COLUMN_DATUM_VALUE";
-		public static final String COLUMN_DATUM_LABEL = "COLUMN_DATUM_LABEL";
+		// ==== CONTENT TYPES ====
+
+		public static final String CONTENT_TYPE_PLOT_DATA = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + VND_TYPE_DECLARATION;
+		public static final String CONTENT_TYPE_ITEM_PLOT_DATA = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + VND_TYPE_DECLARATION;
 	}
 }

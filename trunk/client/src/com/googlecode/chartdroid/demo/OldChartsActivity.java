@@ -27,7 +27,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 
 	
 
-	final int RETURN_CODE_CALENDAR_SELECTION = 1;
+	final int REQUEST_CODE_CALENDAR_SELECTION = 1;
 	
 	
     public static final String[] demo_pie_labels = new String[] {
@@ -133,7 +133,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 			i.putExtra(IntentConstants.EXTRA_EVENT_IDS, event_ids);
 			i.putExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS, event_times);
 			
-            Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, RETURN_CODE_CALENDAR_SELECTION);
+            Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
 			break;
 		}
 		case R.id.button_pie_chart_provider:
@@ -148,7 +148,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 		{
 	    	Uri u = EventContentProvider.constructUri(12345);
 			Intent i = new Intent(Intent.ACTION_VIEW, u);
-			Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, RETURN_CODE_CALENDAR_SELECTION);
+			Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
 			break;
 		}
 		}
@@ -192,7 +192,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
         }
         
   	   	switch (requestCode) {
-   		case RETURN_CODE_CALENDAR_SELECTION:
+   		case REQUEST_CODE_CALENDAR_SELECTION:
    		{
    			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
    			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();

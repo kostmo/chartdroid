@@ -31,6 +31,10 @@
 
 		
 		
+		
+		
+		
+		
         <activity android:name="com.googlecode.chartdroid.demo.SampleDatasetsActivity"
                   android:label="Sample Datasets">
         </activity>

@@ -399,7 +399,8 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		
 
 		Uri intent_data = intent.getData();
-		Uri axes_uri = intent_data.buildUpon().appendEncodedPath( ColumnSchema.DATASET_ASPECT_AXES ).build();
+		Uri axes_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_AXES).build();
+
 //		Log.d(TAG, "Querying content provider for: " + axes_uri);
 
 		List<String> axis_labels = new ArrayList<String>();
@@ -443,12 +444,11 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		
 		Uri intent_data = intent.getData();
 		
-		Uri meta_uri = intent_data.buildUpon().appendEncodedPath( ColumnSchema.DATASET_ASPECT_META ).build();
+		Uri meta_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_META).build();
 //		Log.d(TAG, "Querying content provider for: " + meta_uri);
 
 		Map<Integer, String> series_label_map = new HashMap<Integer, String>();
 		{
-
 			Cursor meta_cursor = managedQuery(meta_uri,
 					new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
 					null, null, null);
@@ -494,7 +494,8 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	// Third-outermost list: Data for a single series
 	protected <T> List<List<List<T>>> getGenericSortedSeriesData(Uri intent_data, DatumExtractor<T> extractor) {
 
-		Uri data_uri = intent_data.buildUpon().appendEncodedPath( ColumnSchema.DATASET_ASPECT_DATA ).build();
+//		Uri data_uri = intent_data.buildUpon().appendEncodedPath( ColumnSchema.DATASET_ASPECT_DATA ).build();
+		Uri data_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_DATA).build();
 //		Log.d(TAG, "Querying content provider for: " + data_uri);
 
 		// Outermost map: Axes

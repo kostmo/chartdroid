@@ -5,7 +5,6 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     >
- 
 
 	<DatePicker
 	    android:id="@+id/date_picker_widget"
@@ -28,17 +27,18 @@
 	    android:id="@+id/datum_value_field"
 		    android:hint="Enter value"
 		    android:inputType="number"
+		    android:nextFocusDown="@+id/button_add_datum"
 		    android:layout_weight="1"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    />
-    
+        
+	    <Button
+		    android:id="@id/button_add_datum"
+		    android:text="Add datum"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+	    />
     </LinearLayout>
-    
-    <Button
-	    android:id="@+id/button_add_datum"
-	    android:text="Add datum"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-    />
+
 </LinearLayout>
