@@ -2,7 +2,7 @@
 #labels Featured
 
 === Apr 7, 2010 ===
-* "aspect" switch
-  * Now use a "query parameter" rather than a final "path segment" to determine whether a cursor is providing, "axes", "meta", or "data" rows. [http://code.google.com/p/chartdroid/wiki/InterfaceSpecification#Content_Provider More details]
-* Finer-grained "presentation" categories
-  * [http://code.google.com/p/chartdroid/wiki/InterfaceSpecification#Data_type More details]
+  * "aspect" switch
+    * Now uses a "query parameter" rather than a final "path segment" to determine whether a cursor is providing, "axes", "meta", or "data" rows. [http://code.google.com/p/chartdroid/wiki/InterfaceSpecification#Content_Provider More details]
+  * Finer-grained "presentation" categories
+    * [http://code.google.com/p/chartdroid/wiki/InterfaceSpecification#Data_type More details]
