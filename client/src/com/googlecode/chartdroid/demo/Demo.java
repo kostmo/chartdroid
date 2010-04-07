@@ -1,31 +1,16 @@
 package com.googlecode.chartdroid.demo;
 
-import com.googlecode.chartdroid.core.IntentConstants;
-import com.googlecode.chartdroid.demo.provider.DataContentProvider;
-import com.googlecode.chartdroid.demo.provider.EventContentProvider;
-
-import org.achartengine.demo.data.DonutData;
-import org.achartengine.demo.data.TemperatureData;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Random;
 
 public class Demo extends Activity implements View.OnClickListener {
     
