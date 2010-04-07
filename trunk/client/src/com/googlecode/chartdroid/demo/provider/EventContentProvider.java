@@ -1,7 +1,6 @@
 package com.googlecode.chartdroid.demo.provider;
 
 import com.googlecode.chartdroid.core.ContentSchemaOld;
-import com.googlecode.chartdroid.demo.Demo;
 import com.googlecode.chartdroid.demo.OldChartsActivity;
 import com.googlecode.chartdroid.demo.OldChartsActivity.EventWrapper;
 
