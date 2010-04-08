@@ -18,6 +18,7 @@ package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
+import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DoubleDatumExtractor;
@@ -152,6 +153,11 @@ public class LineChartActivity extends XYChartActivity {
 	      ChartFactory.checkParameters(dataset, renderer);
 
 	      XYChart chart = new LineChart(dataset, renderer);
+	      
+			String passed_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+			String y_format = passed_format_string != null ? passed_format_string : "%.1f%%";
+			chart.setYFormat(y_format);
+			
 	      return chart;
 	  }
 }

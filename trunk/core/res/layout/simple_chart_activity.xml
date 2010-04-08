@@ -24,12 +24,12 @@
 		android:src="@drawable/chartdroid_icon"
 	/>
 
-	<org.achartengine.view.PredicateLayout
+	<org.achartengine.view.FlowLayout
 		android:layoutAnimation="@anim/sequential_spin"
 	    android:id="@+id/predicate_layout"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
-	>
-	</org.achartengine.view.PredicateLayout>
+	/>
+	
 
 </LinearLayout>

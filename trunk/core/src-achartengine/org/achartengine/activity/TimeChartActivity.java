@@ -18,6 +18,7 @@ package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
+import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.LabeledDatumExtractor;
@@ -29,8 +30,6 @@ import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 import org.achartengine.view.chart.TimeChart;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 
@@ -166,7 +165,10 @@ public class TimeChartActivity extends XYChartActivity {
 //		Log.i(TAG, "Instantiating TimeChart...");
 		TimeChart chart = new TimeChart(dataset, renderer);
 		chart.setDateFormat("MM/dd/yyyy");
-		chart.setYFormat("%.1f%%");
+		
+		String passed_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+		String y_format = passed_format_string != null ? passed_format_string : "%.1f%%";
+		chart.setYFormat(y_format);
 		
 		return chart;
 	}

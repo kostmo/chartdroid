@@ -25,7 +25,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.SemaphoreHost;
 import org.achartengine.view.GraphicalView;
-import org.achartengine.view.PredicateLayout;
+import org.achartengine.view.FlowLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 
@@ -164,15 +164,15 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	protected abstract void postChartPopulationCallback();
 	
 	// =============================================
-	public void populateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list) {
+	public void populateLegend(FlowLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list) {
 		populateLegend(predicate_layout, series_attributes_list, false);
 	}
 
 	// =============================================
-	public void populateLegend(PredicateLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list, boolean donut_style) {
+	public void populateLegend(FlowLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list, boolean donut_style) {
 		
-		PredicateLayout.LayoutParams lp = new PredicateLayout.LayoutParams(5, 1);
-		predicate_layout.setPredicateLayoutParams(lp);
+		FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(5, 1);
+		predicate_layout.setFlowLayoutParams(lp);
 
 		int i=0;
 		for (DataSeriesAttributes series : series_attributes_list) {

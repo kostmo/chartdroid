@@ -113,8 +113,31 @@ public class InputDatasetActivity extends ListActivity {
         });
         
         setListAdapter(new SimpleEventAdapter(this));
+        
+        final StateObject state = (StateObject) getLastNonConfigurationInstance();
+        if (state != null) {
+
+        	this.event_list = state.event_list;
+        	SimpleEventAdapter sea = (SimpleEventAdapter) getListView().getAdapter();
+        	sea.notifyDataSetChanged();
+        }
     }
 
+    // =============================================    
+    class StateObject {
+    	List<EventDatum> event_list;
+    }
+    
+    // =============================================
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+    	
+    	StateObject state = new StateObject();
+    	state.event_list = this.event_list;
+
+        return state;
+    }
+    
     
     public static class EventDatum {
     	public long timestamp;

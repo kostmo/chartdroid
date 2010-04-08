@@ -22,7 +22,7 @@ import org.achartengine.ChartFactory;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.view.PredicateLayout;
+import org.achartengine.view.FlowLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.DoughnutChart;
 
@@ -57,7 +57,7 @@ public class DonutChartActivity extends GraphicalActivity {
 	@Override
 	protected void postChartPopulationCallback() {
 
-		PredicateLayout predicate_layout = (PredicateLayout) findViewById(R.id.predicate_layout);
+		FlowLayout predicate_layout = (FlowLayout) findViewById(R.id.predicate_layout);
 
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list, true);

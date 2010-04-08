@@ -13,7 +13,7 @@
 		android:layout_weight="1"
 		android:gravity="center_vertical">
 
-		<org.achartengine.view.LabelView
+		<org.achartengine.view.VerticalLabelView
 			android:id="@+id/chart_y_axis_title"
 			app:text="y axis label"
 			app:textColor="@android:color/primary_text_dark"

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 The Android Open Source Project
+ * Copyright (C) 2010 Karl Ostmo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import android.view.View;
  * styled text or right-to-left writing systems.
  *
  */
-public class LabelView extends View {
+public class VerticalLabelView extends View {
     private Paint mTextPaint;
     private String mText;
     private int mAscent;
@@ -51,7 +51,7 @@ public class LabelView extends View {
      * the object manually (not from a layout XML file).
      * @param context
      */
-    public LabelView(Context context) {
+    public VerticalLabelView(Context context) {
         super(context);
         initLabelView();
     }
@@ -63,33 +63,24 @@ public class LabelView extends View {
      * 
      * @see android.view.View#View(android.content.Context, android.util.AttributeSet)
      */
-    public LabelView(Context context, AttributeSet attrs) {
+    public VerticalLabelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initLabelView();
 
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalLabelView);
 
-        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.LabelView);
-
-        CharSequence s = a.getString(R.styleable.LabelView_text);
-        if (s != null) {
-            setText(s.toString());
-        }
+        CharSequence s = a.getString(R.styleable.VerticalLabelView_text);
+        if (s != null) setText(s.toString());
 
         // Retrieve the color(s) to be used for this view and apply them.
         // Note, if you only care about supporting a single color, that you
         // can instead call a.getColor() and pass that to setTextColor().
-        setTextColor(a.getColor(R.styleable.LabelView_textColor, 0xFF000000));
+        setTextColor(a.getColor(R.styleable.VerticalLabelView_textColor, 0xFF000000));
 
-        int textSize = a.getDimensionPixelOffset(R.styleable.LabelView_textSize, 0);
-        if (textSize > 0) {
-            setTextSize(textSize);
-        }
-        
+        int textSize = a.getDimensionPixelOffset(R.styleable.VerticalLabelView_textSize, 0);
+        if (textSize > 0) setTextSize(textSize);
+
         a.recycle();
-
-
-        mTextPaint.getTextBounds(mText, 0, mText.length(), text_bounds);
     }
 
     private final void initLabelView() {
@@ -135,6 +126,9 @@ public class LabelView extends View {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        mTextPaint.getTextBounds(mText, 0, mText.length(), text_bounds);
+    	
         setMeasuredDimension(
         		measureWidth(widthMeasureSpec),
                 measureHeight(heightMeasureSpec));
@@ -155,14 +149,7 @@ public class LabelView extends View {
             result = specSize;
         } else {
             // Measure the text
-        	
-        	
-
-//    		int text_width = text_bounds.right - text_bounds.left;
-        	int text_height = text_bounds.bottom - text_bounds.top;
-//            result = (int) mTextPaint.measureText(mText) + getPaddingLeft() + getPaddingRight();
-    		result = text_height + getPaddingLeft() + getPaddingRight();
-            
+    		result = text_bounds.height() + getPaddingLeft() + getPaddingRight();
             
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
@@ -188,17 +175,9 @@ public class LabelView extends View {
             // We were told how big to be
             result = specSize;
         } else {
-        	
-            // Measure the text (beware: ascent is a negative number)
-        	
+            // Measure the text
+    		result = text_bounds.width() + getPaddingTop() + getPaddingBottom();
 
-//    		int text_height = text_bounds.bottom - text_bounds.top;
-        	int text_width = text_bounds.right - text_bounds.left;
-    		result = text_width + getPaddingTop() + getPaddingBottom();
-            //result = (int) (-mAscent + mTextPaint.descent()) + getPaddingTop() + getPaddingBottom();
-
-    		result += 50;	// FIXME - Fudge factor
-            
             if (specMode == MeasureSpec.AT_MOST) {
                 // Respect AT_MOST value if that was what is called for by measureSpec
                 result = Math.min(result, specSize);
@@ -215,23 +194,17 @@ public class LabelView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-//        Log.i("BAR", "Left padding: " + getPaddingLeft());
-//        Log.i("BAR", "Right padding: " + getPaddingRight());
-//        Log.i("BAR", "Top padding: " + getPaddingTop());
-//        Log.i("BAR", "Bottom padding: " + getPaddingBottom());
-        
 
 		int text_width = text_bounds.right - text_bounds.left;
         float text_horizontally_centered_origin_x = getPaddingLeft() + text_width/2f;
 
         float text_horizontally_centered_origin_y = getPaddingTop() - mAscent;
         
-        canvas.save();	// TODO: Are these necessary?
+//        canvas.save();	// TODO: Are these necessary?
         canvas.translate(text_horizontally_centered_origin_y, text_horizontally_centered_origin_x);
         canvas.rotate(-90);
         
         canvas.drawText(mText, 0, 0, mTextPaint);
-        canvas.restore();	// TODO: Are these necessary?
+//        canvas.restore();	// TODO: Are these necessary?
     }
 }
