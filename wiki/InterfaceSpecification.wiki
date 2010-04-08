@@ -1,6 +1,8 @@
 #summary Interface specification for Intents and Content Providers
 #labels Featured
 
+<wiki:toc max_depth="3" />
+
 =Charts in version 2.x=
 
 ==Data type==
@@ -138,10 +140,11 @@ If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present, the axis
 The only really "mandatory" query in your Content Provider is `data`; other aspects of the chart may be delivered through Intent extras.  The Intent extras, if present, take precedence over the Content Provider.
 
 || *Key* || *Data type* ||
+|| `Intent.EXTRA_TITLE` || `String` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_COLORS` || `int[]` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_LABELS ` || `String[]` ||
 || `com.googlecode.chartdroid.intent.extra.AXIS_TITLES` || `ArrayList<String>` ||
-|| `Intent.EXTRA_TITLE` || `String` ||
+|| `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` ||
 
 
 =Charts in version 1.x=
