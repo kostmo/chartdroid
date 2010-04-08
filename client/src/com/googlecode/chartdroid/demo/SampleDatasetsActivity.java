@@ -24,14 +24,11 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
 
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.sample_datasets_activity);
         getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.titlebar_icon);
 
-
-        
         for (int view : new int[] {
         		R.id.button_timeline_data_provider,
         		R.id.button_multiseries_data_provider,
@@ -43,8 +40,6 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
         		}) {
         	findViewById(view).setOnClickListener(this);
         }
-        
-
     }
     
     // ========================================================================
@@ -120,9 +115,10 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 			break;
 		}
 		case R.id.button_labeled_multiseries_data_provider:
-		{
+		{ 
 			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
             i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
 			break;
 		}
@@ -130,6 +126,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
 			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
             i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
 			break;
@@ -138,12 +135,12 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
 			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
             i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		}
-		
 	}
     
 

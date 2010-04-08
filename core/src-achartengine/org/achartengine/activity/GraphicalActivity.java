@@ -21,11 +21,9 @@ import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.consumer.DatumExtractor;
 import org.achartengine.renderer.AxesManager;
-import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.SemaphoreHost;
-import org.achartengine.view.GraphicalView;
 import org.achartengine.view.FlowLayout;
+import org.achartengine.view.GraphicalView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 
@@ -69,8 +67,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 abstract public class GraphicalActivity extends Activity implements SemaphoreHost {
 
-
-	protected static final String TAG = "ChartDroid"; 
+	protected static final String TAG = "ChartDroid";
+	
+	// This is what fraction of the data span the axes limits will be padded by
+	public static double HEADROOM_FOOTROOM_FRACTION = 0.1;
 
 	/** The encapsulated graphical view. */
 	protected GraphicalView mView;

@@ -42,9 +42,6 @@ import java.util.List;
  */
 public class TimeChartActivity extends XYChartActivity {
 
-	// This is what fraction of the data span the axes limits will be padded by
-	public static double HEADROOM_FOOTROOM_FRACTION = 0.1;
-	
 	@Override
 	protected int getTitlebarIconResource() {
 		return R.drawable.typepointline;
@@ -77,7 +74,7 @@ public class TimeChartActivity extends XYChartActivity {
 		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDatumExtractor());
 
 
-		if (! (sorted_series_list.size() >= 1) ) {
+		if ( !(sorted_series_list.size() > 0) ) {
 			throw new IllegalArgumentException("There are no series!");
 		}
 

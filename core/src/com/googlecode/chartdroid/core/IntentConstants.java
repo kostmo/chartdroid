@@ -10,6 +10,7 @@ public class IntentConstants {
 	public static final String EXTRA_SERIES_LABELS = "com.googlecode.chartdroid.intent.extra.SERIES_LABELS";
 	public static final String EXTRA_AXIS_TITLES = "com.googlecode.chartdroid.intent.extra.AXIS_TITLES";
     
+	public static final String EXTRA_FORMAT_STRING_X = "com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X";
 	public static final String EXTRA_FORMAT_STRING_Y = "com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y";
 	
     
