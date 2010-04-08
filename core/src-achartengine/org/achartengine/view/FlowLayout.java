@@ -19,7 +19,7 @@ import android.view.ViewGroup;
  * @see http://stackoverflow.com/questions/549451/line-breaking-widget-layout-for-android
  *
  */
-public class PredicateLayout extends ViewGroup {
+public class FlowLayout extends ViewGroup {
 
     private int line_height;
 
@@ -40,11 +40,11 @@ public class PredicateLayout extends ViewGroup {
 
     LayoutParams reflow_layout_params;
     
-    public PredicateLayout(Context context) {
+    public FlowLayout(Context context) {
         super(context);
     }
     
-    public PredicateLayout(Context context, AttributeSet attrs){
+    public FlowLayout(Context context, AttributeSet attrs){
     	super(context, attrs);
     	
     	reflow_layout_params = (LayoutParams) generateDefaultLayoutParams();
@@ -97,7 +97,7 @@ public class PredicateLayout extends ViewGroup {
         return new LayoutParams(1, 1); // default of 1px spacing
     }
 
-    public void setPredicateLayoutParams(LayoutParams lp) {
+    public void setFlowLayoutParams(LayoutParams lp) {
     	reflow_layout_params = lp;
     }
     

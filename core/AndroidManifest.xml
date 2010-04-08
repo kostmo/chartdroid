@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.googlecode.chartdroid"
-      android:versionCode="13" android:versionName="1.9.6">
+      android:versionCode="15" android:versionName="1.9.8">
     <application android:icon="@drawable/chartdroid_icon" android:label="@string/app_name">
 
 		<!-- Intent filters for version 1.x of ChartDroid -->
@@ -42,7 +42,10 @@
         
         
         
+		<!-- ========================================================== -->
 		<!-- Intent filters for version 2.x of ChartDroid -->
+		
+        <!-- Timeline Charts -->
         <activity android:name="org.achartengine.activity.TimeChartActivity" 
         	android:label="Time Chart" android:icon="@drawable/icon_type_line">
             <intent-filter>
@@ -52,11 +55,20 @@
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.timeline"/>
 		    </intent-filter>
         </activity>
+        
+        <!-- XY Charts -->
         <activity android:name="org.achartengine.activity.LineChartActivity" 
         	android:label="Line Chart" android:icon="@drawable/icon_type_line">
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
+		    
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="com.googlecode.chartdroid.intent.category.XY_CHART" />
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
@@ -67,6 +79,13 @@
 				<category android:name="android.intent.category.DEFAULT"/>
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
+		    
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="com.googlecode.chartdroid.intent.category.XY_CHART" />
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
         </activity>
         <activity android:name="org.achartengine.activity.BarChartActivity" 
         	android:label="Bar Chart" android:icon="@drawable/icon_type_bar">
@@ -75,12 +94,30 @@
 				<category android:name="android.intent.category.DEFAULT"/>
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
+		    
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="com.googlecode.chartdroid.intent.category.XY_CHART" />
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
         </activity>
+        
+        
+        
+        <!-- Radial Charts -->
         <activity android:name="org.achartengine.activity.DonutChartActivity" 
         	android:label="Donut Chart" android:icon="@drawable/icon_type_donut">
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
+
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="com.googlecode.chartdroid.intent.category.PIE_CHART" />
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
@@ -89,6 +126,13 @@
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
+		    
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="com.googlecode.chartdroid.intent.category.PIE_CHART" />
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>

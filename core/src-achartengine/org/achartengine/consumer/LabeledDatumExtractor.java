@@ -27,7 +27,8 @@ public class LabeledDatumExtractor implements DatumExtractor<LabeledDatum> {
 		LabeledDatum labeled_datum = new LabeledDatum();
 		
 		labeled_datum.datum = new DualNumber(cursor, dataColumn);
-		labeled_datum.label = cursor.getString(labelColumn);
+		if (labelColumn >= 0)
+			labeled_datum.label = cursor.getString(labelColumn);
 		return labeled_datum;
 	}
 }

@@ -20,8 +20,8 @@ import com.googlecode.chartdroid.R;
 
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.view.LabelView;
-import org.achartengine.view.PredicateLayout;
+import org.achartengine.view.VerticalLabelView;
+import org.achartengine.view.FlowLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.XYChart;
 
@@ -68,10 +68,10 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		
 		
 		((TextView) findViewById(R.id.chart_x_axis_title)).setText( xy_chart.getRenderer().getXTitle() );
-		((LabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );
+		((VerticalLabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );
 
 		
-		PredicateLayout predicate_layout = (PredicateLayout) findViewById(R.id.predicate_layout);
+		FlowLayout predicate_layout = (FlowLayout) findViewById(R.id.predicate_layout);
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list);
 	}

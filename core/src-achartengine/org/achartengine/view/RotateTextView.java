@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 
+@Deprecated
 public class RotateTextView extends TextView
 {
 
