@@ -144,6 +144,7 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `com.googlecode.chartdroid.intent.extra.SERIES_COLORS` || `int[]` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_LABELS ` || `String[]` ||
 || `com.googlecode.chartdroid.intent.extra.AXIS_TITLES` || `ArrayList<String>` ||
+|| `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X` || `String` ||
 || `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` ||
 
 
