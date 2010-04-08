@@ -31,9 +31,8 @@ import android.graphics.Paint;
  */
 public class TimeChart extends LineChart {
   /** The number of milliseconds in a day. */
-  public static final long DAY = 24 * 60 * 60 * 1000;
-  /** The date format pattern to be used in formatting the X axis  labels. */
-  private String mDateFormat;
+  public static final long DAY_MS = 24 * 60 * 60 * 1000;
+
 
   /**
    * Builds a new time chart instance.
@@ -50,7 +49,7 @@ public class TimeChart extends LineChart {
    * @return the date format pattern for the X axis labels
    */
   public String getDateFormat() {
-    return mDateFormat;
+    return getXFormat();
   }
   
   /**
@@ -59,7 +58,7 @@ public class TimeChart extends LineChart {
    * If null, an appropriate default format will be used.
    */
   public void setDateFormat(String format) {
-    mDateFormat = format;
+	  setXFormat(format);
   }
   
   /**
@@ -103,10 +102,10 @@ public class TimeChart extends LineChart {
    * @return the date format
    */
   private DateFormat getDateFormat(double start, double end) {
-    if (mDateFormat != null) {
+    if (getDateFormat() != null) {
       SimpleDateFormat format = null;
       try {
-        format = new SimpleDateFormat(mDateFormat);
+        format = new SimpleDateFormat(getDateFormat());
         return format;
       } catch (Exception e) {
         // do nothing here
@@ -114,9 +113,9 @@ public class TimeChart extends LineChart {
     }
     DateFormat format = SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
     double diff = end - start;
-    if (diff > DAY && diff < 5 * DAY) {
+    if (diff > DAY_MS && diff < 5 * DAY_MS) {
       format = SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT);
-    } else if (diff < DAY) {
+    } else if (diff < DAY_MS) {
       format = SimpleDateFormat.getTimeInstance(SimpleDateFormat.MEDIUM);
     }
     return format;

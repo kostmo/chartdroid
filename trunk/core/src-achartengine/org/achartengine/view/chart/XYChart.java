@@ -68,15 +68,22 @@ public abstract class XYChart extends AbstractChart {
 	/** The grid color. */
 	protected static final int GRID_COLOR = Color.argb(75, 200, 200, 200);
 
-	private String y_format;
+	private String y_format, x_format;
 	public void setYFormat(String format_string) {
 		this.y_format = format_string;
 	}
-	
+
 	public String getYFormat() {
 		return this.y_format;
 	}
 	
+	public void setXFormat(String format_string) {
+		this.x_format = format_string;
+	}
+	
+	public String getXFormat() {
+		return this.x_format;
+	}
 	
 	
 	/**
@@ -409,7 +416,12 @@ public abstract class XYChart extends AbstractChart {
 	 * @return the label without the useless fraction digit
 	 */
 	protected String getLabel(Number label) {
-		String format_string = getYFormat();
+		return getLabel(label, true);
+	}
+	
+	
+	protected String getLabel(Number label, boolean yaxis) {
+		String format_string = yaxis ? getYFormat() : getXFormat();
 		if (format_string != null)
 			return String.format(format_string, label);
 			
@@ -446,7 +458,7 @@ public abstract class XYChart extends AbstractChart {
 			if (showLabels) {
 				paint.setColor(mRenderer.getLabelsColor());
 				canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);
-				drawText(canvas, getLabel(label), xLabel, bottom + 12, paint, 0);
+				drawText(canvas, getLabel(label, false), xLabel, bottom + 12, paint, 0);
 			}
 			if (showGrid) {
 				paint.setColor(GRID_COLOR);

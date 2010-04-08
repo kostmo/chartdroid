@@ -31,180 +31,121 @@ import android.util.AttributeSet;
 import android.view.View;
 
 
-/**
- * Example of how to write a custom subclass of View. LabelView
- * is used to draw simple text views. Note that it does not handle
- * styled text or right-to-left writing systems.
- *
- */
 public class VerticalLabelView extends View {
-    private Paint mTextPaint;
-    private String mText;
-    private int mAscent;
-    
-    final int DEFAULT_TEXT_SIZE = 15;
+	private Paint mTextPaint;
+	private String mText;
+	private int mAscent;
+	private Rect text_bounds = new Rect();
 
-	Rect text_bounds = new Rect();
-    
-    /**
-     * Constructor.  This version is only needed if you will be instantiating
-     * the object manually (not from a layout XML file).
-     * @param context
-     */
-    public VerticalLabelView(Context context) {
-        super(context);
-        initLabelView();
-    }
+	final static int DEFAULT_TEXT_SIZE = 15;
 
-    /**
-     * Construct object, initializing with any attributes we understand from a
-     * layout file. These attributes are defined in
-     * SDK/assets/res/any/classes.xml.
-     * 
-     * @see android.view.View#View(android.content.Context, android.util.AttributeSet)
-     */
-    public VerticalLabelView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initLabelView();
+	public VerticalLabelView(Context context) {
+		super(context);
+		initLabelView();
+	}
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalLabelView);
+	public VerticalLabelView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initLabelView();
 
-        CharSequence s = a.getString(R.styleable.VerticalLabelView_text);
-        if (s != null) setText(s.toString());
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalLabelView);
 
-        // Retrieve the color(s) to be used for this view and apply them.
-        // Note, if you only care about supporting a single color, that you
-        // can instead call a.getColor() and pass that to setTextColor().
-        setTextColor(a.getColor(R.styleable.VerticalLabelView_textColor, 0xFF000000));
+		CharSequence s = a.getString(R.styleable.VerticalLabelView_text);
+		if (s != null) setText(s.toString());
 
-        int textSize = a.getDimensionPixelOffset(R.styleable.VerticalLabelView_textSize, 0);
-        if (textSize > 0) setTextSize(textSize);
+		setTextColor(a.getColor(R.styleable.VerticalLabelView_textColor, 0xFF000000));
 
-        a.recycle();
-    }
+		int textSize = a.getDimensionPixelOffset(R.styleable.VerticalLabelView_textSize, 0);
+		if (textSize > 0) setTextSize(textSize);
 
-    private final void initLabelView() {
-        mTextPaint = new TextPaint();
-        mTextPaint.setAntiAlias(true);
-        mTextPaint.setTextSize(DEFAULT_TEXT_SIZE);
-        mTextPaint.setColor(0xFF000000);
-        mTextPaint.setTextAlign(Align.CENTER);
-        setPadding(3, 3, 3, 3);
-    }
+		a.recycle();
+	}
 
-    /**
-     * Sets the text to display in this label
-     * @param text The text to display. This will be drawn as one line.
-     */
-    public void setText(String text) {
-        mText = text;
-        requestLayout();
-        invalidate();
-    }
+	private final void initLabelView() {
+		mTextPaint = new TextPaint();
+		mTextPaint.setAntiAlias(true);
+		mTextPaint.setTextSize(DEFAULT_TEXT_SIZE);
+		mTextPaint.setColor(0xFF000000);
+		mTextPaint.setTextAlign(Align.CENTER);
+		setPadding(3, 3, 3, 3);
+	}
 
-    /**
-     * Sets the text size for this label
-     * @param size Font size
-     */
-    public void setTextSize(int size) {
-        mTextPaint.setTextSize(size);
-        requestLayout();
-        invalidate();
-    }
+	public void setText(String text) {
+		mText = text;
+		requestLayout();
+		invalidate();
+	}
 
-    /**
-     * Sets the text color for this label.
-     * @param color ARGB value for the text
-     */
-    public void setTextColor(int color) {
-        mTextPaint.setColor(color);
-        invalidate();
-    }
+	public void setTextSize(int size) {
+		mTextPaint.setTextSize(size);
+		requestLayout();
+		invalidate();
+	}
 
-    /**
-     * @see android.view.View#measure(int, int)
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	public void setTextColor(int color) {
+		mTextPaint.setColor(color);
+		invalidate();
+	}
 
-        mTextPaint.getTextBounds(mText, 0, mText.length(), text_bounds);
-    	
-        setMeasuredDimension(
-        		measureWidth(widthMeasureSpec),
-                measureHeight(heightMeasureSpec));
-    }
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-    /**
-     * Determines the width of this view
-     * @param measureSpec A measureSpec packed into an int
-     * @return The width of the view, honoring constraints from measureSpec
-     */
-    private int measureWidth(int measureSpec) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
+		mTextPaint.getTextBounds(mText, 0, mText.length(), text_bounds);
+		setMeasuredDimension(
+				measureWidth(widthMeasureSpec),
+				measureHeight(heightMeasureSpec));
+	}
 
-        if (specMode == MeasureSpec.EXACTLY) {
-            // We were told how big to be
-            result = specSize;
-        } else {
-            // Measure the text
-    		result = text_bounds.height() + getPaddingLeft() + getPaddingRight();
-            
-            if (specMode == MeasureSpec.AT_MOST) {
-                // Respect AT_MOST value if that was what is called for by measureSpec
-                result = Math.min(result, specSize);
-            }
-        }
+	private int measureWidth(int measureSpec) {
+		int result = 0;
+		int specMode = MeasureSpec.getMode(measureSpec);
+		int specSize = MeasureSpec.getSize(measureSpec);
 
-        return result;
-    }
+		if (specMode == MeasureSpec.EXACTLY) {
+			// We were told how big to be
+			result = specSize;
+		} else {
+			// Measure the text
+			result = text_bounds.height() + getPaddingLeft() + getPaddingRight();
 
-    /**
-     * Determines the height of this view
-     * @param measureSpec A measureSpec packed into an int
-     * @return The height of the view, honoring constraints from measureSpec
-     */
-    private int measureHeight(int measureSpec) {
-        int result = 0;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
+			if (specMode == MeasureSpec.AT_MOST) {
+				// Respect AT_MOST value if that was what is called for by measureSpec
+				result = Math.min(result, specSize);
+			}
+		}
+		return result;
+	}
 
-        mAscent = (int) mTextPaint.ascent();
-        if (specMode == MeasureSpec.EXACTLY) {
-            // We were told how big to be
-            result = specSize;
-        } else {
-            // Measure the text
-    		result = text_bounds.width() + getPaddingTop() + getPaddingBottom();
+	private int measureHeight(int measureSpec) {
+		int result = 0;
+		int specMode = MeasureSpec.getMode(measureSpec);
+		int specSize = MeasureSpec.getSize(measureSpec);
 
-            if (specMode == MeasureSpec.AT_MOST) {
-                // Respect AT_MOST value if that was what is called for by measureSpec
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
+		mAscent = (int) mTextPaint.ascent();
+		if (specMode == MeasureSpec.EXACTLY) {
+			// We were told how big to be
+			result = specSize;
+		} else {
+			// Measure the text
+			result = text_bounds.width() + getPaddingTop() + getPaddingBottom();
 
-    /**
-     * Render the text
-     * 
-     * @see android.view.View#onDraw(android.graphics.Canvas)
-     */
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+			if (specMode == MeasureSpec.AT_MOST) {
+				// Respect AT_MOST value if that was what is called for by measureSpec
+				result = Math.min(result, specSize);
+			}
+		}
+		return result;
+	}
 
-		int text_width = text_bounds.right - text_bounds.left;
-        float text_horizontally_centered_origin_x = getPaddingLeft() + text_width/2f;
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 
-        float text_horizontally_centered_origin_y = getPaddingTop() - mAscent;
-        
-//        canvas.save();	// TODO: Are these necessary?
-        canvas.translate(text_horizontally_centered_origin_y, text_horizontally_centered_origin_x);
-        canvas.rotate(-90);
-        
-        canvas.drawText(mText, 0, 0, mTextPaint);
-//        canvas.restore();	// TODO: Are these necessary?
-    }
+		float text_horizontally_centered_origin_x = getPaddingLeft() + text_bounds.width()/2f;
+		float text_horizontally_centered_origin_y = getPaddingTop() - mAscent;
+
+		canvas.translate(text_horizontally_centered_origin_y, text_horizontally_centered_origin_x);
+		canvas.rotate(-90);
+		canvas.drawText(mText, 0, 0, mTextPaint);
+	}
 }

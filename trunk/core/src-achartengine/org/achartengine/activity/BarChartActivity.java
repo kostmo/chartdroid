@@ -49,145 +49,147 @@ public class BarChartActivity extends XYChartActivity {
 		return R.drawable.typebar;
 	}
 
-  
-  // ---------------------------------------------
-  @Override
-  protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
-    
-    List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new DoubleDatumExtractor());
-    
-    assert( sorted_series_list.size() >= 1 );
-    
-    List<List<Number>> x_axis_series, y_axis_series = null;
-    if (sorted_series_list.size() == 1) {
-        // Let the Y-axis carry the only data.
-        x_axis_series = new ArrayList<List<Number>>();
-        y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
-        
-    } else {
-        x_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.X_AXIS_INDEX );
-        y_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX );    
-    }
-    
-    
-    assert (x_axis_series.size() == y_axis_series.size()
-        || x_axis_series.size() == 1
-        || x_axis_series.size() == 0);
-
-      String[] titles = getSortedSeriesTitles();
-
-      assert (titles.length == y_axis_series.size());
+	// ---------------------------------------------
+	@Override
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-      assert (titles.length == y_axis_series.get(0).size());
-      
-      
-      // If there is no x-axis data, just fill it in by numbering the y-elements.
-      List<Number> prototypical_x_values; 
-      if (x_axis_series.size() == 0) {
-        for (int i=0; i < y_axis_series.size(); i++) {
-          prototypical_x_values = new ArrayList<Number>();
-          x_axis_series.add( prototypical_x_values );
-          for (int j=0; j < y_axis_series.get(i).size(); j++)
-            prototypical_x_values.add(j);
-        }
-      }
+		List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new DoubleDatumExtractor());
 
-      
-      // Replicate the X-axis data for each series if necessary
-      if (x_axis_series.size() == 1) {
-        Log.i(TAG, "Replicating x-axis series...");
-        prototypical_x_values = x_axis_series.get(0);
-        Log.d(TAG, "Size of prototypical x-set: " + prototypical_x_values.size());
-        while (x_axis_series.size() < titles.length)
-          x_axis_series.add( prototypical_x_values );
-      }
+		assert( sorted_series_list.size() >= 1 );
 
-      
-      int[] colors = new int[titles.length];
-      PointStyle[] styles =  new PointStyle[titles.length];
-      for (int i=0; i<titles.length; i++) {
-          colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-          styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
-      }
+		List<List<Number>> x_axis_series, y_axis_series = null;
+		if (sorted_series_list.size() == 1) {
+			// Let the Y-axis carry the only data.
+			x_axis_series = new ArrayList<List<Number>>();
+			y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
 
-      
-      
-      List<String> axis_labels = getAxisTitles();
-      
-      
-      
-      
-      
-      XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
-      
-      
+		} else {
+			x_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.X_AXIS_INDEX );
+			y_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX );    
+		}
 
-      String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-      String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
-      String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
-      Log.d(TAG, "X LABEL: " + x_label);
-      Log.d(TAG, "X LABEL: " + y_label);
-      Log.d(TAG, "chart_title: " + chart_title);
-      
-      org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label,
-          Color.LTGRAY, Color.GRAY);
-      renderer.setXLabels(12);
-      
-      // FIXME: Generate dynamically
+
+		assert (x_axis_series.size() == y_axis_series.size()
+				|| x_axis_series.size() == 1
+				|| x_axis_series.size() == 0);
+
+		String[] titles = getSortedSeriesTitles();
+
+		assert (titles.length == y_axis_series.size());
+
+
+		assert (titles.length == y_axis_series.get(0).size());
+
+
+		// If there is no x-axis data, just fill it in by numbering the y-elements.
+		List<Number> prototypical_x_values; 
+		if (x_axis_series.size() == 0) {
+			for (int i=0; i < y_axis_series.size(); i++) {
+				prototypical_x_values = new ArrayList<Number>();
+				x_axis_series.add( prototypical_x_values );
+				for (int j=0; j < y_axis_series.get(i).size(); j++)
+					prototypical_x_values.add(j);
+			}
+		}
+
+
+		// Replicate the X-axis data for each series if necessary
+		if (x_axis_series.size() == 1) {
+			Log.i(TAG, "Replicating x-axis series...");
+			prototypical_x_values = x_axis_series.get(0);
+			Log.d(TAG, "Size of prototypical x-set: " + prototypical_x_values.size());
+			while (x_axis_series.size() < titles.length)
+				x_axis_series.add( prototypical_x_values );
+		}
+
+
+		int[] colors = new int[titles.length];
+		PointStyle[] styles =  new PointStyle[titles.length];
+		for (int i=0; i<titles.length; i++) {
+			colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+			styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
+		}
+
+
+
+		List<String> axis_labels = getAxisTitles();
+
+
+
+
+
+		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
+
+
+
+		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
+		String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
+		String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
+		Log.d(TAG, "X LABEL: " + x_label);
+		Log.d(TAG, "X LABEL: " + y_label);
+		Log.d(TAG, "chart_title: " + chart_title);
+
+		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label,
+				Color.LTGRAY, Color.GRAY);
+		renderer.setXLabels(12);
+
+		// FIXME: Generate dynamically
 		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
-      
-      
-      XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset2(titles, y_axis_series);
-
-      ChartFactory.checkParameters(dataset, renderer);
-
-      BarChart chart = new BarChart(dataset, renderer, Type.DEFAULT);
-      
-		String passed_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
-		String y_format = passed_format_string != null ? passed_format_string : "%.1f%%";
-		chart.setYFormat(y_format);
-
-      return chart;
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-      super.onCreateOptionsMenu(menu);
 
 
-	menu.findItem(R.id.menu_toggle_stacked).setVisible(true);
-      return true;
-  }
-  
-  
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
-      case R.id.menu_toggle_stacked:
-      {
+		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset2(titles, y_axis_series);
 
-          BarChart bc = (BarChart) mChart;
-          bc.setType( bc.getType().equals(Type.DEFAULT) ? Type.STACKED : Type.DEFAULT);
+		ChartFactory.checkParameters(dataset, renderer);
 
-          mView.repaint();
-          return true;
-      }
-      }
+		BarChart chart = new BarChart(dataset, renderer, Type.DEFAULT);
 
-      return super.onOptionsItemSelected(item);
-  }
+		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
+		if (x_format != null) chart.setXFormat(x_format);
+
+		String y_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+		if (y_format != null) chart.setYFormat(y_format);
+
+		return chart;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+
+		menu.findItem(R.id.menu_toggle_stacked).setVisible(true);
+		return true;
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_toggle_stacked:
+		{
+
+			BarChart bc = (BarChart) mChart;
+			bc.setType( bc.getType().equals(Type.DEFAULT) ? Type.STACKED : Type.DEFAULT);
+
+			mView.repaint();
+			return true;
+		}
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 }
