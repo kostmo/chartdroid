@@ -11,9 +11,9 @@ For event data (values plotted against a time axis; timelines), getType() should
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.timeline`
 
 To limit the presentation options, categories may be added to the Intent:
-  * Radial
+  * Radial: `com.googlecode.chartdroid.intent.category.PIE_CHART`
     * Pie charts and donut charts
-  * X-Y
+  * X-Y: `com.googlecode.chartdroid.intent.category.XY_CHART`
     * Bar charts, line charts
 
 
