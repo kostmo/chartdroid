@@ -5,4 +5,4 @@ Using the same method as [http://www.anddev.org/viewtopic.php?p=30732 described 
 You can [http://code.google.com/p/chartdroid/source/browse/#svn/trunk/market_sales browse the code here].
 
 Android download link:
-<img src="http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market%3A%2F%2Fsearch%3Fq%3Dpname%3Acom.googlecode.chartdroid.market.sales"/>
+http://market.android.com/details?id=com.googlecode.chartdroid.market.sales
