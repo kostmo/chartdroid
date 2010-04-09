@@ -5,4 +5,6 @@ Using the same method as [http://www.anddev.org/viewtopic.php?p=30732 described 
 You can [http://code.google.com/p/chartdroid/source/browse/#svn/trunk/market_sales browse the code here].
 
 Android download link:
-http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=http%3A%2F%2Fmarket.android.com%2Fdetails%3Fid%3Dcom.googlecode.chartdroid.market.sales
+http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=http://market.android.com/details?id=com.googlecode.chartdroid.market.sales
+
+http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=http://twisty.googlecode.com/files/Twisty-0.7.apk&nonsense=foo.png
