@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+
+    <string name="start_date">Start\ndate:</string>
+    <string name="duration">Duration:</string>
+    
+    <string name="start">Start</string>
+    <string name="present">Today</string>
+    
+    
+    
+    <string name="app_name">Android Market Income</string>
+    
+	<string name="login_dialog_password_reassurance"><i>This app maintains password confidentiality.</i></string>
+    <string name="google_login_dialog_title">Please log in with your Google Account</string>
+	    
+	    
+    <string name="login_dialog_title">Log in to Google Checkout</string>
+	    
+    <string name="email">E-mail address</string>
+    <string name="password">Password</string>
+</resources>
