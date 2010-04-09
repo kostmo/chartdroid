@@ -23,7 +23,6 @@ import com.googlecode.chartdroid.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Paint.Align;
 import android.text.TextPaint;
@@ -32,10 +31,10 @@ import android.view.View;
 
 
 public class VerticalLabelView extends View {
-	private Paint mTextPaint;
+	private TextPaint mTextPaint;
 	private String mText;
 	private int mAscent;
-	private Rect text_bounds = new Rect();
+	private Rect mTextBounds = new Rect();
 
 	final static int DEFAULT_TEXT_SIZE = 15;
 
@@ -90,7 +89,7 @@ public class VerticalLabelView extends View {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-		mTextPaint.getTextBounds(mText, 0, mText.length(), text_bounds);
+		mTextPaint.getTextBounds(mText, 0, mText.length(), mTextBounds);
 		setMeasuredDimension(
 				measureWidth(widthMeasureSpec),
 				measureHeight(heightMeasureSpec));
@@ -106,7 +105,7 @@ public class VerticalLabelView extends View {
 			result = specSize;
 		} else {
 			// Measure the text
-			result = text_bounds.height() + getPaddingLeft() + getPaddingRight();
+			result = mTextBounds.height() + getPaddingLeft() + getPaddingRight();
 
 			if (specMode == MeasureSpec.AT_MOST) {
 				// Respect AT_MOST value if that was what is called for by measureSpec
@@ -127,7 +126,7 @@ public class VerticalLabelView extends View {
 			result = specSize;
 		} else {
 			// Measure the text
-			result = text_bounds.width() + getPaddingTop() + getPaddingBottom();
+			result = mTextBounds.width() + getPaddingTop() + getPaddingBottom();
 
 			if (specMode == MeasureSpec.AT_MOST) {
 				// Respect AT_MOST value if that was what is called for by measureSpec
@@ -141,7 +140,7 @@ public class VerticalLabelView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		float text_horizontally_centered_origin_x = getPaddingLeft() + text_bounds.width()/2f;
+		float text_horizontally_centered_origin_x = getPaddingLeft() + mTextBounds.width()/2f;
 		float text_horizontally_centered_origin_y = getPaddingTop() - mAscent;
 
 		canvas.translate(text_horizontally_centered_origin_y, text_horizontally_centered_origin_x);
