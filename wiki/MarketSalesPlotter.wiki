@@ -1,0 +1,3 @@
+#summary Android Market Sales Plotter
+
+Using the same method as [http://www.anddev.org/viewtopic.php?p=30732 described here], this app fetches sales records from Google Checkout, then creates a histogram of them to be plotted with ChartDroid
