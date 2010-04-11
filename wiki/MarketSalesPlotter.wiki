@@ -1,6 +1,7 @@
 #summary Android Market Sales Plotter
+#labels Featured
 
-Using the same method as [http://www.anddev.org/viewtopic.php?p=30732 described here], this app fetches sales records from Google Checkout, then creates a histogram of them to be plotted with ChartDroid.
+This app graphs revenue from the Android Market over time. Using the same method as [http://www.anddev.org/viewtopic.php?p=30732 described here], this app fetches sales records from Google Checkout, then creates a histogram of them to be plotted with ChartDroid.
 
 You can [http://code.google.com/p/chartdroid/source/browse/#svn/trunk/market_sales browse the code here].
 
