@@ -94,6 +94,25 @@ public class DatabaseStorage extends SQLiteOpenHelper
     }
 
     // ============================================================
+    public int deleteOldPlots() {
+
+    	SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+		
+		int deletion_count = db.delete(TABLE_HISTOGRAMMED_SALES, null, null);
+		int deleted_dataset_count = db.delete(TABLE_PLOTS, null, null);
+
+	    try {
+	    	db.setTransactionSuccessful();
+	    } finally {
+	    	db.endTransaction();
+	    }
+	    db.close();
+	    
+	    return deletion_count;
+    }
+    
+    // ============================================================
     public long aggregateForPlot(List<HistogramBin> bins) {
     	
     	SQLiteDatabase db = getWritableDatabase();

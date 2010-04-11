@@ -66,7 +66,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
         }
         case R.id.menu_more_apps:
         {
-	    	Uri market_uri = Uri.parse("market://search?q=" + Market.MARKET_AUTHOR_SEARCH_STRING);
+	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
             return true;
@@ -85,7 +85,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, TimelineData.uri);
             i.putExtra(Intent.EXTRA_TITLE, TimelineData.DEMO_CHART_TITLE);
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_multiseries_data_provider:
@@ -93,7 +93,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_multiseries_data_provider_radial:
@@ -102,7 +102,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
             i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_multiseries_data_provider_xy:
@@ -111,7 +111,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_labeled_multiseries_data_provider:
@@ -119,7 +119,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
             i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_labeled_multiseries_data_provider_radial:
@@ -128,7 +128,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_labeled_multiseries_data_provider_xy:
@@ -137,7 +137,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
-            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		}

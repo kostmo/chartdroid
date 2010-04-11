@@ -70,7 +70,7 @@ public class Demo extends Activity implements View.OnClickListener {
         }
         case R.id.menu_more_apps:
         {
-	    	Uri market_uri = Uri.parse("market://search?q=" + Market.MARKET_AUTHOR_SEARCH_STRING);
+	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
             return true;

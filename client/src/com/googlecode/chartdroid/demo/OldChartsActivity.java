@@ -83,7 +83,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
         }
         case R.id.menu_more_apps:
         {
-	    	Uri market_uri = Uri.parse("market://search?q=" + Market.MARKET_AUTHOR_SEARCH_STRING);
+	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
             return true;
@@ -112,7 +112,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 	    	i.putExtra(IntentConstants.EXTRA_DATA, demo_pie_data);
 //	    	i.putExtra(intent.EXTRA_COLORS, colors);
 	    	
-            Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+            Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_calendar:
@@ -133,7 +133,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 			i.putExtra(IntentConstants.EXTRA_EVENT_IDS, event_ids);
 			i.putExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS, event_times);
 			
-            Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
+            Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
 			break;
 		}
 		case R.id.button_pie_chart_provider:
@@ -141,14 +141,14 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 	    	Uri u = DataContentProvider.constructUri(12345);
 			Intent i = new Intent(Intent.ACTION_VIEW, u);
 			i.putExtra(Intent.EXTRA_TITLE, "This is a really long title, isn't it?");
-			Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+			Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_calendar_provider:
 		{
 	    	Uri u = EventContentProvider.constructUri(12345);
 			Intent i = new Intent(Intent.ACTION_VIEW, u);
-			Market.intentLaunchMarketFallback(this, Market.MARKET_PACKAGE_SEARCH_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
+			Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
 			break;
 		}
 		}

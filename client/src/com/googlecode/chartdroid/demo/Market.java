@@ -20,15 +20,18 @@ public class Market {
     static final String TAG = "ChartDroid";
     
     
-    public static final String MARKET_AUTHOR_SEARCH_PREFIX = "pub:";
+    public static final String MARKET_PACKAGE_DETAILS_PREFIX = "market://details?id=";
+    public static final String MARKET_AUTHOR_SEARCH_PREFIX = "market://search?q=";
+    
+    public static final String MARKET_AUTHOR_PREFIX = "pub:";
     public static final String MARKET_AUTHOR_NAME = "Karl Ostmo";
-    public static final String MARKET_AUTHOR_SEARCH_STRING = MARKET_AUTHOR_SEARCH_PREFIX + "\"" + MARKET_AUTHOR_NAME + "\"";
+    public static final String MARKET_AUTHOR_SEARCH_STRING = MARKET_AUTHOR_SEARCH_PREFIX + MARKET_AUTHOR_PREFIX  + "\"" + MARKET_AUTHOR_NAME + "\"";
     
-    public static final String MARKET_PACKAGE_SEARCH_PREFIX = "pname:";
-    public static final String MARKET_PACKAGE_NAME = "com.googlecode.chartdroid";
-    public static final String MARKET_PACKAGE_SEARCH_STRING = MARKET_PACKAGE_SEARCH_PREFIX + MARKET_PACKAGE_NAME;
+    public static final String CHARTDROID_PACKAGE_NAME = "com.googlecode.chartdroid";
+    public static final String MARKET_CHARTDROID_DETAILS_STRING = MARKET_PACKAGE_DETAILS_PREFIX + CHARTDROID_PACKAGE_NAME;
 
-    
+
+
     public static void intentLaunchMarketFallback(Activity context, String market_search, Intent intent, int request_code) {
 
         Log.d(TAG, "Checking to see whether activity is available...");
@@ -45,7 +48,7 @@ public class Market {
             Log.e(TAG, "It is not.");
            
             // Launch market intent
-            Uri market_uri = Uri.parse("market://search?q=" + market_search);
+            Uri market_uri = Uri.parse(market_search);
             Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
             try {
                 context.startActivity(i);

@@ -186,6 +186,7 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 
 		List<HistogramBin> bins = generateHistogram(aggregated_rows, this.histogram_bincount);
 		Log.d(TAG, "Generated histrogram with bin count: " + bins.size());
+		this.database.deleteOldPlots();	// Wipe old data
 		long plot_id = this.database.aggregateForPlot(bins);
 		
 		return plot_id;
@@ -234,7 +235,7 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 			
 			i.putExtra(ColumnSchema.EXTRA_FORMAT_STRING_Y, "$%.2f");
 			
-			Market.intentLaunchMarketFallback((Activity) context, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+			Market.intentLaunchMarketFallback((Activity) context, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 		}
 	}
 
