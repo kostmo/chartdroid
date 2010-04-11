@@ -108,7 +108,7 @@ public class InputDatasetActivity extends ListActivity {
             	
                 Intent i = new Intent(Intent.ACTION_VIEW, target_uri);
                 i.putExtra(Intent.EXTRA_TITLE, "Manual timeline");
-                Market.intentLaunchMarketFallback(InputDatasetActivity.this, Market.MARKET_PACKAGE_SEARCH_STRING, i, Market.NO_RESULT);
+                Market.intentLaunchMarketFallback(InputDatasetActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
             }
         });
         
@@ -175,7 +175,7 @@ public class InputDatasetActivity extends ListActivity {
         }
         case R.id.menu_more_apps:
         {
-	    	Uri market_uri = Uri.parse("market://search?q=" + Market.MARKET_AUTHOR_SEARCH_STRING);
+	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
             return true;

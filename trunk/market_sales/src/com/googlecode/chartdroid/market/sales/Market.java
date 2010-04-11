@@ -22,27 +22,23 @@ public class Market {
     public static final String TAG = "MarketIncome";
     
     
+    public static final String MARKET_PACKAGE_DETAILS_PREFIX = "market://details?id=";
+    public static final String MARKET_AUTHOR_SEARCH_PREFIX = "market://search?q=";
     
-    
-    public static final String MARKET_AUTHOR_SEARCH_PREFIX = "pub:";
+    public static final String MARKET_AUTHOR_PREFIX = "pub:";
     public static final String MARKET_AUTHOR_NAME = "Karl Ostmo";
-    public static final String MARKET_AUTHOR_SEARCH_STRING = MARKET_AUTHOR_SEARCH_PREFIX + "\"" + MARKET_AUTHOR_NAME + "\"";
+    public static final String MARKET_AUTHOR_SEARCH_STRING = MARKET_AUTHOR_SEARCH_PREFIX + MARKET_AUTHOR_PREFIX  + "\"" + MARKET_AUTHOR_NAME + "\"";
     
-    public static final String MARKET_PACKAGE_SEARCH_PREFIX = "pname:";
-    public static final String MARKET_PACKAGE_NAME = "com.googlecode.chartdroid";
-    public static final String MARKET_PACKAGE_SEARCH_STRING = MARKET_PACKAGE_SEARCH_PREFIX + MARKET_PACKAGE_NAME;
+    public static final String CHARTDROID_PACKAGE_NAME = "com.googlecode.chartdroid";
+    public static final String MARKET_CHARTDROID_DETAILS_STRING = MARKET_PACKAGE_DETAILS_PREFIX + CHARTDROID_PACKAGE_NAME;
 
-	public static final String TRANSLATE_PACKAGE = "com.kostmo.android.translate";
-	public static final String MARKET_TRANSLATE_PACKAGE_SEARCH = MARKET_PACKAGE_SEARCH_PREFIX + TRANSLATE_PACKAGE;
-	
-    
 	public static final String DEVELOPER_EMAIL = MARKET_AUTHOR_NAME + " <kostmo@gmail.com>";
 	
     
 	
 	public static void launchMarketSearch(Activity context, String search_phrase) {
         // Launch market intent
-        Uri market_uri = Uri.parse("market://search?q=" + search_phrase);
+        Uri market_uri = Uri.parse(search_phrase);
         Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
         try {
             context.startActivity(i);

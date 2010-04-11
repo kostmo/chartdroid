@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 // ============================================================================
@@ -106,9 +107,20 @@ public class Main extends Activity {
 		bins_field = (EditText) findViewById(R.id.bins_field);
 		date_picker_widget = (DatePicker) findViewById(R.id.date_picker_widget);
 		
+		
+		
+		
+		Calendar yesterday = null;
 		Calendar now = new GregorianCalendar();
-		Calendar yesterday = (Calendar) now.clone();
-		yesterday.add(Calendar.DAY_OF_MONTH, -1);
+		
+        final StateObject state = (StateObject) getLastNonConfigurationInstance();
+        if (state != null) {
+        	yesterday = state.calendar;
+        } else {
+    		yesterday = (Calendar) now.clone();
+    		yesterday.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
 		
 		updateSeekBarMax(yesterday, now);
 		
@@ -142,6 +154,22 @@ public class Main extends Activity {
 		}
 	}
 
+
+	// ========================================================================
+    class StateObject {
+    	Calendar calendar;
+    }
+
+	// ========================================================================
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+    	
+    	StateObject state = new StateObject();
+    	state.calendar = getCalendarFromDatePicker(date_picker_widget);
+
+        return state;
+    }
+    
 	// ========================================================================
 	void updateSeekBarMax(Calendar start, Calendar now) {
 
@@ -228,7 +256,7 @@ public class Main extends Activity {
 	        .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int whichButton) {
 	            	
-	            	Market.launchMarketSearch(Main.this, Market.MARKET_PACKAGE_SEARCH_STRING);
+	            	Market.launchMarketSearch(Main.this, Market.MARKET_CHARTDROID_DETAILS_STRING);
 	            }
 	        })
 	        .setNegativeButton(R.string.alert_dialog_cancel, null)
@@ -261,7 +289,7 @@ public class Main extends Activity {
         }
         case R.id.menu_more_apps:
         {
-	    	Uri market_uri = Uri.parse("market://search?q=" + Market.MARKET_AUTHOR_SEARCH_STRING);
+	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
             return true;
