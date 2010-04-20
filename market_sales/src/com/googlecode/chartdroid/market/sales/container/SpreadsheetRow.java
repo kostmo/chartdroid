@@ -1,10 +1,15 @@
 package com.googlecode.chartdroid.market.sales.container;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SpreadsheetRow implements Comparable<SpreadsheetRow> {
+	
+
+	public static final String TAG = "SpreadsheetRow";
 	
 	// Natural sort order is by order creation date.
 	
@@ -14,9 +19,9 @@ public class SpreadsheetRow implements Comparable<SpreadsheetRow> {
 	double order_amount, amount_charged;
 	String financial_status, fulfillment_status;
 
-
-	SimpleDateFormat sdp = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss a");
-
+	public static final String STANDARD_DATE_FORMAT = "MMM dd, yyyy HH:mm:ss a";
+	public static final String ALTERNATE_DATE_FORMAT = "dd-MMM-yyyy HH:mm:ss";
+	SimpleDateFormat sdp = new SimpleDateFormat(STANDARD_DATE_FORMAT);
 	
 	public SpreadsheetRow(String[] row) {
 		google_order_number = Long.parseLong(row[0]);
@@ -24,9 +29,17 @@ public class SpreadsheetRow implements Comparable<SpreadsheetRow> {
 		try {
 			order_creation_date = sdp.parse(row[2]);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			sdp = new SimpleDateFormat(ALTERNATE_DATE_FORMAT);
+			try {
+				e.printStackTrace();
+				Log.e(TAG, "Parse failed with standard date format. Attempting alternate format.");
+				order_creation_date = sdp.parse(row[2]);
+			} catch (ParseException e1) {
+				Log.e(TAG, "Failed with alternate date format");
+				e1.printStackTrace();
+			}
 		}
+
 		currency_of_transaction = row[3];
 		order_amount = Float.parseFloat(row[4]);
 		amount_charged = Float.parseFloat(row[5]);
