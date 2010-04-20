@@ -8,3 +8,6 @@ You can [http://code.google.com/p/chartdroid/source/browse/#svn/trunk/market_sal
 Android download link:
 
 http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=http://market.android.com/details?id=com.googlecode.chartdroid.market.sales&nonsense=foo.png
+
+== Why prompt for a password instead of obtaining credentials through AccountManager? ==
+I made an attempt to use AccountManager, but this was unsuccessful.  The "service name" for Google Checkout is "sierra".  I was able to use this to programmatically obtain an "authtoken", but what is really needed in order to access the Google Checkout records is a value called "gdToken".  Unfortunately, although they are the same length, the "authoken" value cannot substitute for the "gdToken".
