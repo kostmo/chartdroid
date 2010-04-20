@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,7 +51,7 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 	static final String TAG = Market.TAG;
 
 
-	final static int DOWNLOAD_DAYS_INCREMENT = 30;
+	final static int DOWNLOAD_DAYS_INCREMENT = 31;
 	
 	public static final String GDTOKEN_COOKIE = "gdToken";
 	public static final String SECURE_HTTP_SCHEME = "https";

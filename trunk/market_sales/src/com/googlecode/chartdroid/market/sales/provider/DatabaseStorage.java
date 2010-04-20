@@ -213,7 +213,13 @@ public class DatabaseStorage extends SQLiteOpenHelper
     
 	    int row_count = c.getCount();
 	    Log.d(TAG, "Row count: " + row_count);
-//        db.close();
+
+	    // XXX Not closing the database will introduce a leak if the ContentProvider's
+	    // client decides to rotate the screen. However, since we can't pass a handle to
+	    // the database to the client for closing it (we can only pass the cursor), we
+	    // may want to subclass Cursor to close the db when the cursor is closed.
+	    // see http://stackoverflow.com/questions/2280345/sqlite-database-leak-found-exception-in-android
+//		db.close();
 
         return c;
     }
