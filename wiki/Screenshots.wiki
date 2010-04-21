@@ -1,5 +1,4 @@
 #summary See ChartDroid in action
-#labels Featured
 
 http://chartdroid.googlecode.com/svn/graphics/screenshots/calendar_month.png
 http://chartdroid.googlecode.com/svn/graphics/screenshots/chartlist.png
