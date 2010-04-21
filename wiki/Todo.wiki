@@ -1,5 +1,4 @@
 #summary Task list
-#labels Featured
 
 == Near term ==
 
