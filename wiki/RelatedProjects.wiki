@@ -1,0 +1,40 @@
+#summary Related Projects and Discussion
+
+
+==Related Links==
+===Java/Android charting software===
+  * [http://code.google.com/p/charts4j/ charts4j]
+  * [http://code.google.com/apis/chart/ Google Charts API]
+====Android-specific====
+  * [http://code.google.com/p/eventrend/ EvenTrend] (looks nice but complicated)
+  * [http://code.google.com/p/achartengine/ achartengine] (used in chartdroid)
+  * [http://android.arnodenhond.com/components/graphview graphview] (pretty simple)
+  * [http://code.google.com/p/bluechart/ bluechart] (unmaintained)
+  * [http://www.java4less.com/charts/chart.php?info=android Java Charts for Android] (looks old)
+  * [http://rapidandroid.org/wiki/Graphing Graphing in JavaScript with Flot]
+
+===Other===
+  * [http://graphjam.com/ GraphJam]
+
+
+==Charting-Related Discussions==
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/bc770e1e1927868e/a08b46881465ae48 Free Chart drawing package for Android]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/5d0f04e0cc28028d/2678232629ba3720?lnk=gst&q=chart#2678232629ba3720 Chart API]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/3eacc972f1b72f50/6c046dce895bde47?lnk=gst&q=chart#6c046dce895bde47 How to get image file from Google Chart API]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/4744c7cd9fd7c20d/edc8ff88629e7262?lnk=gst&q=chart#edc8ff88629e7262 Images from Google Chart API]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/b83f872d10e29aa9/e4077c5d9e6420b6?lnk=gst&q=chart#e4077c5d9e6420b6 how to use chart in application?]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/132139f7b402a154/c0e10cc4051df7a8?lnk=gst&q=chart#c0e10cc4051df7a8 wanted chart api for the android application..]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/e83fac254b613352/6881f40cbccbe5da chart engine for android]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/223f5f9bea908961/4d41b1a630e76b02?lnk=gst&q=plot#4d41b1a630e76b02 2D and 3D plotting application]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/33179480303c2a75/8644653fd1d84015?lnk=gst&q=plot#8644653fd1d84015 Browser versus App to present Web Data]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/6e26ec90d10f821e/14d71423831e2a08?lnk=gst&q=chart#14d71423831e2a08 Any graphing frameworks/APIs available?]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/3ae1a9f04d1d8db6/746cadd09832ab54?lnk=gst&q=chart#746cadd09832ab54 showing graph in Application]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/1797c7c94eb55e2f/6933fc57164ffd0a?lnk=gst&q=chart#6933fc57164ffd0a AChartEngine - a charting framework for Android applications]
+  * [http://groups.google.com/group/android-developers/browse_thread/thread/730195e6ea3b01e5/7a6e6638bf71acae?lnk=gst&q=chart#7a6e6638bf71acae Charting engine within Android?]
+
+
+==Android intent registries==
+  * [http://www.androidmashup.org/ Android Mashup]
+  * [http://www.openintents.org/en/registry OpenIntents]
+
+For publication-quality graphics outside of Android I highly recommend [http://matplotlib.sourceforge.net/gallery.html MatPlotLib]
