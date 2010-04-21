@@ -1,4 +1,6 @@
 #summary Apps that use ChartDroid
 #labels Featured
 
+  * [http://sites.google.com/site/droidful/my-apps/kanji-tutor Kanji Tutor]
+  * [http://sites.google.com/site/bettrflickr/ BettrFlickr]
   * [http://www.tieyourmoney.com/ Tie Your Money]
