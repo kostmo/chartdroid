@@ -5,14 +5,13 @@
 
 =Content Provider Overview=
 ==Event sequence==
-# Application launches an Intent with ACTION_VIEW and a URI to its content provider
-# Android calls the content provider's getType() method
-# Android finds ChartDroid as an Intent match for the combination of that data type and ACTION_VIEW
-# ChartDroid activity is launched
-# ChartDroid queries the specified URI for axes/meta information, in addition to data to plot
-# Android uses the "authority" portion of the URI to launch the correct ContentProvider (yours), according application's AndroidManifest.xml
-# ChartDroid receives data from your ContentProvider and plots it onscreen
-
+  # Application launches an `Intent` with `ACTION_VIEW` and a URI to its content provider
+  # Android calls the content provider's `getType()` method
+  # Android finds `ChartDroid` as an Intent match for the combination of that data type and `ACTION_VIEW`
+  # `ChartDroid` activity is launched
+  # `ChartDroid` queries the specified URI for axes/meta information, in addition to data to plot
+  # Android uses the "authority" portion of the URI to launch the correct `ContentProvider` (yours), according application's `AndroidManifest.xml`
+  # `ChartDroid` receives data from your `ContentProvider` and plots it onscreen
 
 =Charts in version 2.x=
 
