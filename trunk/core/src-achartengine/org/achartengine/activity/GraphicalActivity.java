@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 SC 4ViewSoft SRL
+ * Copyright (C) 2010 Karl Ostmo
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -86,31 +87,29 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	protected int[] DEFAULT_COLORS = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
 
 	
-	
-	
-	
 
 	DataQueryTask data_query_task;
 	
 	
-	
-	protected abstract int getTitlebarIconResource();
+	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException;
+	abstract protected int getTitlebarIconResource();
+	abstract protected void postChartPopulationCallback();
 	
 	// TODO: Implement for Donut chart
 	abstract protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart);
-	
 
+	// ========================================================================
 	protected int getLayoutResourceId() {
 		return R.layout.simple_chart_activity;
 	}
-	
+
+	// ========================================================================
 	public static class DataSeriesAttributes {
 		public String title;
 		int color;
 	}
 
-
-	// =============================================
+	// ========================================================================
 	public class DataQueryTask extends AsyncTask<Void, Void, AbstractChart> {
 
 		private Uri chart_data_uri;
@@ -120,7 +119,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		}
 
 		@Override
-		protected void  onPreExecute  () {
+		protected void onPreExecute() {
 			incSemaphore();
 		}
 
@@ -141,34 +140,24 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 			
 			if (error_message != null) {
 				Toast.makeText(GraphicalActivity.this, "There are no series!", Toast.LENGTH_LONG).show();
-				
-				
 				Log.e(TAG, "Error in chart; finishing activity. Chart: " + chart);
-				
 				finish();
-				
 				return;
 			}
 			
 			mChart = chart;
 			mView.setChart(mChart);
 			
-			
 			postChartPopulationCallback();
-			
 		}
 	}
 
-	// =============================================
-	
-	protected abstract void postChartPopulationCallback();
-	
-	// =============================================
+	// ========================================================================
 	public void populateLegend(FlowLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list) {
 		populateLegend(predicate_layout, series_attributes_list, false);
 	}
 
-	// =============================================
+	// ========================================================================
 	public void populateLegend(FlowLayout predicate_layout, List<DataSeriesAttributes> series_attributes_list, boolean donut_style) {
 		
 		FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(5, 1);
@@ -220,8 +209,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		}
 	}
 
-
-	// ---------------------------------------------
+	// ========================================================================
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -229,18 +217,12 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		if (getIntent().getBooleanExtra(IntentConstants.EXTRA_FULLSCREEN, false))
 			getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-		
-	    
-	    
 		super.onCreate(savedInstanceState);
-
 
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		
 
 		Uri intent_data = getIntent().getData();
-
-		// We should have been passed a cursor to the data via a content provider.
 
 		String title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 		if (title == null) {
@@ -249,31 +231,30 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 			setTitle(title);
 		}
 
-
 		setContentView( getLayoutResourceId() );
 	    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, getTitlebarIconResource());
 
 		
 
-		mView = (GraphicalView) findViewById(R.id.chart_view);
+		this.mView = (GraphicalView) findViewById(R.id.chart_view);
 		
 		((TextView) findViewById(R.id.chart_title_placeholder)).setText(title);
 		
 		
-		data_query_task = new DataQueryTask(intent_data);
-		data_query_task.execute();
+		this.data_query_task = new DataQueryTask(intent_data);
+		this.data_query_task.execute();
 	}
 
-	// ---------------------------------------------
-	Comparator<Entry<?, ?>> map_key_comparator = new Comparator<Entry<?, ?>>() {
+	// ========================================================================
+	static Comparator<Entry<?, ?>> map_key_comparator = new Comparator<Entry<?, ?>>() {
 		@Override
 		public int compare(Entry<?, ?> object1, Entry<?, ?> object2) {
 			return ((Comparable) object1.getKey()).compareTo(object2.getKey());
 		}
 	};
 
-	// ---------------------------------------------
-	<T> List<T> sortAndSimplify(Map<Integer, T> input_map, Comparator<Entry<?, ?>> comparator) {
+	// ========================================================================
+	static <T> List<T> sortAndSimplify(Map<Integer, T> input_map, Comparator<Entry<?, ?>> comparator) {
 		// Sort the axes by index
 		ArrayList<Entry<Integer,T>> sorted_axes_series_map = new ArrayList<Entry<Integer, T>>(input_map.entrySet());
 		Collections.sort(sorted_axes_series_map, comparator);
@@ -286,9 +267,8 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		return simplified_sorted_axes_series_maps;
 	}
 
-	// ---------------------------------------------
-
-	<T> List<T> pickAxisSeriesMethod1(Map<Integer, Map<Integer, List<T>>> axes_series_map, Cursor cursor, int axis_index, int series_column) {
+	// ========================================================================
+	static <T> List<T> pickAxisSeriesSingleRow(Map<Integer, Map<Integer, List<T>>> axes_series_map, Cursor cursor, int axis_index, int series_column) {
 		// Pick the correct axis
 		Map<Integer, List<T>> axis_map;            
 		if (axes_series_map.containsKey(axis_index)) {
@@ -323,10 +303,9 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 
 		return series;
 	}
-	
-	// ---------------------------------------------
 
-	<T> List<T> pickAxisSeries(Map<Integer, Map<Integer, List<T>>> axes_series_map, Cursor cursor, int axis_column, int series_column) {
+	// ========================================================================
+	static <T> List<T> pickAxisSeriesMultiRow(Map<Integer, Map<Integer, List<T>>> axes_series_map, Cursor cursor, int axis_column, int series_column) {
 		// Pick the correct axis
 		int axis_index = cursor.getInt(axis_column);
 		Map<Integer, List<T>> axis_map;            
@@ -363,8 +342,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		return series;
 	}
 
-	
-	
+	// ========================================================================
 	protected void assignChartLabels(List<String> axis_labels, AxesManager renderer) {
 		
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
@@ -384,10 +362,9 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		Log.d(TAG, "chart_title: " + chart_title);
 
 		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label, Color.LTGRAY, Color.GRAY);
-
 	}
-	
-	// ---------------------------------------------
+
+	// ========================================================================
 	//  Retrieve Axes data
 	protected List<String> getAxisTitles() {
 
@@ -399,42 +376,37 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		
 
 		Uri intent_data = intent.getData();
-		Uri axes_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_AXES).build();
+		Uri axes_uri = intent_data.buildUpon()
+			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_AXES)
+			.build();
 
-//		Log.d(TAG, "Querying content provider for: " + axes_uri);
+
+		Cursor meta_cursor = managedQuery(axes_uri,
+				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_AXIS_LABEL},
+				null, null, null);
+
+		if (meta_cursor == null) return null;
+		
+		int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
+		int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_LABEL);
 
 		List<String> axis_labels = new ArrayList<String>();
-		{
 
-			Cursor meta_cursor = managedQuery(axes_uri,
-					new String[] {BaseColumns._ID, ColumnSchema.COLUMN_AXIS_LABEL},
-					null, null, null);
+		if (meta_cursor.moveToFirst()) {
+			// TODO: This could also be used to set color, line style, marker shape, etc.
+			do {
+//	            int axis_index = meta_cursor.getInt(axis_column);
+				String axis_label = meta_cursor.getString(label_column);
 
-			if (meta_cursor == null) return null;
-			
-			int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
-			int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_LABEL);
+				axis_labels.add(axis_label);
 
-			int i=0;
-			if (meta_cursor.moveToFirst()) {
-				// TODO: This could also be used to set color, line style, marker shape, etc.
-				do {
-					//            int axis_index = meta_cursor.getInt(axis_column);
-					String axis_label = meta_cursor.getString(label_column);
-
-
-					axis_labels.add(axis_label);
-
-
-					i++;
-				} while (meta_cursor.moveToNext());
-			}
+			} while (meta_cursor.moveToNext());
 		}
 
 		return axis_labels;
 	}
 
-	// ---------------------------------------------
+	// ========================================================================
 	protected String[] getSortedSeriesTitles() {
 
 		Intent intent = getIntent();
@@ -447,29 +419,25 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		Uri meta_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_META).build();
 //		Log.d(TAG, "Querying content provider for: " + meta_uri);
 
+
+		Cursor meta_cursor = managedQuery(meta_uri,
+				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
+				null, null, null);
+
+		int series_column = meta_cursor.getColumnIndex(BaseColumns._ID);
+		int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LABEL);
+
 		Map<Integer, String> series_label_map = new HashMap<Integer, String>();
-		{
-			Cursor meta_cursor = managedQuery(meta_uri,
-					new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
-					null, null, null);
-
-			int series_column = meta_cursor.getColumnIndex(BaseColumns._ID);
-			int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LABEL);
-
-			int i=0;
-			if (meta_cursor.moveToFirst()) {
-				// TODO: This could also be used to set color, line style, marker shape, etc.
-				do {
-					int series_index = meta_cursor.getInt(series_column);
-					String series_label = meta_cursor.getString(label_column);
+		if (meta_cursor.moveToFirst()) {
+			// TODO: This could also be used to set color, line style, marker shape, etc.
+			do {
+				int series_index = meta_cursor.getInt(series_column);
+				String series_label = meta_cursor.getString(label_column);
 
 
-					series_label_map.put(series_index, series_label);
+				series_label_map.put(series_index, series_label);
 
-
-					i++;
-				} while (meta_cursor.moveToNext());
-			}
+			} while (meta_cursor.moveToNext());
 		}
 
 		// Sort the map by key; that is, sort by the series index
@@ -479,24 +447,24 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		return titles;
 	}
 
-	// ---------------------------------------------
+	// ========================================================================
 	public static class LabeledDatum {
 		public String label;
 		public Number datum;
 	}
 
-	// ---------------------------------------------
+	// ========================================================================
 	// Retrieve Series data
 
 	// RETURN VALUE:
 	// Outermost list: Axes
 	// Second-outermost list: All Series for that axis
 	// Third-outermost list: Data for a single series
-	protected <T> List<List<List<T>>> getGenericSortedSeriesData(Uri intent_data, DatumExtractor<T> extractor) {
+	static protected <T> List<List<List<T>>> getGenericSortedSeriesData(Uri intent_data, ContentResolver content_resolver, DatumExtractor<T> extractor) {
 
-//		Uri data_uri = intent_data.buildUpon().appendEncodedPath( ColumnSchema.DATASET_ASPECT_DATA ).build();
-		Uri data_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_DATA).build();
-//		Log.d(TAG, "Querying content provider for: " + data_uri);
+		Uri data_uri = intent_data.buildUpon()
+			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_DATA)
+			.build();
 
 		// Outermost map: Axes
 		// Second-outermost map: All Series for that axis
@@ -506,7 +474,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		
 		
 
-		Cursor cursor = getContentResolver().query(data_uri,
+		Cursor cursor = content_resolver.query(data_uri,
 //		Cursor cursor = managedQuery(data_uri,
 				null,	// Note that the author of the ContentProvider should specify their own projection,
 						// so it is irrelevant what we specify here.
@@ -525,7 +493,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 
 		List<String> axis_column_names = new ArrayList<String>();
 		for (String column : column_names) {
-			if (column.startsWith("AXIS_")) {
+			if (column.startsWith(ColumnSchema.AXIS_PREFIX)) {
 				axis_column_names.add(column);
 			}
 		}
@@ -557,7 +525,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 						
 //						Log.i(TAG, "Axis column: " + axis_column_label + " (Index " + axis_index + ", Column " + data_column + ")");
 						
-						List<T> series_axis_data = pickAxisSeriesMethod1(axes_series_map, cursor, axis_index, series_column);
+						List<T> series_axis_data = pickAxisSeriesSingleRow(axes_series_map, cursor, axis_index, series_column);
 						
 						T datum = extractor.getDatum(cursor, data_column, label_column);
 						series_axis_data.add(datum);
@@ -569,7 +537,6 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 					i++;
 				} while (cursor.moveToNext());
 			}
-			
 			
 		} else {
 			// Secondary mode (Column Scheme #2 in the Interface Specification docs)
@@ -587,7 +554,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 			if (cursor.moveToFirst()) {
 				do {
 
-					List<T> series_axis_data = pickAxisSeries(axes_series_map, cursor, axis_column, series_column);
+					List<T> series_axis_data = pickAxisSeriesMultiRow(axes_series_map, cursor, axis_column, series_column);
 
 					T datum = extractor.getDatum(cursor, data_column, label_column);
 					series_axis_data.add(datum);
@@ -603,12 +570,10 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		for (Map<Integer, List<T>> series_map : sortAndSimplify(axes_series_map, map_key_comparator))
 			simplified_sorted_axes_series.add( sortAndSimplify(series_map, map_key_comparator) );
 
-		
 		return simplified_sorted_axes_series;		
 	}
 
-	// ---------------------------------------------
-
+	// ========================================================================
 	// Outermost list: all series
 	// Inner list: individual series
 	protected List<List<Number>> unzipSeriesDatumLabels(List<List<LabeledDatum>> sorted_labeled_series_list, List<List<String>> datum_labels) {
@@ -655,13 +620,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		return sorted_series_list;
 	}
 
-
-	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException;
-
-	
-	
-	
-	
+	// ========================================================================
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -672,7 +631,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		return true;
 	}
 
-
+	// ========================================================================
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -707,8 +666,6 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
     
 	// ========================================================================
 	@Override
@@ -718,17 +675,15 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		retrieval_tasks_semaphore.incrementAndGet();
 	}
 
+	// ========================================================================
 	@Override
 	public void decSemaphore() {
 
 		boolean still_going = retrieval_tasks_semaphore.decrementAndGet() > 0;
 		setProgressBarIndeterminateVisibility(still_going);
 	}
-	
-	
-	
-	// =============================================
 
+	// ========================================================================
 	@Override
 	protected void onDestroy() {
 
