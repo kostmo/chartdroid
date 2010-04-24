@@ -23,8 +23,11 @@ To make this process go as planned, you must
   # Declare the content provider in your `AndroidManifest.xml` with an "authority" string of your choosing.  Usually it should start with your application's package name, to help ensure that it is unique system-wide.
   # Construct a `Uri` using the aforementioned authority
 
-
 =Charts in version 2.x=
+==Terms==
+In this document:
+  * The term *datum* refers to a single "point" on the graph, which may be multidimensional.
+  * The term *datum component* is a single scalar value for one of the dimensions of a *datum*.
 
 ==Data type==
 There are several ways to present data with *`ChartDroid`*. To give the user a choice among all of them, the [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should respond with the string:
@@ -38,7 +41,6 @@ To limit the presentation options, categories may be added to the Intent:
     * Pie charts and donut charts
   * X-Y: `com.googlecode.chartdroid.intent.category.XY_CHART`
     * Bar charts, line charts
-
 
 ==Content Provider==
 Your Content Provider should respond to three types of queries:
@@ -93,7 +95,7 @@ In this scheme, all datum components are in the same row.  This scheme is assume
 || `AXIS_C` || `double` ||
 || `...` || `double` ||
 
-Here is an example results table that could be produced in response to a "data" query:
+Here is an example results table that your application might produce in response to a "data" query:
 
 || `_id` || `COLUMN_SERIES_INDEX` || `COLUMN_DATUM_LABEL` || `AXIS_X`  || `AXIS_Y` ||
 || 3546 || 0 || "beef" || 17 || 4 ||
