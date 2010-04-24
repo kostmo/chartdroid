@@ -31,7 +31,7 @@
   * [http://groups.google.com/group/android-developers/browse_thread/thread/3ae1a9f04d1d8db6/746cadd09832ab54?lnk=gst&q=chart#746cadd09832ab54 showing graph in Application]
   * [http://groups.google.com/group/android-developers/browse_thread/thread/1797c7c94eb55e2f/6933fc57164ffd0a?lnk=gst&q=chart#6933fc57164ffd0a AChartEngine - a charting framework for Android applications]
   * [http://groups.google.com/group/android-developers/browse_thread/thread/730195e6ea3b01e5/7a6e6638bf71acae?lnk=gst&q=chart#7a6e6638bf71acae Charting engine within Android?]
-
+  * [http://groups.google.com/group/android-beginners/browse_thread/thread/cd2d22e1af6deb76 Is there a Calendar View that I can use?]
 
 ==Android intent registries==
   * [http://www.androidmashup.org/ Android Mashup]
