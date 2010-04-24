@@ -19,7 +19,7 @@ The following steps are approximately what happens under the hood when your appl
 To make this process go as planned, you must
   # Subclass `ContentProvider` and handle the `getType()` and `query()` methods
     * `getType()` should return [#Data_type one of these type strings]
-    * `query()` can either directly query your SQLite database, or generate data on the fly with `MatrixCursor`. If you intend to use this `ContentProvider` for multiple types of queries, you can use a UriMatcher to choose between different queries based on the "path" of your `Uri`, or you can devise your own `switch` cases based on query parameters added to the `Uri`.
+    * `query()` can either directly query your SQLite database, or generate data on the fly with `MatrixCursor`. If you intend to use this `ContentProvider` for multiple types of queries, you can use a `UriMatcher` to choose between different queries based on the "path" of your `Uri`, or you can devise your own `switch` cases based on query parameters added to the `Uri`.
   # Declare the content provider in your `AndroidManifest.xml` with an "authority" string of your choosing.  Usually it should start with your application's package name, to help ensure that it is unique system-wide.
   # Construct a `Uri` using the aforementioned authority
 
