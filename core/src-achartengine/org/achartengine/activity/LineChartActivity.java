@@ -53,7 +53,7 @@ public class LineChartActivity extends XYChartActivity {
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-		List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new DoubleDatumExtractor());
+		List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new DoubleDatumExtractor());
 
 		assert( sorted_series_list.size() >= 1 );
 

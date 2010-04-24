@@ -68,7 +68,7 @@ public class DonutChartActivity extends GraphicalActivity {
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDatumExtractor());
+		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
 

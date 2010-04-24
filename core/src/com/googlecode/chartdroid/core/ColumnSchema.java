@@ -15,6 +15,7 @@ public final class ColumnSchema {
 	public static final String DATASET_ASPECT_AXES = "axes";
 	public static final String DATASET_ASPECT_META = "meta";
 
+	public static final String AXIS_PREFIX = "AXIS_";
 
 	public static final String CONTENT_TYPE_BASE_SINGLE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/";
 	public static final String CONTENT_TYPE_BASE_MULTIPLE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/";

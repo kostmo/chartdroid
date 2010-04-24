@@ -71,7 +71,7 @@ public class TimeChartActivity extends XYChartActivity {
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException {
 
-		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, new LabeledDatumExtractor());
+		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
 		if ( !(sorted_series_list.size() > 0) ) {

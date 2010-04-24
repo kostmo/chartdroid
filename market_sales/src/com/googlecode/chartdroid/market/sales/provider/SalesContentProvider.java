@@ -44,18 +44,8 @@ public class SalesContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public int delete(Uri uri, String s, String[] as) {
-		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
-	}
-
-	@Override
 	public String getType(Uri uri) {
 		return ColumnSchema.EventData.CONTENT_TYPE_PLOT_DATA;
-	}
-
-	@Override
-	public Uri insert(Uri uri, ContentValues contentvalues) {
-		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
 	}
 
 	@Override
@@ -102,6 +92,16 @@ public class SalesContentProvider extends ContentProvider {
 			return c;
 		}
 
+	}
+
+	@Override
+	public int delete(Uri uri, String s, String[] as) {
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
+	}
+
+	@Override
+	public Uri insert(Uri uri, ContentValues contentvalues) {
+		throw new UnsupportedOperationException(MESSAGE_UNSUPPORTED_FEATURE);
 	}
 
 	@Override
