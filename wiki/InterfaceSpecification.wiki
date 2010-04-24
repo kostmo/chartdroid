@@ -4,14 +4,25 @@
 <wiki:toc max_depth="3" />
 
 =Content Provider Overview=
+Using Content Providers may be intimidating at first. Once you learn the ropes, however, it's fun to see the implicit Intent resolution work, and it is a beautiful system for writing interoperable applications.
+
 ==Event sequence==
+The following steps are approximately what happens under the hood when your application wants to plot data with *ChartDroid*.
   # Application launches an `Intent` with `ACTION_VIEW` and a URI to its content provider
   # Android calls the content provider's `getType()` method
-  # Android finds `ChartDroid` as an Intent match for the combination of that data type and `ACTION_VIEW`
+  # Android resolves the appropriate *ChartDroid* `Activity` as an `Intent` match for the combination of `ACTION_VIEW` and the returned data type
   # `ChartDroid` activity is launched
-  # `ChartDroid` queries the specified URI for axes/meta information, in addition to data to plot
-  # Android uses the "authority" portion of the URI to launch the correct `ContentProvider` (yours), according application's `AndroidManifest.xml`
+  # `ChartDroid` initiates a query on the specified URI for the data that should be plotted
+  # Android uses the "authority" portion of the URI to instantiate the correct `ContentProvider` (yours), according to your application's `AndroidManifest.xml`
   # `ChartDroid` receives data from your `ContentProvider` and plots it onscreen
+
+To make this process go as planned, you must
+  # Subclass `ContentProvider` and handle the `getType()` and `query()` methods
+    * `getType()` should return [#Data_type one of these type strings]
+    * `query()` can either directly query your SQLite database, or generate data on the fly with `MatrixCursor`. If you intend to use this `ContentProvider` for multiple types of queries, you can use a UriMatcher to choose between different queries based on the "path" of your `Uri`, or you can devise your own `switch` cases based on query parameters added to the `Uri`.
+  # Declare the content provider in your `AndroidManifest.xml` with an "authority" string of your choosing.  Usually it should start with your application's package name, to help ensure that it is unique system-wide.
+  # Construct a `Uri` using the aforementioned authority
+
 
 =Charts in version 2.x=
 
