@@ -1,9 +1,9 @@
 package com.googlecode.chartdroid.calendar;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.calendar.CalendarUtils.ViewHolderCalendarDay;
+import com.googlecode.chartdroid.calendar.container.CalendarDay;
+import com.googlecode.chartdroid.calendar.container.SimpleEvent;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,10 +15,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.calendar.Calendar.CalendarDay;
-import com.googlecode.chartdroid.calendar.Calendar.SimpleEvent;
-import com.googlecode.chartdroid.calendar.Calendar.ViewHolderCalendarDay;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class CalendarDaysAdapter extends BaseAdapter {
 
@@ -44,7 +44,7 @@ public class CalendarDaysAdapter extends BaseAdapter {
     		0, 0, 0);
 
     	Log.d(TAG, "In CalendarDaysAdapter");
-    	active_month = Calendar.generate_days(cal, day_list, events);
+    	active_month = CalendarUtils.generate_days(cal, day_list, events);
     	Log.i(TAG, "With active month: " + active_month);
     }
 
@@ -72,7 +72,7 @@ public class CalendarDaysAdapter extends BaseAdapter {
         }
 
         CalendarDay cal_day = (CalendarDay) getItem(position);
-        Date d = cal_day.d;
+        Date d = cal_day.date;
         
 
 
@@ -120,8 +120,8 @@ public class CalendarDaysAdapter extends BaseAdapter {
 	public boolean isEnabled(int position) {
 		
 		CalendarDay day = (CalendarDay) getItem(position);
-		Log.d(TAG, "Current month: " + day.d.getMonth() + "; Active month: " + active_month);
-		return day.d.getMonth() == active_month;
+		Log.d(TAG, "Current month: " + day.date.getMonth() + "; Active month: " + active_month);
+		return day.date.getMonth() == active_month;
 	}
 	
     public final int getCount() {

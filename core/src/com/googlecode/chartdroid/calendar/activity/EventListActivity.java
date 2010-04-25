@@ -1,6 +1,7 @@
-package com.googlecode.chartdroid.calendar;
+package com.googlecode.chartdroid.calendar.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.calendar.EventListAdapter;
 import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.core.IntentConstants;
 

@@ -10,6 +10,7 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.calendar.activity.EventListActivity;
 
 public class EventListAdapter extends ResourceCursorAdapter {
 

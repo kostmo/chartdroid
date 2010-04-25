@@ -16,10 +16,9 @@
 
 package com.googlecode.chartdroid.calendar;
 
-import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+import com.googlecode.chartdroid.calendar.activity.OldCalendarActivity;
+import com.googlecode.chartdroid.calendar.container.CalendarDay;
+import com.googlecode.chartdroid.calendar.container.SimpleEvent;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -33,8 +32,10 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.googlecode.chartdroid.calendar.Calendar.CalendarDay;
-import com.googlecode.chartdroid.calendar.Calendar.SimpleEvent;
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class MiniMonthDrawable extends Drawable {
 
@@ -63,7 +64,7 @@ public class MiniMonthDrawable extends Drawable {
 		view = v;
 		this.cal = cal;
 
-    	active_month = Calendar.generate_days(cal, day_list, new ArrayList<SimpleEvent>());
+    	active_month = CalendarUtils.generate_days(cal, day_list, new ArrayList<SimpleEvent>());
     	
 	}
 	
@@ -92,7 +93,7 @@ public class MiniMonthDrawable extends Drawable {
 		int i = 0;
 		for (CalendarDay day : day_list) {
 			
-			if (day.d.getMonth() == active_month) {
+			if (day.date.getMonth() == active_month) {
 				float left = cell_width*(i % 7);
 				float top = cell_height*(i / 7);
 				

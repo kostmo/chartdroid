@@ -21,6 +21,7 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -57,7 +58,7 @@ public class ScatterChartActivity extends XYChartActivity {
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-		List<? extends List<? extends List<? extends Number>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new DoubleDatumExtractor());
+		List<? extends List<? extends List<? extends Number>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new DoubleDatumExtractor());
 
 		assert( sorted_series_list.size() >= 1 );
 
@@ -77,7 +78,7 @@ public class ScatterChartActivity extends XYChartActivity {
 				|| x_axis_series.size() == 1
 				|| x_axis_series.size() == 0);
 
-		String[] titles = getSortedSeriesTitles();
+		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
 
 		assert (titles.length == y_axis_series.size());
 
@@ -118,8 +119,7 @@ public class ScatterChartActivity extends XYChartActivity {
 
 
 
-		List<String> axis_labels = getAxisTitles();
-
+		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 

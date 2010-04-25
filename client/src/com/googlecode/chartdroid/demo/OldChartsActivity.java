@@ -36,9 +36,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
         };
         
     public static final int[] demo_pie_data = new int[] {13, 81};
-	
-	
-	
+
     // ========================================================================
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +90,6 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 
         return super.onOptionsItemSelected(item);
     }
-
 
     // ========================================================================
 	@Override
@@ -152,17 +149,15 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 			break;
 		}
 		}
-		
 	}
     
-    
-    
-    
+	// ========================================================================
     public static class EventWrapper {
     	public long id, timestamp;
     	public String title;
     }
     
+	// ========================================================================
     public static List<EventWrapper> generateRandomEvents(int event_count) {
     	
     	List<EventWrapper> events = new ArrayList<EventWrapper>();
@@ -180,7 +175,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 		return events;
     }
     
-    
+	// ========================================================================
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

@@ -19,7 +19,9 @@ import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
+import org.achartengine.consumer.DataCollector.LabeledDatum;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.view.FlowLayout;
@@ -44,21 +46,27 @@ public class PieChartActivity extends GraphicalActivity {
 	protected int getTitlebarIconResource() {
 		return R.drawable.typepie;
 	}
-
+	
+	// ========================================================================
+	@Override
+	protected int getLayoutResourceId() {
+		return R.layout.simple_chart_activity;
+	}
+	
+	// ========================================================================
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 	}
 
-
-	// ---------------------------------------------
+	// ========================================================================
 	// NOTE: This chart type will ignore all but the first series on the first axis.
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
+		List<List<List<LabeledDatum>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
 
@@ -72,11 +80,11 @@ public class PieChartActivity extends GraphicalActivity {
 		if (sorted_series_list.size() == 1) {
 			// Let the Y-axis carry the only data.
 			x_axis_series = new ArrayList<List<Number>>();
-			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels );
+			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels );
 
 		} else {
-			x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
-			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
+			x_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
+			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
 		}
 
 
@@ -87,7 +95,7 @@ public class PieChartActivity extends GraphicalActivity {
 				|| x_axis_series.size() == 1
 				|| x_axis_series.size() == 0);
 
-		String[] titles = getSortedSeriesTitles();
+		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
 
 		assert (titles.length == y_axis_series.size());
 
@@ -151,8 +159,7 @@ public class PieChartActivity extends GraphicalActivity {
 	}
 
 
-
-
+	// ========================================================================
 	@Override
 	protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
 
@@ -180,8 +187,7 @@ public class PieChartActivity extends GraphicalActivity {
 		return series_attributes_list;
 	}
 
-
-
+	// ========================================================================
 	@Override
 	protected void postChartPopulationCallback() {
 

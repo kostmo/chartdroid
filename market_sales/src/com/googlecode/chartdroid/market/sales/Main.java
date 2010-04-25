@@ -1,9 +1,9 @@
 package com.googlecode.chartdroid.market.sales;
 
+import com.googlecode.chartdroid.market.sales.container.DateRange;
+import com.googlecode.chartdroid.market.sales.container.UsernamePassword;
 import com.googlecode.chartdroid.market.sales.provider.ColumnSchema;
 import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask;
-import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask.DateRange;
-import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask.UsernamePassword;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 // ============================================================================
