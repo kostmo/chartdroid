@@ -19,7 +19,33 @@
 		    </intent-filter>
 	    </activity>
 
-        <activity android:name=".calendar.Calendar">
+
+
+
+
+
+
+		<!-- EXPERIMENTAL -->
+        <activity android:name=".calendar.activity.NewCalendarActivity">
+        
+            <intent-filter>
+		    	<action android:name="com.googlecode.chartdroid.intent.action.PLOT" />
+		    	<category android:name="android.intent.category.DEFAULT" />
+		    	<category android:name="com.googlecode.chartdroid.intent.category.CALENDAR" />
+		    </intent-filter>
+        
+	        <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<action android:name="android.intent.action.PICK"/>
+
+				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.event"/>
+			</intent-filter>
+	    </activity>
+
+
+
+        <activity android:name=".calendar.activity.OldCalendarActivity">
         
             <intent-filter>
 		    	<action android:name="com.googlecode.chartdroid.intent.action.PLOT" />
@@ -36,7 +62,7 @@
 			</intent-filter>
 	    </activity>
         
-		<activity android:name=".calendar.EventListActivity" android:theme="@android:style/Theme.Translucent"/>
+		<activity android:name=".calendar.activity.EventListActivity" android:theme="@android:style/Theme.Translucent"/>
 
         
         

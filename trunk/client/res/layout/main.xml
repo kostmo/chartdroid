@@ -45,5 +45,11 @@
 	    android:layout_height="wrap_content" 
 	    android:text="Old style charts"
 	    android:id="@+id/button_old_style"/>
+	    
+   	<Button
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:text="Experimental calendar"
+	    android:id="@+id/button_experimental_calendar"/>
 
 </LinearLayout>

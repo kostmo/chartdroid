@@ -1,8 +1,8 @@
 package com.googlecode.chartdroid.market.sales.provider;
 
 import com.googlecode.chartdroid.market.sales.Market;
+import com.googlecode.chartdroid.market.sales.container.HistogramBin;
 import com.googlecode.chartdroid.market.sales.container.SpreadsheetRow;
-import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask.HistogramBin;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,8 +14,8 @@ import android.util.Log;
 
 import java.util.List;
 
-public class DatabaseStorage extends SQLiteOpenHelper 
-{
+public class DatabaseStorage extends SQLiteOpenHelper {
+
 	static final String TAG = Market.TAG; 
  
     static final String DATABASE_NAME = "STORAGE";

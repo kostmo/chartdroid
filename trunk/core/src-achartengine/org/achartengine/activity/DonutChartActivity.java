@@ -19,7 +19,9 @@ import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
+import org.achartengine.consumer.DataCollector.LabeledDatum;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.view.FlowLayout;
@@ -29,7 +31,6 @@ import org.achartengine.view.chart.DoughnutChart;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -44,16 +45,14 @@ public class DonutChartActivity extends GraphicalActivity {
 	protected int getTitlebarIconResource() {
 		return R.drawable.typepie;
 	}
-
-	// ---------------------------------------------
+	
+	// ========================================================================
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-
+	protected int getLayoutResourceId() {
+		return R.layout.simple_chart_activity;
 	}
 
-	// ---------------------------------------------
+	// ========================================================================
 	@Override
 	protected void postChartPopulationCallback() {
 
@@ -63,12 +62,12 @@ public class DonutChartActivity extends GraphicalActivity {
 		populateLegend(predicate_layout, series_attributes_list, true);
 	}
 
-	// ---------------------------------------------
+	// ========================================================================
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
+		List<List<List<LabeledDatum>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
 
@@ -82,11 +81,11 @@ public class DonutChartActivity extends GraphicalActivity {
 		if (sorted_series_list.size() == 1) {
 			// Let the Y-axis carry the only data.
 			x_axis_series = new ArrayList<List<Number>>();
-			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels);
+			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels);
 
 		} else {
-			x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
-			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
+			x_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
+			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
 		}
 
 
@@ -97,7 +96,7 @@ public class DonutChartActivity extends GraphicalActivity {
 				|| x_axis_series.size() == 1
 				|| x_axis_series.size() == 0);
 
-		String[] titles = getSortedSeriesTitles();
+		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
 
 		assert (titles.length == y_axis_series.size());
 
@@ -142,7 +141,7 @@ public class DonutChartActivity extends GraphicalActivity {
 
 
 
-		List<String> axis_labels = getAxisTitles();
+		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 
@@ -171,8 +170,7 @@ public class DonutChartActivity extends GraphicalActivity {
 		return chart;
 	}
 
-
-
+	// ========================================================================
 	@Override
 	protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
 
@@ -198,7 +196,5 @@ public class DonutChartActivity extends GraphicalActivity {
 		}
 
 		return series_attributes_list;
-
 	}
-
 }

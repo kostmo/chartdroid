@@ -21,7 +21,9 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
+import org.achartengine.consumer.DataCollector.LabeledDatum;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
@@ -71,7 +73,7 @@ public class TimeChartActivity extends XYChartActivity {
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException {
 
-		List<List<List<LabeledDatum>>> sorted_series_list = getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
+		List<List<List<LabeledDatum>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
 		if ( !(sorted_series_list.size() > 0) ) {
@@ -86,16 +88,16 @@ public class TimeChartActivity extends XYChartActivity {
 		List<List<Number>> y_axis_series = null;
 		if (sorted_series_list.size() == 1) {
 			// XXX - Let the X-axis carry the only data.  This is different from all the other classes.
-			x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels );
+			x_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels );
 			y_axis_series = new ArrayList<List<Number>>();
 
 		} else {
-			x_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
-			y_axis_series = unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
+			x_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
+			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
 		}
 
 
-		String[] titles = getSortedSeriesTitles();
+		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
 		if (titles.length != x_axis_series.size()) {
 			throw new IllegalArgumentException("Titles count must match series count (X)!");
 		} else if (titles.length != y_axis_series.size()) {
@@ -117,8 +119,7 @@ public class TimeChartActivity extends XYChartActivity {
 
 
 
-		List<String> axis_labels = getAxisTitles();
-
+		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 
