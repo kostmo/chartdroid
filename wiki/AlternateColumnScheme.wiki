@@ -1,6 +1,6 @@
 #summary An alternate column scheme that uses multiple rows to represent a single datum
 
-The [InterfaceSpecification#Standard_Column_Scheme Standard Column Scheme] is easier to use.
+*Note:* The [InterfaceSpecification#Standard_Column_Scheme Standard Column Scheme] is easier to use.
 
 Each datum component must be identified by axis and series.  The axis and series numbering scheme is arbitrary.  If multiple axes are specified, datum components from each axis are combined in the order they appear to form a complete multi-dimensional datum (e.g. a 2D point).
 
