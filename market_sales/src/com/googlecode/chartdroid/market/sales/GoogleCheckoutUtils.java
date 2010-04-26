@@ -39,9 +39,6 @@ import java.util.regex.Pattern;
 public class GoogleCheckoutUtils {
 
 	static final String TAG = Market.TAG;
-	
-	
-	final static int DOWNLOAD_DAYS_INCREMENT = 31;
 
 	public static final String GDTOKEN_COOKIE = "gdToken";
 	public static final String SECURE_HTTP_SCHEME = "https";
@@ -50,12 +47,13 @@ public class GoogleCheckoutUtils {
 		.scheme(SECURE_HTTP_SCHEME)
 		.authority("checkout.google.com")
 		.path("sell/orders").build();
+	
+	public static final String GOOGLE_CHECKOUT_SERVICE_CODENAME = "sierra";
 
-
-	static SimpleDateFormat ISO8601FORMAT_YMD = new SimpleDateFormat("yyyy-MM-dd");
+	final static int DOWNLOAD_DAYS_INCREMENT = 31;
+	final static SimpleDateFormat ISO8601FORMAT_YMD = new SimpleDateFormat("yyyy-MM-dd");
 
 	float histogram_binwidth_days;
-
 	String error_message;
 	
 	// ========================================================================
@@ -128,7 +126,7 @@ public class GoogleCheckoutUtils {
 	}
 
 	// ========================================================================
-	public List<DateRange> planPiecewiseDownload(DateRange date_range) {
+	public static List<DateRange> planPiecewiseDownload(DateRange date_range) {
 		
 		// The date range must be split into segments of no longer than 30 days.
 		List<DateRange> download_pieces = new ArrayList<DateRange>();
@@ -166,9 +164,10 @@ public class GoogleCheckoutUtils {
 		nameValuePairs.add(new BasicNameValuePair("_type", "order-list-request"));
 
 		String url_string = new Uri.Builder()
-		.scheme(SECURE_HTTP_SCHEME)
-		.authority(TARGET_CHECKOUT_PAGE.getAuthority())
-		.path("cws/v2/Merchant/" + checkout_credentials.merchant_id + "/reportsForm").toString();
+			.scheme(SECURE_HTTP_SCHEME)
+			.authority(TARGET_CHECKOUT_PAGE.getAuthority())
+			.path("cws/v2/Merchant/" + checkout_credentials.merchant_id + "/reportsForm")
+			.toString();
 
 		HttpPost httppost = new HttpPost( url_string );
 		try {
@@ -205,10 +204,10 @@ public class GoogleCheckoutUtils {
 						parsed_rows.add(new SpreadsheetRow(row));
 
 				} catch (NumberFormatException e) {
-					error_message = response_string.trim();
+					this.error_message = response_string.trim();
 					return null;
 				} catch (Exception e) {
-					error_message = e.getMessage();
+					this.error_message = e.getMessage();
 					return null;
 				}
 
@@ -233,7 +232,7 @@ public class GoogleCheckoutUtils {
 	}
 
 	// ========================================================================
-	public CheckoutCredentials recoverCheckoutCredentials(UsernamePassword user_pass) {
+	public static CheckoutCredentials recoverCheckoutCredentials(UsernamePassword user_pass) {
 
 		CheckoutCredentials credentials = new CheckoutCredentials();
 
@@ -242,57 +241,58 @@ public class GoogleCheckoutUtils {
 
 		String secret_galaxy = null;
 		long secret_code = 0;
-		{
-
-			Uri uri = new Uri.Builder().scheme(SECURE_HTTP_SCHEME).authority("www.google.com")
+		
+		Uri base_google_login_service_uri = new Uri.Builder()
+			.scheme(SECURE_HTTP_SCHEME)
+			.authority("www.google.com")
 			.path("/accounts/ServiceLoginAuth")
-			.appendQueryParameter("service", "sierra")
+			.appendQueryParameter("service", GOOGLE_CHECKOUT_SERVICE_CODENAME)
+			.build();
+
+		Uri uri = base_google_login_service_uri.buildUpon()
 			.appendQueryParameter("continue", TARGET_CHECKOUT_PAGE.toString())
 			.appendQueryParameter("ltmpl", "mobilec")
 			.appendQueryParameter("rm", "hide")
 			.appendQueryParameter("btmpl", "mobile")
 			.build();
-			String cookie_fetcher_url_string = uri.toString();
+		String login_url_string = uri.toString();
 
 
-			HttpGet httpget = new HttpGet( cookie_fetcher_url_string );
-			try {
-				response = httpclient.execute(httpget);
-				String response_string = StreamUtils.convertStreamToString(response.getEntity().getContent());
+		HttpGet httpget = new HttpGet( login_url_string );
+		try {
+			response = httpclient.execute(httpget);
+			String response_string = StreamUtils.convertStreamToString(response.getEntity().getContent());
 
 
-				{
-					String uncategorized_template_matcher = "input\\s+type=\"hidden\"\\s+name=\"dsh\"\\s+id=\"dsh\"\\s+value=\"(-?\\d+)\"";
-					Pattern template_pattern = Pattern.compile(uncategorized_template_matcher, Pattern.CASE_INSENSITIVE);
-					Matcher classMatcher = template_pattern.matcher(response_string);
-					if (classMatcher.find()) {
-						secret_code = Long.parseLong(classMatcher.group(1));
-					}
+			{
+				String uncategorized_template_matcher = "input\\s+type=\"hidden\"\\s+name=\"dsh\"\\s+id=\"dsh\"\\s+value=\"(-?\\d+)\"";
+				Pattern template_pattern = Pattern.compile(uncategorized_template_matcher, Pattern.CASE_INSENSITIVE);
+				Matcher classMatcher = template_pattern.matcher(response_string);
+				if (classMatcher.find()) {
+					secret_code = Long.parseLong(classMatcher.group(1));
 				}
-
-				{
-					String uncategorized_template_matcher = "input\\s+type=\"hidden\"\\s+name=\"GALX\"\\s+value=\"([^\"]+)\"";
-					Pattern template_pattern = Pattern.compile(uncategorized_template_matcher, Pattern.CASE_INSENSITIVE);
-					Matcher classMatcher = template_pattern.matcher(response_string);
-					if (classMatcher.find()) {
-						secret_galaxy = classMatcher.group(1);
-					}
-				}
-
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+
+			{
+				String uncategorized_template_matcher = "input\\s+type=\"hidden\"\\s+name=\"GALX\"\\s+value=\"([^\"]+)\"";
+				Pattern template_pattern = Pattern.compile(uncategorized_template_matcher, Pattern.CASE_INSENSITIVE);
+				Matcher classMatcher = template_pattern.matcher(response_string);
+				if (classMatcher.find()) {
+					secret_galaxy = classMatcher.group(1);
+				}
+			}
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-
-		Uri uri = new Uri.Builder().scheme(SECURE_HTTP_SCHEME).authority("www.google.com").path("/accounts/ServiceLoginAuth").appendQueryParameter("service", "sierra").build();
-		String cookie_fetcher_url_string = uri.toString();
+		String cookie_fetcher_url_string = base_google_login_service_uri.toString();
 
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("continue", TARGET_CHECKOUT_PAGE.toString()));
-		nameValuePairs.add(new BasicNameValuePair("service", "sierra"));
+		nameValuePairs.add(new BasicNameValuePair("service", GOOGLE_CHECKOUT_SERVICE_CODENAME));
 		nameValuePairs.add(new BasicNameValuePair("dsh", Long.toString(secret_code)));
 		nameValuePairs.add(new BasicNameValuePair("ltmpl", "mobilec"));
 		nameValuePairs.add(new BasicNameValuePair("btmpl", "mobile"));

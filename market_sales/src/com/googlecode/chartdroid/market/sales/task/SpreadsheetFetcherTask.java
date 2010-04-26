@@ -70,9 +70,9 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 
 		this.current_progress_message = "Authenticating...";
 		publishProgress(new ProgressPacket(0, ProgressStage.AUTHENTICATING));
-		CheckoutCredentials checkout_credentials = this.google_checkout_utils.recoverCheckoutCredentials(user_pass);
+		CheckoutCredentials checkout_credentials = GoogleCheckoutUtils.recoverCheckoutCredentials(this.user_pass);
 
-		List<DateRange> download_pieces = this.google_checkout_utils.planPiecewiseDownload(this.date_range);
+		List<DateRange> download_pieces = GoogleCheckoutUtils.planPiecewiseDownload(this.date_range);
 		this.current_progress_message = "Downloading in chunks...";
 		this.current_progress_max = download_pieces.size();
 		
@@ -85,7 +85,7 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 			i++;
 		}
 		
-		current_progress_message = "Storing records...";
+		this.current_progress_message = "Storing records...";
 		this.current_progress_max = -1;
 		publishProgress(new ProgressPacket(0, ProgressStage.STORING));
 //		long batch_id = this.database.storeRecords(aggregated_rows);
@@ -102,13 +102,13 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 	@Override
     protected void onProgressUpdate(ProgressPacket... packets) {
 		ProgressPacket packet = packets[0];
-		if (packet.stage != current_progress_stage) {
-			current_progress_stage = packet.stage;
+		if (packet.stage != this.current_progress_stage) {
+			this.current_progress_stage = packet.stage;
 			
 			// Perform stage updates
-			this.wait_dialog.setMessage(current_progress_message);			
-			this.wait_dialog.setIndeterminate( current_progress_max < 0 );
-			this.wait_dialog.setMax(current_progress_max);
+			this.wait_dialog.setMessage(this.current_progress_message);			
+			this.wait_dialog.setIndeterminate( this.current_progress_max < 0 );
+			this.wait_dialog.setMax(this.current_progress_max);
 		}
 		
 		this.wait_dialog.setProgress(packet.progress_value);
@@ -138,7 +138,6 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 			axis_titles.add("Date");
 			axis_titles.add(String.format("Sales per %.1f days", this.google_checkout_utils.getHistogramBinwidthDays()));
 			i.putExtra(ColumnSchema.EXTRA_AXIS_TITLES, axis_titles);
-			
 			i.putExtra(ColumnSchema.EXTRA_FORMAT_STRING_Y, "$%.2f");
 			
 			Market.intentLaunchMarketFallback((Activity) this.context, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
