@@ -22,6 +22,7 @@ import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
+import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.view.FlowLayout;
@@ -95,8 +96,12 @@ public class PieChartActivity extends GraphicalActivity {
 				|| x_axis_series.size() == 1
 				|| x_axis_series.size() == 0);
 
-		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
-
+		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
+		String[] titles = new String[series_meta_data.size()];
+		for (int i=0; i<series_meta_data.size(); i++)
+			titles[i] = series_meta_data.get(i).title;
+		
+		
 		assert (titles.length == y_axis_series.size());
 
 

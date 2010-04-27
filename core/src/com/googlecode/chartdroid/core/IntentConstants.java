@@ -8,6 +8,11 @@ public class IntentConstants {
     
 	public static final String EXTRA_SERIES_COLORS = "com.googlecode.chartdroid.intent.extra.SERIES_COLORS";
 	public static final String EXTRA_SERIES_LABELS = "com.googlecode.chartdroid.intent.extra.SERIES_LABELS";
+	public static final String EXTRA_SERIES_MARKERS = "com.googlecode.chartdroid.intent.extra.SERIES_MARKERS";
+	public static final String EXTRA_SERIES_LINE_STYLES = "com.googlecode.chartdroid.intent.extra.SERIES_LINE_STYLES";
+	public static final String EXTRA_SERIES_LINE_THICKNESSES = "com.googlecode.chartdroid.intent.extra.SERIES_LINE_THICKNESSES";
+	
+	
 	public static final String EXTRA_AXIS_TITLES = "com.googlecode.chartdroid.intent.extra.AXIS_TITLES";
     
 	public static final String EXTRA_FORMAT_STRING_X = "com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X";

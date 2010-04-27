@@ -1,8 +1,7 @@
 package com.googlecode.chartdroid.demo.provider;
 
+import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.demo.InputDatasetActivity.EventDatum;
-
-import org.achartengine.demo.ContentSchema;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -43,10 +42,10 @@ public class DatabaseStoredData extends SQLiteOpenHelper
         "create table " + TABLE_DATA + " ("
         + KEY_DATASET_INDEX + " integer, "
         + KEY_DATUM_INDEX + " integer, "
-        + ContentSchema.PlotData.COLUMN_SERIES_INDEX + " integer, "
+        + ColumnSchema.COLUMN_SERIES_INDEX + " integer, "
         + KEY_AXIS_X + " integer, "
         + KEY_AXIS_Y + " integer, "
-        + ContentSchema.PlotData.COLUMN_DATUM_LABEL + " text,"
+        + ColumnSchema.COLUMN_DATUM_LABEL + " text,"
     	+ "PRIMARY KEY(" + KEY_DATASET_INDEX + ", " + KEY_DATUM_INDEX + ") ON CONFLICT IGNORE);";
 
     
@@ -111,7 +110,7 @@ public class DatabaseStoredData extends SQLiteOpenHelper
     	int datum_index = 0;
         for (EventDatum datum : event_list) {
             
-        	cv.put(ContentSchema.PlotData.COLUMN_SERIES_INDEX, 0);	// XXX
+        	cv.put(ColumnSchema.COLUMN_SERIES_INDEX, 0);	// XXX
         	cv.put(KEY_DATUM_INDEX, datum_index);
         	cv.put(KEY_AXIS_X, datum.timestamp);
         	cv.put(KEY_AXIS_Y, datum.value);

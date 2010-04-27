@@ -1,8 +1,7 @@
 package com.googlecode.chartdroid.demo.provider;
 
+import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.ColumnSchema.EventData;
-
-import org.achartengine.demo.ContentSchema;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -17,7 +16,6 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 public class LocalStorageContentProvider extends ContentProvider {
-
 
 	static final String TAG = "ChartDroid Demo";
 
@@ -84,7 +82,7 @@ public class LocalStorageContentProvider extends ContentProvider {
 			long dataset_id = ContentUris.parseId(uri);
 			Log.d(TAG, "Dataset ID: " + dataset_id);
 			
-			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				/*
 				DatabaseStoredData database = new DatabaseStoredData(getContext());
@@ -101,11 +99,11 @@ public class LocalStorageContentProvider extends ContentProvider {
 				
 				return null;
 				
-			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_SERIES_LABEL});
+						ColumnSchema.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<1; i++) {
@@ -126,10 +124,10 @@ public class LocalStorageContentProvider extends ContentProvider {
 				Cursor cursor = db.query(DatabaseStoredData.TABLE_DATA,
 					new String[] {
 						DatabaseStoredData.KEY_DATUM_INDEX +" AS " + BaseColumns._ID,
-				        ContentSchema.PlotData.COLUMN_SERIES_INDEX,
+				        ColumnSchema.COLUMN_SERIES_INDEX,
 				        DatabaseStoredData.KEY_AXIS_X,
 				        DatabaseStoredData.KEY_AXIS_Y,
-				        ContentSchema.PlotData.COLUMN_DATUM_LABEL,
+				        ColumnSchema.COLUMN_DATUM_LABEL,
 					},
 					DatabaseStoredData.KEY_DATASET_INDEX + "=?",
 					new String[] { Long.toString(dataset_id) }, null, null, null);

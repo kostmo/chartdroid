@@ -1,9 +1,9 @@
 package org.achartengine.demo;
 
-import com.googlecode.chartdroid.core.ColumnSchema.EventData;
+import com.googlecode.chartdroid.core.ColumnSchema;
 
-import org.achartengine.demo.ContentSchema.PlotData;
 import org.achartengine.demo.data.DonutData;
+import org.achartengine.demo.data.MultiTimelineData;
 import org.achartengine.demo.data.TemperatureData;
 import org.achartengine.demo.data.TimelineData;
 
@@ -20,6 +20,7 @@ import android.util.Log;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 
 
@@ -64,8 +65,12 @@ public class AceDataContentProvider extends ContentProvider {
 
 
 	public static final String CHART_DATA_TIMELINE_PATH = "timeline";
+	public static final String CHART_DATA_MULTI_TIMELINE_PATH = "multitimeline";
+	
+	
 	private static final int CHART_DATA_LABELED_TIMELINE = 5;
-
+	private static final int CHART_DATA_MULTI_TIMELINE = 6;
+	
 
 	private static final UriMatcher sUriMatcher;
 	static {
@@ -81,6 +86,9 @@ public class AceDataContentProvider extends ContentProvider {
 
 
 		sUriMatcher.addURI(AUTHORITY, CHART_DATA_TIMELINE_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_LABELED_TIMELINE);
+		
+		sUriMatcher.addURI(AUTHORITY, CHART_DATA_MULTI_TIMELINE_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_MULTI_TIMELINE);
+
 
 		sUriMatcher.addURI(AUTHORITY, labeled_multiseries_path, CHART_DATA_LABELED_MULTISERIES);
 	}
@@ -100,12 +108,12 @@ public class AceDataContentProvider extends ContentProvider {
 		int match = sUriMatcher.match(uri);
 		Log.d(TAG, "getType() UriMatcher match: " + match);
 
-		switch (match)
-		{
+		switch (match) {
 		case CHART_DATA_LABELED_TIMELINE:
-			return EventData.CONTENT_TYPE_PLOT_DATA;
+		case CHART_DATA_MULTI_TIMELINE:
+			return ColumnSchema.EventData.CONTENT_TYPE_PLOT_DATA;
 		default:
-			return PlotData.CONTENT_TYPE_PLOT_DATA;
+			return ColumnSchema.PlotData.CONTENT_TYPE_PLOT_DATA;
 		}
 	}
 
@@ -116,15 +124,15 @@ public class AceDataContentProvider extends ContentProvider {
 		int match = sUriMatcher.match(uri);
 		Log.d(TAG, "query() UriMatcher match: " + match);
 
-		switch (match)
-		{
+		switch (match) {
+		// --------------------------------------------------------------------
 		case CHART_DATA_MULTISERIES:
 		{
-			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_AXIS_LABEL});
+						ColumnSchema.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TemperatureData.DEMO_AXES_LABELS.length; i++) {
@@ -134,12 +142,12 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_SERIES_LABEL});
+						ColumnSchema.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TemperatureData.DEMO_TITLES.length; i++) {
@@ -156,10 +164,10 @@ public class AceDataContentProvider extends ContentProvider {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_AXIS_INDEX,
-						ContentSchema.PlotData.COLUMN_SERIES_INDEX,
-						ContentSchema.PlotData.COLUMN_DATUM_VALUE,
-						ContentSchema.PlotData.COLUMN_DATUM_LABEL
+						ColumnSchema.COLUMN_AXIS_INDEX,
+						ColumnSchema.COLUMN_SERIES_INDEX,
+						ColumnSchema.COLUMN_DATUM_VALUE,
+						ColumnSchema.COLUMN_DATUM_LABEL
 				});
 
 				int row_index = 0;
@@ -170,7 +178,7 @@ public class AceDataContentProvider extends ContentProvider {
 					//                c.newRow().add( X_AXIS_INDEX ).add( i ).add( TemperatureData.DEMO_X_AXIS_DATA[i] ).add( null );
 					c.newRow()
 					.add( row_index )
-					.add( ContentSchema.X_AXIS_INDEX )
+					.add( ColumnSchema.X_AXIS_INDEX )
 					.add( 0 )   // Only create data for the first series.
 					.add( TemperatureData.DEMO_X_AXIS_DATA[i] )
 					.add( null );
@@ -185,7 +193,7 @@ public class AceDataContentProvider extends ContentProvider {
 						//                    c.newRow().add( Y_AXIS_INDEX ).add( i ).add( TemperatureData.DEMO_SERIES_LIST[i][j] ).add( null );
 						c.newRow()
 						.add( row_index )
-						.add( ContentSchema.Y_AXIS_INDEX )
+						.add( ColumnSchema.Y_AXIS_INDEX )
 						.add( i )
 						.add( TemperatureData.DEMO_SERIES_LIST[i][j] )
 						.add( null );
@@ -197,13 +205,80 @@ public class AceDataContentProvider extends ContentProvider {
 				return c;
 			}
 		}
-		case CHART_DATA_LABELED_TIMELINE:
+		// --------------------------------------------------------------------
+		case CHART_DATA_MULTI_TIMELINE:
 		{
-			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_AXIS_LABEL});
+						ColumnSchema.COLUMN_AXIS_LABEL});
+
+				for (int i=0; i<MultiTimelineData.DEMO_AXES_LABELS.length; i++) {
+					c.newRow().add( i ).add( MultiTimelineData.DEMO_AXES_LABELS[i] );
+				}
+
+				return c;
+			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+
+				// TODO: Define more columns for color, line style, marker shape, etc.
+				MatrixCursor c = new MatrixCursor(new String[] {
+						BaseColumns._ID,
+						ColumnSchema.COLUMN_SERIES_LABEL,
+						ColumnSchema.COLUMN_SERIES_COLOR});
+
+				for (int i=0; i<MultiTimelineData.SEQUENCE_TITLES.length; i++) {
+					c.newRow().add( i )
+						.add( MultiTimelineData.SEQUENCE_TITLES[i] )
+						.add( MultiTimelineData.SEQUENCE_COLORS[i] );
+				}
+
+				return c;
+
+			} else {
+				// Fetch the actual data
+
+				MatrixCursor c = new MatrixCursor(new String[] {
+						BaseColumns._ID,
+						ColumnSchema.COLUMN_SERIES_INDEX,
+						ColumnSchema.COLUMN_DATUM_LABEL,
+						"AXIS_X",
+						"AXIS_Y",
+				});
+
+
+				int row_index = 0;
+				Random random = new Random();
+				for (int series_index=0; series_index<MultiTimelineData.SEQUENCE_TITLES.length; series_index++) {
+
+					double y_offset = random.nextDouble()*10; 
+					Calendar date = new GregorianCalendar();
+					
+					for (int i=0; i<12; i++) {
+						c.newRow()
+						.add( row_index )
+						.add( series_index )
+						.add( null )
+						.add( date.getTime().getTime() )   // Only create data for the first series.
+						.add( y_offset + Math.pow(i, 1.3) );	// I picked an arbitrary number here to be the value of the event
+
+						date.add(Calendar.DATE, 1);
+						
+						row_index++;
+					}
+				}
+
+				return c;
+			}
+		}
+		// --------------------------------------------------------------------
+		case CHART_DATA_LABELED_TIMELINE:
+		{
+			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+
+				MatrixCursor c = new MatrixCursor(new String[] {
+						BaseColumns._ID,
+						ColumnSchema.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TimelineData.DEMO_AXES_LABELS.length; i++) {
@@ -213,12 +288,12 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_SERIES_LABEL});
+						ColumnSchema.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TimelineData.SEQUENCE_TITLES.length; i++) {
@@ -232,34 +307,29 @@ public class AceDataContentProvider extends ContentProvider {
 			} else {
 				// Fetch the actual data
 
-
+				// Note: This uses the "alternate" column schema
+				// (http://code.google.com/p/chartdroid/wiki/AlternateColumnScheme)
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_AXIS_INDEX,
-						ContentSchema.PlotData.COLUMN_SERIES_INDEX,
-						ContentSchema.PlotData.COLUMN_DATUM_VALUE,
-						ContentSchema.PlotData.COLUMN_DATUM_LABEL
+						ColumnSchema.COLUMN_AXIS_INDEX,
+						ColumnSchema.COLUMN_SERIES_INDEX,
+						ColumnSchema.COLUMN_DATUM_VALUE,
+						ColumnSchema.COLUMN_DATUM_LABEL
 				});
 
 				int row_index = 0;
 				// Add x-axis data
 
-				Calendar date = new GregorianCalendar(0, 0, 0);
-				//			Log.e(TAG, "Initializer date: " + date);
+				Calendar date = new GregorianCalendar();
 
 				for (int i=0; i<TimelineData.YEARS.length; i++) {
 					date.set(TimelineData.YEARS[i], TimelineData.MONTHS[i], 0);
 
-					//                c.newRow().add( X_AXIS_INDEX ).add( i ).add( TemperatureData.DEMO_X_AXIS_DATA[i] ).add( null );
-
-					//				Log.d(TAG, "Date value pre-conversion: " + date);
-
 					long date_long_value = date.getTimeInMillis();
-					//				Log.d(TAG, "Long value post-conversion: " + date_long_value);
 
 					c.newRow()
 					.add( row_index )
-					.add( ContentSchema.X_AXIS_INDEX )
+					.add( ColumnSchema.X_AXIS_INDEX )
 					.add( 0 )   // Only create data for the first series.
 					.add( date_long_value )
 					.add( TimelineData.TITLES[i] );
@@ -270,7 +340,7 @@ public class AceDataContentProvider extends ContentProvider {
 					// Add the y-axis data
 					c.newRow()
 					.add( row_index )
-					.add( ContentSchema.Y_AXIS_INDEX )
+					.add( ColumnSchema.Y_AXIS_INDEX )
 					.add( 0 )   // Only create data for the first series.
 					.add( 3*i/TimelineData.YEARS.length )	// I picked an arbitrary number here to be the value of the event
 					.add( null );
@@ -278,17 +348,17 @@ public class AceDataContentProvider extends ContentProvider {
 					row_index++;
 				}
 
-
 				return c;
 			}
 		}
+		// --------------------------------------------------------------------
 		case CHART_DATA_LABELED_MULTISERIES:
 		{
-			if (ContentSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_AXIS_LABEL});
+						ColumnSchema.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<DonutData.DEMO_AXES_LABELS.length; i++) {
@@ -298,12 +368,12 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ContentSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ContentSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_SERIES_LABEL});
+						ColumnSchema.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<DonutData.DEMO_SERIES_LABELS.length; i++) {
@@ -318,10 +388,10 @@ public class AceDataContentProvider extends ContentProvider {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ContentSchema.PlotData.COLUMN_AXIS_INDEX,
-						ContentSchema.PlotData.COLUMN_SERIES_INDEX,
-						ContentSchema.PlotData.COLUMN_DATUM_VALUE,
-						ContentSchema.PlotData.COLUMN_DATUM_LABEL});
+						ColumnSchema.COLUMN_AXIS_INDEX,
+						ColumnSchema.COLUMN_SERIES_INDEX,
+						ColumnSchema.COLUMN_DATUM_VALUE,
+						ColumnSchema.COLUMN_DATUM_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<DonutData.DEMO_SERIES_LIST.length; i++) {
@@ -329,7 +399,7 @@ public class AceDataContentProvider extends ContentProvider {
 
 						c.newRow()
 						.add( row_index )
-						.add( ContentSchema.Y_AXIS_INDEX )  // XXX Since we're only populating one axis, it probably doesn't matter whether it's the X or Y axis.
+						.add( ColumnSchema.Y_AXIS_INDEX )  // XXX Since we're only populating one axis, it probably doesn't matter whether it's the X or Y axis.
 						.add( i )
 						.add( DonutData.DEMO_SERIES_LIST[i][j] )
 						.add( DonutData.DEMO_SERIES_LABELS_LIST[i][j] );

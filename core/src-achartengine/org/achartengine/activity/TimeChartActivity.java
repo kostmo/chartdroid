@@ -24,6 +24,7 @@ import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
+import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
@@ -96,8 +97,11 @@ public class TimeChartActivity extends XYChartActivity {
 			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
 		}
 
-
-		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
+		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
+		String[] titles = new String[series_meta_data.size()];
+		for (int i=0; i<series_meta_data.size(); i++)
+			titles[i] = series_meta_data.get(i).title;
+			
 		if (titles.length != x_axis_series.size()) {
 			throw new IllegalArgumentException("Titles count must match series count (X)!");
 		} else if (titles.length != y_axis_series.size()) {
@@ -110,12 +114,14 @@ public class TimeChartActivity extends XYChartActivity {
 		// a la Firebug, or we could nix the bars and just draw labels at 45 degrees
 		// like a historical timeline.
 
+		/*
 		int[] colors = new int[titles.length];
 		PointStyle[] styles =  new PointStyle[titles.length];
 		for (int i=0; i<titles.length; i++) {
 			colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
 			styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
 		}
+		*/
 
 
 
@@ -124,7 +130,7 @@ public class TimeChartActivity extends XYChartActivity {
 
 
 
-		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
+		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
 		int length = renderer.getSeriesRendererCount();
 
 		for (int i = 0; i < length; i++) {

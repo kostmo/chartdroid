@@ -3,11 +3,13 @@ package com.googlecode.chartdroid.demo;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.demo.data.DonutData;
+import org.achartengine.demo.data.MultiTimelineData;
 import org.achartengine.demo.data.TemperatureData;
 import org.achartengine.demo.data.TimelineData;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,6 +33,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 
         for (int view : new int[] {
         		R.id.button_timeline_data_provider,
+        		R.id.button_multi_timeline_data_provider,
         		R.id.button_multiseries_data_provider,
         		R.id.button_multiseries_data_provider_radial,
         		R.id.button_multiseries_data_provider_xy,
@@ -88,6 +91,13 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
+		case R.id.button_multi_timeline_data_provider:
+		{
+            Intent i = new Intent(Intent.ACTION_VIEW, MultiTimelineData.uri);
+            i.putExtra(Intent.EXTRA_TITLE, MultiTimelineData.DEMO_CHART_TITLE);
+            Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
+			break;
+		}
 		case R.id.button_multiseries_data_provider:
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
@@ -110,6 +120,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
             Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
+            i.putExtra(IntentConstants.EXTRA_SERIES_COLORS, new int[] {Color.RED, Color.MAGENTA, Color.CYAN, Color.BLUE});
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;

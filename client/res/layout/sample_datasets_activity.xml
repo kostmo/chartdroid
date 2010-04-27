@@ -1,84 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
- 
-  	<TextView
-	     android:text="Event (timeline) data"  
-	     android:layout_width="fill_parent"  
-	     android:layout_height="wrap_content"  
-	     android:paddingTop="2dip"  
-	     android:paddingBottom="2dip"  
-	     android:paddingLeft="5dip"  
-	     style="?android:attr/listSeparatorTextViewStyle" />
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 
-	   	<Button
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" 
-		    android:text="Timeline"
-		    android:id="@+id/button_timeline_data_provider"/>
-	   
+	<TextView android:text="Event (timeline) data"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:paddingTop="2dip" android:paddingBottom="2dip"
+		android:paddingLeft="5dip" style="?android:attr/listSeparatorTextViewStyle" />
+
+	<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Timeline"
+			android:id="@+id/button_timeline_data_provider" />
+	
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Multi-Timeline"
+			android:id="@+id/button_multi_timeline_data_provider" />
+			
+	</LinearLayout>
 
 	<TextView android:text="Multi-series (temperature data)"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingTop="2dip" android:paddingBottom="2dip"
 		android:paddingLeft="5dip" style="?android:attr/listSeparatorTextViewStyle" />
-	   
-		<LinearLayout
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    >
-		    
-   	<Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:text="All styles"
-		    android:id="@+id/button_multiseries_data_provider"/>
 
-	   	<Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:text="Radial charts"
-		    android:id="@+id/button_multiseries_data_provider_radial"/>
-		    
-	   	<Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:text="XY charts"
-		    android:id="@+id/button_multiseries_data_provider_xy"/>
-    </LinearLayout>
-		    
-		    
-		    
+	<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="All styles"
+			android:id="@+id/button_multiseries_data_provider" />
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Radial charts"
+			android:id="@+id/button_multiseries_data_provider_radial" />
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="XY charts"
+			android:id="@+id/button_multiseries_data_provider_xy" />
+	</LinearLayout>
+
+
+
 	<TextView android:text="Labeled Multi-series (budget data)"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:paddingTop="2dip" android:paddingBottom="2dip"
 		android:paddingLeft="5dip" style="?android:attr/listSeparatorTextViewStyle" />
-	   
-		<LinearLayout
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    >
-		    
-   	<Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:text="All styles"
-		    android:id="@+id/button_labeled_multiseries_data_provider"/>
 
-	   	<Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:text="Radial charts"
-		    android:id="@+id/button_labeled_multiseries_data_provider_radial"/>
-		    
-	   	<Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content" 
-		    android:text="XY charts"
-		    android:id="@+id/button_labeled_multiseries_data_provider_xy"/>
-    </LinearLayout>
+	<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="All styles"
+			android:id="@+id/button_labeled_multiseries_data_provider" />
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Radial charts"
+			android:id="@+id/button_labeled_multiseries_data_provider_radial" />
+
+		<Button android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="XY charts"
+			android:id="@+id/button_labeled_multiseries_data_provider_xy" />
+	</LinearLayout>
 
 </LinearLayout>

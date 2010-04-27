@@ -15,6 +15,7 @@
  */
 package org.achartengine;
 
+import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.TimeSeries;
@@ -124,13 +125,13 @@ public abstract class ChartGenHelper {
 	 * @param styles the series point styles
 	 * @return the XY multiple series renderers
 	 */
-	public static XYMultipleSeriesRenderer buildRenderer(int[] colors, PointStyle[] styles) {
+	public static XYMultipleSeriesRenderer buildRenderer(List<SeriesMetaData> series_meta_data) {
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-		int length = colors.length;
-		for (int i = 0; i < length; i++) {
+
+		for (SeriesMetaData meta_data : series_meta_data) {
 			XYSeriesRenderer r = new XYSeriesRenderer();
-			r.setColor(colors[i]);
-			r.setPointStyle(styles[i]);
+			r.setColor( meta_data.color );
+			r.setPointStyle( meta_data.marker_style );
 			renderer.addSeriesRenderer(r);
 		}
 		return renderer;
