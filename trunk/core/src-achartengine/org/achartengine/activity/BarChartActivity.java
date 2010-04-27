@@ -23,6 +23,7 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
+import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.view.chart.AbstractChart;
@@ -76,8 +77,12 @@ public class BarChartActivity extends XYChartActivity {
 				|| x_axis_series.size() == 1
 				|| x_axis_series.size() == 0);
 
-		String[] titles = DataCollector.getSortedSeriesTitles( getIntent(), getContentResolver() );
-
+		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
+		String[] titles = new String[series_meta_data.size()];
+		for (int i=0; i<series_meta_data.size(); i++)
+			titles[i] = series_meta_data.get(i).title;
+		
+		
 		assert (titles.length == y_axis_series.size());
 
 
@@ -120,7 +125,7 @@ public class BarChartActivity extends XYChartActivity {
 
 
 
-		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(colors, styles);
+		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
 
 
 

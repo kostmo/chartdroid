@@ -3,9 +3,13 @@ package org.achartengine.consumer;
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
+import org.achartengine.activity.GraphicalActivity;
+import org.achartengine.view.chart.PointStyle;
+
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -289,7 +293,6 @@ public class DataCollector {
 		return sorted_series_list;
 	}
 	
-
 	// ========================================================================
 	//  Retrieve Axes data
 	public static List<String> getAxisTitles(Intent intent, ContentResolver content_resolver) {
@@ -331,43 +334,132 @@ public class DataCollector {
 		return axis_labels;
 	}
 
+
 	// ========================================================================
-	public static String[] getSortedSeriesTitles(Intent intent, ContentResolver content_resolver) {
+	enum LineStyle {
+		NONE, DOTTED, DASHED, SOLID
+	}
+	
+	public static class SeriesMetaData {
+		public String title = "Untitled";
+		public Integer color = null;
+		public PointStyle marker_style = PointStyle.CIRCLE;
+		public LineStyle line_style = LineStyle.SOLID;
+		public float line_thickness = 1f;
+	}
 
+	// ========================================================================
+	public static List<SeriesMetaData> supplementIntentSeriesMetaData(Intent intent, List<SeriesMetaData> meta_data_list) {
+		List<SeriesMetaData> integrated_meta_data = new ArrayList<SeriesMetaData>();
+		
 		String[] extra_series_titles = intent.getStringArrayExtra(IntentConstants.EXTRA_SERIES_LABELS);
+		int[] extra_series_colors = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_COLORS);
+		int[] extra_series_markers = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_MARKERS);
+		int[] extra_series_line_styles = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_LINE_STYLES);
+		float[] extra_series_line_thicknesses = intent.getFloatArrayExtra(IntentConstants.EXTRA_SERIES_LINE_THICKNESSES);
+
+		List<Integer> sizes = new ArrayList<Integer>();
+		sizes.add(meta_data_list.size());
 		if (extra_series_titles != null)
-			return extra_series_titles;
+			sizes.add(extra_series_titles.length);
 		
-		Uri intent_data = intent.getData();
+		if (extra_series_colors != null)
+			sizes.add(extra_series_colors.length);
 		
-		Uri meta_uri = intent_data.buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_META).build();
-//		Log.d(TAG, "Querying content provider for: " + meta_uri);
+		if (extra_series_markers != null)
+			sizes.add(extra_series_markers.length);
+		
+		if (extra_series_line_styles != null)
+			sizes.add(extra_series_line_styles.length);
+		
+		if (extra_series_line_thicknesses != null)
+			sizes.add(extra_series_line_thicknesses.length);
+		
+		int series_size = Collections.max(sizes);
+		
+		for (int i=0; i<series_size; i++) {
+			SeriesMetaData meta_data = new SeriesMetaData();
+			integrated_meta_data.add(meta_data);
+			
+			if (extra_series_titles != null && i < extra_series_titles.length) {
+				meta_data.title = extra_series_titles[i];
+			} else if (i < meta_data_list.size()) {
+				meta_data.title = meta_data_list.get(i).title;
+			}
+			
+			if (extra_series_colors != null && i < extra_series_colors.length) {
+				meta_data.color = extra_series_colors[i];
+			} else if (i < meta_data_list.size() && meta_data_list.get(i).color != null) {
+				meta_data.color = meta_data_list.get(i).color;
+			} else {
+				// XXX Here we want to at least provide a differentiated default color
+				meta_data.color = GraphicalActivity.DEFAULT_COLORS[i % GraphicalActivity.DEFAULT_COLORS.length];
+			}
+			
+			if (extra_series_markers != null && i < extra_series_markers.length) {
+				meta_data.marker_style = PointStyle.values()[extra_series_markers[i]];
+			} else if (i < meta_data_list.size()) {
+				meta_data.marker_style = meta_data_list.get(i).marker_style;
+			}
+			
+			if (extra_series_line_styles != null && i < extra_series_line_styles.length) {
+				meta_data.line_style = LineStyle.values()[extra_series_line_styles[i]];
+			} else if (i < meta_data_list.size()) {
+				meta_data.line_style = meta_data_list.get(i).line_style;
+			}
+			
+			if (extra_series_line_thicknesses != null && i < extra_series_line_thicknesses.length) {
+				meta_data.line_thickness = extra_series_line_thicknesses[i];
+			} else if (i < meta_data_list.size()) {
+				meta_data.line_thickness = meta_data_list.get(i).line_thickness;
+			}
+		}
+		
+		return integrated_meta_data;
+	}
+	
+	// ========================================================================
+	public static List<SeriesMetaData> getSeriesMetaData(Intent intent, ContentResolver content_resolver) {
 
-
+		Uri meta_uri = intent.getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_META).build();
 		Cursor meta_cursor = content_resolver.query(meta_uri,
 				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
 				null, null, null);
 
 		int series_column = meta_cursor.getColumnIndex(BaseColumns._ID);
 		int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LABEL);
+		int color_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_COLOR);
+		int marker_style_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_MARKER);
+		int line_style_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LINE_STYLE);
+		int line_thickness_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LINE_THICKNESS);
 
-		Map<Integer, String> series_label_map = new HashMap<Integer, String>();
+		Map<Integer, SeriesMetaData> series_metadata_map = new HashMap<Integer, SeriesMetaData>();
 		if (meta_cursor.moveToFirst()) {
-			// TODO: This could also be used to set color, line style, marker shape, etc.
+
 			do {
+				SeriesMetaData series_meta_data = new SeriesMetaData();
+				if (label_column >= 0)
+					series_meta_data.title = meta_cursor.getString(label_column);
+				if (color_column >= 0)
+					series_meta_data.color = meta_cursor.getInt(color_column);
+				if (marker_style_column >= 0)
+					series_meta_data.marker_style = PointStyle.values()[meta_cursor.getInt(marker_style_column)];
+				if (line_style_column >= 0)
+					series_meta_data.line_style = LineStyle.values()[meta_cursor.getInt(line_style_column)];
+				if (line_thickness_column >= 0)
+					series_meta_data.line_thickness = meta_cursor.getFloat(line_thickness_column);
+
+
 				int series_index = meta_cursor.getInt(series_column);
-				String series_label = meta_cursor.getString(label_column);
-
-
-				series_label_map.put(series_index, series_label);
+				series_metadata_map.put(series_index, series_meta_data);
 
 			} while (meta_cursor.moveToNext());
 		}
 
 		// Sort the map by key; that is, sort by the series index
-		List<String> sorted_series_labels = DataCollector.sortAndSimplify(series_label_map, DataCollector.MAP_KEY_COMPARATOR);
-
-		String[] titles = sorted_series_labels.toArray(new String[] {});
-		return titles;
+		List<SeriesMetaData> sorted_series_metadata = DataCollector.sortAndSimplify(series_metadata_map, DataCollector.MAP_KEY_COMPARATOR);
+		
+		// Supplement the intent data
+		return supplementIntentSeriesMetaData(intent, sorted_series_metadata);
 	}
 }

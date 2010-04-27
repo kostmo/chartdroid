@@ -1,9 +1,8 @@
 package com.googlecode.chartdroid.demo.provider;
 
+import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.ContentSchemaOld;
 import com.googlecode.chartdroid.demo.OldChartsActivity;
-
-import org.achartengine.demo.ContentSchema;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -62,9 +61,9 @@ public class DataContentProvider extends ContentProvider {
 
 		MatrixCursor c = new MatrixCursor(new String[] {
 				BaseColumns._ID,
-				ContentSchema.PlotData.COLUMN_AXIS_INDEX,
-				ContentSchema.PlotData.COLUMN_DATUM_VALUE,
-				ContentSchema.PlotData.COLUMN_DATUM_LABEL});
+				ColumnSchema.COLUMN_AXIS_INDEX,
+				ColumnSchema.COLUMN_DATUM_VALUE,
+				ColumnSchema.COLUMN_DATUM_LABEL});
 
 		for (int i=0; i<OldChartsActivity.demo_pie_data.length; i++)
 			c.newRow().add( i ).add( 0 ).add( OldChartsActivity.demo_pie_data[i] ).add( OldChartsActivity.demo_pie_labels[i] );

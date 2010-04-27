@@ -27,6 +27,10 @@ public final class ColumnSchema {
 
 	public static final String COLUMN_SERIES_INDEX = "COLUMN_SERIES_INDEX";
 	public static final String COLUMN_SERIES_LABEL = "COLUMN_SERIES_LABEL";
+	public static final String COLUMN_SERIES_COLOR = "COLUMN_SERIES_COLOR";
+	public static final String COLUMN_SERIES_MARKER = "COLUMN_SERIES_MARKER";
+	public static final String COLUMN_SERIES_LINE_STYLE = "COLUMN_SERIES_LINE_STYLE";
+	public static final String COLUMN_SERIES_LINE_THICKNESS = "COLUMN_SERIES_LINE_THICKNESS";
 
 	public static final String COLUMN_AXIS_INDEX = "COLUMN_AXIS_INDEX";
 	public static final String COLUMN_AXIS_LABEL = "COLUMN_AXIS_LABEL";

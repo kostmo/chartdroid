@@ -28,7 +28,6 @@ public class EventContentProvider extends ContentProvider {
 	static Uri BASE_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).path("events").build();
 
 
-
 	// the appended ID is actually not used in this demo.
    public static Uri constructUri(long data_id) {
        return ContentUris.withAppendedId(BASE_URI, data_id);
@@ -40,18 +39,8 @@ public class EventContentProvider extends ContentProvider {
    }
 
    @Override
-   public int delete(Uri uri, String s, String[] as) {
-       throw new UnsupportedOperationException("Not supported by this provider");
-   }
-
-   @Override
    public String getType(Uri uri) {
 	   return ContentSchemaOld.CalendarEvent.CONTENT_TYPE_CALENDAR_EVENT;
-   }
-
-   @Override
-   public Uri insert(Uri uri, ContentValues contentvalues) {
-       throw new UnsupportedOperationException("Not supported by this provider");
    }
 
    @Override
@@ -73,6 +62,17 @@ public class EventContentProvider extends ContentProvider {
 		return c;
    }
 
+
+   @Override
+   public int delete(Uri uri, String s, String[] as) {
+       throw new UnsupportedOperationException("Not supported by this provider");
+   }
+
+   @Override
+   public Uri insert(Uri uri, ContentValues contentvalues) {
+       throw new UnsupportedOperationException("Not supported by this provider");
+   }
+   
    @Override
    public int update(Uri uri, ContentValues contentvalues, String s, String[] as) {
        throw new UnsupportedOperationException("Not supported by this provider");
