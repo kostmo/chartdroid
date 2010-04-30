@@ -95,6 +95,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, MultiTimelineData.uri);
             i.putExtra(Intent.EXTRA_TITLE, MultiTimelineData.DEMO_CHART_TITLE);
+            i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "£%.1f");
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
