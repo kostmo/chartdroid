@@ -106,12 +106,15 @@ Here is an example results table that your application might produce in response
 || 3556 || 1 || "pears" || 5 || 2 ||
 
 ==="meta" Columns===
-The "meta" query provides labels for each data series.
+The "meta" query provides labels for each data series. All columns are optional.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
 || `COLUMN_SERIES_LABEL` || `String` ||
-
+|| `COLUMN_SERIES_COLOR` || `int` ||
+|| `COLUMN_SERIES_MARKER` || `int` ||
+|| `COLUMN_SERIES_LINE_STYLE` || `int` ||
+|| `COLUMN_SERIES_LINE_THICKNESS` || `float` ||
 
 ==="axes" Columns===
 The "axes" query provides labels for each axis.
@@ -130,8 +133,11 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 
 || *Key* || *Data type* ||
 || `Intent.EXTRA_TITLE` || `String` ||
+|| `com.googlecode.chartdroid.intent.extra.SERIES_LABELS` || `String[]` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_COLORS` || `int[]` ||
-|| `com.googlecode.chartdroid.intent.extra.SERIES_LABELS ` || `String[]` ||
+|| `com.googlecode.chartdroid.intent.extra.SERIES_MARKERS` || `int[]` ||
+|| `com.googlecode.chartdroid.intent.extra.SERIES_LINE_STYLES` || `int[]` ||
+|| `com.googlecode.chartdroid.intent.extra.SERIES_LINE_THICKNESSES` || `float[]` ||
 || `com.googlecode.chartdroid.intent.extra.AXIS_TITLES` || `ArrayList<String>` ||
 || `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X` || `String` ||
 || `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` ||
