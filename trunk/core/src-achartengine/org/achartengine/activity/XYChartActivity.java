@@ -47,17 +47,20 @@ abstract public class XYChartActivity extends GraphicalActivity {
 	// ========================================================================
 	MinMax getAxisLimits(List<List<Number>> multi_series) {
 		
-		MinMax y_minmax = new MinMax(multi_series);
-		double y_values_span = y_minmax.getSpan();
+		MinMax minmax = new MinMax(multi_series);
+		double values_span = minmax.getSpan();
 		double padding;
-		if (y_values_span > 0) {
-			padding = y_values_span*HEADROOM_FOOTROOM_FRACTION;
+		if (values_span > 0) {
+			padding = values_span*HEADROOM_FOOTROOM_FRACTION;
 		} else {
-			padding = y_minmax.min.doubleValue()*HEADROOM_FOOTROOM_FRACTION;
+			if (minmax.min.doubleValue() != 0)
+				padding = minmax.min.doubleValue()*HEADROOM_FOOTROOM_FRACTION;
+			else
+				padding = 1;
 		}
 		
-		double y_axis_lower_limit = y_minmax.min.doubleValue() - padding;
-		double y_axis_upper_limit = y_minmax.max.doubleValue() + padding;
+		double y_axis_lower_limit = minmax.min.doubleValue() - padding;
+		double y_axis_upper_limit = minmax.max.doubleValue() + padding;
 		return new MinMax(y_axis_lower_limit, y_axis_upper_limit);
 	}
 

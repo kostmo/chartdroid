@@ -118,7 +118,6 @@ public class BarChartActivity extends XYChartActivity {
 			styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
 		}
 
-
 		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
@@ -136,12 +135,13 @@ public class BarChartActivity extends XYChartActivity {
 		Log.d(TAG, "X LABEL: " + y_label);
 		Log.d(TAG, "chart_title: " + chart_title);
 
-		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label,
-				Color.LTGRAY, Color.GRAY);
-//		renderer.setXLabels(12);	// FIXME
-
-		// Now generated dynamically
-//		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
+		org.achartengine.ChartGenHelper.setChartSettings(
+				renderer,
+				chart_title,
+				x_label,
+				y_label,
+				Color.LTGRAY,
+				Color.GRAY);
 
 
 		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset2(titles, y_axis_series);
@@ -164,11 +164,9 @@ public class BarChartActivity extends XYChartActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-
 		menu.findItem(R.id.menu_toggle_stacked).setVisible(true);
 		return true;
 	}
-
 
 	// ========================================================================
 	@Override
