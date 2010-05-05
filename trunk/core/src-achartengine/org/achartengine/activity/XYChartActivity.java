@@ -20,6 +20,7 @@ import com.googlecode.chartdroid.R;
 
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.VerticalLabelView;
 import org.achartengine.view.FlowLayout;
 import org.achartengine.view.chart.AbstractChart;
@@ -43,9 +44,30 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		return R.layout.xy_chart_activity;
 	}
 
+	// ========================================================================
+	MinMax getAxisLimits(List<List<Number>> multi_series) {
+		
+		MinMax y_minmax = new MinMax(multi_series);
+		double y_values_span = y_minmax.getSpan();
+		double padding;
+		if (y_values_span > 0) {
+			padding = y_values_span*HEADROOM_FOOTROOM_FRACTION;
+		} else {
+			padding = y_minmax.min.doubleValue()*HEADROOM_FOOTROOM_FRACTION;
+		}
+		
+		double y_axis_lower_limit = y_minmax.min.doubleValue() - padding;
+		double y_axis_upper_limit = y_minmax.max.doubleValue() + padding;
+		return new MinMax(y_axis_lower_limit, y_axis_upper_limit);
+	}
+
+	// ========================================================================
+	abstract MinMax getXAxisLimits(List<List<Number>> multi_series);
+	abstract MinMax getYAxisLimits(List<List<Number>> multi_series);
+	
+	// ========================================================================	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
 		
 		getWindow().setFlags(
@@ -53,7 +75,22 @@ abstract public class XYChartActivity extends GraphicalActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN );
 	}
 
-	
+	// ========================================================================	
+	void assignAxesExtents(XYMultipleSeriesRenderer renderer, List<List<Number>> x_axis_series, List<List<Number>> y_axis_series) {
+		MinMax x_axis_limits = getXAxisLimits(x_axis_series);
+		MinMax y_axis_limits = getYAxisLimits(y_axis_series);
+		Log.d(TAG, "Y axis bottom: " + y_axis_limits.min.doubleValue());
+		Log.d(TAG, "Y axis top: " + y_axis_limits.max.doubleValue());
+
+		org.achartengine.ChartGenHelper.setAxesExtents(
+				renderer,
+				x_axis_limits.min.longValue(),
+				x_axis_limits.max.longValue(),
+				y_axis_limits.min.doubleValue(),
+				y_axis_limits.max.doubleValue());
+	}
+
+	// ========================================================================	
 	@Override
 	protected void postChartPopulationCallback() {
 		XYChart xy_chart = (XYChart) mChart;
@@ -69,15 +106,13 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		
 		((TextView) findViewById(R.id.chart_x_axis_title)).setText( xy_chart.getRenderer().getXTitle() );
 		((VerticalLabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );
-
 		
 		FlowLayout predicate_layout = (FlowLayout) findViewById(R.id.predicate_layout);
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list);
 	}
-	
-	
-	
+
+	// ========================================================================	
 	@Override
 	protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart) {
 		
@@ -99,10 +134,7 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		return series_attributes_list;
 	}
 
-
-
-
-
+	// ========================================================================	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -115,7 +147,7 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		return true;
 	}
 
-
+	// ========================================================================	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

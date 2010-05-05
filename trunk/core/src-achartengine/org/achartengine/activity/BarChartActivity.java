@@ -26,6 +26,7 @@ import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.BarChart;
 import org.achartengine.view.chart.PointStyle;
@@ -51,8 +52,7 @@ public class BarChartActivity extends XYChartActivity {
 		return R.drawable.typebar;
 	}
 
-
-	// ---------------------------------------------
+	// ========================================================================
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
@@ -159,18 +159,7 @@ public class BarChartActivity extends XYChartActivity {
 		return chart;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
+	// ========================================================================
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -181,6 +170,7 @@ public class BarChartActivity extends XYChartActivity {
 	}
 
 
+	// ========================================================================
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -196,5 +186,18 @@ public class BarChartActivity extends XYChartActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	// ========================================================================
+	@Override
+	MinMax getYAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
+	}
+
+	// ========================================================================
+	@Override
+	MinMax getXAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
 	}
 }

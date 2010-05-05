@@ -50,7 +50,7 @@ public class TimeChartActivity extends XYChartActivity {
 		return R.drawable.typepointline;
 	}
 
-	
+	// ========================================================================
 	List<List<Date>> convertNumberToDateSeries(List<List<Number>> number_series) {
 		List<List<Date>> output = new ArrayList<List<Date>>();
 		for (List<Number> individual_series : number_series) {
@@ -69,8 +69,7 @@ public class TimeChartActivity extends XYChartActivity {
 		return output;
 	}
 
-	
-	// ---------------------------------------------
+	// ========================================================================
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException {
 
@@ -140,23 +139,17 @@ public class TimeChartActivity extends XYChartActivity {
 		assignChartLabels(axis_labels, renderer);
 
 
+
+		Log.i(TAG, "Getting the axis limits...");
+		assignAxesExtents(renderer, x_axis_series, y_axis_series);
+
+		
+		
+
 //		Log.i(TAG, "About to convert numbers to date series...");
 		List<List<Date>> x_axis_date_series = convertNumberToDateSeries(x_axis_series);
 
-//		Log.i(TAG, "Getting the axis limits...");
-		
-		MinMax x_axis_limits = getTimeAxisLimits(x_axis_series);
-		MinMax y_axis_limits = getYAxisLimits(y_axis_series);
-		Log.d(TAG, "Y axis bottom: " + y_axis_limits.min.doubleValue());
-		Log.d(TAG, "Y axis top: " + y_axis_limits.max.doubleValue());
-		
-		
-		org.achartengine.ChartGenHelper.setAxesExtents(
-				renderer,
-				x_axis_limits.min.longValue(),
-				x_axis_limits.max.longValue(),
-				y_axis_limits.min.doubleValue(),
-				y_axis_limits.max.doubleValue());
+
 
 
 //		Log.i(TAG, "About to build date dataset...");
@@ -177,7 +170,11 @@ public class TimeChartActivity extends XYChartActivity {
 		return chart;
 	}
 
-	// =========================
+	
+
+	
+	
+	// ========================================================================
 	MinMax getTimeAxisLimits(List<List<Number>> time_axis_series) {
 		
 		MinMax time_minmax = new MinMax(time_axis_series);
@@ -195,20 +192,17 @@ public class TimeChartActivity extends XYChartActivity {
 		long time_axis_upper_limit = time_minmax.max.longValue() + padding;
 		return new MinMax(time_axis_lower_limit, time_axis_upper_limit);
 	}
-	// =========================
-	MinMax getYAxisLimits(List<List<Number>> y_axis_series) {
-		
-		MinMax y_minmax = new MinMax(y_axis_series);
-		double y_values_span = y_minmax.getSpan();
-		double padding;
-		if (y_values_span > 0) {
-			padding = y_values_span*HEADROOM_FOOTROOM_FRACTION;
-		} else {
-			padding = y_minmax.min.doubleValue()*HEADROOM_FOOTROOM_FRACTION;
-		}
-		
-		double y_axis_lower_limit = y_minmax.min.doubleValue() - padding;
-		double y_axis_upper_limit = y_minmax.max.doubleValue() + padding;
-		return new MinMax(y_axis_lower_limit, y_axis_upper_limit);
+	
+
+	// ========================================================================
+	@Override
+	MinMax getYAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
+	}
+
+	// ========================================================================
+	@Override
+	MinMax getXAxisLimits(List<List<Number>> multi_series) {
+		return getTimeAxisLimits(multi_series);
 	}
 }

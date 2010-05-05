@@ -189,7 +189,7 @@ public class DonutChartActivity extends GraphicalActivity {
 			DataSeriesAttributes series = new DataSeriesAttributes();
 
 
-
+			// FIXME - This crashes
 			series.color = renderer.getSeriesRendererAt(i).getColor();
 			series.title = category_title;
 
