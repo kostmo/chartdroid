@@ -98,6 +98,21 @@
 				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
 		    </intent-filter>
         </activity>
+        <activity android:name="org.achartengine.activity.BubbleChartActivity" 
+        	android:label="Bubble Chart" android:icon="@drawable/icon_type_scatter">
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
+		    
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="com.googlecode.chartdroid.intent.category.XY_CHART" />
+				<data android:mimeType="vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable"/>
+		    </intent-filter>
+        </activity>
         <activity android:name="org.achartengine.activity.ScatterChartActivity" 
         	android:label="Scatter Chart" android:icon="@drawable/icon_type_scatter">
             <intent-filter>

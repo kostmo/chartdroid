@@ -21,12 +21,7 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.consumer.DataCollector;
-import org.achartengine.consumer.DoubleDatumExtractor;
-import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultiSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.BarChart;
 import org.achartengine.view.chart.BarChart.Type;
@@ -37,9 +32,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * An activity that encapsulates a graphical view of the chart.
@@ -55,81 +47,17 @@ public class BarChartActivity extends XYSpatialChartActivity {
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
-		List<? extends List<? extends List<? extends Number>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(
-				intent_data,
-				getContentResolver(),
-				new DoubleDatumExtractor());
-
-		assert( sorted_series_list.size() >= 1 );
-
-		List<List<Number>> x_axis_series, y_axis_series = null;
-		if (sorted_series_list.size() == 1) {
-			// Let the Y-axis carry the only data.
-			x_axis_series = new ArrayList<List<Number>>();
-			y_axis_series = (List<List<Number>>) sorted_series_list.get( 0 );
-
-		} else {
-			x_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.X_AXIS_INDEX );
-			y_axis_series = (List<List<Number>>) sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX );    
-		}
-
-
-		assert (x_axis_series.size() == y_axis_series.size()
-				|| x_axis_series.size() == 1
-				|| x_axis_series.size() == 0);
-
-		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
-		String[] titles = new String[series_meta_data.size()];
-		for (int i=0; i<series_meta_data.size(); i++)
-			titles[i] = series_meta_data.get(i).title;
-		
-		
-		assert (titles.length == y_axis_series.size());
-
-
-		assert (titles.length == y_axis_series.get(0).size());
-
-
-		// If there is no x-axis data, just fill it in by numbering the y-elements.
-		List<Number> prototypical_x_values; 
-		if (x_axis_series.size() == 0) {
-			for (int i=0; i < y_axis_series.size(); i++) {
-				prototypical_x_values = new ArrayList<Number>();
-				x_axis_series.add( prototypical_x_values );
-				for (int j=0; j < y_axis_series.get(i).size(); j++)
-					prototypical_x_values.add(j);
-			}
-		}
-
-
-		// Replicate the X-axis data for each series if necessary
-		if (x_axis_series.size() == 1) {
-			Log.i(TAG, "Replicating x-axis series...");
-			prototypical_x_values = x_axis_series.get(0);
-			Log.d(TAG, "Size of prototypical x-set: " + prototypical_x_values.size());
-			while (x_axis_series.size() < titles.length)
-				x_axis_series.add( prototypical_x_values );
-		}
-
-		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
-
-
-
-
-
-		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
-
-		assignAxesExtents(renderer, x_axis_series, y_axis_series);
+		RenderingAxesContainer axes_container = getAxesSets(intent_data);
 
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-		String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
-		String y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
+		String x_label = axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX );
+		String y_label = axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
 		Log.d(TAG, "X LABEL: " + x_label);
 		Log.d(TAG, "X LABEL: " + y_label);
 		Log.d(TAG, "chart_title: " + chart_title);
 
 		org.achartengine.ChartGenHelper.setChartSettings(
-				renderer,
+				axes_container.renderer,
 				chart_title,
 				x_label,
 				y_label,
@@ -137,15 +65,15 @@ public class BarChartActivity extends XYSpatialChartActivity {
 				Color.GRAY);
 
 
-		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildBarDataset(titles, y_axis_series);
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildBarDataset(axes_container.titles, axes_container.y_axis_series);
 
-		ChartFactory.checkParameters(dataset, renderer);
+		ChartFactory.checkParameters(dataset, axes_container.renderer);
 
 		
 		
 		
 		
-		BarChart chart = new BarChart(dataset, renderer, Type.DEFAULT);
+		BarChart chart = new BarChart(dataset, axes_container.renderer, Type.DEFAULT);
 
 		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
 		if (x_format != null) chart.setXFormat(x_format);
@@ -180,17 +108,5 @@ public class BarChartActivity extends XYSpatialChartActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
-
-	// ========================================================================
-	@Override
-	MinMax getYAxisLimits(List<List<Number>> multi_series) {
-		return getAxisLimits(multi_series);
-	}
-
-	// ========================================================================
-	@Override
-	MinMax getXAxisLimits(List<List<Number>> multi_series) {
-		return getAxisLimits(multi_series);
 	}
 }
