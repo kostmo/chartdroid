@@ -1,8 +1,8 @@
 package com.googlecode.chartdroid.market.sales;
 
+import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.market.sales.container.DateRange;
 import com.googlecode.chartdroid.market.sales.container.UsernamePassword;
-import com.googlecode.chartdroid.market.sales.provider.ColumnSchema;
 import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask;
 
 import android.app.Activity;
