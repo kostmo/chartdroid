@@ -168,8 +168,12 @@ Then `cd` to the leaf directory you just created, and set the externals property
 {{{
 cd src
 mkdir -p com/googlecode/chartdroid
+svn add com
 cd com/googlecode/chartdroid
 svn propset svn:externals 'core http://chartdroid.googlecode.com/svn/trunk/core/src/com/googlecode/chartdroid/core' .
+cd ../../..
+svn ci -m "added constants defined in external repo"
+svn up
 }}}
 
 Now when you call `svn up` in your project, it automatically fetches the contants I've defined for use with *`chartdroid`*.
