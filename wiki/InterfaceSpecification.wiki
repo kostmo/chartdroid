@@ -36,7 +36,7 @@ There are several ways to present data with *`ChartDroid`*. To give the user a c
 For event data (values plotted against a time axis; timelines), `getType()` should return:
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.timeline`
 
-To limit the presentation options, categories may be added to the Intent:
+To limit the presentation options, [http://developer.android.com/reference/android/content/Intent.html#addCategory%28java.lang.String%29 categories may be added] to the Intent:
   * *Radial:* `com.googlecode.chartdroid.intent.category.PIE_CHART`
     * Pie charts and donut charts
   * *X-Y:* `com.googlecode.chartdroid.intent.category.XY_CHART`
