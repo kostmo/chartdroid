@@ -158,7 +158,7 @@ public class LineChartActivity extends XYChartActivity {
 //		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
 
 
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset2(titles, x_axis_series, y_axis_series);
+		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset(titles, x_axis_series, y_axis_series);
 
 		ChartFactory.checkParameters(dataset, renderer);
 

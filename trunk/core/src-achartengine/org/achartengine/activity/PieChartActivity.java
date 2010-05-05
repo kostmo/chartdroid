@@ -150,7 +150,7 @@ public class PieChartActivity extends GraphicalActivity {
 
 
 		List<Number> first_series = y_axis_series.get(0);
-		CategorySeries dataset = org.achartengine.ChartGenHelper.buildCategoryDataset2(chart_title, first_series);
+		CategorySeries dataset = org.achartengine.ChartGenHelper.buildCategoryDataset(chart_title, first_series);
 
 		DefaultRenderer renderer = org.achartengine.ChartGenHelper.buildCategoryRenderer(colors);
 		renderer.setApplyBackgroundColor(true);

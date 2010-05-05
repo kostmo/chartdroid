@@ -159,7 +159,7 @@ public class ScatterChartActivity extends XYChartActivity {
 
 
 
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset2(titles, x_axis_series, y_axis_series);
+		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset(titles, x_axis_series, y_axis_series);
 
 		ChartFactory.checkParameters(dataset, renderer);
 

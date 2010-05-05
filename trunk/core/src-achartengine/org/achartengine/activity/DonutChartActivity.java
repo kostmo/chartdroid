@@ -159,7 +159,7 @@ public class DonutChartActivity extends GraphicalActivity {
 
 
 
-		MultipleCategorySeries dataset = org.achartengine.ChartGenHelper.buildMultipleCategoryDataset(chart_title, titles, datam_labels, y_axis_series);
+		MultipleCategorySeries dataset = org.achartengine.ChartGenHelper.buildMultiCategoryDataset(chart_title, titles, datam_labels, y_axis_series);
 
 		DefaultRenderer renderer = org.achartengine.ChartGenHelper.buildCategoryRenderer(colors);
 		renderer.setApplyBackgroundColor(true);

@@ -22,7 +22,11 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Paint.Style;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -48,22 +52,19 @@ public class LineChart extends XYChart {
 	 * @param yAxisValue the minimum value of the y axis
 	 * @param seriesIndex the index of the series currently being drawn
 	 */
-	public void drawSeries(Canvas canvas, Paint paint, float[] points,
+	public void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
 			SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
-		int length = points.length;
+
 		XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
 		if (renderer.isFillBelowLine()) {
 			paint.setColor(renderer.getFillBelowLineColor());
-			int pLength = points.length;
-			float[] fillPoints = new float[pLength + 4];
-			System.arraycopy(points, 0, fillPoints, 0, length);
-			fillPoints[0] = points[0] + 1;
-			fillPoints[length] = fillPoints[length - 2];
-			fillPoints[length + 1] = yAxisValue;
-			fillPoints[length + 2] = fillPoints[0];
-			fillPoints[length + 3] = fillPoints[length + 1];
+
+			List<PointF> fill_points = new ArrayList<PointF>(points);
+			fill_points.add(new PointF(points.get(points.size() - 1).x, yAxisValue));
+			fill_points.add(new PointF(points.get(0).x, yAxisValue));
+
 			paint.setStyle(Style.FILL);
-			drawPath(canvas, fillPoints, paint, true);
+			drawPath(canvas, fill_points, paint, true);
 		}
 		paint.setColor(seriesRenderer.getColor());
 		paint.setStyle(Style.STROKE);
@@ -77,5 +78,4 @@ public class LineChart extends XYChart {
 	public boolean isRenderPoints(SimpleSeriesRenderer renderer) {
 		return ((XYSeriesRenderer) renderer).getPointStyle() != PointStyle.POINT;
 	}
-
 }

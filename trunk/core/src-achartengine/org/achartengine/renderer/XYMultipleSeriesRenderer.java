@@ -15,10 +15,10 @@
  */
 package org.achartengine.renderer;
 
+import org.achartengine.util.MathHelper.MinMax;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.achartengine.util.MathHelper;
 
 /**
  * Multiple XY series renderer.
@@ -31,13 +31,8 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
   /** The Y axis title. */
   private String mYTitle = "";
   /** The start value in the X axis range. */
-  private double mMinX = MathHelper.NULL_VALUE;
-  /** The end value in the X axis range. */
-  private double mMaxX = -MathHelper.NULL_VALUE;
-  /** The start value in the Y axis range. */
-  private double mMinY = MathHelper.NULL_VALUE;
-  /** The end value in the Y axis range. */
-  private double mMaxY = -MathHelper.NULL_VALUE;
+  private MinMax mXspan;
+  private MinMax mYspan;
   
   /** The approximative number of labels on the x axis. */
   private int mXLabels = 5;
@@ -143,110 +138,23 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
   public void setYTitle(String title) {
     mYTitle = title;
   }
-  
-  /**
-   * Returns the start value of the X axis range.
-   * 
-   * @return the X axis range start value
-   */
-  public double getXAxisMin() {
-    return mMinX;
+
+  public MinMax getXAxisSpan() {
+    return mXspan;
   }
 
-  /**
-   * Sets the start value of the X axis range.
-   * 
-   * @param min the X axis range start value
-   */
-  public void setXAxisMin(double min) {
-    mMinX = min;
-  }
-  
-  /**
-   * Returns if the minimum X value was set.
-   * @return the minX was set or not
-   */
-  public boolean isMinXSet() {
-    return mMinX != MathHelper.NULL_VALUE;
+  public void setXAxisSpan(MinMax span) {
+	  mXspan = span;
   }
 
-  /**
-   * Returns the end value of the X axis range.
-   * 
-   * @return the X axis range end value
-   */
-  public double getXAxisMax() {
-    return mMaxX;
+  public MinMax getYAxisSpan() {
+    return mYspan;
   }
 
-  /**
-   * Sets the end value of the X axis range.
-   * 
-   * @param max the X axis range end value
-   */
-  public void setXAxisMax(double max) {
-    mMaxX = max;
+  public void setYAxisSpan(MinMax span) {
+	  mYspan = span;
   }
 
-  /**
-   * Returns if the maximum X value was set.
-   * @return the maxX was set or not
-   */
-  public boolean isMaxXSet() {
-    return mMaxX != -MathHelper.NULL_VALUE;
-  }
-
-  /**
-   * Returns the end value of the Y axis range.
-   * 
-   * @return the Y axis range end value
-   */
-  public double getYAxisMin() {
-    return mMinY;
-  }
-
-  /**
-   * Sets the start value of the Y axis range.
-   * 
-   * @param min the Y axis range start value
-   */
-  public void setYAxisMin(double min) {
-    mMinY = min;
-  }
-
-  /**
-   * Returns if the minimum Y value was set.
-   * @return the minY was set or not
-   */
-  public boolean isMinYSet() {
-    return mMinY != MathHelper.NULL_VALUE;
-  }
-
-  /**
-   * Returns the end value of the Y axis range.
-   * 
-   * @return the Y axis range end value
-   */
-  public double getYAxisMax() {
-    return mMaxY;
-  }
-
-  /**
-   * Sets the end value of the Y axis range.
-   * 
-   * @param max the Y axis range end value
-   */
-  public void setYAxisMax(double max) {
-    mMaxY = max;
-  }
-
-  /**
-   * Returns if the maximum Y value was set.
-   * @return the maxY was set or not
-   */
-  public boolean isMaxYSet() {
-    return mMaxY != -MathHelper.NULL_VALUE;
-  }
 
   /**
    * Returns the approximate number of labels for the X axis.

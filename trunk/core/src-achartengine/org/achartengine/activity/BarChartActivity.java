@@ -144,7 +144,7 @@ public class BarChartActivity extends XYChartActivity {
 				Color.GRAY);
 
 
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset2(titles, y_axis_series);
+		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset(titles, y_axis_series);
 
 		ChartFactory.checkParameters(dataset, renderer);
 
@@ -174,7 +174,6 @@ public class BarChartActivity extends XYChartActivity {
 		switch (item.getItemId()) {
 		case R.id.menu_toggle_stacked:
 		{
-
 			BarChart bc = (BarChart) mChart;
 			bc.setType( bc.getType().equals(Type.DEFAULT) ? Type.STACKED : Type.DEFAULT);
 
@@ -185,8 +184,7 @@ public class BarChartActivity extends XYChartActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
 	// ========================================================================
 	@Override
 	MinMax getYAxisLimits(List<List<Number>> multi_series) {

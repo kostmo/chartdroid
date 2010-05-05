@@ -32,6 +32,7 @@ import android.graphics.Rect;
 import android.graphics.Paint.Align;
 import android.text.TextPaint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,8 +44,9 @@ import java.util.List;
  */
 public abstract class XYChart extends AbstractChart {
 
-	final static public String TAG = "XYChart";
+	public final static String TAG = "XYChart";
 
+	public final static float DEFAULT_HASH_MARK_TEXT_SIZE = 9;
 
 	public XYMultipleSeriesDataset getDataset() {
 		return mDataset;
@@ -118,7 +120,7 @@ public abstract class XYChart extends AbstractChart {
 	public void draw(Canvas canvas, int width, int height) {
 
 		TextPaint hash_mark_label_paint = new TextPaint();
-		hash_mark_label_paint.setTextSize(9);
+		hash_mark_label_paint.setTextSize(DEFAULT_HASH_MARK_TEXT_SIZE);
 		hash_mark_label_paint.setTypeface(DefaultRenderer.REGULAR_TEXT_FONT);
 		hash_mark_label_paint.setAntiAlias(getAntiAliased());
 
@@ -136,37 +138,10 @@ public abstract class XYChart extends AbstractChart {
 			transform(canvas, angle, false);
 		}
 
-		MinMax x_span = new MinMax(mRenderer.getXAxisMin(), mRenderer.getXAxisMax());
-		MinMax y_span = new MinMax(mRenderer.getYAxisMin(), mRenderer.getYAxisMax());
-
-		boolean isMinXSet = mRenderer.isMinXSet();
-		boolean isMaxXSet = mRenderer.isMaxXSet();
-		boolean isMinYSet = mRenderer.isMinYSet();
-		boolean isMaxYSet = mRenderer.isMaxYSet();
+		MinMax x_span = mRenderer.getXAxisSpan();
+		MinMax y_span = mRenderer.getYAxisSpan();
 
 		int sLength = mDataset.getSeriesCount();
-		for (int i = 0; i < sLength; i++) {
-			XYSeries series = mDataset.getSeriesAt(i);
-			if (series.getItemCount() == 0) {
-				continue;
-			}
-			if (!isMinXSet) {
-				Number minimumX = series.getMinX();
-				x_span.min = Math.min(x_span.min.doubleValue(), minimumX.doubleValue());
-			}
-			if (!isMaxXSet) {
-				Number maximumX = series.getMaxX();
-				x_span.max = Math.max(x_span.max.doubleValue(), maximumX.doubleValue());
-			}
-			if (!isMinYSet) {
-				Number minimumY = series.getMinY();
-				y_span.min = Math.min(y_span.min.doubleValue(), minimumY.doubleValue());
-			}
-			if (!isMaxYSet) {
-				Number maximumY = series.getMaxY();
-				y_span.max = Math.max(y_span.max.doubleValue(), maximumY.doubleValue());
-			}
-		}
 
 
 		boolean showLabels = mRenderer.isShowLabels();
@@ -175,6 +150,7 @@ public abstract class XYChart extends AbstractChart {
 
 		float hash_mark_width = 0;
 		int label_clearance = 2;    // Separation of tick label from vertical axis line
+		
 		// Measure all y-axis label widths to determine the axis line position
 		if (showLabels) {
 
@@ -297,23 +273,22 @@ public abstract class XYChart extends AbstractChart {
 
 
 
-		boolean hasValues = false;
+
 		for (int i = 0; i < sLength; i++) {
 			XYSeries series = mDataset.getSeriesAt(i);
 			if (series.getItemCount() == 0) {
 				continue;
 			}
-			hasValues = true;
+
 			SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(i);
 			int originalValuesLength = series.getItemCount();
-			float[] points = null;
+			List<PointF> points = new ArrayList<PointF>();
 			int valuesLength = originalValuesLength;
-			int length = valuesLength * 2;
-			points = new float[length];
-			for (int j = 0; j < length; j += 2) {
-				int index = j / 2;
-				points[j] = (float) (frame.left + xPixelsPerUnit * (series.getX(index).doubleValue() - x_span.min.doubleValue()));
-				points[j + 1] = (float) (frame.bottom - yPixelsPerUnit * (series.getY(index).doubleValue() - y_span.min.doubleValue()));
+			for (int j = 0; j < valuesLength; j++) {
+				points.add( new PointF(
+						(float) (frame.left + xPixelsPerUnit * (series.getX(j).doubleValue() - x_span.min.doubleValue())),
+						(float) (frame.bottom - yPixelsPerUnit * (series.getY(j).doubleValue() - y_span.min.doubleValue()))	
+				));
 			}
 			drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer, Math.min(frame.bottom,
 					(float) (frame.bottom + yPixelsPerUnit * y_span.min.doubleValue())), i);
@@ -321,7 +296,7 @@ public abstract class XYChart extends AbstractChart {
 				ScatterChart pointsChart = new ScatterChart(mDataset, mRenderer);
 				pointsChart.drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer, 0, i);
 			}
-			hash_mark_label_paint.setTextSize(9);
+			hash_mark_label_paint.setTextSize( DEFAULT_HASH_MARK_TEXT_SIZE );
 			if (or == Orientation.HORIZONTAL) {
 				hash_mark_label_paint.setTextAlign(Align.CENTER);
 			} else {
@@ -331,14 +306,6 @@ public abstract class XYChart extends AbstractChart {
 				drawChartValuesText(canvas, series, hash_mark_label_paint, points, i);
 			}
 		}
-
-
-
-
-
-
-
-
 
 
 
@@ -356,10 +323,18 @@ public abstract class XYChart extends AbstractChart {
 	 * @param points the array of points to be used for drawing the series
 	 * @param seriesIndex the index of the series currently being drawn
 	 */
-	protected void drawChartValuesText(Canvas canvas, XYSeries series, Paint paint, float[] points,
+	protected void drawChartValuesText(Canvas canvas, XYSeries series, Paint paint, List<PointF> points,
 			int seriesIndex) {
-		for (int k = 0; k < points.length; k += 2) {
-			drawText(canvas, getLabel(series.getY(k / 2)), points[k], points[k + 1] - 3.5f, paint, 0);
+		int k=0;
+		for (PointF point : points) {
+			drawText(
+					canvas,
+					getLabel(k),
+					point.x,
+					point.y - 3.5f,	// FIXME Magic number
+					paint,
+					0);
+			k++;
 		}
 	}
 
@@ -455,7 +430,7 @@ public abstract class XYChart extends AbstractChart {
 			float xLabel = (float) (left + xPixelsPerUnit * (label - minX));
 			if (showLabels) {
 				paint.setColor(mRenderer.getLabelsColor());
-				canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);
+				canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);	// FIXME Magic numbers
 				drawText(canvas, getLabel(label, false), xLabel, bottom + 12, paint, 0);
 			}
 			if (showGrid) {
@@ -467,7 +442,7 @@ public abstract class XYChart extends AbstractChart {
 			paint.setColor(mRenderer.getLabelsColor());
 			for (Double location : xTextLabelLocations) {
 				float xLabel = (float) (left + xPixelsPerUnit * (location.doubleValue() - minX));
-				canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);
+				canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);	// FIXME Magic numbers
 				drawText(canvas, mRenderer.getXTextLabel(location), xLabel, bottom + 12, paint, 0);
 			}
 		}
@@ -483,7 +458,7 @@ public abstract class XYChart extends AbstractChart {
 	 * @param yAxisValue the minimum value of the y axis
 	 * @param seriesIndex the index of the series currently being drawn
 	 */
-	public abstract void drawSeries(Canvas canvas, Paint paint, float[] points,
+	public abstract void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
 			SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex);
 
 	/**

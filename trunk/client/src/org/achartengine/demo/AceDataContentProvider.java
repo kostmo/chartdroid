@@ -2,7 +2,7 @@ package org.achartengine.demo;
 
 import com.googlecode.chartdroid.core.ColumnSchema;
 
-import org.achartengine.demo.data.DonutData;
+import org.achartengine.demo.data.BudgetData;
 import org.achartengine.demo.data.MultiTimelineData;
 import org.achartengine.demo.data.TemperatureData;
 import org.achartengine.demo.data.TimelineData;
@@ -361,9 +361,9 @@ public class AceDataContentProvider extends ContentProvider {
 						ColumnSchema.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
-				for (int i=0; i<DonutData.DEMO_AXES_LABELS.length; i++) {
+				for (int i=0; i<BudgetData.DEMO_AXES_LABELS.length; i++) {
 
-					c.newRow().add( row_index ).add( DonutData.DEMO_AXES_LABELS[i] );
+					c.newRow().add( row_index ).add( BudgetData.DEMO_AXES_LABELS[i] );
 					row_index++;
 				}
 
@@ -376,9 +376,9 @@ public class AceDataContentProvider extends ContentProvider {
 						ColumnSchema.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
-				for (int i=0; i<DonutData.DEMO_SERIES_LABELS.length; i++) {
+				for (int i=0; i<BudgetData.DEMO_SERIES_LABELS.length; i++) {
 
-					c.newRow().add( row_index ).add( DonutData.DEMO_SERIES_LABELS[i] );
+					c.newRow().add( row_index ).add( BudgetData.DEMO_SERIES_LABELS[i] );
 					row_index++;
 				}
 
@@ -394,15 +394,15 @@ public class AceDataContentProvider extends ContentProvider {
 						ColumnSchema.COLUMN_DATUM_LABEL});
 
 				int row_index = 0;
-				for (int i=0; i<DonutData.DEMO_SERIES_LIST.length; i++) {
-					for (int j=0; j<DonutData.DEMO_SERIES_LIST[i].length; j++) {
+				for (int i=0; i<BudgetData.DEMO_SERIES_LIST.length; i++) {
+					for (int j=0; j<BudgetData.DEMO_SERIES_LIST[i].length; j++) {
 
 						c.newRow()
 						.add( row_index )
 						.add( ColumnSchema.Y_AXIS_INDEX )  // XXX Since we're only populating one axis, it probably doesn't matter whether it's the X or Y axis.
 						.add( i )
-						.add( DonutData.DEMO_SERIES_LIST[i][j] )
-						.add( DonutData.DEMO_SERIES_LABELS_LIST[i][j] );
+						.add( BudgetData.DEMO_SERIES_LIST[i][j] )
+						.add( BudgetData.DEMO_SERIES_LABELS_LIST[i][j] );
 
 						row_index++;
 					}

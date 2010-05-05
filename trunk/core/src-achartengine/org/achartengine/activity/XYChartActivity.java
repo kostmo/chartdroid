@@ -80,17 +80,9 @@ abstract public class XYChartActivity extends GraphicalActivity {
 
 	// ========================================================================	
 	void assignAxesExtents(XYMultipleSeriesRenderer renderer, List<List<Number>> x_axis_series, List<List<Number>> y_axis_series) {
-		MinMax x_axis_limits = getXAxisLimits(x_axis_series);
-		MinMax y_axis_limits = getYAxisLimits(y_axis_series);
-		Log.d(TAG, "Y axis bottom: " + y_axis_limits.min.doubleValue());
-		Log.d(TAG, "Y axis top: " + y_axis_limits.max.doubleValue());
 
-		org.achartengine.ChartGenHelper.setAxesExtents(
-				renderer,
-				x_axis_limits.min.longValue(),
-				x_axis_limits.max.longValue(),
-				y_axis_limits.min.doubleValue(),
-				y_axis_limits.max.doubleValue());
+		renderer.setXAxisSpan( getXAxisLimits(x_axis_series) );
+		renderer.setYAxisSpan( getYAxisLimits(y_axis_series) );
 	}
 
 	// ========================================================================	
