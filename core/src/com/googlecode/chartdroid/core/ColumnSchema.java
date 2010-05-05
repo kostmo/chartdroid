@@ -13,7 +13,7 @@ public final class ColumnSchema {
 	public static final String DATASET_ASPECT_PARAMETER = "aspect";
 	public static final String DATASET_ASPECT_DATA = "data";
 	public static final String DATASET_ASPECT_AXES = "axes";
-	public static final String DATASET_ASPECT_META = "meta";
+	public static final String DATASET_ASPECT_SERIES = "series";
 
 	public static final String AXIS_PREFIX = "AXIS_";
 

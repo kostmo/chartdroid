@@ -27,6 +27,7 @@ import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.LineChart;
 import org.achartengine.view.chart.PointStyle;
@@ -50,7 +51,7 @@ public class LineChartActivity extends XYChartActivity {
 		return R.drawable.typepointline;
 	}
 
-	// ---------------------------------------------
+	// ========================================================================
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
@@ -167,5 +168,17 @@ public class LineChartActivity extends XYChartActivity {
 		if (y_format != null) chart.setYFormat(y_format);
 
 		return chart;
+	}
+
+	// ========================================================================
+	@Override
+	MinMax getYAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
+	}
+
+	// ========================================================================
+	@Override
+	MinMax getXAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
 	}
 }

@@ -27,6 +27,7 @@ import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 import org.achartengine.view.chart.ScatterChart;
@@ -203,5 +204,17 @@ public class ScatterChartActivity extends XYChartActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	// ========================================================================
+	@Override
+	MinMax getYAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
+	}
+
+	// ========================================================================
+	@Override
+	MinMax getXAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series);
 	}
 }

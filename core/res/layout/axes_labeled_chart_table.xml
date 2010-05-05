@@ -8,14 +8,14 @@
 	android:stretchColumns="1"
     >
 
-
 	<TableRow
 		android:layout_weight="1"
 		android:gravity="center_vertical">
 
 		<org.achartengine.view.VerticalLabelView
 			android:id="@+id/chart_y_axis_title"
-			app:text="y axis label"
+			android:layout_margin="3sp"
+			app:text="Y-axis label"
 			app:textColor="@android:color/primary_text_dark"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -39,10 +39,9 @@
 			android:layout_height="wrap_content"
 			/>
 
-			
 		<TextView
 			android:id="@+id/chart_x_axis_title"
-			android:text="x axis label"
+			android:text="X-axis label"
 			android:textColor="@android:color/primary_text_dark"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -50,5 +49,4 @@
 			/>
 			
 	</TableRow>
-		
 </TableLayout>
