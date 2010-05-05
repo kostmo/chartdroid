@@ -73,7 +73,7 @@ public class BubbleChart extends XYChart {
     
     int i = 0;
     for (PointF point : points) {
-      double size = series.getValue(i) * coef + MIN_BUBBLE_SIZE;
+      double size = series.getValue(i).doubleValue() * coef + MIN_BUBBLE_SIZE;
       drawCircle(canvas, paint, point.x, point.y, (float) size);
       
       i++;

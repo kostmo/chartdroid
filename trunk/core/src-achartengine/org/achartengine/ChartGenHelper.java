@@ -21,6 +21,7 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultiSeries;
 import org.achartengine.model.XYSeries;
+import org.achartengine.model.XYValueSeries;
 import org.achartengine.renderer.AxesManager;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
@@ -67,6 +68,41 @@ public abstract class ChartGenHelper {
 		return dataset;
 	}
 
+	
+	
+	
+	// ========================================================================
+	public static XYMultiSeries buildValueDataset(
+			String[] titles,
+			List<? extends List<? extends Number>> xValues,
+			List<? extends List<? extends Number>> yValues,
+			List<? extends List<? extends Number>> zValues) {
+		
+		XYMultiSeries dataset = new XYMultiSeries();
+
+		Log.i(TAG, "Titles: " + titles.length + "; x-sets: " + xValues.size() + "; y-sets: " + yValues.size());
+
+		for (int i = 0; i < titles.length; i++) {
+			// Zip the coordinates together for each series
+			XYValueSeries series = new XYValueSeries(titles[i]);
+			List<? extends Number> xV = xValues.get(i);
+			List<? extends Number> yV = yValues.get(i);
+			List<? extends Number> zV = zValues.get(i);
+			
+			int seriesLength = xV.size();
+			int corroboratedYSeriesLength = yV.size();
+			int corroboratedZSeriesLength = yV.size();
+			Log.d(TAG, "Series " + i + " axes set sizes: X: " + seriesLength + "; Y: " + corroboratedYSeriesLength + "; Z: " + corroboratedZSeriesLength); 
+
+			for (int k = 0; k < seriesLength; k++) {
+				series.add(xV.get(k), yV.get(k), zV.get(k));
+			}
+			dataset.addSeries(series);
+		}
+		return dataset;
+	}
+
+	
 	// ========================================================================
 	public static XYMultiSeries buildDataset(
 			String[] titles,
