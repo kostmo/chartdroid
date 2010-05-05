@@ -32,8 +32,6 @@ import java.util.List;
  * The bubble chart rendering class.
  */
 public class BubbleChart extends XYChart {
-  /** The legend shape width. */
-  private static final int SHAPE_WIDTH = 10;
 
   /** The minimum bubble size. */
   private static final int MIN_BUBBLE_SIZE = 2;
@@ -94,5 +92,4 @@ public class BubbleChart extends XYChart {
   private void drawCircle(Canvas canvas, Paint paint, float x, float y, float radius) {
     canvas.drawCircle(x, y, radius, paint);
   }
-
 }
