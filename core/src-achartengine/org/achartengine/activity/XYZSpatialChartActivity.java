@@ -32,7 +32,7 @@ import java.util.List;
 
 
 
-abstract public class XYSpatialChartActivity extends XYChartActivity {
+abstract public class XYZSpatialChartActivity extends XYChartActivity {
 
 
 	public static class RenderingAxesContainer extends AxesContainer {
@@ -105,8 +105,6 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 
 
 		axes_container.axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
-
-
 
 
 

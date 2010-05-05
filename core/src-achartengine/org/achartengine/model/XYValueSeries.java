@@ -15,10 +15,10 @@
  */
 package org.achartengine.model;
 
+import org.achartengine.util.MathHelper;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.achartengine.util.MathHelper;
 
 /**
  * An extension of the XY series which adds a third dimension. It is used for XY
@@ -26,7 +26,7 @@ import org.achartengine.util.MathHelper;
  */
 public class XYValueSeries extends XYSeries {
   /** A list to contain the series values. */
-  private List<Double> mValue = new ArrayList<Double>();
+  private List<Number> mValue = new ArrayList<Number>();
   /** The minimum value. */
   private double mMinValue = MathHelper.NULL_VALUE;
   /** The maximum value. */
@@ -44,14 +44,14 @@ public class XYValueSeries extends XYSeries {
   /**
    * Adds a new value to the series.
    * 
-   * @param x the value for the X axis
-   * @param y the value for the Y axis
-   * @param value the value
+   * @param number the value for the X axis
+   * @param number2 the value for the Y axis
+   * @param number3 the value
    */
-  public void add(double x, double y, double value) {
-    super.add(x, y);
-    mValue.add(value);
-    updateRange(value);
+  public void add(Number number, Number number2, Number number3) {
+    super.add(number, number2);
+    mValue.add(number3);
+    updateRange(number3);
   }
   
   /**
@@ -70,9 +70,9 @@ public class XYValueSeries extends XYSeries {
    * Updates the values range.
    * @param value the new value
    */
-  private void updateRange(double value) {
-    mMinValue = Math.min(mMinValue, value);
-    mMaxValue = Math.max(mMaxValue, value);
+  private void updateRange(Number value) {
+    mMinValue = Math.min(mMinValue, value.doubleValue());
+    mMaxValue = Math.max(mMaxValue, value.doubleValue());
   }
 
   /**
@@ -91,8 +91,8 @@ public class XYValueSeries extends XYSeries {
    */
   public void remove(int index) {
     super.remove(index);
-    double removedValue = mValue.remove(index);
-    if (removedValue == mMinValue || removedValue == mMaxValue) {
+    Number removedValue = mValue.remove(index);
+    if (removedValue.equals(mMinValue) || removedValue.equals(mMaxValue)) {
       initRange();
     }
   }
@@ -112,7 +112,7 @@ public class XYValueSeries extends XYSeries {
    * @param index the index
    * @return the value
    */
-  public double getValue(int index) {
+  public Number getValue(int index) {
     return mValue.get(index);
   }
 

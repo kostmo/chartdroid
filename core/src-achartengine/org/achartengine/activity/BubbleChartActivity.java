@@ -25,6 +25,7 @@ import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.view.chart.AbstractChart;
+import org.achartengine.view.chart.BubbleChart;
 import org.achartengine.view.chart.ScatterChart;
 import org.achartengine.view.chart.XYChart;
 
@@ -39,7 +40,7 @@ import android.view.MenuItem;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class BubbleChartActivity extends XYSpatialChartActivity {
+public class BubbleChartActivity extends XYZSpatialChartActivity {
 
 	@Override
 	protected int getTitlebarIconResource() {
@@ -59,7 +60,7 @@ public class BubbleChartActivity extends XYSpatialChartActivity {
 			((XYSeriesRenderer) axes_container.renderer.getSeriesRendererAt(i)).setFillPoints(true);
 		}
 
-
+		
 
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 		String x_label = axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX );
@@ -73,11 +74,12 @@ public class BubbleChartActivity extends XYSpatialChartActivity {
 		axes_container.renderer.setXLabels(12);
 		axes_container.renderer.setYLabels(10);
 
-		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDataset(axes_container.titles, axes_container.x_axis_series, axes_container.y_axis_series);
+		// FIXME Create an independent Z series
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildValueDataset(axes_container.titles, axes_container.x_axis_series, axes_container.y_axis_series, axes_container.y_axis_series);
 
 		ChartFactory.checkParameters(dataset, axes_container.renderer);
 
-		XYChart chart = new ScatterChart(dataset, axes_container.renderer);
+		XYChart chart = new BubbleChart(dataset, axes_container.renderer);
 
 		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
 		if (x_format != null) chart.setXFormat(x_format);
