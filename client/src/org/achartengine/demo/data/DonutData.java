@@ -14,7 +14,7 @@ public class DonutData {
 	
 	
     // Note: The axes labels are not really applicable
-    public static String[] DEMO_AXES_LABELS = { "Datum label", "datum" };
+    public static String[] DEMO_AXES_LABELS = { "Datum abscissa", "Datum ordinate" };
     
     
     public static String[] DEMO_SERIES_LABELS = { "2006", "2007" };

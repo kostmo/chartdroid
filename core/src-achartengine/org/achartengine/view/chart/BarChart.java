@@ -23,6 +23,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.util.Log;
 
 /**
  * The bar chart rendering class.
@@ -75,11 +76,22 @@ public class BarChart extends XYChart {
       SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
     int seriesNr = mDataset.getSeriesCount();
     int length = points.length;
+
+    Log.d(TAG, "Bar chart number of points: " + length);
+    
     paint.setColor(seriesRenderer.getColor());
     paint.setStyle(Style.FILL);
     float halfDiffX = getHalfDiffX(points, length, seriesNr);
+    
+    Log.d(TAG, "Bar chart halfDiffX: " + halfDiffX);
+    
+    
     for (int i = 0; i < length; i += 2) {
       float x = points[i];
+
+      Log.d(TAG, "Bar chart: x=" + x + "; i=" + i);
+      
+      
       float y = points[i + 1];
       if (mType == Type.STACKED) {
         canvas.drawRect(x - halfDiffX, y, x + halfDiffX, yAxisValue, paint);
@@ -115,6 +127,7 @@ public class BarChart extends XYChart {
   private float getHalfDiffX(float[] points, int length, int seriesNr) {
     float halfDiffX = (points[length - 2] - points[0]) / length;
     if (halfDiffX == 0) {
+    	Log.e(TAG, "In the bad place...");
       halfDiffX = 10;
     }
 
