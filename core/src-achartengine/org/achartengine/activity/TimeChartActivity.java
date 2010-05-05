@@ -30,7 +30,6 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
-import org.achartengine.view.chart.PointStyle;
 import org.achartengine.view.chart.TimeChart;
 
 import android.net.Uri;

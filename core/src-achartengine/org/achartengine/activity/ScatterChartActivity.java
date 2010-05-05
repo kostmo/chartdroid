@@ -131,6 +131,8 @@ public class ScatterChartActivity extends XYChartActivity {
 
 
 		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
+		assignAxesExtents(renderer, x_axis_series, y_axis_series);
+		
 		int length = renderer.getSeriesRendererCount();
 
 		for (int i = 0; i < length; i++) {
@@ -152,7 +154,7 @@ public class ScatterChartActivity extends XYChartActivity {
 		renderer.setYLabels(10);
 
 		// FIXME: Generate dynamically
-		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
+//		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
 
 
 

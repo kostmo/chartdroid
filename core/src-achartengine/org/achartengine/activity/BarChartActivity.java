@@ -127,7 +127,7 @@ public class BarChartActivity extends XYChartActivity {
 
 		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
 
-
+		assignAxesExtents(renderer, x_axis_series, y_axis_series);
 
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 		String x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
@@ -138,10 +138,10 @@ public class BarChartActivity extends XYChartActivity {
 
 		org.achartengine.ChartGenHelper.setChartSettings(renderer, chart_title, x_label, y_label,
 				Color.LTGRAY, Color.GRAY);
-		renderer.setXLabels(12);
+//		renderer.setXLabels(12);	// FIXME
 
-		// FIXME: Generate dynamically
-		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
+		// Now generated dynamically
+//		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
 
 
 		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset2(titles, y_axis_series);

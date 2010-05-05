@@ -9,9 +9,9 @@ import org.achartengine.view.chart.PointStyle;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +27,8 @@ import java.util.Map.Entry;
  */
 public class DataCollector {
 
+	static final String TAG = "ChartDroid";
+	
 	// ========================================================================
 	public static Comparator<Entry<?, ?>> MAP_KEY_COMPARATOR = new Comparator<Entry<?, ?>>() {
 		@Override
@@ -458,6 +460,8 @@ public class DataCollector {
 
 		// Sort the map by key; that is, sort by the series index
 		List<SeriesMetaData> sorted_series_metadata = DataCollector.sortAndSimplify(series_metadata_map, DataCollector.MAP_KEY_COMPARATOR);
+		
+		Log.d(TAG, "Size of sorted series metadata: " + sorted_series_metadata.size());
 		
 		// Supplement the intent data
 		return supplementIntentSeriesMetaData(intent, sorted_series_metadata);
