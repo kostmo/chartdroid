@@ -30,16 +30,16 @@ In this document:
   * The term *datum component* is a single scalar value for one of the dimensions of a *datum*.
 
 ==Data type==
-There are several ways to present data with *`ChartDroid`*. To give the user a choice among all of them, the [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should respond with the string:
+There are several ways to present data with *`ChartDroid`*. To give the user a choice among all of them, the [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should return the string:
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.graphable`
 
 For event data (values plotted against a time axis; timelines), `getType()` should return:
 `vnd.android.cursor.dir/vnd.com.googlecode.chartdroid.timeline`
 
 To limit the presentation options, categories may be added to the Intent:
-  * Radial: `com.googlecode.chartdroid.intent.category.PIE_CHART`
+  * *Radial:* `com.googlecode.chartdroid.intent.category.PIE_CHART`
     * Pie charts and donut charts
-  * X-Y: `com.googlecode.chartdroid.intent.category.XY_CHART`
+  * *X-Y:* `com.googlecode.chartdroid.intent.category.XY_CHART`
     * Bar charts, line charts
 
 ==Content Provider==
