@@ -2,7 +2,7 @@ package com.googlecode.chartdroid.demo;
 
 import com.googlecode.chartdroid.core.IntentConstants;
 
-import org.achartengine.demo.data.DonutData;
+import org.achartengine.demo.data.BudgetData;
 import org.achartengine.demo.data.MultiTimelineData;
 import org.achartengine.demo.data.TemperatureData;
 import org.achartengine.demo.data.TimelineData;
@@ -128,16 +128,16 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		}
 		case R.id.button_labeled_multiseries_data_provider:
 		{ 
-			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
-            i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+			Intent i = new Intent(Intent.ACTION_VIEW, BudgetData.uri);
+            i.putExtra(Intent.EXTRA_TITLE, BudgetData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
 		case R.id.button_labeled_multiseries_data_provider_radial:
 		{
-			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
-            i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+			Intent i = new Intent(Intent.ACTION_VIEW, BudgetData.uri);
+            i.putExtra(Intent.EXTRA_TITLE, BudgetData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
@@ -145,8 +145,8 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		}
 		case R.id.button_labeled_multiseries_data_provider_xy:
 		{
-			Intent i = new Intent(Intent.ACTION_VIEW, DonutData.uri);
-            i.putExtra(Intent.EXTRA_TITLE, DonutData.DEMO_CHART_TITLE);
+			Intent i = new Intent(Intent.ACTION_VIEW, BudgetData.uri);
+            i.putExtra(Intent.EXTRA_TITLE, BudgetData.DEMO_CHART_TITLE);
 			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);

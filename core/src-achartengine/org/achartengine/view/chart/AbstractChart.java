@@ -20,9 +20,11 @@ import org.achartengine.renderer.DefaultRenderer;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.Paint.Style;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * An abstract class to be implemented by the chart rendering classes.
@@ -66,14 +68,14 @@ public abstract class AbstractChart implements Serializable {
    * @param paint the paint to be used for painting
    * @param circular if the path ends with the start point
    */
-  protected void drawPath(Canvas canvas, float[] points, Paint paint, boolean circular) {
+  protected void drawPath(Canvas canvas, List<PointF> points, Paint paint, boolean circular) {
     Path path = new Path();
-    path.moveTo(points[0], points[1]);
-    for (int i = 2; i < points.length; i += 2) {
-      path.lineTo(points[i], points[i + 1]);
+    path.moveTo(points.get(0).x, points.get(0).y);
+    for (int i = 1; i < points.size(); i++) {
+      path.lineTo(points.get(i).x, points.get(i).y);
     }
     if (circular) {
-      path.lineTo(points[0], points[1]);
+      path.close();
     }
     canvas.drawPath(path, paint);
   }

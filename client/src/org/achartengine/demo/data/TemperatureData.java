@@ -17,7 +17,7 @@ public class TemperatureData {
    
     
     
-    public static double[] DEMO_X_AXIS_DATA = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    public static double[] DEMO_X_AXIS_DATA = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     
 
     public static String[] DEMO_TITLES = { "Crete", "Corfu", "Thassos", "Skiathos" };

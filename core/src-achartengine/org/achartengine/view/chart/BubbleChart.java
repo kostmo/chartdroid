@@ -23,7 +23,10 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Paint.Style;
+
+import java.util.List;
 
 /**
  * The bubble chart rendering class.
@@ -58,19 +61,22 @@ public class BubbleChart extends XYChart {
    * @param yAxisValue the minimum value of the y axis
    * @param seriesIndex the index of the series currently being drawn
    */
-  public void drawSeries(Canvas canvas, Paint paint, float[] points,
+  public void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
       SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
     XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
     paint.setColor(renderer.getColor());
     paint.setStyle(Style.FILL);
-    int length = points.length;
     XYValueSeries series = (XYValueSeries) mDataset.getSeriesAt(seriesIndex);
     double max = series.getMaxValue();
 
     double coef = MAX_BUBBLE_SIZE / max;
-    for (int i = 0; i < length; i += 2) {
-      double size = series.getValue(i / 2) * coef + MIN_BUBBLE_SIZE;
-      drawCircle(canvas, paint, points[i], points[i + 1], (float) size);
+    
+    int i = 0;
+    for (PointF point : points) {
+      double size = series.getValue(i) * coef + MIN_BUBBLE_SIZE;
+      drawCircle(canvas, paint, point.x, point.y, (float) size);
+      
+      i++;
     }
   }
 

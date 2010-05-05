@@ -26,7 +26,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-import org.achartengine.view.chart.PointStyle;
+import org.achartengine.util.MathHelper.MinMax;
 
 import android.util.Log;
 
@@ -40,7 +40,7 @@ public abstract class ChartGenHelper {
 
 	static final String TAG = "ChartDroid";
 
- 
+	// ========================================================================
 	/**
 	 * Builds an XY multiple time dataset using the provided values.
 	 * @param titles the series titles
@@ -65,9 +65,8 @@ public abstract class ChartGenHelper {
 		return dataset;
 	}
 
-
-
-	public static XYMultipleSeriesDataset buildDataset2(
+	// ========================================================================
+	public static XYMultipleSeriesDataset buildDataset(
 			String[] titles,
 			List<? extends List<? extends Number>> xValues,
 					List<? extends List<? extends Number>> yValues) {
@@ -94,31 +93,7 @@ public abstract class ChartGenHelper {
 	}
 
 
-
-	/**
-	 * Builds an XY multiple dataset using the provided values.
-	 * @param titles the series titles
-	 * @param xValues the values for the X axis
-	 * @param yValues the values for the Y axis
-	 * @return the XY multiple dataset
-	 */
-	public static XYMultipleSeriesDataset buildDataset(String[] titles, List<double[]> xValues,
-			List<double[]> yValues) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		int length = titles.length;
-		for (int i = 0; i < length; i++) {
-			XYSeries series = new XYSeries(titles[i]);
-			double[] xV = xValues.get(i);
-			double[] yV = yValues.get(i);
-			int seriesLength = xV.length;
-			for (int k = 0; k < seriesLength; k++) {
-				series.add(xV[k], yV[k]);
-			}
-			dataset.addSeries(series);
-		}
-		return dataset;
-	}
-
+	// ========================================================================
 	/**
 	 * Builds an XY multiple series renderer.
 	 * @param colors the series rendering colors
@@ -137,6 +112,7 @@ public abstract class ChartGenHelper {
 		return renderer;
 	}
 
+	// ========================================================================
 	/**
 	 * Sets a few of the series renderer settings.
 	 * @param renderer the renderer to set the properties to
@@ -160,16 +136,8 @@ public abstract class ChartGenHelper {
 		renderer.setLabelsColor(labelsColor);
 	}
 
-	public static void setAxesExtents(XYMultipleSeriesRenderer renderer,
-			double xMin, double xMax, double yMin, double yMax) {
-
-		renderer.setXAxisMin(xMin);
-		renderer.setXAxisMax(xMax);
-		renderer.setYAxisMin(yMin);
-		renderer.setYAxisMax(yMax);
-	}
-
-	public static CategorySeries buildCategoryDataset2(String title, List<Number> values) {
+	// ========================================================================
+	public static CategorySeries buildCategoryDataset(String title, List<Number> values) {
 		CategorySeries series = new CategorySeries(title);
 		int k = 0;
 		for (Number value : values) {
@@ -179,29 +147,15 @@ public abstract class ChartGenHelper {
 		return series;
 	}
 
-	/**
-	 * Builds a category series using the provided values.
-	 * @param titles the series titles
-	 * @param values the values
-	 * @return the category series
-	 */
-	public static CategorySeries buildCategoryDataset(String title, double[] values) {
-		CategorySeries series = new CategorySeries(title);
-		int k = 0;
-		for (double value : values) {
-			series.add("Project " + ++k, value);
-		}
 
-		return series;
-	}
-
+	// ========================================================================
 	/**
 	 * Builds a multiple category series using the provided values.
 	 * @param datum_labels the series titles
 	 * @param series_set the values
 	 * @return the category series
 	 */
-	public static MultipleCategorySeries buildMultipleCategoryDataset(String title, String[] series_labels, List<List<String>> datum_labels, List<List<Number>> series_set) {
+	public static MultipleCategorySeries buildMultiCategoryDataset(String title, String[] series_labels, List<List<String>> datum_labels, List<List<Number>> series_set) {
 		MultipleCategorySeries series = new MultipleCategorySeries(title);
 		int k = 0;
 		for (List<Number> series_values : series_set) {
@@ -211,6 +165,7 @@ public abstract class ChartGenHelper {
 		return series;
 	}
 
+	// ========================================================================
 	/**
 	 * Builds a category renderer to use the provided colors.
 	 * @param colors the colors
@@ -226,13 +181,8 @@ public abstract class ChartGenHelper {
 		return renderer;
 	}
 
-
-
-
-
-
-
-	public static XYMultipleSeriesDataset buildBarDataset2(String[] titles, List<List<Number>> values) {
+	// ========================================================================
+	public static XYMultipleSeriesDataset buildBarDataset(String[] titles, List<List<Number>> values) {
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		int length = titles.length;
 		
@@ -250,28 +200,7 @@ public abstract class ChartGenHelper {
 		return dataset;
 	}
 
-
-	/**
-	 * Builds a bar multiple series dataset using the provided values.
-	 * @param titles the series titles
-	 * @param values the values
-	 * @return the XY multiple bar dataset
-	 */
-	protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List<double[]> values) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		int length = titles.length;
-		for (int i = 0; i < length; i++) {
-			CategorySeries series = new CategorySeries(titles[i]);
-			double[] v = values.get(i);
-			int seriesLength = v.length;
-			for (int k = 0; k < seriesLength; k++) {
-				series.add(v[k]);
-			}
-			dataset.addSeries(series.toXYSeries());
-		}
-		return dataset;
-	}
-
+	// ========================================================================
 	/**
 	 * Builds a bar multiple series renderer to use the provided colors.
 	 * @param colors the series renderers colors
@@ -287,5 +216,4 @@ public abstract class ChartGenHelper {
 		}
 		return renderer;
 	}
-
 }
