@@ -1,5 +1,6 @@
 package com.googlecode.chartdroid.market.sales.provider;
 
+import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.market.sales.Market;
 
 import android.content.ContentProvider;
@@ -67,7 +68,7 @@ public class SalesContentProvider extends ContentProvider {
 			}
 
 			return c;
-		} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+		} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 			// Get the series labels
 			MatrixCursor c = new MatrixCursor(new String[] {

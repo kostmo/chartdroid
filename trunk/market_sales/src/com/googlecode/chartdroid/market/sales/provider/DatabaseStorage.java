@@ -1,5 +1,6 @@
 package com.googlecode.chartdroid.market.sales.provider;
 
+import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.market.sales.Market;
 import com.googlecode.chartdroid.market.sales.container.HistogramBin;
 import com.googlecode.chartdroid.market.sales.container.SpreadsheetRow;

@@ -1,5 +1,6 @@
 package com.googlecode.chartdroid.market.sales.task;
 
+import com.googlecode.chartdroid.core.IntentConstants;
 import com.googlecode.chartdroid.market.sales.GoogleCheckoutUtils;
 import com.googlecode.chartdroid.market.sales.Market;
 import com.googlecode.chartdroid.market.sales.GoogleCheckoutUtils.CheckoutCredentials;
@@ -9,7 +10,6 @@ import com.googlecode.chartdroid.market.sales.container.ProgressPacket;
 import com.googlecode.chartdroid.market.sales.container.SpreadsheetRow;
 import com.googlecode.chartdroid.market.sales.container.UsernamePassword;
 import com.googlecode.chartdroid.market.sales.container.ProgressPacket.ProgressStage;
-import com.googlecode.chartdroid.market.sales.provider.ColumnSchema;
 import com.googlecode.chartdroid.market.sales.provider.DatabaseStorage;
 import com.googlecode.chartdroid.market.sales.provider.SalesContentProvider;
 
@@ -137,8 +137,8 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 			ArrayList<String> axis_titles = new ArrayList<String>();
 			axis_titles.add("Date");
 			axis_titles.add(String.format("Sales per %.1f days", this.google_checkout_utils.getHistogramBinwidthDays()));
-			i.putExtra(ColumnSchema.EXTRA_AXIS_TITLES, axis_titles);
-			i.putExtra(ColumnSchema.EXTRA_FORMAT_STRING_Y, "$%.2f");
+			i.putExtra(IntentConstants.EXTRA_AXIS_TITLES, axis_titles);
+			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "$%.2f");
 			
 			Market.intentLaunchMarketFallback((Activity) this.context, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 		}
