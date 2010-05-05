@@ -157,3 +157,19 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `com.googlecode.chartdroid.intent.extra.LABELS` || `String[]` || N ||
 || `com.googlecode.chartdroid.intent.extra.COLORS` || `int[]` || N ||
 || `Intent.EXTRA_TITLE` || `String` || N ||
+
+=Defining Java Constants=
+One approach you could take (though I make no promises), is the following:
+
+In your application's `src/` directory, create the directory tree
+`com/googlecode/chartdroid`.
+Then `cd` to the leaf directory you just created, and set the externals property to keep your project in sync with the *`chartdroid`* definitions.
+
+{{
+cd src
+mkdir -p com/googlecode/chartdroid
+cd com/googlecode/chartdroid
+svn propset svn:externals 'core http://chartdroid.googlecode.com/svn/trunk/core/src/com/googlecode/chartdroid/core' .
+}}
+
+Now when you call `svn up` in your project, it automatically fetches the contants I've defined for use with *`chartdroid`*.
