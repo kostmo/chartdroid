@@ -45,7 +45,7 @@ To limit the presentation options, [http://developer.android.com/reference/andro
 ==Content Provider==
 Your Content Provider should respond to three types of queries:
   * `data`
-  * `meta`
+  * `series`
   * `axes`
 
 ~~When displaying a chart, these strings will be appended to the source Uri as a "callback" to retrieve the various chart data. Therefore, a Content Provider should examine the last path component of the Uri and serve the appropriate columns below.~~
@@ -53,9 +53,9 @@ Your Content Provider should respond to three types of queries:
 When displaying a chart, these strings will be appended *as a value of the "aspect" query parameter* of the source Uri as a "callback" to retrieve the various chart data. Therefore, a Content Provider should examine the "aspect" parameter of the Uri and serve the appropriate columns below. (Using query parameters for this instead of the last path segment permits use of the `ContentUris.parseId()` function.)
 {{{
 if ("axes".equals(uri.getQueryParameter("aspect") )) {
-   ... // serve the axes data
-} else if ("meta".equals(uri.getQueryParameter("aspect") )) {
-   ... // serve the meta data
+   ... // serve the axes metadata
+} else if ("series".equals(uri.getQueryParameter("aspect") )) {
+   ... // serve the series metadata
 } else {
    ... // serve the data 
 }
@@ -105,8 +105,8 @@ Here is an example results table that your application might produce in response
 || 3554 || 1 || "oranges" || 12 || 4 ||
 || 3556 || 1 || "pears" || 5 || 2 ||
 
-==="meta" Columns===
-The "meta" query provides labels for each data series. All columns are optional.
+==="series" Columns===
+The "series" query provides labels for each data series. All columns are optional.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
