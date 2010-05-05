@@ -72,7 +72,7 @@
 		<!-- Intent filters for version 2.x of ChartDroid -->
 		
         <!-- Timeline Charts -->
-        <activity android:name="org.achartengine.activity.TimeChartActivity" 
+        <activity android:name="org.achartengine.activity.TimelineActivity" 
         	android:label="Time Chart" android:icon="@drawable/icon_type_line">
             <intent-filter>
 				<action android:name="android.intent.action.VIEW"/>

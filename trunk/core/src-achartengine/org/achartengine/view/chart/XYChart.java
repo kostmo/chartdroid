@@ -15,7 +15,7 @@
  */
 package org.achartengine.view.chart;
 
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
@@ -48,7 +48,7 @@ public abstract class XYChart extends AbstractChart {
 
 	public final static float DEFAULT_HASH_MARK_TEXT_SIZE = 9;
 
-	public XYMultipleSeriesDataset getDataset() {
+	public XYMultiSeries getDataset() {
 		return mDataset;
 	}
 
@@ -57,7 +57,7 @@ public abstract class XYChart extends AbstractChart {
 	}
 
 	/** The multiple series dataset. */
-	protected XYMultipleSeriesDataset mDataset;
+	protected XYMultiSeries mDataset;
 	/** The multiple series renderer. */
 	protected XYMultipleSeriesRenderer mRenderer;
 	/** The current scale value. */
@@ -93,7 +93,7 @@ public abstract class XYChart extends AbstractChart {
 	 * @param dataset the multiple series dataset
 	 * @param renderer the multiple series renderer
 	 */
-	public XYChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+	public XYChart(XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
 		mDataset = dataset;
 		mRenderer = renderer;
 	}
@@ -140,8 +140,6 @@ public abstract class XYChart extends AbstractChart {
 
 		MinMax x_span = mRenderer.getXAxisSpan();
 		MinMax y_span = mRenderer.getYAxisSpan();
-
-		int sLength = mDataset.getSeriesCount();
 
 
 		boolean showLabels = mRenderer.isShowLabels();
@@ -267,35 +265,42 @@ public abstract class XYChart extends AbstractChart {
 
 
 
-
-
-
-
-
-
-
-		for (int i = 0; i < sLength; i++) {
+		for (int i = 0; i < mDataset.getSeriesCount(); i++) {
 			XYSeries series = mDataset.getSeriesAt(i);
 			if (series.getItemCount() == 0) {
 				continue;
 			}
 
 			SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(i);
-			int originalValuesLength = series.getItemCount();
+
 			List<PointF> points = new ArrayList<PointF>();
-			int valuesLength = originalValuesLength;
-			for (int j = 0; j < valuesLength; j++) {
+			for (int j = 0; j < series.getItemCount(); j++) {
 				points.add( new PointF(
-						(float) (frame.left + xPixelsPerUnit * (series.getX(j).doubleValue() - x_span.min.doubleValue())),
-						(float) (frame.bottom - yPixelsPerUnit * (series.getY(j).doubleValue() - y_span.min.doubleValue()))	
+					(float) (frame.left + xPixelsPerUnit * (series.getX(j).doubleValue() - x_span.min.doubleValue())),
+					(float) (frame.bottom - yPixelsPerUnit * (series.getY(j).doubleValue() - y_span.min.doubleValue()))	
 				));
 			}
-			drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer, Math.min(frame.bottom,
-					(float) (frame.bottom + yPixelsPerUnit * y_span.min.doubleValue())), i);
+			
+			drawSeries(canvas,
+					hash_mark_label_paint,
+					points,
+					seriesRenderer,
+					(float) xPixelsPerUnit,
+					(float) yPixelsPerUnit,
+					Math.min(
+						frame.bottom,
+						(float) (frame.bottom + yPixelsPerUnit * y_span.min.doubleValue())),
+					i);
+			
+			// Render glyphs atop the chart if necessary
 			if (isRenderPoints(seriesRenderer)) {
 				ScatterChart pointsChart = new ScatterChart(mDataset, mRenderer);
-				pointsChart.drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer, 0, i);
+				pointsChart.drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer,
+						(float) xPixelsPerUnit,
+						(float) yPixelsPerUnit,
+						0, i);
 			}
+			
 			hash_mark_label_paint.setTextSize( DEFAULT_HASH_MARK_TEXT_SIZE );
 			if (or == Orientation.HORIZONTAL) {
 				hash_mark_label_paint.setTextAlign(Align.CENTER);
@@ -459,7 +464,9 @@ public abstract class XYChart extends AbstractChart {
 	 * @param seriesIndex the index of the series currently being drawn
 	 */
 	public abstract void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
-			SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex);
+			SimpleSeriesRenderer seriesRenderer,
+			float xScale, float yScale,	// FIXME These probably aren't necessary
+			float yAxisValue, int seriesIndex);
 
 	/**
 	 * Returns if the chart should display the points as a certain shape.

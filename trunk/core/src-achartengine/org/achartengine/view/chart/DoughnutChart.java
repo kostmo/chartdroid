@@ -15,7 +15,7 @@
  */
 package org.achartengine.view.chart;
 
-import org.achartengine.model.MultipleCategorySeries;
+import org.achartengine.model.CategoryMultiSeries;
 import org.achartengine.renderer.DefaultRenderer;
 
 import android.graphics.Canvas;
@@ -31,7 +31,7 @@ import android.graphics.Paint.Style;
 public class DoughnutChart extends AbstractChart {
 
 	/** The series dataset. */
-	private MultipleCategorySeries mDataset;
+	private CategoryMultiSeries mDataset;
 
 	/** The series renderer. */
 	private DefaultRenderer mRenderer;
@@ -41,7 +41,7 @@ public class DoughnutChart extends AbstractChart {
 		return mRenderer;
 	}
 
-	public MultipleCategorySeries getDataset() {
+	public CategoryMultiSeries getDataset() {
 		return mDataset;
 	}
 
@@ -51,7 +51,7 @@ public class DoughnutChart extends AbstractChart {
 	 * @param dataset the series dataset
 	 * @param renderer the series renderer
 	 */
-	public DoughnutChart(MultipleCategorySeries dataset, DefaultRenderer renderer) {
+	public DoughnutChart(CategoryMultiSeries dataset, DefaultRenderer renderer) {
 		mDataset = dataset;
 		mRenderer = renderer;
 	}

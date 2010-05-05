@@ -15,7 +15,7 @@
  */
 package org.achartengine.view.chart;
 
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.model.XYValueSeries;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -47,7 +47,7 @@ public class BubbleChart extends XYChart {
    * @param dataset the multiple series dataset
    * @param renderer the multiple series renderer
    */
-  public BubbleChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+  public BubbleChart(XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
     super(dataset, renderer);
   }
 
@@ -62,7 +62,9 @@ public class BubbleChart extends XYChart {
    * @param seriesIndex the index of the series currently being drawn
    */
   public void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
-      SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
+      SimpleSeriesRenderer seriesRenderer,
+      float xScale, float yScale,
+      float yAxisValue, int seriesIndex) {
     XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
     paint.setColor(renderer.getColor());
     paint.setStyle(Style.FILL);

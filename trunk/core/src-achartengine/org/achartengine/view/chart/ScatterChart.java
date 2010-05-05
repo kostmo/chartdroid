@@ -15,7 +15,7 @@
  */
 package org.achartengine.view.chart;
 
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
@@ -45,7 +45,7 @@ public class ScatterChart extends XYChart {
 	 */
 	
 	Path triangle, diamond;
-	public ScatterChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+	public ScatterChart(XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
 		super(dataset, renderer);
 		
 		triangle = new Path();
@@ -73,7 +73,10 @@ public class ScatterChart extends XYChart {
 	 * @param seriesIndex the index of the series currently being drawn
 	 */
 	public void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
-			SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
+			SimpleSeriesRenderer seriesRenderer,
+			float xScale, float yScale,
+			float yAxisValue, int seriesIndex) {
+		
 		XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
 		paint.setColor(renderer.getColor());
 		if (renderer.isFillPoints()) {

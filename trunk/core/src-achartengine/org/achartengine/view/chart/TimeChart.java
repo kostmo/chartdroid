@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import android.graphics.Canvas;
@@ -40,7 +40,7 @@ public class TimeChart extends LineChart {
    * @param dataset the multiple series dataset
    * @param renderer the multiple series renderer
    */
-  public TimeChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+  public TimeChart(XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
     super(dataset, renderer);
   }
 

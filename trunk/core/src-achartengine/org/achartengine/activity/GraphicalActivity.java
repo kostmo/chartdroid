@@ -22,7 +22,7 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import org.achartengine.renderer.AxesManager;
 import org.achartengine.util.SemaphoreHost;
 import org.achartengine.view.FlowLayout;
-import org.achartengine.view.GraphicalView;
+import org.achartengine.view.PlotView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
 
@@ -57,13 +57,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 abstract public class GraphicalActivity extends Activity implements SemaphoreHost {
 
+	static public class AxesContainer {
+		public List<List<Number>> x_axis_series, y_axis_series;
+		List<List<String>> datam_labels;
+		String[] titles;
+	}
+	
+	
 	protected static final String TAG = "ChartDroid";
 	
 	// This is what fraction of the data span the axes limits will be padded by
 	public static double HEADROOM_FOOTROOM_FRACTION = 0.1;
 
 	/** The encapsulated graphical view. */
-	protected GraphicalView mView;
+	protected PlotView mView;
 
 	/** The chart to be drawn. */
 	protected AbstractChart mChart;
@@ -218,7 +225,7 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	    getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, getTitlebarIconResource());
 
 
-		this.mView = (GraphicalView) findViewById(R.id.chart_view);
+		this.mView = (PlotView) findViewById(R.id.chart_view);
 		
 		((TextView) findViewById(R.id.chart_title_placeholder)).setText(title);
 

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A series that includes 0 to many XYSeries.
  */
-public class XYMultipleSeriesDataset implements Serializable {
+public class XYMultiSeries implements Serializable {
   /** The included series. */
   private List<XYSeries> mSeries = new ArrayList<XYSeries>();
 
