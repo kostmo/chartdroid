@@ -235,6 +235,9 @@ public abstract class ChartGenHelper {
 	public static XYMultipleSeriesDataset buildBarDataset2(String[] titles, List<List<Number>> values) {
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		int length = titles.length;
+		
+		Log.d(TAG, "How many titles are there? " + length);
+		
 		for (int i = 0; i < length; i++) {
 			CategorySeries series = new CategorySeries(titles[i]);
 			List<Number> v = values.get(i);

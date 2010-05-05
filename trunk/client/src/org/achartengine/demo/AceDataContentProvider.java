@@ -142,7 +142,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
@@ -219,7 +219,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
@@ -288,7 +288,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
@@ -368,7 +368,7 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
