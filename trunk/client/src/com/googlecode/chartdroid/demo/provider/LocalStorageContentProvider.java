@@ -99,7 +99,7 @@ public class LocalStorageContentProvider extends ContentProvider {
 				
 				return null;
 				
-			} else if (ColumnSchema.DATASET_ASPECT_META.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
