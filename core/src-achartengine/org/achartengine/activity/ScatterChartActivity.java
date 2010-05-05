@@ -24,7 +24,7 @@ import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
@@ -47,7 +47,7 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class ScatterChartActivity extends XYChartActivity {
+public class ScatterChartActivity extends XYSpatialChartActivity {
 
 	@Override
 	protected int getTitlebarIconResource() {
@@ -159,7 +159,7 @@ public class ScatterChartActivity extends XYChartActivity {
 
 
 
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset(titles, x_axis_series, y_axis_series);
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDataset(titles, x_axis_series, y_axis_series);
 
 		ChartFactory.checkParameters(dataset, renderer);
 

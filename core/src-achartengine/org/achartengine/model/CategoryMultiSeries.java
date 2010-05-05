@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A series for the multiple category charts like the doughnut.
  */
-public class MultipleCategorySeries implements Serializable {
+public class CategoryMultiSeries implements Serializable {
   /** The series title. */
   private String mTitle;
   
@@ -39,7 +39,7 @@ public class MultipleCategorySeries implements Serializable {
    * Builds a new category series.
    * @param title the series title
    */
-  public MultipleCategorySeries(String title) {
+  public CategoryMultiSeries(String title) {
     mTitle = title;
   }
 

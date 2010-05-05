@@ -24,13 +24,12 @@ import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.LineChart;
-import org.achartengine.view.chart.PointStyle;
 import org.achartengine.view.chart.XYChart;
 
 import android.content.Intent;
@@ -44,7 +43,7 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class LineChartActivity extends XYChartActivity {
+public class LineChartActivity extends XYSpatialChartActivity {
 
 	@Override
 	protected int getTitlebarIconResource() {
@@ -55,8 +54,10 @@ public class LineChartActivity extends XYChartActivity {
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
-
-		List<? extends List<? extends List<? extends Number>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new DoubleDatumExtractor());
+		List<? extends List<? extends List<? extends Number>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(
+				intent_data,
+				getContentResolver(),
+				new DoubleDatumExtractor());
 
 		assert( sorted_series_list.size() >= 1 );
 
@@ -111,16 +112,6 @@ public class LineChartActivity extends XYChartActivity {
 
 
 
-
-		int[] colors = new int[titles.length];
-		PointStyle[] styles =  new PointStyle[titles.length];
-		for (int i=0; i<titles.length; i++) {
-			colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-			styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
-		}
-
-
-
 		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
@@ -158,7 +149,7 @@ public class LineChartActivity extends XYChartActivity {
 //		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
 
 
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDataset(titles, x_axis_series, y_axis_series);
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDataset(titles, x_axis_series, y_axis_series);
 
 		ChartFactory.checkParameters(dataset, renderer);
 

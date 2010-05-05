@@ -15,7 +15,7 @@
  */
 package org.achartengine.view.chart;
 
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -50,11 +50,10 @@ public class BarChart extends XYChart {
 	 * @param renderer the multiple series renderer
 	 * @param type the bar chart type
 	 */
-	public BarChart(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer, Type type) {
+	public BarChart(XYMultiSeries dataset, XYMultipleSeriesRenderer renderer, Type type) {
 		super(dataset, renderer);
 		mType = type;
 	}
-
 
 	public Type getType() {
 		return mType;
@@ -74,27 +73,35 @@ public class BarChart extends XYChart {
 	 * @param yAxisValue the minimum value of the y axis
 	 * @param seriesIndex the index of the series currently being drawn
 	 */
-	public void drawSeries(Canvas canvas, Paint paint, List<PointF> points,
-			SimpleSeriesRenderer seriesRenderer, float yAxisValue, int seriesIndex) {
-		int seriesNr = mDataset.getSeriesCount();
+	public void drawSeries(Canvas canvas,
+			Paint paint,
+			List<PointF> points,
+			SimpleSeriesRenderer seriesRenderer,
+			float xScale, float yScale,
+			float yAxisValue,
+			int seriesIndex) {
+		
+		int series_count = mDataset.getSeriesCount();
 
 		Log.d(TAG, "Bar chart number of points: " + points.size());
 
 		paint.setColor(seriesRenderer.getColor());
+		paint.setAlpha(0x80);	// FIXME
 		paint.setStyle(Style.FILL);
-		float halfDiffX = getHalfDiffX(points, seriesNr);
+		float bar_width = getBarWidth(points, series_count);
 
-		Log.d(TAG, "Bar chart halfDiffX: " + halfDiffX);
+		Log.d(TAG, "Bar width: " + bar_width);
 
 		for (PointF point : points) {
 
 			Log.d(TAG, "Bar chart: x=" + point.x);
 
 			if (mType == Type.STACKED) {
-				canvas.drawRect(point.x - halfDiffX, point.y, point.x + halfDiffX, yAxisValue, paint);
+				canvas.drawRect(point.x - bar_width/2, point.y, point.x + bar_width/2, yAxisValue, paint);
 			} else {
-				float startX = point.x - seriesNr * halfDiffX + seriesIndex * 2 * halfDiffX;
-				canvas.drawRect(startX, point.y, startX + 2 * halfDiffX, yAxisValue, paint);
+//				float startX = point.x - (series_count - seriesIndex - 1) * bar_width;
+				float startX = point.x;
+				canvas.drawRect(startX, point.y, startX + bar_width, yAxisValue, paint);
 			}
 		}
 	}
@@ -111,7 +118,7 @@ public class BarChart extends XYChart {
 	protected void drawChartValuesText(Canvas canvas, XYSeries series, Paint paint, List<PointF> points,
 			int seriesIndex) {
 		int seriesNr = mDataset.getSeriesCount();
-		float halfDiffX = getHalfDiffX(points, seriesNr);
+		float halfDiffX = getBarWidth(points, seriesNr);
 		
 		int k=0;
 		for (PointF point : points) {
@@ -128,15 +135,23 @@ public class BarChart extends XYChart {
 		}
 	}
 
-	private float getHalfDiffX(List<PointF> points, int seriesNr) {
-		float halfDiffX = (points.get(points.size() - 1).x - points.get(0).x) / points.size();
+	private float getBarWidth(List<PointF> points, int series_count) {
+		float end_x = (points.get(points.size() - 1)).x;
+		float start_x = points.get(0).x;
+		float x_delta = end_x - start_x;
+		float halfDiffX = x_delta / points.size();
+		
+		Log.e(TAG, "End: " + end_x + "; Start: " + start_x + "; delta: " + x_delta + "; bin_width: " + halfDiffX);
+		
 		if (halfDiffX == 0) {
 			Log.e(TAG, "In the bad place...");
 			halfDiffX = 10;	// FIXME Magic number
 		}
 
 		if (mType != Type.STACKED) {
-			halfDiffX /= seriesNr;
+			halfDiffX /= series_count;
+			Log.e(TAG, "series count: " + series_count + "; final bin width: " + halfDiffX);
+			
 		}
 		return halfDiffX;
 	}

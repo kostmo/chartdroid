@@ -16,16 +16,11 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
-import org.achartengine.consumer.LabeledDatumExtractor;
-import org.achartengine.consumer.DataCollector.LabeledDatum;
-import org.achartengine.consumer.DataCollector.SeriesMetaData;
-import org.achartengine.model.MultipleCategorySeries;
+import org.achartengine.model.CategoryMultiSeries;
 import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.view.FlowLayout;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.DoughnutChart;
 
@@ -40,27 +35,11 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class DonutChartActivity extends GraphicalActivity {
+public class DonutChartActivity extends RadialChartActivity {
 
 	@Override
 	protected int getTitlebarIconResource() {
 		return R.drawable.typepie;
-	}
-	
-	// ========================================================================
-	@Override
-	protected int getLayoutResourceId() {
-		return R.layout.simple_chart_activity;
-	}
-
-	// ========================================================================
-	@Override
-	protected void postChartPopulationCallback() {
-
-		FlowLayout predicate_layout = (FlowLayout) findViewById(R.id.predicate_layout);
-
-		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
-		populateLegend(predicate_layout, series_attributes_list, true);
 	}
 
 	// ========================================================================
@@ -68,70 +47,11 @@ public class DonutChartActivity extends GraphicalActivity {
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
-		List<List<List<LabeledDatum>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
-
-
-		assert( sorted_series_list.size() >= 1 );
-
-
-		List<List<String>> datam_labels = new ArrayList<List<String>>();
-
-
-		List<List<Number>> x_axis_series, y_axis_series = null;
-		if (sorted_series_list.size() == 1) {
-			// Let the Y-axis carry the only data.
-			x_axis_series = new ArrayList<List<Number>>();
-			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( 0 ), datam_labels);
-
-		} else {
-			x_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.X_AXIS_INDEX ), datam_labels );
-			y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), datam_labels );
-		}
-
-
-
-
-
-		assert (x_axis_series.size() == y_axis_series.size()
-				|| x_axis_series.size() == 1
-				|| x_axis_series.size() == 0);
-
-		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
-		String[] titles = new String[series_meta_data.size()];
-		for (int i=0; i<series_meta_data.size(); i++)
-			titles[i] = series_meta_data.get(i).title;
-		
-		
-		assert (titles.length == y_axis_series.size());
-		assert (titles.length == y_axis_series.get(0).size());
-
-
-		// If there is no x-axis data, just number the y-elements.
-		List<Number> prototypical_x_values; 
-		if (x_axis_series.size() == 0) {
-			for (int i=0; i < y_axis_series.size(); i++) {
-				prototypical_x_values = new ArrayList<Number>();
-				x_axis_series.add( prototypical_x_values );
-				for (int j=0; j < y_axis_series.get(i).size(); j++)
-					prototypical_x_values.add(j);
-			}
-		}
-
-
-		// Replicate the X-axis data for each series if necessary
-		if (x_axis_series.size() == 1) {
-			Log.i(TAG, "Replicating x-axis series...");
-			prototypical_x_values = x_axis_series.get(0);
-			Log.d(TAG, "Size of prototypical x-set: " + prototypical_x_values.size());
-			while (x_axis_series.size() < titles.length)
-				x_axis_series.add( prototypical_x_values );
-		}
-
-
+		AxesContainer axes_container = getAxesSets(intent_data);
 
 		// Use the first series as the representative series
-		int series_length = y_axis_series.get(0).size();
+		int series_length = axes_container.y_axis_series.get(0).size();
 		// TODO: Assert that all series are the same length?
 
 		// There should be the same number of colors as the number of elements
@@ -159,7 +79,7 @@ public class DonutChartActivity extends GraphicalActivity {
 
 
 
-		MultipleCategorySeries dataset = org.achartengine.ChartGenHelper.buildMultiCategoryDataset(chart_title, titles, datam_labels, y_axis_series);
+		CategoryMultiSeries dataset = org.achartengine.ChartGenHelper.buildMultiCategoryDataset(chart_title, axes_container.titles, axes_container.datam_labels, axes_container.y_axis_series);
 
 		DefaultRenderer renderer = org.achartengine.ChartGenHelper.buildCategoryRenderer(colors);
 		renderer.setApplyBackgroundColor(true);

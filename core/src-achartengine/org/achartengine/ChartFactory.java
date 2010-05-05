@@ -17,11 +17,11 @@ package org.achartengine;
 
 import org.achartengine.activity.GraphicalActivity;
 import org.achartengine.model.CategorySeries;
-import org.achartengine.model.MultipleCategorySeries;
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.CategoryMultiSeries;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.view.GraphicalView;
+import org.achartengine.view.PlotView;
 import org.achartengine.view.chart.BarChart;
 import org.achartengine.view.chart.BubbleChart;
 import org.achartengine.view.chart.DoughnutChart;
@@ -66,11 +66,11 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final GraphicalView getLineChartView(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+  public static final PlotView getLineChartView(Context context,
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
     checkParameters(dataset, renderer);
     XYChart chart = new LineChart(dataset, renderer);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -84,11 +84,11 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final GraphicalView getScatterChartView(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+  public static final PlotView getScatterChartView(Context context,
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
     checkParameters(dataset, renderer);
     XYChart chart = new ScatterChart(dataset, renderer);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -102,11 +102,11 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final GraphicalView getBubbleChartView(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+  public static final PlotView getBubbleChartView(Context context,
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
     checkParameters(dataset, renderer);
     XYChart chart = new BubbleChart(dataset, renderer);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -122,12 +122,12 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final GraphicalView getTimeChartView(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer, String format) {
+  public static final PlotView getTimeChartView(Context context,
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer, String format) {
     checkParameters(dataset, renderer);
     TimeChart chart = new TimeChart(dataset, renderer);
     chart.setDateFormat(format);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -142,11 +142,11 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final GraphicalView getBarChartView(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer, Type type) {
+  public static final PlotView getBarChartView(Context context,
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer, Type type) {
     checkParameters(dataset, renderer);
     XYChart chart = new BarChart(dataset, renderer, type);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -161,11 +161,11 @@ public class ChartFactory {
    *           if the dataset number of items is different than the number of
    *           series renderers
    */
-  public static final GraphicalView getPieChartView(Context context, CategorySeries dataset,
+  public static final PlotView getPieChartView(Context context, CategorySeries dataset,
       DefaultRenderer renderer) {
     checkParameters(dataset, renderer);
     PieChart chart = new PieChart(dataset, renderer);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -180,11 +180,11 @@ public class ChartFactory {
    *           if the dataset number of items is different than the number of
    *           series renderers
    */
-  public static final GraphicalView getDoughnutChartView(Context context,
-      MultipleCategorySeries dataset, DefaultRenderer renderer) {
+  public static final PlotView getDoughnutChartView(Context context,
+      CategoryMultiSeries dataset, DefaultRenderer renderer) {
     checkParameters(dataset, renderer);
     DoughnutChart chart = new DoughnutChart(dataset, renderer);
-    return new GraphicalView(context, chart);
+    return new PlotView(context, chart);
   }
 
   /**
@@ -200,7 +200,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getLineChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getLineChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer) {
     return getLineChartIntent(context, dataset, renderer, "");
   }
@@ -218,7 +218,7 @@ public class ChartFactory {
    *           series
    */
   public static final Intent getScatterChartIntent(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer) {
     return getScatterChartIntent(context, dataset, renderer, "");
   }
 
@@ -234,7 +234,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getBubbleChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getBubbleChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer) {
     return getBubbleChartIntent(context, dataset, renderer, "");
   }
@@ -253,7 +253,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getTimeChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getTimeChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer, String format) {
     return getTimeChartIntent(context, dataset, renderer, format, "");
   }
@@ -271,7 +271,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getBarChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getBarChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer, Type type) {
     return getBarChartIntent(context, dataset, renderer, type, "");
   }
@@ -309,7 +309,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getLineChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getLineChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer, String activityTitle) {
     checkParameters(dataset, renderer);
     Intent intent = new Intent(context, GraphicalActivity.class);
@@ -333,7 +333,7 @@ public class ChartFactory {
    *           series
    */
   public static final Intent getScatterChartIntent(Context context,
-      XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer, String activityTitle) {
+      XYMultiSeries dataset, XYMultipleSeriesRenderer renderer, String activityTitle) {
     checkParameters(dataset, renderer);
     Intent intent = new Intent(context, GraphicalActivity.class);
     XYChart chart = new ScatterChart(dataset, renderer);
@@ -355,7 +355,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getBubbleChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getBubbleChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer, String activityTitle) {
     checkParameters(dataset, renderer);
     Intent intent = new Intent(context, GraphicalActivity.class);
@@ -380,7 +380,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getTimeChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getTimeChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer, String format, String activityTitle) {
     checkParameters(dataset, renderer);
     Intent intent = new Intent(context, GraphicalActivity.class);
@@ -405,7 +405,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static final Intent getBarChartIntent(Context context, XYMultipleSeriesDataset dataset,
+  public static final Intent getBarChartIntent(Context context, XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer, Type type, String activityTitle) {
     checkParameters(dataset, renderer);
     Intent intent = new Intent(context, GraphicalActivity.class);
@@ -452,7 +452,7 @@ public class ChartFactory {
    *           series renderers
    */
   public static final Intent getDoughnutChartIntent(Context context,
-      MultipleCategorySeries dataset, DefaultRenderer renderer, String activityTitle) {
+      CategoryMultiSeries dataset, DefaultRenderer renderer, String activityTitle) {
     checkParameters(dataset, renderer);
     Intent intent = new Intent(context, GraphicalActivity.class);
     DoughnutChart chart = new DoughnutChart(dataset, renderer);
@@ -470,7 +470,7 @@ public class ChartFactory {
    *           if the dataset and the renderer don't include the same number of
    *           series
    */
-  public static void checkParameters(XYMultipleSeriesDataset dataset,
+  public static void checkParameters(XYMultiSeries dataset,
       XYMultipleSeriesRenderer renderer) {
     if (dataset == null || renderer == null
         || dataset.getSeriesCount() != renderer.getSeriesRendererCount()) {
@@ -511,7 +511,7 @@ public class ChartFactory {
    *           if the dataset number of items is different than the number of
    *           series renderers
    */
-  public static void checkParameters(MultipleCategorySeries dataset, DefaultRenderer renderer) {
+  public static void checkParameters(CategoryMultiSeries dataset, DefaultRenderer renderer) {
     if (dataset == null || renderer == null
         || !checkMultipleSeriesItems(dataset, renderer.getSeriesRendererCount())) {
       throw new IllegalArgumentException(
@@ -519,7 +519,7 @@ public class ChartFactory {
     }
   }
 
-  private static boolean checkMultipleSeriesItems(MultipleCategorySeries dataset, int value) {
+  private static boolean checkMultipleSeriesItems(CategoryMultiSeries dataset, int value) {
     int count = dataset.getCategoriesCount();
     boolean equal = true;
     for (int k = 0; k < count && equal; k++) {

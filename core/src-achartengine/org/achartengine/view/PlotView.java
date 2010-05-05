@@ -27,7 +27,7 @@ import android.view.View;
 /**
  * The view that encapsulates the graphical chart.
  */
-public class GraphicalView extends View {
+public class PlotView extends View {
   /** The chart to be drawn. */
   private AbstractChart mChart;
   /** The view bounds. */
@@ -41,13 +41,13 @@ public class GraphicalView extends View {
    * @param context the context
    * @param chart the chart to be drawn
    */
-  public GraphicalView(Context context, AttributeSet attributes) {
+  public PlotView(Context context, AttributeSet attributes) {
 	    super(context, attributes);
 	    
 	    mHandler = new Handler();
 	  }
   
-  public GraphicalView(Context context, AbstractChart chart) {
+  public PlotView(Context context, AbstractChart chart) {
 
 	  super(context);
 

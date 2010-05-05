@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 Karl Ostmo
+ * Copyright (C) 2010 Karl Ostmo
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.BarChart;
-import org.achartengine.view.chart.PointStyle;
 import org.achartengine.view.chart.BarChart.Type;
 
 import android.content.Intent;
@@ -45,7 +44,7 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class BarChartActivity extends XYChartActivity {
+public class BarChartActivity extends XYSpatialChartActivity {
 
 	@Override
 	protected int getTitlebarIconResource() {
@@ -56,8 +55,10 @@ public class BarChartActivity extends XYChartActivity {
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
-
-		List<? extends List<? extends List<? extends Number>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new DoubleDatumExtractor());
+		List<? extends List<? extends List<? extends Number>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(
+				intent_data,
+				getContentResolver(),
+				new DoubleDatumExtractor());
 
 		assert( sorted_series_list.size() >= 1 );
 
@@ -110,14 +111,6 @@ public class BarChartActivity extends XYChartActivity {
 				x_axis_series.add( prototypical_x_values );
 		}
 
-
-		int[] colors = new int[titles.length];
-		PointStyle[] styles =  new PointStyle[titles.length];
-		for (int i=0; i<titles.length; i++) {
-			colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-			styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
-		}
-
 		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
@@ -144,10 +137,14 @@ public class BarChartActivity extends XYChartActivity {
 				Color.GRAY);
 
 
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildBarDataset(titles, y_axis_series);
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildBarDataset(titles, y_axis_series);
 
 		ChartFactory.checkParameters(dataset, renderer);
 
+		
+		
+		
+		
 		BarChart chart = new BarChart(dataset, renderer, Type.DEFAULT);
 
 		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);

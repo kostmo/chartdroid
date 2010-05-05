@@ -25,7 +25,7 @@ import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-public class TimeChartActivity extends XYChartActivity {
+public class TimelineActivity extends XYTemporalChartActivity {
 
 	@Override
 	protected int getTitlebarIconResource() {
@@ -112,20 +112,9 @@ public class TimeChartActivity extends XYChartActivity {
 		// a la Firebug, or we could nix the bars and just draw labels at 45 degrees
 		// like a historical timeline.
 
-		/*
-		int[] colors = new int[titles.length];
-		PointStyle[] styles =  new PointStyle[titles.length];
-		for (int i=0; i<titles.length; i++) {
-			colors[i] = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
-			styles[i] = DEFAULT_STYLES[i % DEFAULT_STYLES.length];
-		}
-		*/
-
 
 
 		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
-
-
 
 
 		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
@@ -152,7 +141,7 @@ public class TimeChartActivity extends XYChartActivity {
 
 
 //		Log.i(TAG, "About to build date dataset...");
-		XYMultipleSeriesDataset dataset = org.achartengine.ChartGenHelper.buildDateDataset(titles, x_axis_date_series, y_axis_series);
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDateDataset(titles, x_axis_date_series, y_axis_series);
 
 //		Log.i(TAG, "Checking parameters...");
 		ChartFactory.checkParameters(dataset, renderer);

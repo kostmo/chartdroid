@@ -16,17 +16,16 @@
 package org.achartengine;
 
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
+import org.achartengine.model.CategoryMultiSeries;
 import org.achartengine.model.CategorySeries;
-import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.TimeSeries;
-import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYMultiSeries;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.AxesManager;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-import org.achartengine.util.MathHelper.MinMax;
 
 import android.util.Log;
 
@@ -48,11 +47,14 @@ public abstract class ChartGenHelper {
 	 * @param yValues the values for the Y axis
 	 * @return the XY multiple time dataset
 	 */
-	public static XYMultipleSeriesDataset buildDateDataset(String[] titles, List<List<Date>> xValues,
+	public static XYMultiSeries buildDateDataset(
+			String[] titles,
+			List<List<Date>> xValues,
 			List<List<Number>> yValues) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		int length = titles.length;
-		for (int i = 0; i < length; i++) {
+		
+		XYMultiSeries dataset = new XYMultiSeries();
+
+		for (int i = 0; i < titles.length; i++) {
 			TimeSeries series = new TimeSeries(titles[i]);
 			List<Date> xV = xValues.get(i);
 			List<Number> yV = yValues.get(i);
@@ -66,16 +68,16 @@ public abstract class ChartGenHelper {
 	}
 
 	// ========================================================================
-	public static XYMultipleSeriesDataset buildDataset(
+	public static XYMultiSeries buildDataset(
 			String[] titles,
 			List<? extends List<? extends Number>> xValues,
-					List<? extends List<? extends Number>> yValues) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		int length = titles.length;
+			List<? extends List<? extends Number>> yValues) {
+		
+		XYMultiSeries dataset = new XYMultiSeries();
 
-		Log.i(TAG, "Titles: " + length + "; x-sets: " + xValues.size() + "; y-sets: " + yValues.size());
+		Log.i(TAG, "Titles: " + titles.length + "; x-sets: " + xValues.size() + "; y-sets: " + yValues.size());
 
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < titles.length; i++) {
 			// Zip the coordinates together for each series
 			XYSeries series = new XYSeries(titles[i]);
 			List<? extends Number> xV = xValues.get(i);
@@ -91,7 +93,6 @@ public abstract class ChartGenHelper {
 		}
 		return dataset;
 	}
-
 
 	// ========================================================================
 	/**
@@ -141,12 +142,11 @@ public abstract class ChartGenHelper {
 		CategorySeries series = new CategorySeries(title);
 		int k = 0;
 		for (Number value : values) {
-			series.add("Project " + ++k, value);
+			series.add("Project " + (++k), value);
 		}
 
 		return series;
 	}
-
 
 	// ========================================================================
 	/**
@@ -155,8 +155,13 @@ public abstract class ChartGenHelper {
 	 * @param series_set the values
 	 * @return the category series
 	 */
-	public static MultipleCategorySeries buildMultiCategoryDataset(String title, String[] series_labels, List<List<String>> datum_labels, List<List<Number>> series_set) {
-		MultipleCategorySeries series = new MultipleCategorySeries(title);
+	public static CategoryMultiSeries buildMultiCategoryDataset(
+			String title,
+			String[] series_labels,
+			List<List<String>> datum_labels,
+			List<List<Number>> series_set) {
+		
+		CategoryMultiSeries series = new CategoryMultiSeries(title);
 		int k = 0;
 		for (List<Number> series_values : series_set) {
 			series.add(series_labels[k], datum_labels.get(k), series_values);
@@ -182,19 +187,19 @@ public abstract class ChartGenHelper {
 	}
 
 	// ========================================================================
-	public static XYMultipleSeriesDataset buildBarDataset(String[] titles, List<List<Number>> values) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-		int length = titles.length;
+	public static XYMultiSeries buildBarDataset(String[] titles, List<List<Number>> values) {
+		XYMultiSeries dataset = new XYMultiSeries();
+
+		Log.d(TAG, "How many titles are there? " + titles.length);
 		
-		Log.d(TAG, "How many titles are there? " + length);
-		
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < titles.length; i++) {
+			
 			CategorySeries series = new CategorySeries(titles[i]);
 			List<Number> v = values.get(i);
-			int seriesLength = v.size();
-			for (int k = 0; k < seriesLength; k++) {
-				series.add(v.get(k));
+			for (Number num : v) {
+				series.add(num);
 			}
+			
 			dataset.addSeries(series.toXYSeries());
 		}
 		return dataset;
