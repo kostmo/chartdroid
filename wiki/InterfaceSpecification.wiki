@@ -159,7 +159,7 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `Intent.EXTRA_TITLE` || `String` || N ||
 
 =Defining Java Constants=
-One approach you could take (though I make no promises), is the following:
+It is handy to have these long strings defined as constants in your application.  An easy way to do this, and at the same time keep your application up-to-date against the spec, is to use svn "externals".
 
 In your application's `src/` directory, create the directory tree
 `com/googlecode/chartdroid`.
