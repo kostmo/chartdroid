@@ -36,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 /**
  * The XY chart rendering class.
  * Tick marks and tick labels, and chart data
@@ -98,12 +96,10 @@ public abstract class XYChart extends AbstractChart {
 		mRenderer = renderer;
 	}
 
-
 	double getPixelsPerUnit(int frame_span, MinMax span) {
 		if (span.getSpan() != 0) {
 			return frame_span / span.getSpan();
 		}
-
 		return 0;
 	}
 
@@ -243,13 +239,8 @@ public abstract class XYChart extends AbstractChart {
 					canvas.drawLine(grid_line_startx, yLabel, grid_line_stopx, yLabel, hash_mark_label_paint);
 				}
 			}
-
-
-
-
-
-
 		}
+		
 		if (mRenderer.isShowAxes()) {
 			hash_mark_label_paint.setColor(mRenderer.getAxesColor());
 			canvas.drawLine(frame.left, frame.bottom, frame.right, frame.bottom, hash_mark_label_paint);
@@ -261,24 +252,21 @@ public abstract class XYChart extends AbstractChart {
 		}
 
 
-
-
-
-
-		for (int i = 0; i < mDataset.getSeriesCount(); i++) {
+		for (int i=0; i < mDataset.getSeriesCount(); i++) {
 			XYSeries series = mDataset.getSeriesAt(i);
 			if (series.getItemCount() == 0) {
 				continue;
 			}
 
 			SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(i);
-
+			
 			List<PointF> points = new ArrayList<PointF>();
-			for (int j = 0; j < series.getItemCount(); j++) {
-				points.add( new PointF(
-					(float) (frame.left + xPixelsPerUnit * (series.getX(j).doubleValue() - x_span.min.doubleValue())),
-					(float) (frame.bottom - yPixelsPerUnit * (series.getY(j).doubleValue() - y_span.min.doubleValue()))	
-				));
+			for (int j=0; j < series.getItemCount(); j++) {
+				PointF point = new PointF(
+						(float) (frame.left + xPixelsPerUnit * (series.getX(j).doubleValue() - x_span.min.doubleValue())),
+						(float) (frame.bottom - yPixelsPerUnit * (series.getY(j).doubleValue() - y_span.min.doubleValue()))	
+					);
+				points.add( point );
 			}
 			
 			drawSeries(canvas,
@@ -311,8 +299,6 @@ public abstract class XYChart extends AbstractChart {
 				drawChartValuesText(canvas, series, hash_mark_label_paint, points, i);
 			}
 		}
-
-
 
 		if (rotate) {
 			transform(canvas, angle, true);

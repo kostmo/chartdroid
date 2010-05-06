@@ -22,6 +22,7 @@ import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.model.XYMultiSeries;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.BarChart;
 import org.achartengine.view.chart.BarChart.Type;
@@ -29,9 +30,12 @@ import org.achartengine.view.chart.BarChart.Type;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An activity that encapsulates a graphical view of the chart.
@@ -49,30 +53,20 @@ public class BarChartActivity extends XYSpatialChartActivity {
 
 		RenderingAxesContainer axes_container = getAxesSets(intent_data);
 
-		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-		String x_label = axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX );
-		String y_label = axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
-		Log.d(TAG, "X LABEL: " + x_label);
-		Log.d(TAG, "X LABEL: " + y_label);
-		Log.d(TAG, "chart_title: " + chart_title);
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDataset(
+				axes_container.titles,
+				axes_container.x_axis_series,
+				axes_container.y_axis_series);
 
 		org.achartengine.ChartGenHelper.setChartSettings(
 				axes_container.renderer,
-				chart_title,
-				x_label,
-				y_label,
-				Color.LTGRAY,
-				Color.GRAY);
-
-
-		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildBarDataset(axes_container.titles, axes_container.y_axis_series);
+				getIntent().getStringExtra(Intent.EXTRA_TITLE),
+				axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX ),
+				axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX ),
+				Color.LTGRAY, Color.GRAY);
 
 		ChartFactory.checkParameters(dataset, axes_container.renderer);
 
-		
-		
-		
-		
 		BarChart chart = new BarChart(dataset, axes_container.renderer, Type.DEFAULT);
 
 		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
@@ -108,5 +102,28 @@ public class BarChartActivity extends XYSpatialChartActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	// ========================================================================
+	@Override
+	MinMax getXAxisLimits(List<List<Number>> multi_series) {
+		
+		// Get most dense count:
+		List<Integer> counts = new ArrayList<Integer>();
+		for (List<Number> series : multi_series) counts.add(series.size());
+		int biggest_size = Collections.max(counts);
+		
+		MinMax minmax = new MinMax(multi_series);
+		double values_span = minmax.getSpan();
+		double padding;
+		if (values_span > 0) {
+			padding = values_span/biggest_size;
+		} else {
+			padding = 1;
+		}
+		
+		double lower_limit = minmax.min.doubleValue() - padding;
+		double upper_limit = minmax.max.doubleValue() + padding;
+		return new MinMax(lower_limit, upper_limit);
 	}
 }

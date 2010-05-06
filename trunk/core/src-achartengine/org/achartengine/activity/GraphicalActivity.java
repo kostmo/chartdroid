@@ -67,7 +67,10 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	protected static final String TAG = "ChartDroid";
 	
 	// This is what fraction of the data span the axes limits will be padded by
-	public static double HEADROOM_FOOTROOM_FRACTION = 0.1;
+	public static float HEADROOM_FOOTROOM_FRACTION = 0.1f;
+	// For bar charts, however, the padding must be equal to one the equidistant
+	// intervals between the points on both sides.
+	
 
 	/** The encapsulated graphical view. */
 	protected PlotView mView;

@@ -24,6 +24,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class LineChart extends XYChart {
 			SimpleSeriesRenderer seriesRenderer,
 			float xScale, float yScale,
 			float yAxisValue, int seriesIndex) {
-
+		
 		XYSeriesRenderer renderer = (XYSeriesRenderer) seriesRenderer;
 		if (renderer.isFillBelowLine()) {
 			paint.setColor(renderer.getFillBelowLineColor());

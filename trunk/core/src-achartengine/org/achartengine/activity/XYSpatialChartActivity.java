@@ -76,8 +76,6 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 		
 		
 		assert (axes_container.titles.length == axes_container.y_axis_series.size());
-
-
 		assert (axes_container.titles.length == axes_container.y_axis_series.get(0).size());
 
 

@@ -336,7 +336,6 @@ public class DataCollector {
 		return axis_labels;
 	}
 
-
 	// ========================================================================
 	enum LineStyle {
 		NONE, DOTTED, DASHED, SOLID
@@ -460,9 +459,7 @@ public class DataCollector {
 
 		// Sort the map by key; that is, sort by the series index
 		List<SeriesMetaData> sorted_series_metadata = DataCollector.sortAndSimplify(series_metadata_map, DataCollector.MAP_KEY_COMPARATOR);
-		
-		Log.d(TAG, "Size of sorted series metadata: " + sorted_series_metadata.size());
-		
+
 		// Supplement the intent data
 		return supplementIntentSeriesMetaData(intent, sorted_series_metadata);
 	}

@@ -43,25 +43,30 @@ abstract public class XYChartActivity extends GraphicalActivity {
 	protected int getLayoutResourceId() {
 		return R.layout.xy_chart_activity;
 	}
-
+	
 	// ========================================================================
-	MinMax getAxisLimits(List<List<Number>> multi_series) {
+	MinMax getAxisLimits(List<List<Number>> multi_series, float fractional_span_margin) {
 		
 		MinMax minmax = new MinMax(multi_series);
 		double values_span = minmax.getSpan();
 		double padding;
 		if (values_span > 0) {
-			padding = values_span*HEADROOM_FOOTROOM_FRACTION;
+			padding = values_span*fractional_span_margin;
 		} else {
 			if (minmax.min.doubleValue() != 0)
-				padding = minmax.min.doubleValue()*HEADROOM_FOOTROOM_FRACTION;
+				padding = minmax.min.doubleValue()*fractional_span_margin;
 			else
 				padding = 1;
 		}
 		
-		double y_axis_lower_limit = minmax.min.doubleValue() - padding;
-		double y_axis_upper_limit = minmax.max.doubleValue() + padding;
-		return new MinMax(y_axis_lower_limit, y_axis_upper_limit);
+		double lower_limit = minmax.min.doubleValue() - padding;
+		double upper_limit = minmax.max.doubleValue() + padding;
+		return new MinMax(lower_limit, upper_limit);
+	}
+	
+	// ========================================================================
+	MinMax getAxisLimits(List<List<Number>> multi_series) {
+		return getAxisLimits(multi_series, HEADROOM_FOOTROOM_FRACTION);
 	}
 
 	// ========================================================================
