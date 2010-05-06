@@ -36,6 +36,7 @@ public class BarChart extends XYChart {
 	/** The chart type. */
 	private Type mType = Type.DEFAULT;
 
+	// ========================================================================
 	/**
 	 * The bar chart type enum.
 	 */
@@ -43,6 +44,7 @@ public class BarChart extends XYChart {
 		DEFAULT, STACKED;
 	}
 
+	// ========================================================================
 	/**
 	 * Builds a new bar chart instance.
 	 * 
@@ -55,14 +57,17 @@ public class BarChart extends XYChart {
 		mType = type;
 	}
 
+	// ========================================================================
 	public Type getType() {
 		return mType;
 	}
 
+	// ========================================================================
 	public void setType(Type type) {
 		mType = type;
 	}
 
+	// ========================================================================
 	/**
 	 * The graphical representation of a series.
 	 * 
@@ -83,29 +88,24 @@ public class BarChart extends XYChart {
 		
 		int series_count = mDataset.getSeriesCount();
 
-		Log.d(TAG, "Bar chart number of points: " + points.size());
-
 		paint.setColor(seriesRenderer.getColor());
-		paint.setAlpha(0x80);	// FIXME
 		paint.setStyle(Style.FILL);
 		float bar_width = getBarWidth(points, series_count);
-
-		Log.d(TAG, "Bar width: " + bar_width);
+		
+		boolean zero_bar_width = bar_width == 0;
+		if (zero_bar_width) bar_width = 2*xScale/series_count;
 
 		for (PointF point : points) {
-
-			Log.d(TAG, "Bar chart: x=" + point.x);
-
 			if (mType == Type.STACKED) {
 				canvas.drawRect(point.x - bar_width/2, point.y, point.x + bar_width/2, yAxisValue, paint);
 			} else {
-//				float startX = point.x - (series_count - seriesIndex - 1) * bar_width;
-				float startX = point.x;
+				float startX = point.x - (series_count/2f - seriesIndex) * bar_width;
 				canvas.drawRect(startX, point.y, startX + bar_width, yAxisValue, paint);
 			}
 		}
 	}
 
+	// ========================================================================
 	/**
 	 * The graphical representation of the series values as text.
 	 * 
@@ -135,18 +135,12 @@ public class BarChart extends XYChart {
 		}
 	}
 
+	// ========================================================================
 	private float getBarWidth(List<PointF> points, int series_count) {
 		float end_x = (points.get(points.size() - 1)).x;
 		float start_x = points.get(0).x;
 		float x_delta = end_x - start_x;
 		float halfDiffX = x_delta / points.size();
-		
-		Log.e(TAG, "End: " + end_x + "; Start: " + start_x + "; delta: " + x_delta + "; bin_width: " + halfDiffX);
-		
-		if (halfDiffX == 0) {
-			Log.e(TAG, "In the bad place...");
-			halfDiffX = 10;	// FIXME Magic number
-		}
 
 		if (mType != Type.STACKED) {
 			halfDiffX /= series_count;
@@ -155,5 +149,4 @@ public class BarChart extends XYChart {
 		}
 		return halfDiffX;
 	}
-
 }

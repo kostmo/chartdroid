@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 SC 4ViewSoft SRL
+ * Copyright (C) 2010 Karl Ostmo
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,6 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-
-import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -68,9 +66,6 @@ public abstract class ChartGenHelper {
 		return dataset;
 	}
 
-	
-	
-	
 	// ========================================================================
 	public static XYMultiSeries buildValueDataset(
 			String[] titles,
@@ -79,8 +74,6 @@ public abstract class ChartGenHelper {
 			List<? extends List<? extends Number>> zValues) {
 		
 		XYMultiSeries dataset = new XYMultiSeries();
-
-		Log.i(TAG, "Titles: " + titles.length + "; x-sets: " + xValues.size() + "; y-sets: " + yValues.size());
 
 		for (int i = 0; i < titles.length; i++) {
 			// Zip the coordinates together for each series
@@ -92,7 +85,7 @@ public abstract class ChartGenHelper {
 			int seriesLength = xV.size();
 			int corroboratedYSeriesLength = yV.size();
 			int corroboratedZSeriesLength = yV.size();
-			Log.d(TAG, "Series " + i + " axes set sizes: X: " + seriesLength + "; Y: " + corroboratedYSeriesLength + "; Z: " + corroboratedZSeriesLength); 
+//			Log.d(TAG, "Series " + i + " axes set sizes: X: " + seriesLength + "; Y: " + corroboratedYSeriesLength + "; Z: " + corroboratedZSeriesLength); 
 
 			for (int k = 0; k < seriesLength; k++) {
 				series.add(xV.get(k), yV.get(k), zV.get(k));
@@ -102,7 +95,6 @@ public abstract class ChartGenHelper {
 		return dataset;
 	}
 
-	
 	// ========================================================================
 	public static XYMultiSeries buildDataset(
 			String[] titles,
@@ -111,8 +103,6 @@ public abstract class ChartGenHelper {
 		
 		XYMultiSeries dataset = new XYMultiSeries();
 
-		Log.i(TAG, "Titles: " + titles.length + "; x-sets: " + xValues.size() + "; y-sets: " + yValues.size());
-
 		for (int i = 0; i < titles.length; i++) {
 			// Zip the coordinates together for each series
 			XYSeries series = new XYSeries(titles[i]);
@@ -120,7 +110,6 @@ public abstract class ChartGenHelper {
 			List<? extends Number> yV = yValues.get(i);
 			int seriesLength = xV.size();
 			int corroboratedSeriesLength = yV.size();
-			Log.d(TAG, "Series " + i + " axes set sizes: X: " + seriesLength + "; Y: " + corroboratedSeriesLength); 
 
 			for (int k = 0; k < seriesLength; k++) {
 				series.add(xV.get(k), yV.get(k));
@@ -220,25 +209,6 @@ public abstract class ChartGenHelper {
 			renderer.addSeriesRenderer(r);
 		}
 		return renderer;
-	}
-
-	// ========================================================================
-	public static XYMultiSeries buildBarDataset(String[] titles, List<List<Number>> values) {
-		XYMultiSeries dataset = new XYMultiSeries();
-
-		Log.d(TAG, "How many titles are there? " + titles.length);
-		
-		for (int i = 0; i < titles.length; i++) {
-			
-			CategorySeries series = new CategorySeries(titles[i]);
-			List<Number> v = values.get(i);
-			for (Number num : v) {
-				series.add(num);
-			}
-			
-			dataset.addSeries(series.toXYSeries());
-		}
-		return dataset;
 	}
 
 	// ========================================================================

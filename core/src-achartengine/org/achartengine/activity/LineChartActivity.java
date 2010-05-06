@@ -21,14 +21,8 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.activity.GraphicalActivity.AxesContainer;
-import org.achartengine.consumer.DataCollector;
-import org.achartengine.consumer.DoubleDatumExtractor;
-import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultiSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.LineChart;
 import org.achartengine.view.chart.XYChart;
@@ -36,10 +30,6 @@ import org.achartengine.view.chart.XYChart;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * An activity that encapsulates a graphical view of the chart.
@@ -55,41 +45,25 @@ public class LineChartActivity extends XYSpatialChartActivity {
 	@Override
 	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
-
 		RenderingAxesContainer axes_container = getAxesSets(intent_data);
-		
-		int length = axes_container.renderer.getSeriesRendererCount();
+		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDataset(
+				axes_container.titles,
+				axes_container.x_axis_series,
+				axes_container.y_axis_series);
 
-		for (int i = 0; i < length; i++) {
-			((XYSeriesRenderer) axes_container.renderer.getSeriesRendererAt(i)).setFillPoints(true);
-		}
-
-
-
-		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-		String x_label = axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX );
-		String y_label = axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
-		Log.d(TAG, "X LABEL: " + x_label);
-		Log.d(TAG, "X LABEL: " + y_label);
-		Log.d(TAG, "chart_title: " + chart_title);
-
-
-
-
-		org.achartengine.ChartGenHelper.setChartSettings(axes_container.renderer, chart_title, x_label, y_label,
+		org.achartengine.ChartGenHelper.setChartSettings(
+				axes_container.renderer,
+				getIntent().getStringExtra(Intent.EXTRA_TITLE),
+				axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX ),
+				axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX ),
 				Color.LTGRAY, Color.GRAY);
-		axes_container.renderer.setXLabels(12);
-		axes_container.renderer.setYLabels(10);
-
-		// FIXME: Generate dynamically
-//		org.achartengine.ChartGenHelper.setAxesExtents(renderer, 0.5, 12.5, 0, 32);
-
-
-		XYMultiSeries dataset = org.achartengine.ChartGenHelper.buildDataset(axes_container.titles, axes_container.x_axis_series, axes_container.y_axis_series);
 
 		ChartFactory.checkParameters(dataset, axes_container.renderer);
 
 		XYChart chart = new LineChart(dataset, axes_container.renderer);
+		for (int i = 0; i < axes_container.renderer.getSeriesRendererCount(); i++)
+			((XYSeriesRenderer) axes_container.renderer.getSeriesRendererAt(i)).setFillPoints(true);
+
 
 		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
 		if (x_format != null) chart.setXFormat(x_format);
