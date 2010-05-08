@@ -14,7 +14,7 @@ import com.googlecode.chartdroid.calendar.activity.EventListActivity;
 
 public class EventListAdapter extends ResourceCursorAdapter {
 
-	static final String TAG = "Chartdroid"; 
+	static final String TAG = "EventListAdapter"; 
 	
     public EventListAdapter(Context context, int layout, Cursor cursor) {
     	super(context, layout, cursor);
