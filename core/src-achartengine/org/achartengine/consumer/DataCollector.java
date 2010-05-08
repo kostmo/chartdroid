@@ -422,8 +422,8 @@ public class DataCollector {
 	// ========================================================================
 	public static List<SeriesMetaData> getSeriesMetaData(Intent intent, ContentResolver content_resolver) {
 
-		Uri meta_uri = intent.getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_SERIES).build();
-		Cursor meta_cursor = content_resolver.query(meta_uri,
+		Uri series_meta_uri = intent.getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_SERIES).build();
+		Cursor meta_cursor = content_resolver.query(series_meta_uri,
 				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
 				null, null, null);
 

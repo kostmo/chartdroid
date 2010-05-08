@@ -99,6 +99,13 @@ public class BarChartActivity extends XYSpatialChartActivity {
 			mView.repaint();
 			return true;
 		}
+		case R.id.menu_toggle_series:
+		{
+			Intent i = new Intent(this, SeriesPickerActivity.class);
+			Uri series_info_uri = getIntent().getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_SERIES).build();
+			i.setData(series_info_uri);
+			startActivity(i);
+		}
 		}
 
 		return super.onOptionsItemSelected(item);

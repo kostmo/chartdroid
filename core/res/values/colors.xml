@@ -3,6 +3,7 @@
 <resources>
 
     <color name="barely_there">#2FFF</color>
+    <color name="partially_translucent_black">#E000</color>
 
 
     <color name="transparent">#0000</color>

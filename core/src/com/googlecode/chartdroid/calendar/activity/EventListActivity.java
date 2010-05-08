@@ -38,11 +38,11 @@ import java.util.Stack;
 
 public class EventListActivity extends ListActivity {
 
-	static final String TAG = "Chartdroid"; 
+	static final String TAG = "EventListActivity"; 
 
 	
 	final int DIALOG_RUNONCE_INSTRUCTIONS = 1;
-	public static final String PREFKEY_SHOW_TAXON_SEARCH_INSTRUCTIONS = "PREFKEY_SHOW_TAXON_SEARCH_INSTRUCTIONS";
+	public static final String PREFKEY_SHOW_EVENT_LIST_INSTRUCTIONS = "PREFKEY_SHOW_EVENT_LIST_INSTRUCTIONS";
 
     
 	
@@ -110,7 +110,7 @@ public class EventListActivity extends ListActivity {
 //    	registerForContextMenu( category_listview );
     	
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-		if (!settings.getBoolean(PREFKEY_SHOW_TAXON_SEARCH_INSTRUCTIONS, false)) {
+		if (!settings.getBoolean(PREFKEY_SHOW_EVENT_LIST_INSTRUCTIONS, false)) {
 //			showDialog(DIALOG_RUNONCE_INSTRUCTIONS);
 		}
 		

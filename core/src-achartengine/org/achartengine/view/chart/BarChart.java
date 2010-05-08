@@ -144,8 +144,7 @@ public class BarChart extends XYChart {
 
 		if (mType != Type.STACKED) {
 			halfDiffX /= series_count;
-			Log.e(TAG, "series count: " + series_count + "; final bin width: " + halfDiffX);
-			
+//			Log.e(TAG, "series count: " + series_count + "; final bin width: " + halfDiffX);
 		}
 		return halfDiffX;
 	}
