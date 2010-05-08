@@ -141,6 +141,8 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `com.googlecode.chartdroid.intent.extra.AXIS_TITLES` || `ArrayList<String>` ||
 || `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X` || `String` ||
 || `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` ||
+|| `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_X` || `boolean` ||
+|| `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_Y` || `boolean` ||
 
 
 =Charts in version 1.x=
