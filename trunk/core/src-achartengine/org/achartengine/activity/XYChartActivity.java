@@ -17,12 +17,13 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
-import org.achartengine.view.VerticalLabelView;
 import org.achartengine.view.FlowLayout;
+import org.achartengine.view.VerticalLabelView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.XYChart;
 
@@ -103,6 +104,9 @@ abstract public class XYChartActivity extends GraphicalActivity {
 			return;
 		}
 		
+		XYMultipleSeriesRenderer renderer = xy_chart.getRenderer();
+		renderer.setShowXAxis(getIntent().getBooleanExtra(IntentConstants.EXTRA_AXIS_VISIBLE_X, true));
+		renderer.setShowYAxis(getIntent().getBooleanExtra(IntentConstants.EXTRA_AXIS_VISIBLE_Y, true));		
 		
 		((TextView) findViewById(R.id.chart_x_axis_title)).setText( xy_chart.getRenderer().getXTitle() );
 		((VerticalLabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );
