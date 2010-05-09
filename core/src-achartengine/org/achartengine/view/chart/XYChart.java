@@ -174,9 +174,7 @@ public abstract class XYChart extends AbstractChart {
 			vertical_axis_hash_mark_width = max_label_width + label_clearance;
 			
 		}
-		
-		Log.e(TAG, "Should X-Axis be shown? " + mRenderer.getShowXAxis());
-		
+
 		if (showLabels && mRenderer.getShowXAxis()) {
 			
 			Rect text_bounds_holder = new Rect();
