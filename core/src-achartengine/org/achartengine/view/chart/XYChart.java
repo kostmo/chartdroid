@@ -31,8 +31,10 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Paint.Align;
 import android.text.TextPaint;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -45,6 +47,7 @@ public abstract class XYChart extends AbstractChart {
 	public final static String TAG = "XYChart";
 
 	public final static float DEFAULT_HASH_MARK_TEXT_SIZE = 9;
+	public final static float DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH = 4;
 
 	public XYMultiSeries getDataset() {
 		return mDataset;
@@ -52,6 +55,12 @@ public abstract class XYChart extends AbstractChart {
 
 	public XYMultipleSeriesRenderer getRenderer() {
 		return mRenderer;
+	}
+	
+	
+
+	enum Axis {
+		X_AXIS, Y_AXIS
 	}
 
 	/** The multiple series dataset. */
@@ -142,36 +151,55 @@ public abstract class XYChart extends AbstractChart {
 		boolean showGrid = mRenderer.isShowGrid();
 
 
-		float hash_mark_width = 0;
+		float vertical_axis_hash_mark_width = 0;
 		int label_clearance = 2;    // Separation of tick label from vertical axis line
 		
+		float horizontal_axis_label_height = 0;
+		float max_x_label_height = 0;
+		
 		// Measure all y-axis label widths to determine the axis line position
-		if (showLabels) {
+		if (showLabels && mRenderer.getShowYAxis()) {
 
-			List<Double> yLabels = MathHelper.getLabels(
-					y_span,
-					mRenderer.getYLabels());
-
-			int length = yLabels.size();
-
-			float[] label_widths = new float[length];
-			float max_label_width = 0;
-			for (int i = 0; i < length; i++) {
-				float label_width = hash_mark_label_paint.measureText( getLabel( yLabels.get(i) ) );
-				label_widths[i] = width;
-				max_label_width = Math.max(label_width, max_label_width);
+			Rect text_bounds_holder = new Rect();
+			
+			List<Integer> y_label_widths = new ArrayList<Integer>();
+			for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getYLabels())) {
+				String y_label = getLabel( ylabel, Axis.Y_AXIS );
+				hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
+				
+				int label_width = text_bounds_holder.width();
+				y_label_widths.add(label_width);
 			}
-
-			hash_mark_width = max_label_width + label_clearance;
+			float max_label_width = Collections.max(y_label_widths);
+			vertical_axis_hash_mark_width = max_label_width + label_clearance;
+			
+		}
+		
+		Log.e(TAG, "Should X-Axis be shown? " + mRenderer.getShowXAxis());
+		
+		if (showLabels && mRenderer.getShowXAxis()) {
+			
+			Rect text_bounds_holder = new Rect();
+			
+			List<Integer> x_label_heights = new ArrayList<Integer>();
+			for (Double xlabel : MathHelper.getLabels(x_span, mRenderer.getXLabels())) {
+				String x_label = getLabel( xlabel, Axis.X_AXIS );
+				hash_mark_label_paint.getTextBounds(x_label, 0, x_label.length(), text_bounds_holder);
+				
+				int label_height = text_bounds_holder.height();
+				x_label_heights.add(label_height);
+			}
+			max_x_label_height = Collections.max(x_label_heights);
+			
+			horizontal_axis_label_height = max_x_label_height + label_clearance + DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH;
 		}
 
 
-		// FIXME Choose a non-arbitrary value for bottom
 		Rect frame = new Rect(
-				(int) Math.ceil(hash_mark_width),
-				0,
-				width,
-				height - 20	// XXX - Makes space for the tick labels for the horizontal axis;
+			(int) Math.ceil(vertical_axis_hash_mark_width),
+			0,
+			width,
+			height - (int) horizontal_axis_label_height
 		);
 
 
@@ -194,7 +222,10 @@ public abstract class XYChart extends AbstractChart {
 					hash_mark_label_paint,
 					frame.left, frame.top, frame.bottom,
 					xPixelsPerUnit,
-					x_span.min.doubleValue());
+					x_span.min.doubleValue(),
+					DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH,
+					max_x_label_height + label_clearance
+					);
 			int length = yLabels.size();
 
 
@@ -210,7 +241,7 @@ public abstract class XYChart extends AbstractChart {
 				if (or == Orientation.HORIZONTAL) {
 					grid_line_startx = frame.left;
 					grid_line_stopx = frame.right;
-					hash_mark_startx = grid_line_startx - hash_mark_width;
+					hash_mark_startx = grid_line_startx - vertical_axis_hash_mark_width;
 					hash_mark_stopx = grid_line_startx;
 
 					label_x_offset = frame.left - label_clearance;
@@ -219,7 +250,7 @@ public abstract class XYChart extends AbstractChart {
 				} else { 
 					grid_line_startx = frame.right;
 					grid_line_stopx = frame.left;
-					hash_mark_startx = grid_line_startx + hash_mark_width;
+					hash_mark_startx = grid_line_startx + vertical_axis_hash_mark_width;
 					hash_mark_stopx = grid_line_startx;
 
 					label_x_offset = frame.right - label_clearance;
@@ -229,9 +260,9 @@ public abstract class XYChart extends AbstractChart {
 					hash_mark_label_paint.setColor(mRenderer.getLabelsColor());
 					canvas.drawLine(hash_mark_startx, yLabel, hash_mark_stopx, yLabel, hash_mark_label_paint);
 
-					String label_string = getLabel(label);
+					String label_string = getLabel(label, Axis.Y_AXIS);
 					hash_mark_label_paint.measureText(label_string);
-					drawText(canvas, getLabel(label), label_x_offset, yLabel - 2, hash_mark_label_paint, 0);
+					drawText(canvas, getLabel(label, Axis.Y_AXIS), label_x_offset, yLabel - 2, hash_mark_label_paint, 0);
 				}
 
 				if (showGrid) {
@@ -241,6 +272,9 @@ public abstract class XYChart extends AbstractChart {
 			}
 		}
 		
+		
+		
+		// TODO: Omit extra spacing!!
 		if (mRenderer.isShowAxes()) {
 			hash_mark_label_paint.setColor(mRenderer.getAxesColor());
 			canvas.drawLine(frame.left, frame.bottom, frame.right, frame.bottom, hash_mark_label_paint);
@@ -250,6 +284,9 @@ public abstract class XYChart extends AbstractChart {
 				canvas.drawLine(frame.right, frame.top, frame.right, frame.bottom, hash_mark_label_paint);
 			}
 		}
+		
+		
+		
 
 
 		for (int i=0; i < mDataset.getSeriesCount(); i++) {
@@ -320,7 +357,7 @@ public abstract class XYChart extends AbstractChart {
 		for (PointF point : points) {
 			drawText(
 					canvas,
-					getLabel(k),
+					getLabel(k, Axis.Y_AXIS),
 					point.x,
 					point.y - 3.5f,	// FIXME Magic number
 					paint,
@@ -373,19 +410,8 @@ public abstract class XYChart extends AbstractChart {
 		}
 	}
 
-	/**
-	 * Makes sure the fraction digit is not displayed, if not needed.
-	 * 
-	 * @param label the input label value
-	 * @return the label without the useless fraction digit
-	 */
-	protected String getLabel(Number label) {
-		return getLabel(label, true);
-	}
-
-
-	protected String getLabel(Number label, boolean yaxis) {
-		String format_string = yaxis ? getYFormat() : getXFormat();
+	protected String getLabel(Number label, Axis axis) {
+		String format_string = Axis.Y_AXIS.equals(axis) ? getYFormat() : getXFormat();
 		if (format_string != null)
 			return String.format(format_string, label);
 
@@ -412,7 +438,7 @@ public abstract class XYChart extends AbstractChart {
 	 * @param minX the minimum value on the X axis in the chart
 	 */
 	protected void drawXLabels(List<Double> xLabels, Double[] xTextLabelLocations, Canvas canvas,
-			Paint paint, int left, int top, int bottom, double xPixelsPerUnit, double minX) {
+			Paint paint, int left, int top, int bottom, double xPixelsPerUnit, double minX, float hash_mark_height, float max_text_height) {
 		int length = xLabels.size();
 		boolean showLabels = mRenderer.isShowLabels();
 		boolean showGrid = mRenderer.isShowGrid();
@@ -421,8 +447,8 @@ public abstract class XYChart extends AbstractChart {
 			float xLabel = (float) (left + xPixelsPerUnit * (label - minX));
 			if (showLabels) {
 				paint.setColor(mRenderer.getLabelsColor());
-				canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);	// FIXME Magic numbers
-				drawText(canvas, getLabel(label, false), xLabel, bottom + 12, paint, 0);
+				canvas.drawLine(xLabel, bottom, xLabel, bottom + hash_mark_height, paint);	// FIXME Magic numbers
+				drawText(canvas, getLabel(label, Axis.X_AXIS), xLabel, bottom + hash_mark_height + max_text_height, paint, 0);
 			}
 			if (showGrid) {
 				paint.setColor(GRID_COLOR);

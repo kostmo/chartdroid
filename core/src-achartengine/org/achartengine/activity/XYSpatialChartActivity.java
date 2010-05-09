@@ -16,6 +16,7 @@
 
 package org.achartengine.activity;
 
+import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.consumer.DataCollector;
@@ -25,6 +26,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
 
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -42,7 +44,6 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 	
 	
 	RenderingAxesContainer getAxesSets(Uri intent_data) {
-		
 
 		RenderingAxesContainer axes_container = new RenderingAxesContainer();
 		
@@ -109,6 +110,9 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 
 
 		axes_container.renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
+		boolean enable_inner_shadow = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(ChartDisplayPreferences.PREFKEY_BAR_SHADING, true);
+		axes_container.renderer.setInnerShadow(enable_inner_shadow);
+		
 		assignAxesExtents(axes_container.renderer, axes_container.x_axis_series, axes_container.y_axis_series);
 		
 		

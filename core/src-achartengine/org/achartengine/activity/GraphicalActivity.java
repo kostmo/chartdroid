@@ -28,6 +28,7 @@ import org.achartengine.view.chart.PointStyle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -36,6 +37,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,8 +57,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * An activity that encapsulates a graphical view of the chart.
  */
-abstract public class GraphicalActivity extends Activity implements SemaphoreHost {
+abstract public class GraphicalActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener, SemaphoreHost {
 
+	protected static final String TAG = "ChartDroid";
+	
+	
+	
+	
 	static public class AxesContainer {
 		public List<List<Number>> x_axis_series, y_axis_series;
 		List<List<String>> datam_labels;
@@ -64,7 +71,6 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	}
 	
 	
-	protected static final String TAG = "ChartDroid";
 	
 	// This is what fraction of the data span the axes limits will be padded by
 	public static float HEADROOM_FOOTROOM_FRACTION = 0.1f;
@@ -100,6 +106,16 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 	// TODO: Implement for Donut chart
 	abstract protected List<DataSeriesAttributes> getSeriesAttributesList(AbstractChart chart);
 
+	
+	   
+	// ====================================================================
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+
+    	// In the general case, do nothing.
+    }
+	
+	
 	// ========================================================================
 	public static class DataSeriesAttributes {
 		public String title;
@@ -216,6 +232,8 @@ abstract public class GraphicalActivity extends Activity implements SemaphoreHos
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		
 
+		PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+		
 
 		String title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 		if (title == null) {

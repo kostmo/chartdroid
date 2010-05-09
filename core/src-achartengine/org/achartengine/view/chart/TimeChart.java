@@ -75,7 +75,7 @@ public class TimeChart extends LineChart {
    */
   @Override
   protected void drawXLabels(List<Double> xLabels, Double[] xTextLabelLocations, Canvas canvas, Paint paint, int left,
-      int top, int bottom, double xPixelsPerUnit, double minX) {
+      int top, int bottom, double xPixelsPerUnit, double minX, float hash_mark_height, float max_text_height) {
     int length = xLabels.size();
     boolean showLabels = mRenderer.isShowLabels();
     boolean showGrid = mRenderer.isShowGrid();
@@ -85,8 +85,8 @@ public class TimeChart extends LineChart {
       float xLabel = (float) (left + xPixelsPerUnit * (label - minX));
       if (showLabels) {
         paint.setColor(mRenderer.getLabelsColor());
-        canvas.drawLine(xLabel, bottom, xLabel, bottom + 4, paint);
-        drawText(canvas, format.format(new Date(label)), xLabel, bottom + 12, paint, 0);
+        canvas.drawLine(xLabel, bottom, xLabel, bottom + hash_mark_height, paint);
+        drawText(canvas, format.format(new Date(label)), xLabel, bottom + hash_mark_height + max_text_height, paint, 0);
       }
       if (showGrid) {
         paint.setColor(GRID_COLOR);

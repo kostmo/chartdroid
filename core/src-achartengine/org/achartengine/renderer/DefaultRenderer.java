@@ -15,17 +15,16 @@
  */
 package org.achartengine.renderer;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Color;
 import android.graphics.Typeface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract renderer to be extended by the multiple series classes.
  */
-public class DefaultRenderer implements Serializable, LabelsManager {
+public class DefaultRenderer implements LabelsManager {
   /** The default background color. */
   public static final int BACKGROUND_COLOR = Color.BLACK;
   /** The default color for text. */
@@ -39,7 +38,7 @@ public class DefaultRenderer implements Serializable, LabelsManager {
   /** If the background color is applied. */
   private boolean mApplyBackgroundColor;
   /** If the axes are visible. */
-  protected boolean mShowAxes = true;
+  protected boolean mShowAxes = true, mShowXAxis = true, mShowYAxis = true;
   /** The axes color. */
   protected int mAxesColor = TEXT_COLOR;
   /** If the labels are visible. */
