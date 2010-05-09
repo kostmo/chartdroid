@@ -19,10 +19,14 @@ import org.achartengine.model.XYMultiSeries;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.view.chart.XYChart.Axis;
 
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.util.Log;
 
@@ -90,17 +94,40 @@ public class BarChart extends XYChart {
 
 		paint.setColor(seriesRenderer.getColor());
 		paint.setStyle(Style.FILL);
+		
+
+		
 		float bar_width = getBarWidth(points, series_count);
 		
 		boolean zero_bar_width = bar_width == 0;
 		if (zero_bar_width) bar_width = 2*xScale/series_count;
 
+		boolean inner_shadow_enabled = getRenderer().getInnerShadow();
+		Paint blurpaint = null;
+		if (inner_shadow_enabled) {
+			
+			blurpaint = new Paint(paint);
+//			blurpaint.setColor(getRenderer().getBackgroundColor());	// This doesn't work when background is transparent
+			blurpaint.setColor(Color.BLACK);	// XXX
+			
+			blurpaint.setMaskFilter( new BlurMaskFilter(bar_width/1.8f, BlurMaskFilter.Blur.INNER) );
+		}
+		
 		for (PointF point : points) {
 			if (mType == Type.STACKED) {
-				canvas.drawRect(point.x - bar_width/2, point.y, point.x + bar_width/2, yAxisValue, paint);
+				RectF rect = new RectF(point.x - bar_width/2, point.y, point.x + bar_width/2, yAxisValue);
+
+				canvas.drawRect(rect, paint);
+				if (inner_shadow_enabled)
+					canvas.drawRect(rect, blurpaint);
+				
 			} else {
 				float startX = point.x - (series_count/2f - seriesIndex) * bar_width;
-				canvas.drawRect(startX, point.y, startX + bar_width, yAxisValue, paint);
+				
+				RectF rect = new RectF(startX, point.y, startX + bar_width, yAxisValue);
+				canvas.drawRect(rect, paint);
+				if (inner_shadow_enabled)
+					canvas.drawRect(rect, blurpaint);
 			}
 		}
 	}
@@ -126,7 +153,7 @@ public class BarChart extends XYChart {
 			if (mType == Type.DEFAULT) {
 				x += seriesIndex * 2 * halfDiffX - (seriesNr - 1.5f) * halfDiffX;
 			}
-			drawText(canvas, getLabel(series.getY(k)),
+			drawText(canvas, getLabel(series.getY(k), Axis.Y_AXIS),
 					x,
 					point.y - 3.5f,	// FIXME Magic number
 					paint, 0);

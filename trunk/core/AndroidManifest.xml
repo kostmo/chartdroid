@@ -182,9 +182,15 @@
         
         
         
+        
+        <activity android:name="com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences"
+                  android:label="Choose series"
+                  android:theme="@style/Theme.DarkerWallpaperSettings">
+        </activity>
+        
         <activity android:name="org.achartengine.activity.SeriesPickerActivity"
                   android:label="Choose series"
-                  android:theme="@android:style/Theme.Translucent">
+                  android:theme="@style/Theme.DarkerWallpaperSettings">
         </activity>
         
         

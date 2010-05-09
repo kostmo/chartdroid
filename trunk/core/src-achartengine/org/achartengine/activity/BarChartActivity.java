@@ -17,6 +17,7 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
@@ -28,8 +29,10 @@ import org.achartengine.view.chart.BarChart;
 import org.achartengine.view.chart.BarChart.Type;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -78,6 +81,20 @@ public class BarChartActivity extends XYSpatialChartActivity {
 		return chart;
 	}
 
+	// ====================================================================
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    	
+        if (mChart != null) {
+        	boolean enable_inner_shadow = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_BAR_SHADING, true);
+
+        	((BarChart) mChart).getRenderer().setInnerShadow(enable_inner_shadow);
+        	if (mView != null) {
+        		mView.invalidate();
+        	}
+        }
+    }
+
 	// ========================================================================
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,6 +122,12 @@ public class BarChartActivity extends XYSpatialChartActivity {
 			Uri series_info_uri = getIntent().getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_SERIES).build();
 			i.setData(series_info_uri);
 			startActivity(i);
+			return true;
+		}
+		case R.id.menu_preferences:
+		{
+			startActivity(new Intent(this, ChartDisplayPreferences.class));
+			return true;
 		}
 		}
 

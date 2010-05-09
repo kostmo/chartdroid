@@ -19,4 +19,9 @@
          android:title="Toggle series"
          android:titleCondensed="Series"
          android:alphabeticShortcut="s" />
+         
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="p"
+          android:icon="@android:drawable/ic_menu_preferences" />
 </menu>
