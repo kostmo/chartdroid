@@ -131,7 +131,7 @@ If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present, the axis
 
 The only really "mandatory" query in your Content Provider is `data`; other aspects of the chart may be delivered through Intent extras.  The Intent extras, if present, take precedence over the Content Provider.
 
-|| *Key* || *Data type* ||
+|| *Key* || *Data type* || *default value* ||
 || `Intent.EXTRA_TITLE` || `String` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_LABELS` || `String[]` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_COLORS` || `int[]` ||
@@ -139,10 +139,10 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `com.googlecode.chartdroid.intent.extra.SERIES_LINE_STYLES` || `int[]` ||
 || `com.googlecode.chartdroid.intent.extra.SERIES_LINE_THICKNESSES` || `float[]` ||
 || `com.googlecode.chartdroid.intent.extra.AXIS_TITLES` || `ArrayList<String>` ||
-|| `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X` || `String` ||
-|| `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` ||
-|| `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_X` || `boolean` ||
-|| `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_Y` || `boolean` ||
+|| `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_X` || `String` || "%d ||
+|| `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` || "%.1f%%" ||
+|| `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_X` || `boolean` || true ||
+|| `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_Y` || `boolean` || true ||
 
 
 =Charts in version 1.x=
