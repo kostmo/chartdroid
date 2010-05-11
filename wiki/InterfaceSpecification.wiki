@@ -4,7 +4,7 @@
 <wiki:toc max_depth="3" />
 
 =Content Provider Overview=
-Using Content Providers may be intimidating at first. Once you learn the ropes, however, it's fun to see the implicit Intent resolution work, and you may decide that Content Providers are a beautiful system for writing interoperable applications.
+Using Content Providers may be intimidating at first, but learning them will help you [http://android-developers.blogspot.com/2009/11/integrating-application-with-intents.html write interoperable applications].
 
 ==Event sequence==
 The following steps are approximately what happens under the hood when your application wants to plot data with *`ChartDroid`*.
