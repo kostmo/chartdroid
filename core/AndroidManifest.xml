@@ -21,7 +21,11 @@
 
 
 
-
+		<provider android:name="com.googlecode.chartdroid.provider.ImageFileContentProvider"
+		      android:authorities="com.googlecode.chartdroid.image"
+			android:label="ChartDroid Screenshot"/>
+        
+        
 
 
 

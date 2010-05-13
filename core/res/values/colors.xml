@@ -9,9 +9,6 @@
     <color name="transparent">#0000</color>
     <color name="black">#000</color>
     <color name="white">#fff</color>
-    
-    <color name="flickr_blue">#0465dc</color>
-    <color name="flickr_pink">#fe0486</color>
 
 	<color name="pine0">#468966</color>
 	<color name="pine1">#fff0a5</color>
@@ -24,6 +21,5 @@
 	<color name="watermelon2">#ffffff</color>
 	<color name="watermelon3">#ffc0a9</color>
 	<color name="watermelon4">#ff8598</color>
-	
 
 </resources>

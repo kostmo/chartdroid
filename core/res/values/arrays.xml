@@ -18,5 +18,15 @@
         <item>@color/watermelon4</item>
     </string-array>
     
+    <string-array name="screenshot_size_options">
+        <item>Large</item>
+        <item>Huge</item>
+    </string-array>
+
+    <string-array name="screenshot_size_values">
+        <item>800</item>
+        <item>1000</item>
+    </string-array>
+
 
 </resources>

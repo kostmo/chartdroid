@@ -3,7 +3,31 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
 	android:title="Chart Display">
 
-	<PreferenceCategory android:title="Effects">
+	<PreferenceCategory android:title="Screenshots">
+
+		<CheckBoxPreference android:key="screenshot_transparency"
+			android:defaultValue="false"
+			android:title="Enable transparency"
+			android:summary="Enables see-through background" />
+
+		<!-- 
+		<CheckBoxPreference android:key="screenshot_allow_custom_size"
+			android:defaultValue="false"
+			android:title="Allow custom size"
+			android:summary="Allow custom screenshot size" />
+
+		<ListPreference android:key="screenshot_width"
+			android:dependency="screenshot_allow_custom_size"
+			android:title="Custom size"
+			android:summary="Specify custom screenshot size"
+			android:entries="@array/screenshot_size_options"
+			android:entryValues="@array/screenshot_size_values"
+			android:defaultValue="800"/>
+ 		-->
+
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Bar Charts">
 
 		<CheckBoxPreference android:key="bar_shading"
 			android:defaultValue="true" android:title="Inner glow"
