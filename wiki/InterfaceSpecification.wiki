@@ -6,6 +6,7 @@
 =Content Provider Overview=
 Using Content Providers may be intimidating at first, but learning them will help you [http://android-developers.blogspot.com/2009/11/integrating-application-with-intents.html write interoperable applications].
 
+
 ==Event sequence==
 The following steps are approximately what happens under the hood when your application wants to plot data with *`ChartDroid`*.
   # Application launches an `Intent` with `ACTION_VIEW` and a `Uri` that will be used to query its `ContentProvider`
@@ -23,11 +24,13 @@ To make this process go as planned, you must
   # Declare the content provider in your `AndroidManifest.xml` with an "authority" string of your choosing.  Usually it should start with your application's package name, to help ensure that it is unique system-wide.
   # Construct a `Uri` using the aforementioned authority
 
+
 =Charts in version 2.x=
 ==Terms==
 In this document:
   * The term *datum* refers to a single "point" on the graph, which may be multidimensional.
   * The term *datum component* is a single scalar value for one of the dimensions of a *datum*.
+
 
 ==Data type==
 There are several ways to present data with *`ChartDroid`*. To give the user a choice among all of them, the [http://developer.android.com/reference/android/content/ContentProvider.html#getType%28android.net.Uri%29 getType()] method of your Content Provider should return the string:
@@ -42,13 +45,12 @@ To limit the presentation options, [http://developer.android.com/reference/andro
   * *X-Y:* `com.googlecode.chartdroid.intent.category.XY_CHART`
     * Bar charts, line charts
 
+
 ==Content Provider==
-Your Content Provider should respond to three types of queries:
+Your Content Provider should handle three types of queries:
   * `data`
   * `series`
   * `axes`
-
-~~When displaying a chart, these strings will be appended to the source Uri as a "callback" to retrieve the various chart data. Therefore, a Content Provider should examine the last path component of the Uri and serve the appropriate columns below.~~
 
 When displaying a chart, these strings will be appended *as a value of the "aspect" query parameter* of the source Uri as a "callback" to retrieve the various chart data. Therefore, a Content Provider should examine the "aspect" parameter of the Uri and serve the appropriate columns below. (Using query parameters for this instead of the last path segment permits use of the `ContentUris.parseId()` function.)
 {{{
@@ -72,6 +74,8 @@ String[] projection = new String[] {
 
 db.query(MY_TABLE, projection, ...);
 }}}
+
+*Suggestion:* You may want to create a `VIEW` in your database with the column names already transformed to the ones `*ChartDroid*` needs. Android lacks facilities to perform column name translation programmatically within a `ContentProvider`.
 
 
 ==="data" Columns===
@@ -105,6 +109,7 @@ Here is an example results table that your application might produce in response
 || 3554 || 1 || "oranges" || 12 || 4 ||
 || 3556 || 1 || "pears" || 5 || 2 ||
 
+
 ==="series" Columns===
 The "series" query provides labels for each data series. All columns are optional.
 
@@ -116,6 +121,7 @@ The "series" query provides labels for each data series. All columns are optiona
 || `COLUMN_SERIES_LINE_STYLE` || `int` ||
 || `COLUMN_SERIES_LINE_THICKNESS` || `float` ||
 
+
 ==="axes" Columns===
 The "axes" query provides labels for each axis.
 
@@ -126,6 +132,7 @@ The "axes" query provides labels for each axis.
 || `COLUMN_AXIS_MAX` (todo) || `double` || Y ||
 
 If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present, the axis min and max are calculated automatically, and the axis limits are set to ten percent above and below the data range.
+
 
 ==Intent Extras==
 
