@@ -16,8 +16,10 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
+import com.googlecode.chartdroid.provider.ImageFileContentProvider;
 
 import org.achartengine.renderer.AxesManager;
 import org.achartengine.util.SemaphoreHost;
@@ -32,6 +34,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
@@ -51,6 +54,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -62,7 +66,7 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 	protected static final String TAG = "ChartDroid";
 	
 	
-	
+	static final boolean ALLOW_JPEG_SCREENSHOTS = false;
 	
 	static public class AxesContainer {
 		public List<List<Number>> x_axis_series, y_axis_series;
@@ -294,14 +298,38 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 		case R.id.menu_share_chart:
 		{
 			View view = findViewById(R.id.full_chart_view);
-			Bitmap image = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.RGB_565);
+			
+			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+			boolean allow_transparency = settings.getBoolean(ChartDisplayPreferences.PREFKEY_SCREENSHOT_TRANSPARENCY, false);
+
+			Point preferred_dimensions = new Point(view.getWidth(), view.getHeight());
+			if (settings.getBoolean(ChartDisplayPreferences.PREFKEY_SCREENSHOT_ALLOW_CUSTOM_SIZE, false)) {
+				int preferred_width = Integer.parseInt(settings.getString(ChartDisplayPreferences.PREFKEY_SCREENSHOT_WIDTH, "800"));
+				int preferred_height = preferred_width * 2 / 3;
+				preferred_dimensions.set(preferred_width, preferred_height);
+			}
+
+			Bitmap image = Bitmap.createBitmap(
+					preferred_dimensions.x,
+					preferred_dimensions.y,
+					allow_transparency ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+
 			
 			// Next create a canvas with the bitmap and pass that into the draw() method of the view. This will ask the view to draw it's contents onto the canvas and therefore the associated bitmap.
 			view.draw(new Canvas(image));
 
-			// Next insert the image into the Media library. This returns a URI that refers to the stored image and can be reused across applications. In our case we could pass this URL to the MMS application to have it embed the image in a message.  I'll post some sample code of how to send this image via MMS shortly.
-			String url = Images.Media.insertImage(getContentResolver(), image, getIntent().getStringExtra(Intent.EXTRA_TITLE), null);
-			Uri uri = Uri.parse(url);
+			Uri uri = null;
+			if (ALLOW_JPEG_SCREENSHOTS) {
+				// Next insert the image into the Media library. This returns a URI that refers to the stored image and can be reused across applications. In our case we could pass this URL to the MMS application to have it embed the image in a message.  I'll post some sample code of how to send this image via MMS shortly.
+				uri = Uri.parse(Images.Media.insertImage(getContentResolver(), image, getIntent().getStringExtra(Intent.EXTRA_TITLE), null));
+			} else {
+				try {
+					uri = ImageFileContentProvider.storeTemporaryImage(this, image);
+				} catch (IOException e) {
+					uri = Uri.parse(Images.Media.insertImage(getContentResolver(), image, getIntent().getStringExtra(Intent.EXTRA_TITLE), null));
+				}
+			}
+			
 			Intent i = new Intent(Intent.ACTION_SEND);
 			i.setType("image/*");
 			i.putExtra(Intent.EXTRA_STREAM, uri);

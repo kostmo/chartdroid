@@ -10,4 +10,9 @@
          android:alphabeticShortcut="f"
          android:icon="@android:drawable/ic_menu_view" />
 
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="p"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
 </menu>
