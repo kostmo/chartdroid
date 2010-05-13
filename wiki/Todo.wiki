@@ -2,7 +2,8 @@
 
 == Near term ==
 
-  * Automatic bounds for all charts with Intent parameter overrides
+  * Intent parameter overrides for chart boundaries
+  * Implement series hiding
   * Show Toast (don't crash) when no/not enough data is provided
 
 == Long term ==
