@@ -33,7 +33,7 @@ public class ImageFileContentProvider extends ContentProvider {
 
 	public static final String SAVED_IMAGE_MIME_TYPE = "image/png";
 	public static final String PNG_EXTENSION = ".png";
-	public static final String CHART_DISPLAY_NAME = "ChartDroid chart";
+	public static final String CHART_DISPLAY_NAME = "ChartDroid chart" + PNG_EXTENSION;
 
 	static final String MESSAGE_UNSUPPORTED_FEATURE = "Not supported by this provider";
 
