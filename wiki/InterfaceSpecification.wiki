@@ -75,7 +75,7 @@ String[] projection = new String[] {
 db.query(MY_TABLE, projection, ...);
 }}}
 
-*Suggestion:* You may want to create a `VIEW` in your database with the column names already transformed to the ones *`ChartDroid`* needs. Android lacks facilities to perform column name translation programmatically within a `ContentProvider`.
+*Suggestion:* You may want to create a `VIEW` in your database with the column names already transformed to the ones *`ChartDroid`* needs. Android lacks facilities to easily perform column name translation within a `ContentProvider`.
 
 
 ==="data" Columns===
