@@ -9,3 +9,5 @@
 == Long term ==
   * Chart interactivity
     * Adopt dateline dragging functionality from EvenTrend
+    * Touch selectable and Cursor (dpad) selectable bars on Bar Charts
+
