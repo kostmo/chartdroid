@@ -45,7 +45,7 @@ public class IntentConstants {
 	public static final String EXTRA_SERIES_LINE_THICKNESSES = "com.googlecode.chartdroid.intent.extra.SERIES_LINE_THICKNESSES";
 	
     /**
-     * Specify axis titles in an ArrayList<String>.
+     * Specify axis titles in an ArrayList&lt;String&gt;.
      */
 	public static final String EXTRA_AXIS_TITLES = "com.googlecode.chartdroid.intent.extra.AXIS_TITLES";
     
