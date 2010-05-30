@@ -3,6 +3,11 @@ package com.googlecode.chartdroid.core;
 public class IntentConstants {
 
 	/**
+     * Boolean enabling automatic assignment of series colors evenly-spaced from the spectrum
+     */
+	public static final String EXTRA_RAINBOW_COLORS = "com.googlecode.chartdroid.intent.extra.RAINBOW_COLORS";
+
+	/**
 	 * Causes the plot to start in full-screen mode.
 	 */
 	public static final String EXTRA_FULLSCREEN = "com.googlecode.chartdroid.intent.extra.FULLSCREEN";

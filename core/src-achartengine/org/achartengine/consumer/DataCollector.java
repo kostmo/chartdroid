@@ -9,6 +9,7 @@ import org.achartengine.view.chart.PointStyle;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -353,7 +354,10 @@ public class DataCollector {
 		List<SeriesMetaData> integrated_meta_data = new ArrayList<SeriesMetaData>();
 
 		String[] extra_series_titles = intent.getStringArrayExtra(IntentConstants.EXTRA_SERIES_LABELS);
+		
 		int[] extra_series_colors = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_COLORS);
+		
+		
 		int[] extra_series_markers = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_MARKERS);
 		int[] extra_series_line_styles = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_LINE_STYLES);
 		float[] extra_series_line_thicknesses = intent.getFloatArrayExtra(IntentConstants.EXTRA_SERIES_LINE_THICKNESSES);
@@ -389,7 +393,11 @@ public class DataCollector {
 				meta_data.title = meta_data_list.get(i).title;
 			}
 			
-			if (extra_series_colors != null && i < extra_series_colors.length) {
+			if (intent.getBooleanExtra(IntentConstants.EXTRA_RAINBOW_COLORS, false)) {
+				
+				meta_data.color = Color.HSVToColor(new float[] {360 * i / (float) series_size, 0.6f, 1});
+				
+			} else if (extra_series_colors != null && i < extra_series_colors.length) {
 				meta_data.color = extra_series_colors[i];
 			} else if (meta_data_list != null && i < meta_data_list.size() && meta_data_list.get(i).color != null) {
 				meta_data.color = meta_data_list.get(i).color;
