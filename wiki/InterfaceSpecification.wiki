@@ -150,6 +150,8 @@ The only really "mandatory" query in your Content Provider is `data`; other aspe
 || `com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y` || `String` || "%.1f%%" ||
 || `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_X` || `boolean` || true ||
 || `com.googlecode.chartdroid.intent.extra.AXIS_VISIBLE_Y` || `boolean` || true ||
+|| `com.googlecode.chartdroid.intent.extra.RAINBOW_COLORS` || `boolean` || false ||
+
 
 
 =Charts in version 1.x=
