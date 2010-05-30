@@ -95,7 +95,7 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 			PointStyle.CIRCLE, PointStyle.DIAMOND,
 			PointStyle.TRIANGLE, PointStyle.SQUARE };
 	public static int[] DEFAULT_COLORS = {
-			Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
+		Color.CYAN, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.BLUE, Color.RED };
 
 	
 
