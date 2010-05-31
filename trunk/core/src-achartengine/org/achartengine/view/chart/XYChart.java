@@ -31,7 +31,6 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Paint.Align;
 import android.text.TextPaint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -148,7 +147,6 @@ public abstract class XYChart extends AbstractChart {
 
 
 		boolean showLabels = mRenderer.isShowLabels();
-		boolean showGrid = mRenderer.isShowGrid();
 
 
 		float vertical_axis_hash_mark_width = 0;
@@ -204,7 +202,7 @@ public abstract class XYChart extends AbstractChart {
 		double xPixelsPerUnit = getPixelsPerUnit(frame.width(), x_span);
 		double yPixelsPerUnit = getPixelsPerUnit(frame.height(), y_span);
 
-		if (showLabels || showGrid) {
+		if (showLabels || mRenderer.isShowGrid()) {
 
 			List<Double> xLabels = MathHelper.getLabels(x_span, mRenderer.getXLabels());
 			List<Double> yLabels = MathHelper.getLabels(y_span, mRenderer.getYLabels());
@@ -263,7 +261,7 @@ public abstract class XYChart extends AbstractChart {
 					drawText(canvas, getLabel(label, Axis.Y_AXIS), label_x_offset, yLabel - 2, hash_mark_label_paint, 0);
 				}
 
-				if (showGrid) {
+				if (mRenderer.isShowGrid() && mRenderer.isShowGridHorizontalLines()) {
 					hash_mark_label_paint.setColor(GRID_COLOR);
 					canvas.drawLine(grid_line_startx, yLabel, grid_line_stopx, yLabel, hash_mark_label_paint);
 				}
@@ -439,7 +437,6 @@ public abstract class XYChart extends AbstractChart {
 			Paint paint, int left, int top, int bottom, double xPixelsPerUnit, double minX, float hash_mark_height, float max_text_height) {
 		int length = xLabels.size();
 		boolean showLabels = mRenderer.isShowLabels();
-		boolean showGrid = mRenderer.isShowGrid();
 		for (int i = 0; i < length; i++) {
 			double label = xLabels.get(i);
 			float xLabel = (float) (left + xPixelsPerUnit * (label - minX));
@@ -448,7 +445,7 @@ public abstract class XYChart extends AbstractChart {
 				canvas.drawLine(xLabel, bottom, xLabel, bottom + hash_mark_height, paint);	// FIXME Magic numbers
 				drawText(canvas, getLabel(label, Axis.X_AXIS), xLabel, bottom + hash_mark_height + max_text_height, paint, 0);
 			}
-			if (showGrid) {
+			if (mRenderer.isShowGrid() && mRenderer.isShowGridVerticalLines()) {
 				paint.setColor(GRID_COLOR);
 				canvas.drawLine(xLabel, bottom, xLabel, top, paint);
 			}

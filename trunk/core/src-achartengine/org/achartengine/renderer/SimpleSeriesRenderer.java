@@ -15,150 +15,171 @@
  */
 package org.achartengine.renderer;
 
-import java.io.Serializable;
-
 import android.graphics.Color;
 
 /**
  * A simple series renderer.
  */
-public class SimpleSeriesRenderer implements Serializable, AxesManager {
-  private int mColor = Color.BLUE;
+public class SimpleSeriesRenderer implements AxesManager {
+	private int mColor = Color.BLUE;
 
-  /** The default color for text. */
-  public static final int TEXT_COLOR = Color.LTGRAY;
-  
-  /** If the axes are visible. */
-  protected boolean mShowAxes = true;
-  /** The axes color. */
-  protected int mAxesColor = TEXT_COLOR;
-  /** If the labels are visible. */
-  protected boolean mShowLabels = true;
-  /** The labels color. */
-  protected int mLabelsColor = TEXT_COLOR;
-  /** If the legend is visible. */
-  protected boolean mShowLegend = true;
-  /** If the grid should be displayed. */
-  protected boolean mShowGrid = false;
-  
-  
-  /** The chart title. */
-  private String mChartTitle = "";
-  /** The X axis title. */
-  private String mXTitle = "";
-  /** The Y axis title. */
-  private String mYTitle = "";
-  
-  /**
-   * Returns the series color.
-   * @return the series color
-   */
-  public int getColor() {
-    return mColor;
-  }
+	/** The default color for text. */
+	public static final int TEXT_COLOR = Color.LTGRAY;
 
-  /**
-   * Sets the series color.
-   * @param color the series color
-   */
-  public void setColor(int color) {
-    mColor = color;
-  }
-  
+	/** If the axes are visible. */
+	protected boolean mShowAxes = true;
 
-  
+	/** The axes color. */
+	protected int mAxesColor = TEXT_COLOR;
 
-  @Override
-  public String getChartTitle() {
-	    return mChartTitle;
-	  }
+	/** If the labels are visible. */
+	protected boolean mShowLabels = true;
+
+	/** The labels color. */
+	protected int mLabelsColor = TEXT_COLOR;
+
+	/** If the legend is visible. */
+	protected boolean mShowLegend = true;
+
+	  /** If the grid should be displayed. */
+	  protected boolean mShowGrid = false;
+	  protected boolean mShowGridHorizontal = false;
+	  protected boolean mShowGridVertical = false;
+
+	/** The chart title. */
+	private String mChartTitle = "";
+	/** The X axis title. */
+	private String mXTitle = "";
+	/** The Y axis title. */
+	private String mYTitle = "";
+
+	/**
+	 * Returns the series color.
+	 * @return the series color
+	 */
+	public int getColor() {
+		return mColor;
+	}
+
+	/**
+	 * Sets the series color.
+	 * @param color the series color
+	 */
+	public void setColor(int color) {
+		mColor = color;
+	}
 
 
-  @Override
-	  public void setChartTitle(String title) {
-	    mChartTitle = title;
-	  }
-
-
-	  @Override
-	  public String getXTitle() {
-	    return mXTitle;
-	  }
-
-
-	  @Override
-	  public void setXTitle(String title) {
-	    mXTitle = title;
-	  }
-
-
-	  @Override
-	  public String getYTitle() {
-	    return mYTitle;
-	  }
-
-
-	  @Override
-	  public void setYTitle(String title) {
-	    mYTitle = title;
-	  }
-
-	@Override
-	  public int getAxesColor() {
-	    return mAxesColor;
-	  }
 
 
 	@Override
-	  public void setAxesColor(int color) {
-	    mAxesColor = color;
-	  }
+	public String getChartTitle() {
+		return mChartTitle;
+	}
 
 
 	@Override
-	  public int getLabelsColor() {
-	    return mLabelsColor;
-	  }
+	public void setChartTitle(String title) {
+		mChartTitle = title;
+	}
 
 
 	@Override
-	  public void setLabelsColor(int color) {
-	    mLabelsColor = color;
-	  }
+	public String getXTitle() {
+		return mXTitle;
+	}
 
 
 	@Override
-	  public boolean isShowAxes() {
-	    return mShowAxes;
-	  }
+	public void setXTitle(String title) {
+		mXTitle = title;
+	}
 
 
 	@Override
-	  public void setShowAxes(boolean showAxes) {
-	    mShowAxes = showAxes;
-	  }
+	public String getYTitle() {
+		return mYTitle;
+	}
 
 
 	@Override
-	  public boolean isShowLabels() {
-	    return mShowLabels;
-	  }
+	public void setYTitle(String title) {
+		mYTitle = title;
+	}
+
+	@Override
+	public int getAxesColor() {
+		return mAxesColor;
+	}
 
 
 	@Override
-	  public void setShowLabels(boolean showLabels) {
-	    mShowLabels = showLabels;
-	  }
+	public void setAxesColor(int color) {
+		mAxesColor = color;
+	}
 
 
 	@Override
-	  public boolean isShowGrid() {
-	    return mShowGrid;
-	  }
+	public int getLabelsColor() {
+		return mLabelsColor;
+	}
 
 
 	@Override
-	  public void setShowGrid(boolean showGrid) {
-	    mShowGrid = showGrid;
-	  }
+	public void setLabelsColor(int color) {
+		mLabelsColor = color;
+	}
+
+
+	@Override
+	public boolean isShowAxes() {
+		return mShowAxes;
+	}
+
+	@Override
+	public void setShowAxes(boolean showAxes) {
+		mShowAxes = showAxes;
+	}
+
+
+	@Override
+	public boolean isShowLabels() {
+		return mShowLabels;
+	}
+
+	@Override
+	public void setShowLabels(boolean showLabels) {
+		mShowLabels = showLabels;
+	}
+
+
+	@Override
+	public boolean isShowGrid() {
+		return mShowGrid;
+	}
+
+	@Override
+	public void setShowGrid(boolean showGrid) {
+		mShowGrid = showGrid;
+	}
+
+	@Override
+	public boolean isShowGridHorizontalLines() {
+		return mShowGridHorizontal;
+	}
+
+	@Override
+	public boolean isShowGridVerticalLines() {
+		return mShowGridVertical;
+	}
+
+	@Override
+	public void setShowGridHorizontalLines(boolean showGrid) {
+		mShowGridHorizontal = showGrid;
+	}
+
+	@Override
+	public void setShowGridVerticalLines(boolean showGrid) {
+		mShowGridVertical = showGrid;
+	}
 }

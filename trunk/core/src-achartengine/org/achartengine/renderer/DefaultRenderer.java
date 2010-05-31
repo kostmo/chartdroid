@@ -47,8 +47,17 @@ public class DefaultRenderer implements LabelsManager {
   protected int mLabelsColor = TEXT_COLOR;
   /** If the legend is visible. */
   protected boolean mShowLegend = true;
+  
   /** If the grid should be displayed. */
   protected boolean mShowGrid = false;
+  protected boolean mShowGridHorizontal = false;
+  protected boolean mShowGridVertical = false;
+
+  
+	
+  
+  
+  
   /** The simple renderers that are included in this multiple series renderer. */
   private List<SimpleSeriesRenderer> mRenderers = new ArrayList<SimpleSeriesRenderer>();
 

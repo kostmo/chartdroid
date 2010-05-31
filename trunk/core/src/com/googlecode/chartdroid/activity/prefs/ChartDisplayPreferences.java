@@ -13,6 +13,10 @@ public class ChartDisplayPreferences extends PreferenceActivity {
 	// XXX These didn't work they way I thought...
 	public final static String PREFKEY_SCREENSHOT_ALLOW_CUSTOM_SIZE = "screenshot_allow_custom_size";
 	public final static String PREFKEY_SCREENSHOT_WIDTH = "screenshot_width";
+	
+	public final static String PREFKEY_ENABLE_GRID_LINES = "enable_grid_lines";
+	public final static String PREFKEY_ENABLE_HORIZONTAL_GRID_LINES = "enable_grid_lines_horizontal";
+	public final static String PREFKEY_ENABLE_VERTICAL_GRID_LINES = "enable_grid_lines_vertical";
 
 	
 	
