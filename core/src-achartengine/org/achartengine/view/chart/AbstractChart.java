@@ -23,13 +23,12 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * An abstract class to be implemented by the chart rendering classes.
  */
-public abstract class AbstractChart implements Serializable {
+public abstract class AbstractChart {
   
   /**
    * The graphical representation of the chart.
@@ -69,23 +68,23 @@ public abstract class AbstractChart implements Serializable {
    * @param circular if the path ends with the start point
    */
   protected void drawPath(Canvas canvas, List<PointF> points, Paint paint, boolean circular) {
-    Path path = new Path();
-    path.moveTo(points.get(0).x, points.get(0).y);
-    for (int i = 1; i < points.size(); i++) {
-      path.lineTo(points.get(i).x, points.get(i).y);
-    }
-    if (circular) {
-      path.close();
-    }
-    canvas.drawPath(path, paint);
+	  Path path = new Path();
+	  path.moveTo(points.get(0).x, points.get(0).y);
+	  for (int i = 1; i < points.size(); i++) {
+		  path.lineTo(points.get(i).x, points.get(i).y);
+	  }
+	  if (circular) {
+		  path.close();
+	  }
+	  canvas.drawPath(path, paint);
   }
 
   private boolean is_anti_aliased = true;
   protected boolean getAntiAliased() {
-    return this.is_anti_aliased;
+	  return this.is_anti_aliased;
   }
-  
+
   protected void setAntiAliased(boolean is_anti_aliased) {
-    this.is_anti_aliased = is_anti_aliased;
+	  this.is_anti_aliased = is_anti_aliased;
   }
 }

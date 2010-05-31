@@ -27,6 +27,7 @@ import org.achartengine.view.FlowLayout;
 import org.achartengine.view.PlotView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
+import org.achartengine.view.chart.XYChart;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -115,8 +116,6 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 	// ====================================================================
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-
-    	// In the general case, do nothing.
     }
 	
 	
@@ -344,6 +343,11 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 			i.putExtra(IntentConstants.EXTRA_FULLSCREEN, !fullscreen);
 			startActivity(i);
 			finish();
+			return true;
+		}
+		case R.id.menu_preferences:
+		{
+			startActivity(new Intent(this, ChartDisplayPreferences.class));
 			return true;
 		}
 		}

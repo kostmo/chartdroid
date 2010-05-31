@@ -17,6 +17,7 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
+import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.renderer.SimpleSeriesRenderer;
@@ -27,7 +28,9 @@ import org.achartengine.view.VerticalLabelView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.XYChart;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +47,32 @@ abstract public class XYChartActivity extends GraphicalActivity {
 	protected int getLayoutResourceId() {
 		return R.layout.xy_chart_activity;
 	}
+
+	// ====================================================================
+	void setGridLinesFromPrefs(SharedPreferences prefs) {
+    	boolean enable_grid_lines = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_GRID_LINES, false);
+    	boolean enable_grid_lines_horizontal = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_HORIZONTAL_GRID_LINES, true);
+    	boolean enable_grid_lines_vertical = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_VERTICAL_GRID_LINES, true);
+
+		XYChart xy_chart = (XYChart) mChart;
+		xy_chart.getRenderer().setShowGrid(enable_grid_lines);
+		xy_chart.getRenderer().setShowGridHorizontalLines(enable_grid_lines_horizontal);
+		xy_chart.getRenderer().setShowGridVerticalLines(enable_grid_lines_vertical);
+	}
+	
+	// ====================================================================
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    	
+        if (mChart != null) {
+
+        	setGridLinesFromPrefs(prefs);
+        	
+        	if (mView != null) {
+        		mView.invalidate();
+        	}
+        }
+    }
 	
 	// ========================================================================
 	MinMax getAxisLimits(List<List<Number>> multi_series, float fractional_span_margin) {
@@ -114,6 +143,8 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		FlowLayout predicate_layout = (FlowLayout) findViewById(R.id.predicate_layout);
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list);
+		
+		setGridLinesFromPrefs(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 
 	// ========================================================================	

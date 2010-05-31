@@ -281,17 +281,40 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	public boolean getShowYAxis() {
 		return mShowYAxis && isShowAxes();
 	}
-
+	
 	@Override
 	public boolean isShowGrid() {
 		return mShowGrid;
 	}
 
-
 	@Override
 	public void setShowGrid(boolean showGrid) {
 		mShowGrid = showGrid;
 	}
+
+	
+	
+	@Override
+	public boolean isShowGridHorizontalLines() {
+		return mShowGridHorizontal;
+	}
+	
+	@Override
+	public void setShowGridHorizontalLines(boolean showHorizontal) {
+		mShowGridHorizontal = showHorizontal;
+	}
+	
+	
+	@Override
+	public boolean isShowGridVerticalLines() {
+		return mShowGridVertical;
+	}
+	
+	@Override
+	public void setShowGridVerticalLines(boolean showVertical) {
+		mShowGridVertical = showVertical;
+	}
+
 
 	public void setInnerShadow(boolean mInnerShadow) {
 		this.mInnerShadow = mInnerShadow;

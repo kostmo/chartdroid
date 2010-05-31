@@ -27,6 +27,24 @@
 
 	</PreferenceCategory>
 
+	<PreferenceCategory android:title="Chart">
+
+		<CheckBoxPreference android:key="enable_grid_lines"
+			android:defaultValue="false" android:title="Grid lines"
+			android:summary="Enable grid lines" />
+
+		<CheckBoxPreference android:key="enable_grid_lines_horizontal"
+			android:dependency="enable_grid_lines"
+			android:defaultValue="true" android:title="Horizontal"
+			android:summary="Enable horizontal grid lines" />
+			
+		<CheckBoxPreference android:key="enable_grid_lines_vertical"
+			android:dependency="enable_grid_lines"
+			android:defaultValue="true" android:title="Vertical"
+			android:summary="Enable vertical grid lines" />
+
+	</PreferenceCategory>
+
 	<PreferenceCategory android:title="Bar Charts">
 
 		<CheckBoxPreference android:key="bar_shading"
