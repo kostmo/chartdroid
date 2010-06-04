@@ -42,8 +42,8 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 		List<String> axis_labels;
 	}
 	
-	
-	RenderingAxesContainer getAxesSets(Uri intent_data) {
+	// ========================================================================
+	RenderingAxesContainer getAxesSets(Uri intent_data) throws AxesException {
 
 		RenderingAxesContainer axes_container = new RenderingAxesContainer();
 		
@@ -52,8 +52,9 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 				getContentResolver(),
 				new DoubleDatumExtractor());
 
-		assert( sorted_series_list.size() >= 1 );
-
+		if (sorted_series_list.size() < 1) {
+			throw new AxesException("Must have data on at least one axis!");
+		}
 
 		if (sorted_series_list.size() == 1) {
 			// Let the Y-axis carry the only data.
@@ -66,9 +67,12 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 		}
 
 
-		assert (axes_container.x_axis_series.size() == axes_container.y_axis_series.size()
+		if (!(axes_container.x_axis_series.size() == axes_container.y_axis_series.size()
 				|| axes_container.x_axis_series.size() == 1
-				|| axes_container.x_axis_series.size() == 0);
+				|| axes_container.x_axis_series.size() == 0)) {
+
+			throw new AxesException("Axes must have equal datum counts!");
+		}
 
 		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
 		axes_container.titles = new String[series_meta_data.size()];

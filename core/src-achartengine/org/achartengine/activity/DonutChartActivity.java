@@ -18,6 +18,7 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.model.CategoryMultiSeries;
 import org.achartengine.renderer.DefaultRenderer;
@@ -44,7 +45,7 @@ public class DonutChartActivity extends RadialChartActivity {
 
 	// ========================================================================
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws AxesException {
 
 
 

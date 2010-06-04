@@ -20,6 +20,7 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.activity.GraphicalActivity.AxesContainer;
+import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
@@ -51,7 +52,7 @@ public class PieChartActivity extends RadialChartActivity {
 	// ========================================================================
 	// NOTE: This chart type will ignore all but the first series on the first axis.
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws AxesException {
 
 
 		AxesContainer axes_container = getAxesSets(intent_data);
