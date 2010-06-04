@@ -44,6 +44,18 @@ import java.util.List;
 
 abstract public class XYChartActivity extends GraphicalActivity {
 
+	/**
+	 * Thrown when there is not at least one axis present
+	 */
+	public static class AxesException extends Exception {
+
+		private static final long serialVersionUID = -1667855840214135417L;
+
+		public AxesException(String message) {
+			super(message);
+		}
+	}
+	
 	protected int getLayoutResourceId() {
 		return R.layout.xy_chart_activity;
 	}

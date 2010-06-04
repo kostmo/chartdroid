@@ -22,6 +22,7 @@ import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.model.XYMultiSeries;
 import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
@@ -51,7 +52,7 @@ public class BarChartActivity extends XYSpatialChartActivity {
 
 	// ========================================================================
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws AxesException {
 
 		RenderingAxesContainer axes_container = getAxesSets(intent_data);
 

@@ -19,6 +19,7 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
+import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
@@ -51,18 +52,17 @@ public abstract class RadialChartActivity extends GraphicalActivity {
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);
 		populateLegend(predicate_layout, series_attributes_list);
 	}
-	
 
 	// ========================================================================
-	AxesContainer getAxesSets(Uri intent_data) {
+	AxesContainer getAxesSets(Uri intent_data) throws AxesException {
 		AxesContainer axes_container = new AxesContainer();
 		
 		List<List<List<LabeledDatum>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
-
-		assert( sorted_series_list.size() >= 1 );
-
+		if (sorted_series_list.size() < 1) {
+			throw new AxesException("Must have data on at least one axis!");
+		}
 
 		axes_container.datam_labels = new ArrayList<List<String>>();
 
@@ -77,13 +77,12 @@ public abstract class RadialChartActivity extends GraphicalActivity {
 			axes_container.y_axis_series = DataCollector.unzipSeriesDatumLabels( sorted_series_list.get( ColumnSchema.Y_AXIS_INDEX ), axes_container.datam_labels );
 		}
 
-
-
-
-
-		assert (axes_container.x_axis_series.size() == axes_container.y_axis_series.size()
+		if (!(axes_container.x_axis_series.size() == axes_container.y_axis_series.size()
 				|| axes_container.x_axis_series.size() == 1
-				|| axes_container.x_axis_series.size() == 0);
+				|| axes_container.x_axis_series.size() == 0)) {
+
+			throw new AxesException("Axes must have equal datum counts!");
+		}
 
 		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );
 		axes_container.titles = new String[series_meta_data.size()];
