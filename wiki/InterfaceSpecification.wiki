@@ -115,10 +115,25 @@ The "series" query provides labels for each data series. All columns are optiona
 || `_id` || `long` ||
 || `COLUMN_SERIES_LABEL` || `String` ||
 || `COLUMN_SERIES_COLOR` || `int` ||
-|| `COLUMN_SERIES_MARKER` || `int` ||
-|| `COLUMN_SERIES_LINE_STYLE` || `int` ||
+|| `COLUMN_SERIES_MARKER` `*` || `int` ||
+|| `COLUMN_SERIES_LINE_STYLE` `**` || `int` ||
 || `COLUMN_SERIES_LINE_THICKNESS` || `float` ||
 
+* Marker styles:
+|| *Index* || *Description* ||
+|| 0 || x ||
+|| 1 || circle ||
+|| 2 || triangle ||
+|| 3 || square ||
+|| 4 || diamond ||
+|| 5 || point ||
+
+* Line styles:
+|| *Index* || *Description* ||
+|| 0 || none ||
+|| 1 || dotted ||
+|| 2 || dashed ||
+|| 3 || solid ||
 
 ==="axes" Columns===
 The "axes" query provides labels for each axis.
