@@ -109,7 +109,7 @@ Here is an example results table that your application might produce in response
 
 
 ==="series" Columns===
-The "series" query provides labels for each data series. All columns are optional.
+The "series" query provides labels and other properties for each data series. All columns are optional.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
