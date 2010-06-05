@@ -59,7 +59,7 @@ public abstract class XYChart extends AbstractChart {
 	
 
 	enum Axis {
-		X_AXIS, Y_AXIS
+		X_AXIS, Y_AXIS, Y_AXIS_SECONDARY
 	}
 
 	/** The multiple series dataset. */
@@ -75,7 +75,7 @@ public abstract class XYChart extends AbstractChart {
 	/** The grid color. */
 	protected static final int GRID_COLOR = Color.argb(75, 200, 200, 200);
 
-	private String y_format, x_format;
+	private String y_format, x_format, y_secondary_format;
 	public void setYFormat(String format_string) {
 		this.y_format = format_string;
 	}
@@ -83,7 +83,15 @@ public abstract class XYChart extends AbstractChart {
 	public String getYFormat() {
 		return this.y_format;
 	}
+	
+	public String getYSecondaryFormat() {
+		return this.y_secondary_format;
+	}
 
+	public void setYSecondaryFormat(String format_string) {
+		this.y_secondary_format = format_string;
+	}
+	
 	public void setXFormat(String format_string) {
 		this.x_format = format_string;
 	}
@@ -129,9 +137,8 @@ public abstract class XYChart extends AbstractChart {
 		hash_mark_label_paint.setAntiAlias(getAntiAliased());
 
 
-		Orientation or = mRenderer.getOrientation();
-		int angle = or.getAngle();
-		boolean rotate = angle == 90;
+
+		boolean rotate = Orientation.VERTICAL.equals(mRenderer.getOrientation());
 		mScale = (float) (height) / width;
 		mTranslate = Math.abs(width - height) / 2;
 		if (mScale < 1) {
@@ -139,7 +146,7 @@ public abstract class XYChart extends AbstractChart {
 		}
 		mCenter = new PointF(width / 2, height / 2);
 		if (rotate) {
-			transform(canvas, angle, false);
+			transform(canvas, mRenderer.getOrientation().getAngle(), false);
 		}
 
 		MinMax x_span = mRenderer.getXAxisSpan();
@@ -158,18 +165,38 @@ public abstract class XYChart extends AbstractChart {
 		// Measure all y-axis label widths to determine the axis line position
 		if (showLabels && mRenderer.getShowYAxis()) {
 
-			Rect text_bounds_holder = new Rect();
-			
-			List<Integer> y_label_widths = new ArrayList<Integer>();
-			for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getYLabels())) {
-				String y_label = getLabel( ylabel, Axis.Y_AXIS );
-				hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
+			{
+				Rect text_bounds_holder = new Rect();
 				
-				int label_width = text_bounds_holder.width();
-				y_label_widths.add(label_width);
+				List<Integer> y_label_widths = new ArrayList<Integer>();
+				for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getYLabels())) {
+					String y_label = getLabel( ylabel, Axis.Y_AXIS );
+					hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
+					
+					int label_width = text_bounds_holder.width();
+					y_label_widths.add(label_width);
+				}
+				float max_label_width = Collections.max(y_label_widths);
+				vertical_axis_hash_mark_width = max_label_width + label_clearance;
 			}
-			float max_label_width = Collections.max(y_label_widths);
-			vertical_axis_hash_mark_width = max_label_width + label_clearance;
+			
+			
+			
+			if (mRenderer.hasSecondaryYAxis()) {
+				
+				Rect text_bounds_holder = new Rect();
+				
+				List<Integer> y_label_widths = new ArrayList<Integer>();
+				for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getSecondaryYLabels())) {
+					String y_label = getLabel( ylabel, Axis.Y_AXIS );
+					hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
+					
+					int label_width = text_bounds_holder.width();
+					y_label_widths.add(label_width);
+				}
+				float max_label_width = Collections.max(y_label_widths);
+				vertical_axis_hash_mark_width = max_label_width + label_clearance;
+			}
 			
 		}
 
@@ -234,7 +261,7 @@ public abstract class XYChart extends AbstractChart {
 				float grid_line_startx, grid_line_stopx, hash_mark_startx, hash_mark_stopx;
 				float label_x_offset;
 
-				if (or == Orientation.HORIZONTAL) {
+				if (Orientation.HORIZONTAL.equals(mRenderer.getOrientation())) {
 					grid_line_startx = frame.left;
 					grid_line_stopx = frame.right;
 					hash_mark_startx = grid_line_startx - vertical_axis_hash_mark_width;
@@ -274,10 +301,14 @@ public abstract class XYChart extends AbstractChart {
 		if (mRenderer.isShowAxes()) {
 			hash_mark_label_paint.setColor(mRenderer.getAxesColor());
 			canvas.drawLine(frame.left, frame.bottom, frame.right, frame.bottom, hash_mark_label_paint);
-			if (or == Orientation.HORIZONTAL) {
+			
+			switch (mRenderer.getOrientation()) {
+			case HORIZONTAL:
 				canvas.drawLine(frame.left, frame.top, frame.left, frame.bottom, hash_mark_label_paint);
-			} else if (or == Orientation.VERTICAL) {
+				break;
+			case VERTICAL:
 				canvas.drawLine(frame.right, frame.top, frame.right, frame.bottom, hash_mark_label_paint);
+				break;
 			}
 		}
 		
@@ -323,7 +354,7 @@ public abstract class XYChart extends AbstractChart {
 			}
 			
 			hash_mark_label_paint.setTextSize( DEFAULT_HASH_MARK_TEXT_SIZE );
-			if (or == Orientation.HORIZONTAL) {
+			if (Orientation.HORIZONTAL.equals(mRenderer.getOrientation())) {
 				hash_mark_label_paint.setTextAlign(Align.CENTER);
 			} else {
 				hash_mark_label_paint.setTextAlign(Align.LEFT);
@@ -334,7 +365,7 @@ public abstract class XYChart extends AbstractChart {
 		}
 
 		if (rotate) {
-			transform(canvas, angle, true);
+			transform(canvas, mRenderer.getOrientation().getAngle(), true);
 		}
 	}
 
@@ -352,12 +383,12 @@ public abstract class XYChart extends AbstractChart {
 		int k=0;
 		for (PointF point : points) {
 			drawText(
-					canvas,
-					getLabel(k, Axis.Y_AXIS),
-					point.x,
-					point.y - 3.5f,	// FIXME Magic number
-					paint,
-					0);
+				canvas,
+				getLabel(k, Axis.Y_AXIS),
+				point.x,
+				point.y - 3.5f,	// FIXME Magic number
+				paint,
+				0);
 			k++;
 		}
 	}
@@ -407,7 +438,20 @@ public abstract class XYChart extends AbstractChart {
 	}
 
 	protected String getLabel(Number label, Axis axis) {
-		String format_string = Axis.Y_AXIS.equals(axis) ? getYFormat() : getXFormat();
+		String format_string = null;
+		
+		switch (axis) {
+		case Y_AXIS:
+			format_string = getYFormat();
+			break;
+		case X_AXIS:
+			format_string = getXFormat();
+			break;
+		case Y_AXIS_SECONDARY:
+			format_string = getYSecondaryFormat();
+			break;
+		}
+		
 		if (format_string != null)
 			return String.format(format_string, label);
 

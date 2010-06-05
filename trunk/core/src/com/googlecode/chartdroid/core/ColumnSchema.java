@@ -20,7 +20,9 @@ public final class ColumnSchema {
 	public static final String CONTENT_TYPE_BASE_SINGLE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/";
 	public static final String CONTENT_TYPE_BASE_MULTIPLE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/";
 
-
+	public enum AxisExpressionMethod {
+		HORIZONTAL_AXIS, VERTICAL_AXIS, SECONDARY_VERTICAL_AXIS, MARKER_SIZE, MARKER_HUE;
+	}
 
 
 	// ==== COLUMNS ====
@@ -34,6 +36,9 @@ public final class ColumnSchema {
 
 	public static final String COLUMN_AXIS_INDEX = "COLUMN_AXIS_INDEX";
 	public static final String COLUMN_AXIS_LABEL = "COLUMN_AXIS_LABEL";
+	public static final String COLUMN_AXIS_MIN = "COLUMN_AXIS_MIN";
+	public static final String COLUMN_AXIS_MAX = "COLUMN_AXIS_MAX";
+	public static final String COLUMN_AXIS_EXPRESSION = "COLUMN_AXIS_EXPRESSION";
 
 	public static final String COLUMN_DATUM_VALUE = "COLUMN_DATUM_VALUE";
 	public static final String COLUMN_DATUM_LABEL = "COLUMN_DATUM_LABEL";

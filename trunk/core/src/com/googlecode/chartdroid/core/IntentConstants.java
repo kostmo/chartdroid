@@ -34,6 +34,8 @@ public class IntentConstants {
      */
 	public static final String EXTRA_SERIES_MARKERS = "com.googlecode.chartdroid.intent.extra.SERIES_MARKERS";
 	
+	
+	
     /**
      * Specify series line styles in an array of int values.
      * Types:
@@ -43,6 +45,11 @@ public class IntentConstants {
      * 3 = solid
      */
 	public static final String EXTRA_SERIES_LINE_STYLES = "com.googlecode.chartdroid.intent.extra.SERIES_LINE_STYLES";
+	
+	public enum LineStyle {
+		NONE, DOTTED, DASHED, SOLID
+	}
+	
 	
     /**
      * Specify series line thicknesses in an array of float values.
@@ -64,6 +71,11 @@ public class IntentConstants {
 	 */
 	public static final String EXTRA_FORMAT_STRING_Y = "com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y";
 
+	/**
+	 * Format string for the String.format() method, applied to secondary vertical axis labels.
+	 */
+	public static final String EXTRA_FORMAT_STRING_Y_SECONDARY = "com.googlecode.chartdroid.intent.extra.FORMAT_STRING_Y_SECONDARY";
+	
 	/**
 	 * Boolean to hide/show the horizontal axis. Default: shown.
 	 */

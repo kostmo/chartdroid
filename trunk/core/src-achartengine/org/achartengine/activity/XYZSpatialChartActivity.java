@@ -17,14 +17,17 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.core.ColumnSchema;
+import com.googlecode.chartdroid.core.IntentConstants;
 
-import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
+import org.achartengine.consumer.DataCollector.AxesMetaData;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
+import org.achartengine.view.chart.XYChart;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -32,13 +35,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+// TODO: Having this class obviates the XY activities
 abstract public class XYZSpatialChartActivity extends XYChartActivity {
 
 
 	public static class RenderingAxesContainer extends AxesContainer {
 		XYMultipleSeriesRenderer renderer;
-		List<String> axis_labels;
+		List<AxesMetaData> axis_metadata;
+	}
+
+	// ====================================================================
+	public static void setAxisFormats(Intent intent, XYChart chart) {
+		String x_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
+		if (x_format != null) chart.setXFormat(x_format);
+
+		String y_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+		if (y_format != null) chart.setYFormat(y_format);
+		
+		String y_secondary_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y_SECONDARY);
+		if (y_secondary_format != null) chart.setYSecondaryFormat(y_secondary_format);
 	}
 	
 	// ========================================================================
@@ -108,7 +123,7 @@ abstract public class XYZSpatialChartActivity extends XYChartActivity {
 
 
 
-		axes_container.axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
+		axes_container.axis_metadata = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 

@@ -64,20 +64,14 @@ public class BarChartActivity extends XYSpatialChartActivity {
 		org.achartengine.ChartGenHelper.setChartSettings(
 				axes_container.renderer,
 				getIntent().getStringExtra(Intent.EXTRA_TITLE),
-				axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX ),
-				axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX ),
+				axes_container.axis_properties.get( ColumnSchema.X_AXIS_INDEX ).title,
+				axes_container.axis_properties.get( ColumnSchema.Y_AXIS_INDEX ).title,
 				Color.LTGRAY, Color.GRAY);
 
 		ChartFactory.checkParameters(dataset, axes_container.renderer);
 
 		BarChart chart = new BarChart(dataset, axes_container.renderer, Type.DEFAULT);
-
-		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
-		if (x_format != null) chart.setXFormat(x_format);
-
-		String y_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
-		if (y_format != null) chart.setYFormat(y_format);
-
+		setAxisFormats(getIntent(), chart);
 		return chart;
 	}
 

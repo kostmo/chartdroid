@@ -35,6 +35,10 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	private String mXTitle = "";
 	/** The Y axis title. */
 	private String mYTitle = "";
+	/** The secondary Y axis title. */
+	private String mYSecondaryTitle = "";
+	private boolean has_secondary_y_axis;
+	
 	/** The start value in the X axis range. */
 	private MinMax mXspan;
 	private MinMax mYspan;
@@ -43,6 +47,9 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	private int mXLabels = 5;
 	/** The approximative number of labels on the y axis. */
 	private int mYLabels = 5;
+	/** The approximative number of labels on the secondary y axis. */
+	private int mYSecondaryLabels = 5;
+	
 	/** The current orientation of the chart. */
 	private Orientation mOrientation = Orientation.HORIZONTAL;
 	/** The X axis text labels. */
@@ -216,7 +223,16 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	public int getYLabels() {
 		return mYLabels;
 	}
-
+	
+	/**
+	 * Returns the approximate number of labels for the secondary Y axis.
+	 * 
+	 * @return the approximate number of labels for the secondary Y axis
+	 */
+	public int getSecondaryYLabels() {
+		return mYSecondaryLabels;
+	}
+	
 	/**
 	 * Sets the approximate number of labels for the Y axis.
 	 * 
@@ -224,6 +240,16 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	 */
 	public void setYLabels(int yLabels) {
 		mYLabels = yLabels;
+	}
+	
+	
+	/**
+	 * Sets the approximate number of labels for the Y axis.
+	 * 
+	 * @param yLabels the approximate number of labels for the Y axis
+	 */
+	public void setSecondaryYLabels(int yLabels) {
+		mYSecondaryLabels = yLabels;
 	}
 
 	/**
@@ -322,5 +348,26 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 
 	public boolean getInnerShadow() {
 		return mInnerShadow;
+	}
+
+
+	@Override
+	public String getYSecondaryTitle() {
+		return mYSecondaryTitle;
+	}
+
+	@Override
+	public void setYSecondaryTitle(String title) {
+		mYSecondaryTitle = title;
+	}
+
+	@Override
+	public boolean hasSecondaryYAxis() {
+		return has_secondary_y_axis;
+	}
+
+	@Override
+	public void setHasSecondaryYAxis(boolean hasAxis) {
+		has_secondary_y_axis = hasAxis;
 	}
 }

@@ -15,18 +15,17 @@
  */
 package org.achartengine.model;
 
-import java.io.Serializable;
+import org.achartengine.util.MathHelper;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.achartengine.util.MathHelper;
  
 
 /**
  * An XY series encapsulates values for XY charts like line, time, area,
  * scatter... charts.
  */
-public class XYSeries implements Serializable {
+public class XYSeries {
   /** The series title. */
   private String mTitle;
   /** A list to contain the values for the X axis. */

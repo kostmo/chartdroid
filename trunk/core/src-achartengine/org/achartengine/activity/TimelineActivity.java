@@ -23,6 +23,7 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import org.achartengine.ChartFactory;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
+import org.achartengine.consumer.DataCollector.AxesMetaData;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultiSeries;
@@ -113,7 +114,7 @@ public class TimelineActivity extends XYTemporalChartActivity {
 
 
 
-		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
+		List<AxesMetaData> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
@@ -153,6 +154,10 @@ public class TimelineActivity extends XYTemporalChartActivity {
 		String passed_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
 		String y_format = passed_format_string != null ? passed_format_string : "%.1f%%";
 		chart.setYFormat(y_format);
+		
+		String passed_secondary_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y_SECONDARY);
+		String y_secondary_format = passed_secondary_format_string != null ? passed_secondary_format_string : "%.1f%%";
+		chart.setYSecondaryFormat(y_secondary_format);
 		
 		return chart;
 	}

@@ -18,13 +18,17 @@ package org.achartengine.activity;
 
 import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.ColumnSchema;
+import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.DoubleDatumExtractor;
+import org.achartengine.consumer.DataCollector.AxesMetaData;
 import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
+import org.achartengine.view.chart.XYChart;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -39,7 +43,19 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 
 	public static class RenderingAxesContainer extends AxesContainer {
 		XYMultipleSeriesRenderer renderer;
-		List<String> axis_labels;
+		List<AxesMetaData> axis_properties;
+	}
+
+	// ====================================================================
+	public static void setAxisFormats(Intent intent, XYChart chart) {
+		String x_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
+		if (x_format != null) chart.setXFormat(x_format);
+
+		String y_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+		if (y_format != null) chart.setYFormat(y_format);
+		
+		String y_secondary_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y_SECONDARY);
+		if (y_secondary_format != null) chart.setYSecondaryFormat(y_secondary_format);
 	}
 	
 	// ========================================================================
@@ -107,7 +123,7 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 
 
 
-		axes_container.axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
+		axes_container.axis_properties = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 

@@ -20,6 +20,7 @@ import com.googlecode.chartdroid.R;
 import org.achartengine.ChartFactory;
 import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector;
+import org.achartengine.consumer.DataCollector.AxesMetaData;
 import org.achartengine.model.CategoryMultiSeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.view.chart.AbstractChart;
@@ -64,8 +65,8 @@ public class DonutChartActivity extends RadialChartActivity {
 		}
 
 
-
-		List<String> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
+		// TODO A donut chart does not use axes...
+		List<AxesMetaData> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 

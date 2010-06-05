@@ -28,6 +28,7 @@ import org.achartengine.view.VerticalLabelView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.XYChart;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -55,10 +56,12 @@ abstract public class XYChartActivity extends GraphicalActivity {
 			super(message);
 		}
 	}
-	
+
+	// ====================================================================
 	protected int getLayoutResourceId() {
 		return R.layout.xy_chart_activity;
 	}
+
 
 	// ====================================================================
 	void setGridLinesFromPrefs(SharedPreferences prefs) {
