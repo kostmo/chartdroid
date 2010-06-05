@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 Karl Ostmo
+ * Copyright (C) 2010 Karl Ostmo
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,9 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 abstract public class XYSpatialChartActivity extends XYChartActivity {
-
 
 	public static class RenderingAxesContainer extends AxesContainer {
 		XYMultipleSeriesRenderer renderer;

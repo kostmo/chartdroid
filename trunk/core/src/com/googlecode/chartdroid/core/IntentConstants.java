@@ -94,7 +94,6 @@ public class IntentConstants {
 		     * Specify primary or secondary y-axis.
 		     */
 			public static final String EXTRA_SERIES_AXIS_SELECTION = "com.googlecode.chartdroid.intent.extra.SERIES_AXIS_SELECTION";
-
 		}
 	}
 

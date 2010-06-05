@@ -334,7 +334,7 @@ public class DataCollector {
 				new String[] {
 					BaseColumns._ID,
 					ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL,
-					ColumnSchema.Aspect.Axes.COLUMN_AXIS_EXPRESSION,
+					ColumnSchema.Aspect.Axes.COLUMN_AXIS_ROLE,
 					ColumnSchema.Aspect.Axes.COLUMN_AXIS_MIN,
 					ColumnSchema.Aspect.Axes.COLUMN_AXIS_MAX},
 				null, null, null);
@@ -343,7 +343,7 @@ public class DataCollector {
 		
 		int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
 		int label_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL);
-		int expression_method_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_EXPRESSION);
+		int expression_method_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_ROLE);
 		int axis_min_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_MIN);
 		int axis_max_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_MAX);
 
