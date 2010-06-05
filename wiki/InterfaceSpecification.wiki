@@ -29,7 +29,7 @@ To make this process go as planned, you must
 ==Terms==
 In this document:
   * The term *datum* refers to a single "point" on the graph, which may be multidimensional.
-  * The term *datum component* is a single scalar value for one of the dimensions of a *datum*.
+  * The term *datum component* is a single scalar value for one of the dimensions (axes) of a *datum*.
 
 
 ==Data type==
