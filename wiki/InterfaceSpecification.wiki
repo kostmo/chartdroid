@@ -86,7 +86,7 @@ Developers may choose between the scheme below or an [AlternateColumnScheme alte
 
 ====Standard Column Scheme====
 
-In this scheme, all datum components are in the same row.  This scheme is assumed if there exist any column names that start with the prefix "`AXIS_`".  For the purpose of [#"axes"_Columns assigning axis properties], axes are ordered lexographically.
+In this scheme, all datum components are in the same row.  This scheme is assumed if there exist any column names that start with the prefix "`AXIS_`".  For the purpose of [#%22axes%22_Columns assigning axis properties], axes are ordered lexographically.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
