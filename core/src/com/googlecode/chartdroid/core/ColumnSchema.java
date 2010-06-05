@@ -43,7 +43,7 @@ public final class ColumnSchema {
 			public static final String COLUMN_AXIS_LABEL = "COLUMN_AXIS_LABEL";
 			public static final String COLUMN_AXIS_MIN = "COLUMN_AXIS_MIN";
 			public static final String COLUMN_AXIS_MAX = "COLUMN_AXIS_MAX";
-			public static final String COLUMN_AXIS_EXPRESSION = "COLUMN_AXIS_EXPRESSION";
+			public static final String COLUMN_AXIS_ROLE = "COLUMN_AXIS_ROLE";
 		}
 		
 		public static class Series {

@@ -19,6 +19,7 @@ import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
+import com.googlecode.chartdroid.core.ColumnSchema.Aspect.Axes.AxisExpressionMethod;
 import com.googlecode.chartdroid.provider.ImageFileContentProvider;
 
 import org.achartengine.activity.XYChartActivity.AxesException;
@@ -57,6 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -261,18 +263,36 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 	}
 
 	// ========================================================================
-	protected void assignChartLabels(List<AxesMetaData> axis_labels, AxesManager renderer) {
+	protected static List<AxesMetaData> extractVerticalAxes(List<AxesMetaData> axis_properties) {
+		
+		List<AxesMetaData> vertical_axes = new ArrayList<AxesMetaData>();
+		for (AxesMetaData axis_meta : axis_properties)
+			if (AxisExpressionMethod.VERTICAL_AXIS.equals(axis_meta.expression_method))
+				vertical_axes.add(axis_meta);
+		
+		return vertical_axes;
+	}
+	
+	// ========================================================================
+	protected void assignChartLabels(List<AxesMetaData> axis_properties, AxesManager renderer) {
 		
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 		
 		String x_label = "X-Axis";
 		String y_label = "Y-Axis";
-		if (axis_labels != null) {
-			if (axis_labels.size() - 1 >= ColumnSchema.X_AXIS_INDEX)
-				x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX ).title;
+		if (axis_properties != null) {
+			if (axis_properties.size() - 1 >= ColumnSchema.X_AXIS_INDEX)
+				x_label = axis_properties.get( ColumnSchema.X_AXIS_INDEX ).title;
 			
-			if (axis_labels.size() - 1 >= ColumnSchema.Y_AXIS_INDEX)
-				y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX ).title;
+			if (axis_properties.size() - 1 >= ColumnSchema.Y_AXIS_INDEX)
+				y_label = axis_properties.get( ColumnSchema.Y_AXIS_INDEX ).title;
+			
+			List<AxesMetaData> vertical_axes = extractVerticalAxes(axis_properties);
+			if (vertical_axes.size() > 1) {
+				AxesMetaData secondary_verical_axis = vertical_axes.get( 1 );
+				renderer.setHasSecondaryYAxis(true);
+				renderer.setYSecondaryTitle(secondary_verical_axis.title);
+			}
 		}
  
 		Log.d(TAG, "X LABEL: " + x_label);
