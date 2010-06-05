@@ -128,11 +128,11 @@ public class AceDataContentProvider extends ContentProvider {
 		// --------------------------------------------------------------------
 		case CHART_DATA_MULTISERIES:
 		{
-			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.Aspect.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_LABEL});
+						ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TemperatureData.DEMO_AXES_LABELS.length; i++) {
@@ -142,12 +142,12 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.Aspect.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_SERIES_LABEL});
+						ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TemperatureData.DEMO_TITLES.length; i++) {
@@ -164,10 +164,10 @@ public class AceDataContentProvider extends ContentProvider {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_INDEX,
-						ColumnSchema.COLUMN_SERIES_INDEX,
-						ColumnSchema.COLUMN_DATUM_VALUE,
-						ColumnSchema.COLUMN_DATUM_LABEL
+						ColumnSchema.Aspect.Data.COLUMN_AXIS_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_VALUE,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL
 				});
 
 				int row_index = 0;
@@ -208,24 +208,24 @@ public class AceDataContentProvider extends ContentProvider {
 		// --------------------------------------------------------------------
 		case CHART_DATA_MULTI_TIMELINE:
 		{
-			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.Aspect.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_LABEL});
+						ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL});
 
 				for (int i=0; i<MultiTimelineData.DEMO_AXES_LABELS.length; i++) {
 					c.newRow().add( i ).add( MultiTimelineData.DEMO_AXES_LABELS[i] );
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.Aspect.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_SERIES_LABEL,
-						ColumnSchema.COLUMN_SERIES_COLOR});
+						ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL,
+						ColumnSchema.Aspect.Series.COLUMN_SERIES_COLOR});
 
 				for (int i=0; i<MultiTimelineData.SEQUENCE_TITLES.length; i++) {
 					c.newRow().add( i )
@@ -240,8 +240,8 @@ public class AceDataContentProvider extends ContentProvider {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_SERIES_INDEX,
-						ColumnSchema.COLUMN_DATUM_LABEL,
+						ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL,
 						"AXIS_X",
 						"AXIS_Y",
 				});
@@ -274,11 +274,11 @@ public class AceDataContentProvider extends ContentProvider {
 		// --------------------------------------------------------------------
 		case CHART_DATA_LABELED_TIMELINE:
 		{
-			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.Aspect.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_LABEL});
+						ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TimelineData.DEMO_AXES_LABELS.length; i++) {
@@ -288,12 +288,12 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.Aspect.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_SERIES_LABEL});
+						ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<TimelineData.SEQUENCE_TITLES.length; i++) {
@@ -311,10 +311,10 @@ public class AceDataContentProvider extends ContentProvider {
 				// (http://code.google.com/p/chartdroid/wiki/AlternateColumnScheme)
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_INDEX,
-						ColumnSchema.COLUMN_SERIES_INDEX,
-						ColumnSchema.COLUMN_DATUM_VALUE,
-						ColumnSchema.COLUMN_DATUM_LABEL
+						ColumnSchema.Aspect.Data.COLUMN_AXIS_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_VALUE,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL
 				});
 
 				int row_index = 0;
@@ -354,11 +354,11 @@ public class AceDataContentProvider extends ContentProvider {
 		// --------------------------------------------------------------------
 		case CHART_DATA_LABELED_MULTISERIES:
 		{
-			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.Aspect.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_LABEL});
+						ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<BudgetData.DEMO_AXES_LABELS.length; i++) {
@@ -368,12 +368,12 @@ public class AceDataContentProvider extends ContentProvider {
 				}
 
 				return c;
-			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.Aspect.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				// TODO: Define more columns for color, line style, marker shape, etc.
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_SERIES_LABEL});
+						ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<BudgetData.DEMO_SERIES_LABELS.length; i++) {
@@ -388,10 +388,10 @@ public class AceDataContentProvider extends ContentProvider {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_AXIS_INDEX,
-						ColumnSchema.COLUMN_SERIES_INDEX,
-						ColumnSchema.COLUMN_DATUM_VALUE,
-						ColumnSchema.COLUMN_DATUM_LABEL});
+						ColumnSchema.Aspect.Data.COLUMN_AXIS_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_VALUE,
+						ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<BudgetData.DEMO_SERIES_LIST.length; i++) {

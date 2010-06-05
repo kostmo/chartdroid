@@ -54,11 +54,11 @@ public class SalesContentProvider extends ContentProvider {
 
 
 
-		if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+		if (ColumnSchema.Aspect.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 			MatrixCursor c = new MatrixCursor(new String[] {
 					BaseColumns._ID,
-					ColumnSchema.COLUMN_AXIS_LABEL});
+					ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL});
 
 			int row_index = 0;
 			for (int i=0; i<DEMO_AXES_LABELS.length; i++) {
@@ -68,12 +68,12 @@ public class SalesContentProvider extends ContentProvider {
 			}
 
 			return c;
-		} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+		} else if (ColumnSchema.Aspect.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 			// Get the series labels
 			MatrixCursor c = new MatrixCursor(new String[] {
 					BaseColumns._ID,
-					ColumnSchema.COLUMN_SERIES_LABEL});
+					ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL});
 
 			int row_index = 0;
 			for (int i=0; i<DEMO_SERIES_LABELS.length; i++) {

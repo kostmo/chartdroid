@@ -202,7 +202,7 @@ public class DatabaseStorage extends SQLiteOpenHelper {
 	    Cursor c = db.query(TABLE_HISTOGRAMMED_SALES,
     		new String[] {
 	    		KEY_BIN_ID + " AS " + BaseColumns._ID,
-    			0 + " AS " + ColumnSchema.COLUMN_SERIES_INDEX,	// TODO: Different series for different apps
+    			0 + " AS " + ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,	// TODO: Different series for different apps
     			KEY_START_TIME + "*1000 AS " + COLUMN_AXIS_X,
     			KEY_INCOME + " AS " + COLUMN_AXIS_Y,
     			KEY_SALE_COUNT + " AS " + COLUMN_AXIS_Z	// TODO: Add handler in ChartDroid
@@ -236,10 +236,10 @@ public class DatabaseStorage extends SQLiteOpenHelper {
 	    Cursor c = db.query(TABLE_SALES,
     		new String[] {
 	    		KEY_SALE_ID + " AS " + BaseColumns._ID,
-    			0 + " AS " + ColumnSchema.COLUMN_SERIES_INDEX,
+    			0 + " AS " + ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,
     			KEY_TIMESTAMP + "*1000 AS " + COLUMN_AXIS_X,
     			KEY_INCOME + " AS " + COLUMN_AXIS_Y,
-    			KEY_PRODUCT_NAME + " AS " + ColumnSchema.COLUMN_DATUM_LABEL
+    			KEY_PRODUCT_NAME + " AS " + ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL
     		},
     		KEY_BATCH_ID + "=?",
     		new String[] {Long.toString(batch_id)},

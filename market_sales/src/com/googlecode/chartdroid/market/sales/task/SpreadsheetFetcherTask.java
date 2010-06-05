@@ -137,8 +137,8 @@ public class SpreadsheetFetcherTask extends AsyncTask<Void, ProgressPacket, Long
 			ArrayList<String> axis_titles = new ArrayList<String>();
 			axis_titles.add("Date");
 			axis_titles.add(String.format("Sales per %.1f days", this.google_checkout_utils.getHistogramBinwidthDays()));
-			i.putExtra(IntentConstants.EXTRA_AXIS_TITLES, axis_titles);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "$%.2f");
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_AXIS_TITLES, axis_titles);
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y, "$%.2f");
 			
 			Market.intentLaunchMarketFallback((Activity) this.context, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 		}
