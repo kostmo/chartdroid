@@ -132,7 +132,7 @@ The "axes" query provides labels for each axis.
 || `COLUMN_AXIS_MAX` (todo) || `double` || Y ||
 || `COLUMN_AXIS_EXPRESSION` `*` (todo) || `int` || Y ||
 
-If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present, the axis min and max are calculated automatically, and the axis limits are set to *ten percent* above and below the data range. In the case of a single value, the default axis limits are set to 1 unit above and below the value.
+If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present or their value is `null`, the axis min and max are calculated automatically, and the axis limits are set to *ten percent* above and below the data range. In the case of a single value, the default axis limits are set to 1 unit above and below the value.
 
 `*` COLUMN_AXIS_EXPRESSION indicates how the axis value should be expressed, using an integer index from the following table:
 || *Index* || *Value expression method* || *Notes* ||
