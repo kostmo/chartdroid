@@ -3,11 +3,8 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.adapter.PlotSeriesListAdapter;
 import com.googlecode.chartdroid.core.ColumnSchema;
-import com.googlecode.chartdroid.core.IntentConstants;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,7 +32,7 @@ public class SeriesPickerActivity extends ListActivity {
 		
 		Uri series_meta_uri = getIntent().getData();
 		Cursor meta_cursor = managedQuery(series_meta_uri,
-				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
+				new String[] {BaseColumns._ID, ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL},
 				null, null, null);
 		
 		setListAdapter(new PlotSeriesListAdapter(

@@ -22,8 +22,8 @@ public class PlotSeriesListAdapter extends ResourceCursorAdapter {
     final int[] FIXME_COLOR_WHEEL = {Color.BLUE, Color.YELLOW, Color.CYAN};
 	public void bindView(View view, Context context, Cursor cursor) {
 
-		int text_column = cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LABEL);
-		int potential_color_column = cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_COLOR);
+		int text_column = cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL);
+		int potential_color_column = cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_COLOR);
 
 		TextView series_name = (TextView) view.findViewById(android.R.id.text1);
 		if (potential_color_column >= 0) {

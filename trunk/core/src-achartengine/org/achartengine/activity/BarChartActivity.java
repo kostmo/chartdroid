@@ -19,10 +19,8 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.activity.prefs.ChartDisplayPreferences;
 import com.googlecode.chartdroid.core.ColumnSchema;
-import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.model.XYMultiSeries;
 import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
@@ -114,7 +112,7 @@ public class BarChartActivity extends XYSpatialChartActivity {
 		case R.id.menu_toggle_series:
 		{
 			Intent i = new Intent(this, SeriesPickerActivity.class);
-			Uri series_info_uri = getIntent().getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_SERIES).build();
+			Uri series_info_uri = getIntent().getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.Aspect.DATASET_ASPECT_SERIES).build();
 			i.setData(series_info_uri);
 			startActivity(i);
 			return true;
