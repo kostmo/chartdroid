@@ -48,13 +48,13 @@ abstract public class XYSpatialChartActivity extends XYChartActivity {
 
 	// ====================================================================
 	public static void setAxisFormats(Intent intent, XYChart chart) {
-		String x_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
+		String x_format = intent.getStringExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_X);
 		if (x_format != null) chart.setXFormat(x_format);
 
-		String y_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+		String y_format = intent.getStringExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y);
 		if (y_format != null) chart.setYFormat(y_format);
 		
-		String y_secondary_format = intent.getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y_SECONDARY);
+		String y_secondary_format = intent.getStringExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y_SECONDARY);
 		if (y_secondary_format != null) chart.setYSecondaryFormat(y_secondary_format);
 	}
 	

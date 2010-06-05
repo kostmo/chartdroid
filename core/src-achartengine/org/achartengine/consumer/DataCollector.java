@@ -3,7 +3,7 @@ package org.achartengine.consumer;
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
 import com.googlecode.chartdroid.core.ColumnSchema.Aspect.Axes.AxisExpressionMethod;
-import com.googlecode.chartdroid.core.IntentConstants.LineStyle;
+import com.googlecode.chartdroid.core.IntentConstants.Meta.Series.LineStyle;
 
 import org.achartengine.activity.GraphicalActivity;
 import org.achartengine.util.MathHelper.MinMax;
@@ -313,7 +313,7 @@ public class DataCollector {
 
 		List<AxesMetaData> axes_meta_data_list = new ArrayList<AxesMetaData>();
 		
-		List<String> extra_series_titles = intent.getStringArrayListExtra(IntentConstants.EXTRA_AXIS_TITLES);
+		List<String> extra_series_titles = intent.getStringArrayListExtra(IntentConstants.Meta.Axes.EXTRA_AXIS_TITLES);
 		if (extra_series_titles != null) {
 			for (String title : extra_series_titles) {
 				AxesMetaData meta_data = new AxesMetaData();
@@ -382,20 +382,21 @@ public class DataCollector {
 		public PointStyle marker_style = PointStyle.CIRCLE;
 		public LineStyle line_style = LineStyle.SOLID;
 		public float line_thickness = 2f;
+		public int y_axis_index = 0;
 	}
 
 	// ========================================================================
 	public static List<SeriesMetaData> supplementIntentSeriesMetaData(Intent intent, List<SeriesMetaData> meta_data_list) {
 		List<SeriesMetaData> integrated_meta_data = new ArrayList<SeriesMetaData>();
 
-		String[] extra_series_titles = intent.getStringArrayExtra(IntentConstants.EXTRA_SERIES_LABELS);
+		String[] extra_series_titles = intent.getStringArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_LABELS);
 		
-		int[] extra_series_colors = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_COLORS);
+		int[] extra_series_colors = intent.getIntArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_COLORS);
 		
 		
-		int[] extra_series_markers = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_MARKERS);
-		int[] extra_series_line_styles = intent.getIntArrayExtra(IntentConstants.EXTRA_SERIES_LINE_STYLES);
-		float[] extra_series_line_thicknesses = intent.getFloatArrayExtra(IntentConstants.EXTRA_SERIES_LINE_THICKNESSES);
+		int[] extra_series_markers = intent.getIntArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_MARKERS);
+		int[] extra_series_line_styles = intent.getIntArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_LINE_STYLES);
+		float[] extra_series_line_thicknesses = intent.getFloatArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_LINE_THICKNESSES);
 
 		List<Integer> sizes = new ArrayList<Integer>();
 		if (meta_data_list != null)
@@ -428,7 +429,7 @@ public class DataCollector {
 				meta_data.title = meta_data_list.get(i).title;
 			}
 			
-			if (intent.getBooleanExtra(IntentConstants.EXTRA_RAINBOW_COLORS, false)) {
+			if (intent.getBooleanExtra(IntentConstants.Meta.Series.EXTRA_RAINBOW_COLORS, false)) {
 				
 				meta_data.color = Color.HSVToColor(new float[] {360 * i / (float) series_size, 0.6f, 1});
 				
