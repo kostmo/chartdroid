@@ -2,7 +2,7 @@ package org.achartengine.consumer;
 
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
-import com.googlecode.chartdroid.core.ColumnSchema.AxisExpressionMethod;
+import com.googlecode.chartdroid.core.ColumnSchema.Aspect.Axes.AxisExpressionMethod;
 import com.googlecode.chartdroid.core.IntentConstants.LineStyle;
 
 import org.achartengine.activity.GraphicalActivity;
@@ -146,7 +146,7 @@ public class DataCollector {
 	public static <T> List<List<List<T>>> getGenericSortedSeriesData(Uri intent_data, ContentResolver content_resolver, DatumExtractor<T> extractor) {
 
 		Uri data_uri = intent_data.buildUpon()
-			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_DATA)
+			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.Aspect.DATASET_ASPECT_DATA)
 			.build();
 
 		// Outermost map: Axes
@@ -176,7 +176,7 @@ public class DataCollector {
 
 		List<String> axis_column_names = new ArrayList<String>();
 		for (String column : column_names) {
-			if (column.startsWith(ColumnSchema.AXIS_PREFIX)) {
+			if (column.startsWith(ColumnSchema.AXIS_COLUMN_PREFIX)) {
 				axis_column_names.add(column);
 			}
 		}
@@ -184,8 +184,8 @@ public class DataCollector {
 		boolean is_primary_mode = axis_column_names.size() > 0;
 
 		int id_column = cursor.getColumnIndex(BaseColumns._ID);	// XXX Not used
-		int series_column = cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_INDEX);
-		int label_column = cursor.getColumnIndex(ColumnSchema.COLUMN_DATUM_LABEL);
+		int series_column = cursor.getColumnIndex(ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX);
+		int label_column = cursor.getColumnIndex(ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL);
 
 		List<List<List<T>>> simplified_sorted_axes_series = new ArrayList<List<List<T>>>();
 		
@@ -229,8 +229,8 @@ public class DataCollector {
 			
 			// This method takes a little more work to extract the data
 			
-			int axis_column = cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_INDEX);
-			int data_column = cursor.getColumnIndex(ColumnSchema.COLUMN_DATUM_VALUE);
+			int axis_column = cursor.getColumnIndex(ColumnSchema.Aspect.Data.COLUMN_AXIS_INDEX);
+			int data_column = cursor.getColumnIndex(ColumnSchema.Aspect.Data.COLUMN_DATUM_VALUE);
 
 
 			if (cursor.moveToFirst()) {
@@ -327,25 +327,25 @@ public class DataCollector {
 
 		Uri intent_data = intent.getData();
 		Uri axes_uri = intent_data.buildUpon()
-			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_AXES)
+			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.Aspect.DATASET_ASPECT_AXES)
 			.build();
 
 		Cursor meta_cursor = content_resolver.query(axes_uri,
 				new String[] {
 					BaseColumns._ID,
-					ColumnSchema.COLUMN_AXIS_LABEL,
-					ColumnSchema.COLUMN_AXIS_EXPRESSION,
-					ColumnSchema.COLUMN_AXIS_MIN,
-					ColumnSchema.COLUMN_AXIS_MAX},
+					ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL,
+					ColumnSchema.Aspect.Axes.COLUMN_AXIS_EXPRESSION,
+					ColumnSchema.Aspect.Axes.COLUMN_AXIS_MIN,
+					ColumnSchema.Aspect.Axes.COLUMN_AXIS_MAX},
 				null, null, null);
 
 		if (meta_cursor == null) return axes_meta_data_list;
 		
 		int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
-		int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_LABEL);
-		int expression_method_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_EXPRESSION);
-		int axis_min_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_MIN);
-		int axis_max_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_MAX);
+		int label_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_LABEL);
+		int expression_method_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_EXPRESSION);
+		int axis_min_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_MIN);
+		int axis_max_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Axes.COLUMN_AXIS_MAX);
 
 		if (meta_cursor.moveToFirst()) {
 
@@ -467,19 +467,19 @@ public class DataCollector {
 	public static List<SeriesMetaData> getSeriesMetaData(Intent intent, ContentResolver content_resolver) {
 
 		List<SeriesMetaData> sorted_series_metadata = null;
-		Uri series_meta_uri = intent.getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_SERIES).build();
+		Uri series_meta_uri = intent.getData().buildUpon().appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.Aspect.DATASET_ASPECT_SERIES).build();
 		Cursor meta_cursor = content_resolver.query(series_meta_uri,
-				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_SERIES_LABEL},
+				new String[] {BaseColumns._ID, ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL},
 				null, null, null);
 
 		if (meta_cursor != null) {
 
 			int series_column = meta_cursor.getColumnIndex(BaseColumns._ID);
-			int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LABEL);
-			int color_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_COLOR);
-			int marker_style_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_MARKER);
-			int line_style_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LINE_STYLE);
-			int line_thickness_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_SERIES_LINE_THICKNESS);
+			int label_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL);
+			int color_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_COLOR);
+			int marker_style_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_MARKER);
+			int line_style_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_LINE_STYLE);
+			int line_thickness_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_LINE_THICKNESS);
 	
 			Map<Integer, SeriesMetaData> series_metadata_map = new HashMap<Integer, SeriesMetaData>();
 			if (meta_cursor.moveToFirst()) {
