@@ -132,14 +132,14 @@ The "axes" query provides labels for each axis.
 || `COLUMN_AXIS_MAX` (todo) || `double` || Y ||
 || `COLUMN_AXIS_EXPRESSION` `*` (todo) || `int` || Y ||
 
-If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present or their value is `null`, the axis min and max are calculated automatically, and the axis limits are set to *ten percent* above and below the data range. In the case of a single value, the default axis limits are set to 1 unit above and below the value.
+If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present or their value is `null`, the axis min and max are calculated automatically, and the axis limits are set to *ten percent* above and below the data range. In the case of a single value, the default axis limits are set to *one unit* above and below the value.
 
 `*` COLUMN_AXIS_EXPRESSION indicates how the axis value should be expressed, using an integer index from the following table:
 || *Index* || *Value expression method* || *Notes* ||
 || `null` || default || (see below) ||
-|| `0` || Horizontal axis || (abscissa) ||
-|| `1` || Primary vertical axis || (ordinate) ||
-|| `11` || Secondary vertical axis || (ordinate, secondary) ||
+|| `0` || Horizontal axis || abscissa ||
+|| `1` || Primary vertical axis || ordinate ||
+|| `11` || Secondary vertical axis || ordinate, secondary ||
 || `2` || Marker size || Axis range is scaled within 100% of its base marker size ||
 || `3` || Marker hue || Axis range is scaled to the range 0 to 360 ||
 
@@ -148,7 +148,7 @@ If the field is `null` or the column is omitted entirely, the default sequence o
   # Vertical axis
   # Marker size
 
-If only a single axis is present in the data, then the expression will be along the Vertical axis, with a natural number sequence indexing the values along the Horizontal axis.
+If only a single axis is present in the data, then the value will be expressed along the Vertical axis, with a natural number sequence indexing the values along the Horizontal axis.
 
 ==Intent Extras==
 
