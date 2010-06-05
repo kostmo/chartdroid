@@ -119,7 +119,7 @@ The "series" query provides labels for each data series. All columns are optiona
 || `COLUMN_SERIES_LINE_STYLE` `**` || `int` ||
 || `COLUMN_SERIES_LINE_THICKNESS` || `float` ||
 
-* Marker styles:
+`*` Marker styles:
 || *Index* || *Description* ||
 || 0 || x ||
 || 1 || circle ||
@@ -128,7 +128,7 @@ The "series" query provides labels for each data series. All columns are optiona
 || 4 || diamond ||
 || 5 || point ||
 
-* Line styles:
+`**` Line styles:
 || *Index* || *Description* ||
 || 0 || none ||
 || 1 || dotted ||
