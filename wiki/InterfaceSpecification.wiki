@@ -1,6 +1,8 @@
 #summary Interface specification for Intents and Content Providers
 #labels Featured
 
+This document covers the basics to get started with charts. See AdvancedFeatures for topics not covered here.
+
 <wiki:toc max_depth="3" />
 
 =Content Provider Overview=
