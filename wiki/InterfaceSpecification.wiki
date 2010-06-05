@@ -153,7 +153,7 @@ If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present or their 
 || `0` || Horizontal axis || abscissa ||
 || `1` || Primary vertical axis || ordinate ||
 || `2` || Secondary vertical axis || ordinate, secondary ||
-|| `3` || Marker size || Axis range is scaled within 100% of its base marker size ||
+|| `3` || Marker size || Axis range is scaled within 50% of its base marker size ||
 || `4` || Marker hue || Axis range is scaled to the range 0 to 360 ||
 
 If the field is `null` or the column is omitted entirely, the default sequence of value expression methods is used:
