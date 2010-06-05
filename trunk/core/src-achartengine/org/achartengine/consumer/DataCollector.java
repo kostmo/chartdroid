@@ -397,7 +397,8 @@ public class DataCollector {
 		int[] extra_series_markers = intent.getIntArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_MARKERS);
 		int[] extra_series_line_styles = intent.getIntArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_LINE_STYLES);
 		float[] extra_series_line_thicknesses = intent.getFloatArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_LINE_THICKNESSES);
-
+		int[] extra_series_axes_selection = intent.getIntArrayExtra(IntentConstants.Meta.Series.EXTRA_SERIES_AXIS_SELECTION);
+		
 		List<Integer> sizes = new ArrayList<Integer>();
 		if (meta_data_list != null)
 			sizes.add(meta_data_list.size());
@@ -416,6 +417,10 @@ public class DataCollector {
 		
 		if (extra_series_line_thicknesses != null)
 			sizes.add(extra_series_line_thicknesses.length);
+
+		if (extra_series_line_thicknesses != null)
+			sizes.add(extra_series_axes_selection.length);
+
 		
 		int series_size = Collections.max(sizes);
 		
@@ -459,6 +464,12 @@ public class DataCollector {
 			} else if (meta_data_list != null && i < meta_data_list.size()) {
 				meta_data.line_thickness = meta_data_list.get(i).line_thickness;
 			}
+			
+			if (extra_series_axes_selection != null && i < extra_series_axes_selection.length) {
+				meta_data.y_axis_index = extra_series_axes_selection[i];
+			} else if (meta_data_list != null && i < meta_data_list.size()) {
+				meta_data.y_axis_index = meta_data_list.get(i).y_axis_index;
+			}
 		}
 		
 		return integrated_meta_data;
@@ -481,6 +492,7 @@ public class DataCollector {
 			int marker_style_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_MARKER);
 			int line_style_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_LINE_STYLE);
 			int line_thickness_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_LINE_THICKNESS);
+			int axis_selection_column = meta_cursor.getColumnIndex(ColumnSchema.Aspect.Series.COLUMN_SERIES_AXIS_SELECT);
 	
 			Map<Integer, SeriesMetaData> series_metadata_map = new HashMap<Integer, SeriesMetaData>();
 			if (meta_cursor.moveToFirst()) {
@@ -497,7 +509,9 @@ public class DataCollector {
 						series_meta_data.line_style = LineStyle.values()[meta_cursor.getInt(line_style_column)];
 					if (line_thickness_column >= 0)
 						series_meta_data.line_thickness = meta_cursor.getFloat(line_thickness_column);
-	
+					if (axis_selection_column >= 0)
+						series_meta_data.y_axis_index = meta_cursor.getInt(axis_selection_column);					
+					
 	
 					int series_index = meta_cursor.getInt(series_column);
 					series_metadata_map.put(series_index, series_meta_data);

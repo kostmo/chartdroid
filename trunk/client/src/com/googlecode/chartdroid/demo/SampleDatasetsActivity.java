@@ -95,7 +95,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, MultiTimelineData.uri);
             i.putExtra(Intent.EXTRA_TITLE, MultiTimelineData.DEMO_CHART_TITLE);
-            i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "£%.1f");
+            i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y, "£%.1f");
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
@@ -103,7 +103,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y, "%.1f°C");
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
@@ -111,7 +111,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y, "%.1f°C");
             i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
@@ -120,8 +120,8 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
             Intent i = new Intent(Intent.ACTION_VIEW, TemperatureData.uri);
             i.putExtra(Intent.EXTRA_TITLE, TemperatureData.DEMO_CHART_TITLE);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_Y, "%.1f°C");
-            i.putExtra(IntentConstants.EXTRA_SERIES_COLORS, new int[] {Color.RED, Color.MAGENTA, Color.CYAN, Color.BLUE});
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y, "%.1f°C");
+            i.putExtra(IntentConstants.Meta.Series.EXTRA_SERIES_COLORS, new int[] {Color.RED, Color.MAGENTA, Color.CYAN, Color.BLUE});
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
@@ -130,7 +130,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{ 
 			Intent i = new Intent(Intent.ACTION_VIEW, BudgetData.uri);
             i.putExtra(Intent.EXTRA_TITLE, BudgetData.DEMO_CHART_TITLE);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_X, "#%.0f");
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
@@ -138,7 +138,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
 			Intent i = new Intent(Intent.ACTION_VIEW, BudgetData.uri);
             i.putExtra(Intent.EXTRA_TITLE, BudgetData.DEMO_CHART_TITLE);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_PIE_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
@@ -147,7 +147,7 @@ public class SampleDatasetsActivity extends Activity implements View.OnClickList
 		{
 			Intent i = new Intent(Intent.ACTION_VIEW, BudgetData.uri);
             i.putExtra(Intent.EXTRA_TITLE, BudgetData.DEMO_CHART_TITLE);
-			i.putExtra(IntentConstants.EXTRA_FORMAT_STRING_X, "#%.0f");
+			i.putExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_X, "#%.0f");
             i.addCategory(IntentConstants.CATEGORY_XY_CHART);
             Market.intentLaunchMarketFallback(SampleDatasetsActivity.this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;

@@ -82,7 +82,7 @@ public class LocalStorageContentProvider extends ContentProvider {
 			long dataset_id = ContentUris.parseId(uri);
 			Log.d(TAG, "Dataset ID: " + dataset_id);
 			
-			if (ColumnSchema.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			if (ColumnSchema.Aspect.DATASET_ASPECT_AXES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				/*
 				DatabaseStoredData database = new DatabaseStoredData(getContext());
@@ -99,11 +99,11 @@ public class LocalStorageContentProvider extends ContentProvider {
 				
 				return null;
 				
-			} else if (ColumnSchema.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
+			} else if (ColumnSchema.Aspect.DATASET_ASPECT_SERIES.equals( uri.getQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER) )) {
 
 				MatrixCursor c = new MatrixCursor(new String[] {
 						BaseColumns._ID,
-						ColumnSchema.COLUMN_SERIES_LABEL});
+						ColumnSchema.Aspect.Series.COLUMN_SERIES_LABEL});
 
 				int row_index = 0;
 				for (int i=0; i<1; i++) {
@@ -124,10 +124,10 @@ public class LocalStorageContentProvider extends ContentProvider {
 				Cursor cursor = db.query(DatabaseStoredData.TABLE_DATA,
 					new String[] {
 						DatabaseStoredData.KEY_DATUM_INDEX +" AS " + BaseColumns._ID,
-				        ColumnSchema.COLUMN_SERIES_INDEX,
+				        ColumnSchema.Aspect.Data.COLUMN_SERIES_INDEX,
 				        DatabaseStoredData.KEY_AXIS_X,
 				        DatabaseStoredData.KEY_AXIS_Y,
-				        ColumnSchema.COLUMN_DATUM_LABEL,
+				        ColumnSchema.Aspect.Data.COLUMN_DATUM_LABEL,
 					},
 					DatabaseStoredData.KEY_DATASET_INDEX + "=?",
 					new String[] { Long.toString(dataset_id) }, null, null, null);
