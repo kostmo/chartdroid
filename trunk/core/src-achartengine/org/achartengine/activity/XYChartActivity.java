@@ -149,8 +149,8 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		}
 		
 		XYMultipleSeriesRenderer renderer = xy_chart.getRenderer();
-		renderer.setShowXAxis(getIntent().getBooleanExtra(IntentConstants.EXTRA_AXIS_VISIBLE_X, true));
-		renderer.setShowYAxis(getIntent().getBooleanExtra(IntentConstants.EXTRA_AXIS_VISIBLE_Y, true));		
+		renderer.setShowXAxis(getIntent().getBooleanExtra(IntentConstants.Meta.Axes.EXTRA_AXIS_VISIBLE_X, true));
+		renderer.setShowYAxis(getIntent().getBooleanExtra(IntentConstants.Meta.Axes.EXTRA_AXIS_VISIBLE_Y, true));		
 		
 		((TextView) findViewById(R.id.chart_x_axis_title)).setText( xy_chart.getRenderer().getXTitle() );
 		((VerticalLabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );

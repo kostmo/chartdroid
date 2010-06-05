@@ -151,11 +151,11 @@ public class TimelineActivity extends XYTemporalChartActivity {
 		TimeChart chart = new TimeChart(dataset, renderer);
 		chart.setDateFormat("MM/dd/yyyy");
 		
-		String passed_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
+		String passed_format_string = getIntent().getStringExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y);
 		String y_format = passed_format_string != null ? passed_format_string : "%.1f%%";
 		chart.setYFormat(y_format);
 		
-		String passed_secondary_format_string = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y_SECONDARY);
+		String passed_secondary_format_string = getIntent().getStringExtra(IntentConstants.Meta.Axes.EXTRA_FORMAT_STRING_Y_SECONDARY);
 		String y_secondary_format = passed_secondary_format_string != null ? passed_secondary_format_string : "%.1f%%";
 		chart.setYSecondaryFormat(y_secondary_format);
 		
