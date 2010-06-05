@@ -77,18 +77,16 @@ db.query(MY_TABLE, projection, ...);
 
 *Suggestion:* You may want to create a `VIEW` in your database with the column names already transformed to the ones *`ChartDroid`* needs. Android lacks facilities to easily perform column name translation within a `ContentProvider`.
 
-
 ==="data" Columns===
 
-Datum component values will be interpreted as `double` type.
-
-Datum labels may be specified or left `null`.
+  * Datum component values will be interpreted as `double` type.
+  * Datum labels may be specified or left `null`.
 
 Developers may choose between the scheme below or an [AlternateColumnScheme alternate column scheme]. Currently the "`_id`" column is ignored in both schemes.
 
 ====Standard Column Scheme====
 
-In this scheme, all datum components are in the same row.  This scheme is assumed if there exist any column names that start with the prefix "`AXIS_`".  Axes are ordered lexographically.
+In this scheme, all datum components are in the same row.  This scheme is assumed if there exist any column names that start with the prefix "`AXIS_`".  For the purpose of [#"axes"_Columns assigning axis properties], axes are ordered lexographically.
 
 || *Column name* || *Data type* ||
 || `_id` || `long` ||
