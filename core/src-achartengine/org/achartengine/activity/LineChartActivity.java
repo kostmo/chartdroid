@@ -55,8 +55,8 @@ public class LineChartActivity extends XYSpatialChartActivity {
 		org.achartengine.ChartGenHelper.setChartSettings(
 				axes_container.renderer,
 				getIntent().getStringExtra(Intent.EXTRA_TITLE),
-				axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX ),
-				axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX ),
+				axes_container.axis_properties.get( ColumnSchema.X_AXIS_INDEX ).title,
+				axes_container.axis_properties.get( ColumnSchema.Y_AXIS_INDEX ).title,
 				Color.LTGRAY, Color.GRAY);
 
 		ChartFactory.checkParameters(dataset, axes_container.renderer);
@@ -65,13 +65,7 @@ public class LineChartActivity extends XYSpatialChartActivity {
 		for (int i = 0; i < axes_container.renderer.getSeriesRendererCount(); i++)
 			((XYSeriesRenderer) axes_container.renderer.getSeriesRendererAt(i)).setFillPoints(true);
 
-
-		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
-		if (x_format != null) chart.setXFormat(x_format);
-
-		String y_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
-		if (y_format != null) chart.setYFormat(y_format);
-
+		setAxisFormats(getIntent(), chart);
 		return chart;
 	}
 }

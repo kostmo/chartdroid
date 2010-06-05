@@ -52,6 +52,9 @@ public class SimpleSeriesRenderer implements AxesManager {
 	private String mXTitle = "";
 	/** The Y axis title. */
 	private String mYTitle = "";
+	/** The secondary Y axis title. */
+	private String mYSecondaryTitle = "";
+	private boolean has_secondary_y_axis;
 
 	/**
 	 * Returns the series color.
@@ -181,5 +184,26 @@ public class SimpleSeriesRenderer implements AxesManager {
 	@Override
 	public void setShowGridVerticalLines(boolean showGrid) {
 		mShowGridVertical = showGrid;
+	}
+
+	@Override
+	public String getYSecondaryTitle() {
+		return mYSecondaryTitle;
+	}
+
+	@Override
+	public void setYSecondaryTitle(String title) {
+		mYSecondaryTitle = title;
+	}
+	
+
+	@Override
+	public boolean hasSecondaryYAxis() {
+		return has_secondary_y_axis;
+	}
+
+	@Override
+	public void setHasSecondaryYAxis(boolean hasAxis) {
+		has_secondary_y_axis = hasAxis;
 	}
 }

@@ -63,8 +63,8 @@ public class ScatterChartActivity extends XYSpatialChartActivity {
 
 
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-		String x_label = axes_container.axis_labels.get( ColumnSchema.X_AXIS_INDEX );
-		String y_label = axes_container.axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
+		String x_label = axes_container.axis_properties.get( ColumnSchema.X_AXIS_INDEX ).title;
+		String y_label = axes_container.axis_properties.get( ColumnSchema.Y_AXIS_INDEX ).title;
 		Log.d(TAG, "X LABEL: " + x_label);
 		Log.d(TAG, "X LABEL: " + y_label);
 		Log.d(TAG, "chart_title: " + chart_title);
@@ -80,12 +80,7 @@ public class ScatterChartActivity extends XYSpatialChartActivity {
 
 		XYChart chart = new ScatterChart(dataset, axes_container.renderer);
 
-		String x_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_X);
-		if (x_format != null) chart.setXFormat(x_format);
-
-		String y_format = getIntent().getStringExtra(IntentConstants.EXTRA_FORMAT_STRING_Y);
-		if (y_format != null) chart.setYFormat(y_format);
-
+		setAxisFormats(getIntent(), chart);
 		return chart;
 	}
 

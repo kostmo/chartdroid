@@ -2,8 +2,11 @@ package org.achartengine.consumer;
 
 import com.googlecode.chartdroid.core.ColumnSchema;
 import com.googlecode.chartdroid.core.IntentConstants;
+import com.googlecode.chartdroid.core.ColumnSchema.AxisExpressionMethod;
+import com.googlecode.chartdroid.core.IntentConstants.LineStyle;
 
 import org.achartengine.activity.GraphicalActivity;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.PointStyle;
 
 import android.content.ContentResolver;
@@ -294,59 +297,91 @@ public class DataCollector {
 		}
 		return sorted_series_list;
 	}
+
+	// ========================================================================
+	public static class AxesMetaData {
+		public String title = "Untitled";
+		public AxisExpressionMethod expression_method = null;
+		public MinMax limits_override;
+	}
 	
 	// ========================================================================
-	//  Retrieve Axes data
-	public static List<String> getAxisTitles(Intent intent, ContentResolver content_resolver) {
+	/**
+	 * Retrieve Axes properties
+	 */
+	public static List<AxesMetaData> getAxisTitles(Intent intent, ContentResolver content_resolver) {
 
+		List<AxesMetaData> axes_meta_data_list = new ArrayList<AxesMetaData>();
+		
 		List<String> extra_series_titles = intent.getStringArrayListExtra(IntentConstants.EXTRA_AXIS_TITLES);
-		if (extra_series_titles != null)
-			return extra_series_titles;
-		
-		
+		if (extra_series_titles != null) {
+			for (String title : extra_series_titles) {
+				AxesMetaData meta_data = new AxesMetaData();
+				meta_data.title = title;
+				axes_meta_data_list.add(meta_data);
+			}
+			
+			// FIXME Include the other axis properties, too!
+			return axes_meta_data_list;
+		}
 
 		Uri intent_data = intent.getData();
 		Uri axes_uri = intent_data.buildUpon()
 			.appendQueryParameter(ColumnSchema.DATASET_ASPECT_PARAMETER, ColumnSchema.DATASET_ASPECT_AXES)
 			.build();
 
-
 		Cursor meta_cursor = content_resolver.query(axes_uri,
-				new String[] {BaseColumns._ID, ColumnSchema.COLUMN_AXIS_LABEL},
+				new String[] {
+					BaseColumns._ID,
+					ColumnSchema.COLUMN_AXIS_LABEL,
+					ColumnSchema.COLUMN_AXIS_EXPRESSION,
+					ColumnSchema.COLUMN_AXIS_MIN,
+					ColumnSchema.COLUMN_AXIS_MAX},
 				null, null, null);
 
-		if (meta_cursor == null) return null;
+		if (meta_cursor == null) return axes_meta_data_list;
 		
 		int axis_column = meta_cursor.getColumnIndex(BaseColumns._ID);
 		int label_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_LABEL);
-
-		List<String> axis_labels = new ArrayList<String>();
+		int expression_method_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_EXPRESSION);
+		int axis_min_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_MIN);
+		int axis_max_column = meta_cursor.getColumnIndex(ColumnSchema.COLUMN_AXIS_MAX);
 
 		if (meta_cursor.moveToFirst()) {
-			// TODO: This could also be used to set color, line style, marker shape, etc.
-			do {
-//	            int axis_index = meta_cursor.getInt(axis_column);
-				String axis_label = meta_cursor.getString(label_column);
 
-				axis_labels.add(axis_label);
+			do {
+
+				AxesMetaData meta_data = new AxesMetaData();
+				if (axis_column >= 0)
+					meta_data.title = meta_cursor.getString(label_column);
+				
+				if (expression_method_column >= 0 && !meta_cursor.isNull(expression_method_column))
+					meta_data.expression_method = AxisExpressionMethod.values()[meta_cursor.getInt(expression_method_column)];
+
+				if (axis_min_column >= 0 && !meta_cursor.isNull(axis_min_column)
+						&& axis_max_column >= 0 && !meta_cursor.isNull(axis_max_column)) {
+
+					meta_data.limits_override = new MinMax(
+							meta_cursor.getDouble(axis_min_column),
+							meta_cursor.getDouble(axis_max_column)
+					);
+				}
+				
+				axes_meta_data_list.add(meta_data);
 
 			} while (meta_cursor.moveToNext());
 		}
 
-		return axis_labels;
+		return axes_meta_data_list;
 	}
 
 	// ========================================================================
-	enum LineStyle {
-		NONE, DOTTED, DASHED, SOLID
-	}
-	
 	public static class SeriesMetaData {
 		public String title = "Untitled";
 		public Integer color = null;
 		public PointStyle marker_style = PointStyle.CIRCLE;
 		public LineStyle line_style = LineStyle.SOLID;
-		public float line_thickness = 1f;
+		public float line_thickness = 2f;
 	}
 
 	// ========================================================================

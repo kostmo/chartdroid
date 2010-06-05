@@ -15,14 +15,13 @@
  */
 package org.achartengine.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A series for the multiple category charts like the doughnut.
  */
-public class CategoryMultiSeries implements Serializable {
+public class CategoryMultiSeries {
   /** The series title. */
   private String mTitle;
   

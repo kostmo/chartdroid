@@ -22,13 +22,13 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import com.googlecode.chartdroid.provider.ImageFileContentProvider;
 
 import org.achartengine.activity.XYChartActivity.AxesException;
+import org.achartengine.consumer.DataCollector.AxesMetaData;
 import org.achartengine.renderer.AxesManager;
 import org.achartengine.util.SemaphoreHost;
 import org.achartengine.view.FlowLayout;
 import org.achartengine.view.PlotView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.PointStyle;
-import org.achartengine.view.chart.XYChart;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -261,7 +261,7 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 	}
 
 	// ========================================================================
-	protected void assignChartLabels(List<String> axis_labels, AxesManager renderer) {
+	protected void assignChartLabels(List<AxesMetaData> axis_labels, AxesManager renderer) {
 		
 		String chart_title = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 		
@@ -269,10 +269,10 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 		String y_label = "Y-Axis";
 		if (axis_labels != null) {
 			if (axis_labels.size() - 1 >= ColumnSchema.X_AXIS_INDEX)
-				x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX );
+				x_label = axis_labels.get( ColumnSchema.X_AXIS_INDEX ).title;
 			
 			if (axis_labels.size() - 1 >= ColumnSchema.Y_AXIS_INDEX)
-				y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX );
+				y_label = axis_labels.get( ColumnSchema.Y_AXIS_INDEX ).title;
 		}
  
 		Log.d(TAG, "X LABEL: " + x_label);

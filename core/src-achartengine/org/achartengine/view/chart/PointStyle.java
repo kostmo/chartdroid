@@ -83,5 +83,4 @@ public enum PointStyle {
     }
     return Math.max(0, index);
   }
-
 }

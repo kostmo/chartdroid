@@ -28,6 +28,8 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.List;
 
@@ -153,11 +155,17 @@ public abstract class ChartGenHelper {
 	 * @param labelsColor the labels color
 	 */
 	public static void setChartSettings(AxesManager renderer, String title, String xTitle,
-			String yTitle, int axesColor,
-			int labelsColor) {
+			String yTitle, int axesColor, int labelsColor) {
+		
 		renderer.setChartTitle(title);
+		
 		renderer.setXTitle(xTitle);
 		renderer.setYTitle(yTitle);
+		// TODO
+		if (renderer.hasSecondaryYAxis()) {
+			Log.e(TAG, "Has a secondary axis...");
+		}
+		
 		renderer.setAxesColor(axesColor);
 		renderer.setLabelsColor(labelsColor);
 	}

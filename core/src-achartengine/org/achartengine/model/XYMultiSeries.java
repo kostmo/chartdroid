@@ -15,14 +15,13 @@
  */
 package org.achartengine.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A series that includes 0 to many XYSeries.
  */
-public class XYMultiSeries implements Serializable {
+public class XYMultiSeries {
   /** The included series. */
   private List<XYSeries> mSeries = new ArrayList<XYSeries>();
 
