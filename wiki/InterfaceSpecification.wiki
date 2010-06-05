@@ -111,13 +111,14 @@ Here is an example results table that your application might produce in response
 ==="series" Columns===
 The "series" query provides labels and other properties for each data series. All columns are optional.
 
-|| *Column name* || *Data type* ||
+|| *Column name* || *Data type* || *Default* ||
 || `_id` || `long` ||
-|| `COLUMN_SERIES_LABEL` || `String` ||
-|| `COLUMN_SERIES_COLOR` || `int` ||
-|| `COLUMN_SERIES_MARKER` `*` || `int` ||
-|| `COLUMN_SERIES_LINE_STYLE` `**` || `int` ||
-|| `COLUMN_SERIES_LINE_THICKNESS` || `float` ||
+|| `COLUMN_SERIES_LABEL` || `String` || "Untitled" ||
+|| `COLUMN_SERIES_COLOR` || `int` || depends... ||
+|| `COLUMN_SERIES_MARKER` `*` || `int` || circle ||
+|| `COLUMN_SERIES_LINE_STYLE` `**` || `int` || solid ||
+|| `COLUMN_SERIES_LINE_THICKNESS` || `float` || 2 ||
+|| `COLUMN_SERIES_AXIS_SELECT` || `int` || 0 ||
 
 `*` Marker styles:
 || *Index* || *Description* ||
@@ -151,10 +152,9 @@ If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present or their 
 || *Index* || *Value expression method* || *Notes* ||
 || `null` || default || (see below) ||
 || `0` || Horizontal axis || abscissa ||
-|| `1` || Primary vertical axis || ordinate ||
-|| `2` || Secondary vertical axis || ordinate, secondary ||
-|| `3` || Marker size || Axis range is scaled within 50% of its base marker size ||
-|| `4` || Marker hue || Axis range is scaled to the range 0 to 360 ||
+|| `1` || Vertical axis (Primary or Secondary) || ordinate ||
+|| `2` || Marker size || Axis range is scaled within 50% of its base marker size ||
+|| `3` || Marker hue || Axis range is scaled to the range 0 to 360 ||
 
 If the field is `null` or the column is omitted entirely, the default sequence of value expression methods is used:
   # Horizontal axis
