@@ -117,12 +117,12 @@ The "series" query provides labels and other properties for each data series. Al
 || `_id` || `long` ||
 || `COLUMN_SERIES_LABEL` || `String` || "Untitled" ||
 || `COLUMN_SERIES_COLOR` || `int` || depends... ||
-|| `COLUMN_SERIES_MARKER` `*` || `int` || circle ||
-|| `COLUMN_SERIES_LINE_STYLE` `**` || `int` || solid ||
+|| `COLUMN_SERIES_MARKER`<sup>†</sup> || `int` || circle ||
+|| `COLUMN_SERIES_LINE_STYLE`<sup>‡</sup> || `int` || solid ||
 || `COLUMN_SERIES_LINE_THICKNESS` || `float` || 2 ||
 || `COLUMN_SERIES_AXIS_SELECT` || `int` || 0 ||
 
-`*` Marker styles:
+<sup>†</sup>Marker styles:
 || *Index* || *Description* ||
 || 0 || x ||
 || 1 || circle ||
@@ -131,7 +131,7 @@ The "series" query provides labels and other properties for each data series. Al
 || 4 || diamond ||
 || 5 || point ||
 
-`**` Line styles:
+<sup>‡</sup>Line styles:
 || *Index* || *Description* ||
 || 0 || none ||
 || 1 || dotted ||
@@ -146,11 +146,11 @@ The "axes" query provides labels for each axis.
 || `COLUMN_AXIS_LABEL` || `String` || N ||
 || `COLUMN_AXIS_MIN` (todo) || `double` || Y ||
 || `COLUMN_AXIS_MAX` (todo) || `double` || Y ||
-|| `COLUMN_AXIS_EXPRESSION` `*` (todo) || `int` || Y ||
+|| `COLUMN_AXIS_ROLE`<sup>†</sup> (todo) || `int` || Y ||
 
 If the columns `COLUMN_AXIS_MIN` and `COLUMN_AXIS_MAX` are not present or their value is `null`, the axis min and max are calculated automatically, and the axis limits are set to *ten percent* above and below the data range. In the case of a single value, the default axis limits are set to *one unit* above and below the value.
 
-`*` COLUMN_AXIS_EXPRESSION indicates how the axis value should be expressed, using an integer index from the following table:
+<sup>†</sup>COLUMN_AXIS_ROLE indicates how the axis values should be expressed, using an integer index from the following table:
 || *Index* || *Value expression method* || *Notes* ||
 || `null` || default || (see below) ||
 || `0` || Horizontal axis || abscissa ||
