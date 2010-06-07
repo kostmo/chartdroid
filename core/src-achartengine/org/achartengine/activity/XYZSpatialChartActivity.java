@@ -57,7 +57,7 @@ abstract public class XYZSpatialChartActivity extends XYChartActivity {
 	}
 	
 	// ========================================================================
-	RenderingAxesContainer getAxesSets(Uri intent_data) throws AxesException {
+	RenderingAxesContainer getAxesSets(Uri intent_data) throws IllegalArgumentException {
 		
 
 		RenderingAxesContainer axes_container = new RenderingAxesContainer();
@@ -68,7 +68,7 @@ abstract public class XYZSpatialChartActivity extends XYChartActivity {
 				new DoubleDatumExtractor());
 
 		if (sorted_series_list.size() < 1) {
-			throw new AxesException("Must have data on at least one axis!");
+			throw new IllegalArgumentException("Must have data on at least one axis!");
 		}
 
 		if (sorted_series_list.size() == 1) {
@@ -85,7 +85,7 @@ abstract public class XYZSpatialChartActivity extends XYChartActivity {
 				|| axes_container.x_axis_series.size() == 1
 				|| axes_container.x_axis_series.size() == 0)) {
 
-			throw new AxesException("Axes must have equal datum counts!");
+			throw new IllegalArgumentException("Axes must have equal datum counts!");
 		}
 
 		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );

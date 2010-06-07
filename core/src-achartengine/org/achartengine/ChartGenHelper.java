@@ -135,6 +135,7 @@ public abstract class ChartGenHelper {
 			XYSeriesRenderer r = new XYSeriesRenderer();
 			r.setColor( meta_data.color );
 			r.setPointStyle( meta_data.marker_style );
+			r.setUsesSecondaryAxis( meta_data.y_axis_index != 0 );
 			renderer.addSeriesRenderer(r);
 		}
 		return renderer;

@@ -16,15 +16,8 @@
 package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
-import com.googlecode.chartdroid.core.ColumnSchema;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.activity.GraphicalActivity.AxesContainer;
-import org.achartengine.activity.XYChartActivity.AxesException;
-import org.achartengine.consumer.DataCollector;
-import org.achartengine.consumer.LabeledDatumExtractor;
-import org.achartengine.consumer.DataCollector.LabeledDatum;
-import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.view.chart.AbstractChart;
@@ -33,7 +26,6 @@ import org.achartengine.view.chart.PieChart;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -52,7 +44,7 @@ public class PieChartActivity extends RadialChartActivity {
 	// ========================================================================
 	// NOTE: This chart type will ignore all but the first series on the first axis.
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws AxesException {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
 		AxesContainer axes_container = getAxesSets(intent_data);

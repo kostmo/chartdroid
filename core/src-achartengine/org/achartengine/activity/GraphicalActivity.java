@@ -22,7 +22,6 @@ import com.googlecode.chartdroid.core.IntentConstants;
 import com.googlecode.chartdroid.core.ColumnSchema.Aspect.Axes.AxisExpressionMethod;
 import com.googlecode.chartdroid.provider.ImageFileContentProvider;
 
-import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector.AxesMetaData;
 import org.achartengine.renderer.AxesManager;
 import org.achartengine.util.SemaphoreHost;
@@ -106,7 +105,7 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 	DataQueryTask data_query_task;
 	
 	
-	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException, AxesException;
+	abstract protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws IllegalArgumentException;
 	abstract protected int getTitlebarIconResource();
 	abstract protected int getLayoutResourceId();
 	abstract protected void postChartPopulationCallback();
@@ -147,8 +146,6 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 			try {
 				return generateChartFromContentProvider(this.chart_data_uri);
 			} catch (IllegalArgumentException e) {
-				this.error_message = e.getMessage();
-			} catch (AxesException e) {
 				this.error_message = e.getMessage();
 			}
 			return null;

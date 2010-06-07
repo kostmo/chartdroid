@@ -26,11 +26,14 @@ import org.achartengine.util.MathHelper.MinMax;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.PathEffect;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Paint.Align;
 import android.text.TextPaint;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +50,12 @@ public abstract class XYChart extends AbstractChart {
 
 	public final static float DEFAULT_HASH_MARK_TEXT_SIZE = 9;
 	public final static float DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH = 4;
+
+    /** Separation of tick label from tick line */
+	public final static float VERTICAL_AXIS_LABEL_HASH_MARK_CLEARANCE = 2;
+
+    /** Separation of tick label from vertical axis line */
+	public final static int VERTICAL_AXIS_LINE_LABEL_CLEARANCE = 2;
 
 	public XYMultiSeries getDataset() {
 		return mDataset;
@@ -72,9 +81,21 @@ public abstract class XYChart extends AbstractChart {
 	private float mTranslate;
 	/** The canvas center point. */
 	private PointF mCenter;
+	
 	/** The grid color. */
-	protected static final int GRID_COLOR = Color.argb(75, 200, 200, 200);
-
+	protected static final int GRID_COLOR = Color.GRAY;
+	protected static final int GRID_COLOR_SECONDARY_AXIS = Color.CYAN;
+	
+	protected static final Align[] label_alignments = new Align[] {Align.RIGHT, Align.LEFT};
+	protected static final Axis[] vertical_axis_enums = new Axis[] {Axis.Y_AXIS, Axis.Y_AXIS_SECONDARY};
+	protected static final int[] grid_line_colors = new int[] {GRID_COLOR, GRID_COLOR_SECONDARY_AXIS};
+	protected static final PathEffect[] grid_line_path_effects = new PathEffect[] {
+		null,
+		new DashPathEffect(new float[] {
+				2*VERTICAL_AXIS_LINE_LABEL_CLEARANCE,
+				2*VERTICAL_AXIS_LINE_LABEL_CLEARANCE
+			}, 0)};
+	
 	private String y_format, x_format, y_secondary_format;
 	public void setYFormat(String format_string) {
 		this.y_format = format_string;
@@ -150,90 +171,47 @@ public abstract class XYChart extends AbstractChart {
 		}
 
 		MinMax x_span = mRenderer.getXAxisSpan();
-		MinMax y_span = mRenderer.getYAxisSpan();
 
 
-		boolean showLabels = mRenderer.isShowLabels();
 
 
 		float vertical_axis_hash_mark_width = 0;
-		int label_clearance = 2;    // Separation of tick label from vertical axis line
-		
+		float vertical_secondary_axis_hash_mark_width = 0;
 		float horizontal_axis_label_height = 0;
-		float max_x_label_height = 0;
 		
 		// Measure all y-axis label widths to determine the axis line position
-		if (showLabels && mRenderer.getShowYAxis()) {
-
-			{
-				Rect text_bounds_holder = new Rect();
-				
-				List<Integer> y_label_widths = new ArrayList<Integer>();
-				for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getYLabels())) {
-					String y_label = getLabel( ylabel, Axis.Y_AXIS );
-					hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
-					
-					int label_width = text_bounds_holder.width();
-					y_label_widths.add(label_width);
-				}
-				float max_label_width = Collections.max(y_label_widths);
-				vertical_axis_hash_mark_width = max_label_width + label_clearance;
-			}
-			
-			
+		if (mRenderer.isShowLabels() && mRenderer.getShowYAxis()) {
+			vertical_axis_hash_mark_width = measurePrimaryYaxisTickLabels(hash_mark_label_paint);
 			
 			if (mRenderer.hasSecondaryYAxis()) {
-				
-				Rect text_bounds_holder = new Rect();
-				
-				List<Integer> y_label_widths = new ArrayList<Integer>();
-				for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getSecondaryYLabels())) {
-					String y_label = getLabel( ylabel, Axis.Y_AXIS );
-					hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
-					
-					int label_width = text_bounds_holder.width();
-					y_label_widths.add(label_width);
-				}
-				float max_label_width = Collections.max(y_label_widths);
-				vertical_axis_hash_mark_width = max_label_width + label_clearance;
+				Log.e(TAG, "Has secondary axis!!!");
+				vertical_secondary_axis_hash_mark_width = measureSecondaryYaxisTickLabels(hash_mark_label_paint);
 			}
-			
 		}
 
-		if (showLabels && mRenderer.getShowXAxis()) {
-			
-			Rect text_bounds_holder = new Rect();
-			
-			List<Integer> x_label_heights = new ArrayList<Integer>();
-			for (Double xlabel : MathHelper.getLabels(x_span, mRenderer.getXLabels())) {
-				String x_label = getLabel( xlabel, Axis.X_AXIS );
-				hash_mark_label_paint.getTextBounds(x_label, 0, x_label.length(), text_bounds_holder);
-				
-				int label_height = text_bounds_holder.height();
-				x_label_heights.add(label_height);
-			}
-			max_x_label_height = Collections.max(x_label_heights);
-			
-			horizontal_axis_label_height = max_x_label_height + label_clearance + DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH;
+		if (mRenderer.isShowLabels() && mRenderer.getShowXAxis()) {
+			horizontal_axis_label_height = measureXaxisTickLabels(hash_mark_label_paint, x_span);
 		}
 
 
 		Rect frame = new Rect(
 			(int) Math.ceil(vertical_axis_hash_mark_width),
 			0,
-			width,
+			width - (int) Math.ceil(vertical_secondary_axis_hash_mark_width),
 			height - (int) horizontal_axis_label_height
 		);
 
-
 		double xPixelsPerUnit = getPixelsPerUnit(frame.width(), x_span);
-		double yPixelsPerUnit = getPixelsPerUnit(frame.height(), y_span);
+		double yPixelsPerUnit = getPixelsPerUnit(frame.height(), mRenderer.getYPrimaryAxisSpan());
+		double ySecondaryPixelsPerUnit = 0;
+		if (mRenderer.hasSecondaryYAxis())
+			ySecondaryPixelsPerUnit = getPixelsPerUnit(frame.height(), mRenderer.getYSecondaryAxisSpan());
 
-		if (showLabels || mRenderer.isShowGrid()) {
+
+		if (mRenderer.isShowLabels() || mRenderer.isShowGrid()) {
 
 			List<Double> xLabels = MathHelper.getLabels(x_span, mRenderer.getXLabels());
-			List<Double> yLabels = MathHelper.getLabels(y_span, mRenderer.getYLabels());
-			if (showLabels) {
+			if (mRenderer.isShowLabels()) {
 				hash_mark_label_paint.setColor(mRenderer.getLabelsColor());
 				hash_mark_label_paint.setTextAlign(Align.CENTER);
 			}
@@ -247,75 +225,103 @@ public abstract class XYChart extends AbstractChart {
 					xPixelsPerUnit,
 					x_span.min.doubleValue(),
 					DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH,
-					max_x_label_height + label_clearance
+					horizontal_axis_label_height - DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH
 					);
-			int length = yLabels.size();
 
-
-			hash_mark_label_paint.setTextAlign(Align.RIGHT);
-			for (int i = 0; i < length; i++) {
-				double label = yLabels.get(i);
-				float yLabel = (float) (frame.bottom - yPixelsPerUnit * (label - y_span.min.doubleValue()));
-
-
-				float grid_line_startx, grid_line_stopx, hash_mark_startx, hash_mark_stopx;
-				float label_x_offset;
-
-				if (Orientation.HORIZONTAL.equals(mRenderer.getOrientation())) {
-					grid_line_startx = frame.left;
-					grid_line_stopx = frame.right;
-					hash_mark_startx = grid_line_startx - vertical_axis_hash_mark_width;
-					hash_mark_stopx = grid_line_startx;
-
-					label_x_offset = frame.left - label_clearance;
-
-//				} else if (or == Orientation.VERTICAL) {
-				} else { 
-					grid_line_startx = frame.right;
-					grid_line_stopx = frame.left;
-					hash_mark_startx = grid_line_startx + vertical_axis_hash_mark_width;
-					hash_mark_stopx = grid_line_startx;
-
-					label_x_offset = frame.right - label_clearance;
-				}
-
-				if (showLabels) {
-					hash_mark_label_paint.setColor(mRenderer.getLabelsColor());
-					canvas.drawLine(hash_mark_startx, yLabel, hash_mark_stopx, yLabel, hash_mark_label_paint);
-
-					String label_string = getLabel(label, Axis.Y_AXIS);
-					hash_mark_label_paint.measureText(label_string);
-					drawText(canvas, getLabel(label, Axis.Y_AXIS), label_x_offset, yLabel - 2, hash_mark_label_paint, 0);
-				}
-
-				if (mRenderer.isShowGrid() && mRenderer.isShowGridHorizontalLines()) {
-					hash_mark_label_paint.setColor(GRID_COLOR);
-					canvas.drawLine(grid_line_startx, yLabel, grid_line_stopx, yLabel, hash_mark_label_paint);
-				}
-			}
-		}
-		
-		
-		
-		// TODO: Omit extra spacing!!
-		if (mRenderer.isShowAxes()) {
-			hash_mark_label_paint.setColor(mRenderer.getAxesColor());
-			canvas.drawLine(frame.left, frame.bottom, frame.right, frame.bottom, hash_mark_label_paint);
 			
-			switch (mRenderer.getOrientation()) {
-			case HORIZONTAL:
-				canvas.drawLine(frame.left, frame.top, frame.left, frame.bottom, hash_mark_label_paint);
-				break;
-			case VERTICAL:
-				canvas.drawLine(frame.right, frame.top, frame.right, frame.bottom, hash_mark_label_paint);
-				break;
-			}
+			drawVerticalAxisLabels(
+					canvas,
+					frame,
+					hash_mark_label_paint,
+					yPixelsPerUnit,
+					ySecondaryPixelsPerUnit,
+					vertical_axis_hash_mark_width,
+					vertical_secondary_axis_hash_mark_width);
 		}
-		
-		
-		
 
 
+		// This draws the plot boundaries.
+		drawPlotBoundaries(canvas, frame, hash_mark_label_paint);
+
+		// This draws the plot boundaries.
+		drawAllDataSets(
+				canvas,
+				frame,
+				hash_mark_label_paint,
+				xPixelsPerUnit, yPixelsPerUnit, ySecondaryPixelsPerUnit
+		);
+
+		if (rotate) {
+			transform(canvas, mRenderer.getOrientation().getAngle(), true);
+		}
+	}
+	
+	
+	// ========================================================================
+	float measureXaxisTickLabels(Paint hash_mark_label_paint, MinMax x_span) {
+
+		
+		Rect text_bounds_holder = new Rect();
+		
+		List<Integer> x_label_heights = new ArrayList<Integer>();
+		for (Double xlabel : MathHelper.getLabels(x_span, mRenderer.getXLabels())) {
+			String x_label = getLabel( xlabel, Axis.X_AXIS );
+			hash_mark_label_paint.getTextBounds(x_label, 0, x_label.length(), text_bounds_holder);
+			
+			int label_height = text_bounds_holder.height();
+			x_label_heights.add(label_height);
+		}
+		float max_x_label_height = Collections.max(x_label_heights);
+		return max_x_label_height + VERTICAL_AXIS_LINE_LABEL_CLEARANCE + DEFAULT_HORIZONTAL_AXIS_HASH_MARK_LENGTH;
+	}
+	
+	// ========================================================================
+	float measureSecondaryYaxisTickLabels(Paint hash_mark_label_paint) {
+
+		MinMax y_secondary_span = mRenderer.getYSecondaryAxisSpan();
+		
+		Rect text_bounds_holder = new Rect();
+		
+		List<Integer> y_secondary_label_widths = new ArrayList<Integer>();
+		for (Double ylabel : MathHelper.getLabels(y_secondary_span, mRenderer.getSecondaryYLabels())) {
+			String y_label = getLabel( ylabel, Axis.Y_AXIS_SECONDARY );
+			hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
+			
+			int label_width = text_bounds_holder.width();
+			y_secondary_label_widths.add(label_width);
+		}
+		float max_label_width = Collections.max(y_secondary_label_widths);
+		
+		return max_label_width + VERTICAL_AXIS_LINE_LABEL_CLEARANCE;
+	}
+	
+	// ========================================================================
+	float measurePrimaryYaxisTickLabels(Paint hash_mark_label_paint) {
+		MinMax y_span = mRenderer.getYPrimaryAxisSpan();
+		Rect text_bounds_holder = new Rect();
+		
+		List<Integer> y_label_widths = new ArrayList<Integer>();
+		for (Double ylabel : MathHelper.getLabels(y_span, mRenderer.getYLabels())) {
+			String y_label = getLabel( ylabel, Axis.Y_AXIS );
+			hash_mark_label_paint.getTextBounds(y_label, 0, y_label.length(), text_bounds_holder);
+			
+			int label_width = text_bounds_holder.width();
+			y_label_widths.add(label_width);
+		}
+		float max_label_width = Collections.max(y_label_widths);
+		return max_label_width + VERTICAL_AXIS_LINE_LABEL_CLEARANCE;
+	}
+	
+	// ========================================================================
+	void drawAllDataSets(
+			Canvas canvas,
+			Rect frame,
+			Paint hash_mark_label_paint,
+			double xPixelsPerUnit, double yPixelsPerUnit, double ySecondaryPixelsPerUnit) {
+//			double xPixelsPerUnit, double ySecondaryPixelsPerUnit) {
+
+		MinMax x_span = mRenderer.getXAxisSpan();
+		
 		for (int i=0; i < mDataset.getSeriesCount(); i++) {
 			XYSeries series = mDataset.getSeriesAt(i);
 			if (series.getItemCount() == 0) {
@@ -323,12 +329,22 @@ public abstract class XYChart extends AbstractChart {
 			}
 
 			SimpleSeriesRenderer seriesRenderer = mRenderer.getSeriesRendererAt(i);
+
+			MinMax vertical_series_span;
+			double vertical_pixels_per_unit;
+			if (mRenderer.hasSecondaryYAxis() && seriesRenderer.getUsesSecondaryAxis()) {
+				vertical_series_span = mRenderer.getYSecondaryAxisSpan();
+				vertical_pixels_per_unit = ySecondaryPixelsPerUnit;
+			} else {
+				vertical_series_span = mRenderer.getYPrimaryAxisSpan();
+				vertical_pixels_per_unit = yPixelsPerUnit;
+			}
 			
 			List<PointF> points = new ArrayList<PointF>();
 			for (int j=0; j < series.getItemCount(); j++) {
 				PointF point = new PointF(
 						(float) (frame.left + xPixelsPerUnit * (series.getX(j).doubleValue() - x_span.min.doubleValue())),
-						(float) (frame.bottom - yPixelsPerUnit * (series.getY(j).doubleValue() - y_span.min.doubleValue()))	
+						(float) (frame.bottom - vertical_pixels_per_unit * (series.getY(j).doubleValue() - vertical_series_span.min.doubleValue()))	
 					);
 				points.add( point );
 			}
@@ -338,10 +354,10 @@ public abstract class XYChart extends AbstractChart {
 					points,
 					seriesRenderer,
 					(float) xPixelsPerUnit,
-					(float) yPixelsPerUnit,
+					(float) vertical_pixels_per_unit,
 					Math.min(
 						frame.bottom,
-						(float) (frame.bottom + yPixelsPerUnit * y_span.min.doubleValue())),
+						(float) (frame.bottom + vertical_pixels_per_unit * vertical_series_span.min.doubleValue())),
 					i);
 			
 			// Render glyphs atop the chart if necessary
@@ -349,7 +365,7 @@ public abstract class XYChart extends AbstractChart {
 				ScatterChart pointsChart = new ScatterChart(mDataset, mRenderer);
 				pointsChart.drawSeries(canvas, hash_mark_label_paint, points, seriesRenderer,
 						(float) xPixelsPerUnit,
-						(float) yPixelsPerUnit,
+						(float) vertical_pixels_per_unit,
 						0, i);
 			}
 			
@@ -363,12 +379,28 @@ public abstract class XYChart extends AbstractChart {
 				drawChartValuesText(canvas, series, hash_mark_label_paint, points, i);
 			}
 		}
+	}
+	
+	// ========================================================================
+	void drawPlotBoundaries(Canvas canvas, Rect frame, Paint hash_mark_label_paint) {
+		if (mRenderer.isShowAxes()) {
+			hash_mark_label_paint.setColor(mRenderer.getAxesColor());
+			
+			// Draw the bottom (horizontal) line
+			canvas.drawLine(frame.left, frame.bottom, frame.right, frame.bottom, hash_mark_label_paint);
 
-		if (rotate) {
-			transform(canvas, mRenderer.getOrientation().getAngle(), true);
+			// Draw the left (vertical) line
+			canvas.drawLine(frame.left, frame.top, frame.left, frame.bottom, hash_mark_label_paint);
+
+			// Optionally draw the right (vertical) line
+			if (mRenderer.hasSecondaryYAxis())
+				canvas.drawLine(frame.right, frame.top, frame.right, frame.bottom, hash_mark_label_paint);
 		}
 	}
 
+	// ========================================================================
+	
+	
 	/**
 	 * The graphical representation of the series values as text.
 	 * 
@@ -464,6 +496,102 @@ public abstract class XYChart extends AbstractChart {
 		return text;
 	}
 
+	
+	
+	
+	protected void drawVerticalAxisLabels(
+			Canvas canvas,
+			Rect frame,
+			Paint hash_mark_label_paint,
+			double yPixelsPerUnit,
+			double ySecondaryPixelsPerUnit,
+			float vertical_axis_hash_mark_width,
+			float vertical_secondary_axis_hash_mark_width) {
+		
+		
+
+		MinMax y_span = mRenderer.getYPrimaryAxisSpan();
+		
+		List<Double> yLabels = MathHelper.getLabels(y_span, mRenderer.getYLabels());
+
+		List<List<Double>> vertical_axis_datasets = new ArrayList<List<Double>>();
+		List<MinMax> vertical_axis_spans = new ArrayList<MinMax>();
+		vertical_axis_datasets.add(yLabels);
+		vertical_axis_spans.add( y_span );
+		if (mRenderer.hasSecondaryYAxis()) {
+			MinMax secondary_span = mRenderer.getYSecondaryAxisSpan();
+			vertical_axis_datasets.add( MathHelper.getLabels(secondary_span, mRenderer.getSecondaryYLabels()) );
+			vertical_axis_spans.add( secondary_span );
+		}
+
+		double[] vertical_pixels_per_unit = new double[] {yPixelsPerUnit, ySecondaryPixelsPerUnit};
+		for (int vertical_axis_index=0; vertical_axis_index<vertical_axis_datasets.size(); vertical_axis_index++) {
+//			List<Double> vertical_labels = vertical_axis_datasets.get(0);
+			List<Double> vertical_labels = vertical_axis_datasets.get(vertical_axis_index);
+			
+			MinMax label_span = vertical_axis_spans.get(vertical_axis_index);
+			
+			hash_mark_label_paint.setTextAlign( label_alignments[vertical_axis_index] );
+			for (int i = 0; i < vertical_labels.size(); i++) {
+				double label = vertical_labels.get(i);
+				float label_value = (float) (frame.bottom - vertical_pixels_per_unit[vertical_axis_index] * (label - label_span.min.doubleValue()));
+
+
+				float grid_line_startx, grid_line_stopx, hash_mark_startx, hash_mark_stopx;
+				float label_x_offset;
+
+				if (vertical_axis_index == 0) {
+					
+					grid_line_startx = frame.left;
+					grid_line_stopx = frame.right;
+					hash_mark_startx = grid_line_startx - vertical_axis_hash_mark_width;
+					hash_mark_stopx = grid_line_startx;
+
+					label_x_offset = frame.left - VERTICAL_AXIS_LINE_LABEL_CLEARANCE;
+
+				} else {
+
+					grid_line_startx = frame.left;
+					grid_line_stopx = frame.right;
+					hash_mark_startx = grid_line_stopx;
+					hash_mark_stopx = grid_line_stopx + vertical_secondary_axis_hash_mark_width;
+
+					label_x_offset = frame.right + VERTICAL_AXIS_LINE_LABEL_CLEARANCE;
+				}
+
+				if (mRenderer.isShowLabels()) {
+					hash_mark_label_paint.setColor( grid_line_colors[vertical_axis_index] );
+//					hash_mark_label_paint.setColor(mRenderer.getLabelsColor());	// XXX
+					canvas.drawLine(hash_mark_startx, label_value, hash_mark_stopx, label_value, hash_mark_label_paint);
+
+					String label_string = getLabel( label, vertical_axis_enums[vertical_axis_index] );
+					hash_mark_label_paint.measureText(label_string);
+					drawText(
+						canvas,
+						getLabel(label, vertical_axis_enums[vertical_axis_index]),
+						label_x_offset,
+						label_value - VERTICAL_AXIS_LABEL_HASH_MARK_CLEARANCE,
+						hash_mark_label_paint, 0);
+				}
+
+				if (mRenderer.isShowGrid() && mRenderer.isShowGridHorizontalLines()) {
+					hash_mark_label_paint.setColor( grid_line_colors[vertical_axis_index] );
+					hash_mark_label_paint.setPathEffect( grid_line_path_effects[vertical_axis_index] );
+					canvas.drawLine(grid_line_startx,
+							label_value,
+							grid_line_stopx,
+							label_value,
+							hash_mark_label_paint);
+
+					hash_mark_label_paint.setPathEffect(null);
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * The graphical representation of the labels on the X axis.
 	 * 

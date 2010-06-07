@@ -11,15 +11,12 @@ public interface AxesManager extends AxesLabelsManager {
 	  public void setChartTitle(String title);
 
 	  public String getXTitle();
-
 	  public void setXTitle(String title);
 
 	  public String getYTitle();
-
 	  public void setYTitle(String title);
 	  
 	  public String getYSecondaryTitle();
-
 	  public void setYSecondaryTitle(String title);
 	  
 	  public boolean hasSecondaryYAxis();

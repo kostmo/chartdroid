@@ -16,6 +16,7 @@
 
 package org.achartengine.activity;
 
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.util.MathHelper.MinMax;
 
 import java.util.List;

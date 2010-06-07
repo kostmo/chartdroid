@@ -45,6 +45,16 @@ public class SimpleSeriesRenderer implements AxesManager {
 	  protected boolean mShowGrid = false;
 	  protected boolean mShowGridHorizontal = false;
 	  protected boolean mShowGridVertical = false;
+	  
+
+	  protected boolean mUsesSecondaryAxis = false;
+	  public boolean getUsesSecondaryAxis() {
+		  return mUsesSecondaryAxis;
+	  }
+	  
+	  public void setUsesSecondaryAxis(boolean uses) {
+		  mUsesSecondaryAxis = uses;
+	  }
 
 	/** The chart title. */
 	private String mChartTitle = "";
@@ -186,6 +196,9 @@ public class SimpleSeriesRenderer implements AxesManager {
 		mShowGridVertical = showGrid;
 	}
 
+	
+	// FIXME These should not be present in the "SimpleSeriesRenderer", 
+	// and therefore should not be part of the implemented interface.
 	@Override
 	public String getYSecondaryTitle() {
 		return mYSecondaryTitle;
