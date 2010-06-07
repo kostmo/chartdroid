@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,9 +154,6 @@ public class DataCollector {
 		// Second-outermost map: All Series for that axis
 		// Innermost list: Data for a single series
 		Map<Integer, Map<Integer, List<T>>> axes_series_map = new HashMap<Integer, Map<Integer, List<T>>>();
-
-		
-		
 
 		Cursor cursor = content_resolver.query(data_uri,
 //		Cursor cursor = managedQuery(data_uri,

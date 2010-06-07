@@ -287,7 +287,6 @@ abstract public class GraphicalActivity extends Activity implements SharedPrefer
 			List<AxesMetaData> vertical_axes = extractVerticalAxes(axis_properties);
 			if (vertical_axes.size() > 1) {
 				AxesMetaData secondary_verical_axis = vertical_axes.get( 1 );
-				renderer.setHasSecondaryYAxis(true);
 				renderer.setYSecondaryTitle(secondary_verical_axis.title);
 			}
 		}

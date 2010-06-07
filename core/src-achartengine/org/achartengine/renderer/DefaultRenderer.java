@@ -103,8 +103,8 @@ public class DefaultRenderer implements LabelsManager {
 	 * 
 	 * @return the simple renderers array
 	 */
-	public SimpleSeriesRenderer[] getSeriesRenderers() {
-		return mRenderers.toArray(new SimpleSeriesRenderer[0]);
+	public List<SimpleSeriesRenderer> getSeriesRenderers() {
+		return mRenderers;
 	}
 
 	/**

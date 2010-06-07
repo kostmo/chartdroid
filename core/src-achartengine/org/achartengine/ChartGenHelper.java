@@ -162,10 +162,6 @@ public abstract class ChartGenHelper {
 		
 		renderer.setXTitle(xTitle);
 		renderer.setYTitle(yTitle);
-		// TODO
-		if (renderer.hasSecondaryYAxis()) {
-			Log.e(TAG, "Has a secondary axis...");
-		}
 		
 		renderer.setAxesColor(axesColor);
 		renderer.setLabelsColor(labelsColor);

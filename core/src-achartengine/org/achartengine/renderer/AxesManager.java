@@ -18,7 +18,4 @@ public interface AxesManager extends AxesLabelsManager {
 	  
 	  public String getYSecondaryTitle();
 	  public void setYSecondaryTitle(String title);
-	  
-	  public boolean hasSecondaryYAxis();
-	  public void setHasSecondaryYAxis(boolean has_axis);
 }

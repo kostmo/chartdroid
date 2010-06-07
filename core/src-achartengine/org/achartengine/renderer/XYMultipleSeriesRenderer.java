@@ -37,7 +37,6 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	private String mYTitle = "";
 	/** The secondary Y axis title. */
 	private String mYSecondaryTitle = "";
-	private boolean has_secondary_y_axis;
 	
 	/** The start value in the X axis range. */
 	private MinMax mXspan;
@@ -370,13 +369,11 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 		mYSecondaryTitle = title;
 	}
 
-	@Override
 	public boolean hasSecondaryYAxis() {
-		return has_secondary_y_axis;
-	}
+		for (SimpleSeriesRenderer series_renderer : getSeriesRenderers())
+			if (series_renderer.getUsesSecondaryAxis())
+				return true;
 
-	@Override
-	public void setHasSecondaryYAxis(boolean hasAxis) {
-		has_secondary_y_axis = hasAxis;
+		return false;
 	}
 }
