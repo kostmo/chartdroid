@@ -208,15 +208,4 @@ public class SimpleSeriesRenderer implements AxesManager {
 	public void setYSecondaryTitle(String title) {
 		mYSecondaryTitle = title;
 	}
-	
-
-	@Override
-	public boolean hasSecondaryYAxis() {
-		return has_secondary_y_axis;
-	}
-
-	@Override
-	public void setHasSecondaryYAxis(boolean hasAxis) {
-		has_secondary_y_axis = hasAxis;
-	}
 }
