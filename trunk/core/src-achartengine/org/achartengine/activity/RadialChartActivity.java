@@ -19,7 +19,6 @@ package org.achartengine.activity;
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
 
-import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.consumer.DataCollector;
 import org.achartengine.consumer.LabeledDatumExtractor;
 import org.achartengine.consumer.DataCollector.LabeledDatum;
@@ -54,14 +53,14 @@ public abstract class RadialChartActivity extends GraphicalActivity {
 	}
 
 	// ========================================================================
-	AxesContainer getAxesSets(Uri intent_data) throws AxesException {
+	AxesContainer getAxesSets(Uri intent_data) {
 		AxesContainer axes_container = new AxesContainer();
 		
 		List<List<List<LabeledDatum>>> sorted_series_list = DataCollector.getGenericSortedSeriesData(intent_data, getContentResolver(), new LabeledDatumExtractor());
 
 
 		if (sorted_series_list.size() < 1) {
-			throw new AxesException("Must have data on at least one axis!");
+			throw new IllegalArgumentException("Must have data on at least one axis!");
 		}
 
 		axes_container.datam_labels = new ArrayList<List<String>>();
@@ -81,7 +80,7 @@ public abstract class RadialChartActivity extends GraphicalActivity {
 				|| axes_container.x_axis_series.size() == 1
 				|| axes_container.x_axis_series.size() == 0)) {
 
-			throw new AxesException("Axes must have equal datum counts!");
+			throw new IllegalArgumentException("Axes must have equal datum counts!");
 		}
 
 		List<SeriesMetaData> series_meta_data = DataCollector.getSeriesMetaData( getIntent(), getContentResolver() );

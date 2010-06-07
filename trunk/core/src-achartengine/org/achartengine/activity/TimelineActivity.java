@@ -29,6 +29,7 @@ import org.achartengine.consumer.DataCollector.SeriesMetaData;
 import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.util.MathHelper.MinMax;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.TimeChart;
 
@@ -114,7 +115,7 @@ public class TimelineActivity extends XYTemporalChartActivity {
 
 
 
-		List<AxesMetaData> axis_labels = DataCollector.getAxisTitles(getIntent(), getContentResolver());
+		List<AxesMetaData> axis_properties = DataCollector.getAxisTitles(getIntent(), getContentResolver());
 
 
 		XYMultipleSeriesRenderer renderer = org.achartengine.ChartGenHelper.buildRenderer(series_meta_data);
@@ -124,11 +125,15 @@ public class TimelineActivity extends XYTemporalChartActivity {
 			((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
 		}
 
-		assignChartLabels(axis_labels, renderer);
+		assignChartLabels(axis_properties, renderer);
 
 
 
 		Log.i(TAG, "Getting the axis limits...");
+		
+		
+
+		
 		assignAxesExtents(renderer, x_axis_series, y_axis_series);
 
 		
@@ -161,4 +166,5 @@ public class TimelineActivity extends XYTemporalChartActivity {
 		
 		return chart;
 	}
+
 }

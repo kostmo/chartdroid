@@ -50,7 +50,7 @@ public class BarChartActivity extends XYSpatialChartActivity {
 
 	// ========================================================================
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws AxesException {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 		RenderingAxesContainer axes_container = getAxesSets(intent_data);
 

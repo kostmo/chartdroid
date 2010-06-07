@@ -27,6 +27,16 @@
 			android:layout_height="fill_parent"
 			android:src="@drawable/chartdroid_icon"
 		/>
+		
+		<org.achartengine.view.VerticalLabelView
+			android:id="@+id/chart_y_secondary_axis_title"
+			android:visibility="gone"
+			android:layout_margin="3sp"
+			app:text="Secondary Y-axis label"
+			app:textColor="@android:color/primary_text_dark"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>
 
 	</TableRow>
 	
@@ -47,6 +57,14 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_horizontal"
 			/>
-			
+
+		<!-- Spacer element -->
+		<FrameLayout
+			android:id="@+id/chart_y_secondary_axis_spacer"
+			android:visibility="gone"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>
+
 	</TableRow>
 </TableLayout>

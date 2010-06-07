@@ -18,16 +18,13 @@ package org.achartengine.activity;
 
 import com.googlecode.chartdroid.R;
 import com.googlecode.chartdroid.core.ColumnSchema;
-import com.googlecode.chartdroid.core.IntentConstants;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.activity.XYChartActivity.AxesException;
 import org.achartengine.model.XYMultiSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.BubbleChart;
-import org.achartengine.view.chart.ScatterChart;
 import org.achartengine.view.chart.XYChart;
 
 import android.content.Intent;
@@ -50,7 +47,7 @@ public class BubbleChartActivity extends XYZSpatialChartActivity {
 
 	// ========================================================================
 	@Override
-	protected AbstractChart generateChartFromContentProvider(Uri intent_data) throws AxesException {
+	protected AbstractChart generateChartFromContentProvider(Uri intent_data) {
 
 
 		RenderingAxesContainer axes_container = getAxesSets(intent_data);

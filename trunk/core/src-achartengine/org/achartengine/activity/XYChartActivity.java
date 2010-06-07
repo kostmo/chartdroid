@@ -28,7 +28,6 @@ import org.achartengine.view.VerticalLabelView;
 import org.achartengine.view.chart.AbstractChart;
 import org.achartengine.view.chart.XYChart;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -36,6 +35,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -45,29 +45,17 @@ import java.util.List;
 
 abstract public class XYChartActivity extends GraphicalActivity {
 
-	/**
-	 * Thrown when there is not at least one axis present
-	 */
-	public static class AxesException extends Exception {
-
-		private static final long serialVersionUID = -1667855840214135417L;
-
-		public AxesException(String message) {
-			super(message);
-		}
-	}
-
 	// ====================================================================
 	protected int getLayoutResourceId() {
 		return R.layout.xy_chart_activity;
 	}
 
-
 	// ====================================================================
 	void setGridLinesFromPrefs(SharedPreferences prefs) {
-    	boolean enable_grid_lines = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_GRID_LINES, false);
-    	boolean enable_grid_lines_horizontal = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_HORIZONTAL_GRID_LINES, true);
-    	boolean enable_grid_lines_vertical = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_VERTICAL_GRID_LINES, true);
+		
+    	boolean enable_grid_lines = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_GRID_LINES, ChartDisplayPreferences.DEFAULT_ENABLE_GRID_LINES);
+    	boolean enable_grid_lines_horizontal = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_HORIZONTAL_GRID_LINES, ChartDisplayPreferences.DEFAULT_ENABLE_HORIZONTAL_GRID_LINES);
+    	boolean enable_grid_lines_vertical = prefs.getBoolean(ChartDisplayPreferences.PREFKEY_ENABLE_VERTICAL_GRID_LINES, ChartDisplayPreferences.DEFAULT_ENABLE_VERTICAL_GRID_LINES);
 
 		XYChart xy_chart = (XYChart) mChart;
 		xy_chart.getRenderer().setShowGrid(enable_grid_lines);
@@ -117,7 +105,7 @@ abstract public class XYChartActivity extends GraphicalActivity {
 	// ========================================================================
 	abstract MinMax getXAxisLimits(List<List<Number>> multi_series);
 	abstract MinMax getYAxisLimits(List<List<Number>> multi_series);
-	
+
 	// ========================================================================	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +120,37 @@ abstract public class XYChartActivity extends GraphicalActivity {
 	void assignAxesExtents(XYMultipleSeriesRenderer renderer, List<List<Number>> x_axis_series, List<List<Number>> y_axis_series) {
 
 		renderer.setXAxisSpan( getXAxisLimits(x_axis_series) );
-		renderer.setYAxisSpan( getYAxisLimits(y_axis_series) );
+		
+		// TODO: We need to figure out which of the y-series (by order) are meant
+		// to use the secondary y-axis or the primary y-axis.  This must be
+		// done in the getYAxisLimits() method by supplying extra information
+		// about the series.
+		
+		
+
+		if (renderer.hasSecondaryYAxis()) {
+			// Partition the y_axis_series according to Primary and Secondary vertical axes.
+			List<List<Number>> primary_vertical_series = new ArrayList<List<Number>>();
+			List<List<Number>> secondary_vertical_series = new ArrayList<List<Number>>();
+
+			for (int i=0; i<y_axis_series.size(); i++) {
+				List<Number> vertical_series = y_axis_series.get(i);
+				if (renderer.getSeriesRendererAt(i).getUsesSecondaryAxis())
+					secondary_vertical_series.add(vertical_series);
+				else
+					primary_vertical_series.add(vertical_series);
+			}
+			
+			renderer.setYAxisSpan( getYAxisLimits(primary_vertical_series) );
+			renderer.setYSecondaryAxisSpan( getYAxisLimits(secondary_vertical_series) );
+			
+		} else {
+			renderer.setYAxisSpan( getYAxisLimits(y_axis_series) );
+		}
+
+
+
+
 	}
 
 	// ========================================================================	
@@ -154,6 +172,16 @@ abstract public class XYChartActivity extends GraphicalActivity {
 		
 		((TextView) findViewById(R.id.chart_x_axis_title)).setText( xy_chart.getRenderer().getXTitle() );
 		((VerticalLabelView) findViewById(R.id.chart_y_axis_title)).setText( xy_chart.getRenderer().getYTitle() );
+		
+		if (renderer.hasSecondaryYAxis()) {
+			
+			VerticalLabelView vertical_label = (VerticalLabelView) findViewById(R.id.chart_y_secondary_axis_title);
+			
+			vertical_label.setText( xy_chart.getRenderer().getYSecondaryTitle() );
+			vertical_label.setVisibility(View.VISIBLE);
+			
+			findViewById(R.id.chart_y_secondary_axis_spacer).setVisibility(View.INVISIBLE);
+		}
 		
 		FlowLayout predicate_layout = (FlowLayout) findViewById(R.id.predicate_layout);
 		List<DataSeriesAttributes> series_attributes_list = getSeriesAttributesList(mChart);

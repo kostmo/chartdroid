@@ -18,6 +18,9 @@ public class ChartDisplayPreferences extends PreferenceActivity {
 	public final static String PREFKEY_ENABLE_HORIZONTAL_GRID_LINES = "enable_grid_lines_horizontal";
 	public final static String PREFKEY_ENABLE_VERTICAL_GRID_LINES = "enable_grid_lines_vertical";
 
+	public final static boolean DEFAULT_ENABLE_GRID_LINES = true;
+	public final static boolean DEFAULT_ENABLE_HORIZONTAL_GRID_LINES = true;
+	public final static boolean DEFAULT_ENABLE_VERTICAL_GRID_LINES = false;
 	
 	
 	public final static String SHARED_PREFS_NAME = "chart_display_prefs";

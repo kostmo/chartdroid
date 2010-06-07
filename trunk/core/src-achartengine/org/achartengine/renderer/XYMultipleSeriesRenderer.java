@@ -42,6 +42,7 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 	/** The start value in the X axis range. */
 	private MinMax mXspan;
 	private MinMax mYspan;
+	private MinMax mYSecondarySpan;
 
 	/** The approximative number of labels on the x axis. */
 	private int mXLabels = 5;
@@ -159,7 +160,15 @@ public class XYMultipleSeriesRenderer extends DefaultRenderer implements AxesMan
 		mXspan = span;
 	}
 
-	public MinMax getYAxisSpan() {
+	public MinMax getYSecondaryAxisSpan() {
+		return mYSecondarySpan;
+	}
+
+	public void setYSecondaryAxisSpan(MinMax span) {
+		mYSecondarySpan = span;
+	}
+	
+	public MinMax getYPrimaryAxisSpan() {
 		return mYspan;
 	}
 

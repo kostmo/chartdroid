@@ -30,7 +30,7 @@
 	<PreferenceCategory android:title="Chart">
 
 		<CheckBoxPreference android:key="enable_grid_lines"
-			android:defaultValue="false" android:title="Grid lines"
+			android:defaultValue="true" android:title="Grid lines"
 			android:summary="Enable grid lines" />
 
 		<CheckBoxPreference android:key="enable_grid_lines_horizontal"
@@ -40,7 +40,7 @@
 			
 		<CheckBoxPreference android:key="enable_grid_lines_vertical"
 			android:dependency="enable_grid_lines"
-			android:defaultValue="true" android:title="Vertical"
+			android:defaultValue="false" android:title="Vertical"
 			android:summary="Enable vertical grid lines" />
 
 	</PreferenceCategory>
