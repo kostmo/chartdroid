@@ -61,7 +61,10 @@ public class InputDatasetActivity extends ListActivity {
             	EventDatum event_datum = new EventDatum();
             	event_datum.label = "Something";
             	event_datum.timestamp = date.getTime();
-            	event_datum.value = Float.parseFloat(edit_text.getText().toString());
+            	
+            	String num_string = edit_text.getText().toString();
+            	if (num_string.length() > 0)
+            		event_datum.value = Float.parseFloat(num_string);
             	event_list.add(event_datum);
             	((BaseAdapter) getListView().getAdapter()).notifyDataSetChanged();
             	

@@ -1,17 +1,9 @@
-package org.achartengine.demo.data;
+package com.googlecode.chartdroid.example.minimal;
 
-import org.achartengine.demo.AceDataContentProvider;
-
-import android.net.Uri;
 
 public class TemperatureData {
 	
-	
-    public static Uri uri = AceDataContentProvider.BASE_URI.buildUpon()
-    .appendPath(AceDataContentProvider.CHART_DATA_MULTISERIES_PATH)
-    .appendPath(AceDataContentProvider.CHART_DATA_UNLABELED_PATH).build();  
-	
-	
+
     public static String[] DEMO_AXES_LABELS = { "Month", "Temperature" };
     public static String DEMO_CHART_TITLE = "Average temp";
    
