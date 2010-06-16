@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      android:versionCode="1" package="com.googlecode.chartdroid.example.minimal" android:versionName="1.0">
+    <application android:icon="@drawable/chartdroid_icon" android:label="@string/app_name">
+
+        <!-- The following is a DEMO provider that you should place in your own app. -->
+      	<provider android:label="Some random data"
+   			android:name="com.googlecode.chartdroid.example.minimal.provider.DataContentProvider"
+	        android:authorities="com.googlecode.chartdroid.example.minimal.provider"
+		/>
+
+        <activity android:name="com.googlecode.chartdroid.example.minimal.Demo"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+    <uses-sdk android:minSdkVersion="4"/>
+</manifest> 
