@@ -204,9 +204,11 @@ public class GoogleCheckoutUtils {
 						parsed_rows.add(new SpreadsheetRow(row));
 
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
 					this.error_message = response_string.trim();
 					return null;
 				} catch (Exception e) {
+					e.printStackTrace();
 					this.error_message = e.getMessage();
 					return null;
 				}
