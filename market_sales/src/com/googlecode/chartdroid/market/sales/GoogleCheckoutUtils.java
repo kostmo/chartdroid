@@ -296,13 +296,12 @@ public class GoogleCheckoutUtils {
 		nameValuePairs.add(new BasicNameValuePair("continue", TARGET_CHECKOUT_PAGE.toString()));
 		nameValuePairs.add(new BasicNameValuePair("service", GOOGLE_CHECKOUT_SERVICE_CODENAME));
 		nameValuePairs.add(new BasicNameValuePair("dsh", Long.toString(secret_code)));
-		nameValuePairs.add(new BasicNameValuePair("ltmpl", "mobilec"));
-		nameValuePairs.add(new BasicNameValuePair("btmpl", "mobile"));
 		nameValuePairs.add(new BasicNameValuePair("GALX", secret_galaxy));
 		nameValuePairs.add(new BasicNameValuePair("Email", user_pass.getUserName()));
-		nameValuePairs.add(new BasicNameValuePair("PersistentCookie", "yes"));
 		nameValuePairs.add(new BasicNameValuePair("Passwd", user_pass.getPassword()));
-
+		nameValuePairs.add(new BasicNameValuePair("ltmpl", "mobilec"));
+		nameValuePairs.add(new BasicNameValuePair("btmpl", "mobile"));
+		nameValuePairs.add(new BasicNameValuePair("PersistentCookie", "yes"));
 
 		HttpPost httppost = new HttpPost( cookie_fetcher_url_string );
 		try {
