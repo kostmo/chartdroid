@@ -206,11 +206,11 @@ public class GoogleCheckoutUtils {
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 					this.error_message = response_string.trim();
-					return null;
+					return parsed_rows;
 				} catch (Exception e) {
 					e.printStackTrace();
 					this.error_message = e.getMessage();
-					return null;
+					return parsed_rows;
 				}
 
 			} else {

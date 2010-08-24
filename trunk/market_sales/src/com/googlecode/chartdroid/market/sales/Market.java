@@ -32,6 +32,10 @@ public class Market {
     public static final String CHARTDROID_PACKAGE_NAME = "com.googlecode.chartdroid";
     public static final String MARKET_CHARTDROID_DETAILS_STRING = MARKET_PACKAGE_DETAILS_PREFIX + CHARTDROID_PACKAGE_NAME;
 
+    public static final String DEVREV_PACKAGE_NAME = "com.kostmo.market.revenue";
+    public static final String MARKET_DEVREV_DETAILS_STRING = MARKET_PACKAGE_DETAILS_PREFIX + DEVREV_PACKAGE_NAME;
+    
+    
 	public static final String DEVELOPER_EMAIL = MARKET_AUTHOR_NAME + " <kostmo@gmail.com>";
 	
     
