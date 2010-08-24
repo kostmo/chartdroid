@@ -1,9 +1,7 @@
 package com.googlecode.chartdroid.market.sales;
 
-import com.googlecode.chartdroid.core.ColumnSchema;
-import com.googlecode.chartdroid.market.sales.container.DateRange;
-import com.googlecode.chartdroid.market.sales.container.UsernamePassword;
-import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -29,8 +28,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import com.googlecode.chartdroid.core.ColumnSchema;
+import com.googlecode.chartdroid.market.sales.container.DateRange;
+import com.googlecode.chartdroid.market.sales.container.UsernamePassword;
+import com.googlecode.chartdroid.market.sales.task.SpreadsheetFetcherTask;
 
 // ============================================================================
 public class Main extends Activity {
@@ -42,6 +43,7 @@ public class Main extends Activity {
 	
 	public static final int DIALOG_LOGIN_INFO = 1;
 	public static final int DIALOG_INSTALL_CHARTDROID = 2;
+	public static final int DIALOG_DEVREV_ADVERTISEMENT = 3;
 	
 
     static final String GOOGLE_CODE_URL = "http://code.google.com/p/chartdroid/wiki/MarketSalesPlotter";
@@ -151,6 +153,14 @@ public class Main extends Activity {
 		if (!Market.isIntentAvailable(this, chardroid_dummy_intent) ) {
 			showDialog(DIALOG_INSTALL_CHARTDROID);
 		}
+		
+		
+		if (savedInstanceState == null) {
+			if (android.os.Build.VERSION.SDK_INT >= 8) {
+				Log.d(TAG, "Device is running Froyo");
+				showDialog(DIALOG_DEVREV_ADVERTISEMENT);
+			}
+		}
 	}
 
 
@@ -254,8 +264,21 @@ public class Main extends Activity {
 	        .setMessage("Download ChartDroid application from the Market?")
 	        .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int whichButton) {
-	            	
 	            	Market.launchMarketSearch(Main.this, Market.MARKET_CHARTDROID_DETAILS_STRING);
+	            }
+	        })
+	        .setNegativeButton(R.string.alert_dialog_cancel, null)
+	        .create();
+        }
+        case DIALOG_DEVREV_ADVERTISEMENT:
+        {
+	    	return new AlertDialog.Builder(Main.this)
+	        .setIcon(android.R.drawable.ic_dialog_info)
+	        .setTitle(R.string.advertisement_devrev_title)
+	        .setMessage(R.string.advertisement_devrev_blurb)
+	        .setPositiveButton(R.string.view_on_market, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int whichButton) {
+	            	Market.launchMarketSearch(Main.this, Market.MARKET_DEVREV_DETAILS_STRING);
 	            }
 	        })
 	        .setNegativeButton(R.string.alert_dialog_cancel, null)
