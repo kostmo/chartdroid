@@ -1,6 +1,6 @@
 #summary Motivation for the ChartDroid project
 
-There exists a `.jar`-based library for charting in Android (from which *`ChartDroid`* branched), so why take the separate `.apk` approach?
+There [http://code.google.com/p/achartengine/ exists] a `.jar`-based library for charting in Android (from which *`ChartDroid`* branched), so why take the separate `.apk` approach?
 
   * smaller client application size
   * let's you use data directly from your database with SQLite queries in your Content Provider
