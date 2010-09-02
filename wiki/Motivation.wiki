@@ -1,0 +1,5 @@
+#summary Modivation for the ChartDroid project
+
+There exists a `.jar`-based library for charting in Android (from which ChartDroid branched), so why take the separate `.apk` approach?
+
+* smaller client application size
