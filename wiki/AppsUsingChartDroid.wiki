@@ -6,4 +6,4 @@
 || [http://sites.google.com/site/bettrflickr/ BettrFlickr] || Karl Ostmo ||
 || [http://code.google.com/p/chartdroid/wiki/MarketSalesPlotter Android Market Sales Plotter] || Karl Ostmo ||
 || [http://www.tieyourmoney.com/ Tie Your Money] || MDEPlus ||
-|| STA: Statistical Toolbox for Android || Evolve ||
+|| [http://www.evolve.dk/?page=applications STA: Statistical Toolbox for Android] || Evolve ||
