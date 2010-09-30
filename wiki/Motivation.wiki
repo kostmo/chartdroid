@@ -6,3 +6,4 @@ There [http://code.google.com/p/achartengine/ exists] a `.jar`-based library for
   * lets you use data directly from your database with SQLite queries in your Content Provider
   * receives updates (visual improvements or bugfixes) independently of the client application
   * uses resource files (XML layouts especially) without polluting resource namespace of client application (c.f. "[http://developer.android.com/guide/developing/eclipse-adt.html#libraryProject library projects]")
+  * Can be embedded in a TabActivity
