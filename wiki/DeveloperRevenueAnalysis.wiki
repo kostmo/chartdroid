@@ -11,7 +11,7 @@ An essential app for independent Android developers and small/medium publishers.
   * Quantify how comments affect sales
   * Observe effect of app pricing on sales
 
-== Usage ==
+= Usage =
 
 This app is best suited for developers with less than ~100K app purchases, since caching data from Google Checkout may take a long time, depending on sales volume.  If synching a large batch of records, you may want to plug in and find wifi.  Caching the ~3K sales records used in the screen grabs below took about two and a half minutes.
 
@@ -27,3 +27,7 @@ Only transactions marked as "Charged" (as opposed to "Cancelled" or other status
 Another feature of the app allows you to specify a "rating" threshold for each app to be notified about.  If a user leaves a comment with a rating at or below the threshold, you will be alerted in the notification area.  You can then click the notification to read the latest comments.
 
 [http://market.android.com/details?id=com.kostmo.market.revenue Here's a direct market link if you're browsing on a phone.]
+
+= Limitations =
+
+Not all countries support the Google Checkout API, and thus do not provide a "Merchant Item Key".  Developers from these countries are out of luck, for now.
