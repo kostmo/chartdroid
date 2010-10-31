@@ -11,7 +11,7 @@ An essential app for independent Android developers and small/medium publishers.
   * Quantify how comments affect sales
   * Observe effect of app pricing on sales
 
-http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market://search%3Fq%3Dpname:com.kostmo.market.revenue
+http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market://search%3Fq%3Dpname:com.kostmo.market.revenue&.png
 
 = Usage =
 
