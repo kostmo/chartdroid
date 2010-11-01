@@ -1,4 +1,5 @@
 #summary Developer Revenue Analysis
+#labels Featured
 
 = Introduction =
 
@@ -45,3 +46,11 @@ String android_id = android.provider.Settings.Secure.getString(
 == Google Checkout countries ==
 
 Not all countries support the Google Checkout API, and thus do not provide a "Merchant Item Key".  Developers from these countries are out of luck, for now.
+
+= Screenshots =
+
+http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/revenue_price_overlay.png
+http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_revenue_timelines.png
+http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_revenue_totals.png
+http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_consolidator_activity.png
+http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/revenue_ratings_timeline.png
