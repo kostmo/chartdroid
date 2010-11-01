@@ -1,6 +1,8 @@
 #summary Developer Revenue Analysis
 #labels Featured
 
+<wiki:toc max_depth="3" />
+
 = Introduction =
 
 Note: Requires Android 2.2 (Froyo)
