@@ -4,6 +4,6 @@
 || *App* || *Publisher* ||
 || [http://sites.google.com/site/droidful/my-apps/kanji-tutor Kanji Tutor] || Karl Ostmo ||
 || [http://sites.google.com/site/bettrflickr/ BettrFlickr] || Karl Ostmo ||
-|| [http://code.google.com/p/chartdroid/wiki/MarketSalesPlotter Android Market Sales Plotter] || Karl Ostmo ||
+|| [DeveloperRevenueAnalysis Developer Revenue Analysis] || Karl Ostmo ||
 || [http://www.tieyourmoney.com/ Tie Your Money] || MDEPlus ||
 || [http://www.evolve.dk/?page=applications STA: Statistical Toolbox for Android] || Evolve ||
