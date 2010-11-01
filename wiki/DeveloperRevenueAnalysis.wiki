@@ -38,7 +38,7 @@ Occasionally users have encountered the following error when downloading records
 {{{
 SSL handshake failure: I/O error during system call, Unknown error: 0
 }}}
-It may be due to [http://code.google.com/p/android/issues/detail?id=2690 Issue #2690] in Android, which has a fix [http://code.google.com/p/android/issues/detail?id=2690#22 in the pipeline].  My workaround has been to switch from a 3G connection to a WiFi internet connection.
+It may be due to [http://code.google.com/p/android/issues/detail?id=2690 Issue #2690] in Android, which has a fix [http://code.google.com/p/android/issues/detail?id=2690#c22 in the pipeline].  My workaround has been to switch from a 3G connection to a WiFi internet connection.
 
 
 == Android Device IDs ==
