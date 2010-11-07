@@ -103,10 +103,13 @@ public class IntentConstants {
 	 */
 	public static final String EXTRA_FULLSCREEN = "com.googlecode.chartdroid.intent.extra.FULLSCREEN";
 
+
 	
-    public static String INTENT_EXTRA_CALENDAR_SELECTION_ID = "INTENT_EXTRA_CALENDAR_SELECTION_ID";
-    public static String INTENT_EXTRA_DATE = "INTENT_EXTRA_DATE";
-    
+	/** a long */
+	public static String INTENT_EXTRA_CALENDAR_EVENT_ID = "EXTRA_CALENDAR_EVENT_ID";
+	
+	/** a long */
+	public static String INTENT_EXTRA_DATE = "EXTRA_DATE";
 
     
     

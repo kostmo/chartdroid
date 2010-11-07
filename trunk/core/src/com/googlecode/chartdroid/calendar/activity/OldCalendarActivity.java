@@ -211,10 +211,10 @@ public class OldCalendarActivity extends Activity {
    		case REQUEST_CODE_EVENT_SELECTION:
    		{
    			
-   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, -1);
 
 			Intent i = new Intent();
-			i.putExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+			i.putExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, id);
 	        setResult(Activity.RESULT_OK, i);
 			finish();
 
