@@ -137,7 +137,7 @@ public class EventListActivity extends ListActivity {
 //			long rowid = c.getLong(rowid_column);
 			
 			Intent i = new Intent();
-			i.putExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, id);
+			i.putExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, id);
 	        setResult(Activity.RESULT_OK, i);
 			finish();
 		}
