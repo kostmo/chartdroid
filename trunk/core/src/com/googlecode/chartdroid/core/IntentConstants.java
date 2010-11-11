@@ -104,13 +104,6 @@ public class IntentConstants {
 	public static final String EXTRA_FULLSCREEN = "com.googlecode.chartdroid.intent.extra.FULLSCREEN";
 
 
-	
-	/** a long */
-	public static String INTENT_EXTRA_CALENDAR_EVENT_ID = "EXTRA_CALENDAR_EVENT_ID";
-	
-	/** a long */
-	public static String INTENT_EXTRA_DATE = "EXTRA_DATE";
-
     
     
 	public static final String ACTION_PLOT = "com.googlecode.chartdroid.intent.action.PLOT";
@@ -127,10 +120,4 @@ public class IntentConstants {
 	// Retained for compatibility...
 	@Deprecated
 	public static final String EXTRA_TITLE = "com.googlecode.chartdroid.intent.extra.TITLE";
-
-	
-	
-	// Calendar extras
-	public static final String EXTRA_EVENT_IDS = "com.googlecode.chartdroid.intent.extra.EVENT_IDS";
-	public static final String EXTRA_EVENT_TIMESTAMPS = "com.googlecode.chartdroid.intent.extra.EVENT_TIMESTAMPS";
 }

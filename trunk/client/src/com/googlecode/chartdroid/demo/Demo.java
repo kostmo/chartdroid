@@ -42,7 +42,6 @@ public class Demo extends Activity implements View.OnClickListener {
         		R.id.button_manual_entry,
         		R.id.button_sample_datasets,
         		R.id.button_old_style,
-        		R.id.button_experimental_calendar,
         		}) {
         	findViewById(view).setOnClickListener(this);
         }
@@ -104,14 +103,6 @@ public class Demo extends Activity implements View.OnClickListener {
             startActivity(new Intent(Demo.this, OldChartsActivity.class));
 			break;
 		}
-		
-		case R.id.button_experimental_calendar:
-		{
-
-			Intent i = new Intent(Intent.ACTION_VIEW, EventContentProvider.constructUri(123));
-			Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
-			break;
-		}
 		}
 	}
 	
@@ -130,7 +121,7 @@ public class Demo extends Activity implements View.OnClickListener {
   	   	switch (requestCode) {
    		case REQUEST_CODE_CALENDAR_SELECTION:
    		{
-   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, -1);
    			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
             break;
         }
