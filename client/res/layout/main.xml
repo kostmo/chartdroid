@@ -30,26 +30,16 @@
 	    android:text="Sample Datasets"
 	    android:id="@+id/button_sample_datasets"/>
 	    
-	    
-	    
    	<Button
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:text="Manual data entry"
 	    android:id="@+id/button_manual_entry"/>
 	    
-	    
-	    
    	<Button
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" 
 	    android:text="Old style charts"
 	    android:id="@+id/button_old_style"/>
-	    
-   	<Button
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" 
-	    android:text="Experimental calendar"
-	    android:id="@+id/button_experimental_calendar"/>
 
 </LinearLayout>

@@ -49,9 +49,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
 
         for (int view : new int[] {
         		R.id.button_pie_chart,
-        		R.id.button_calendar,
-        		R.id.button_pie_chart_provider,
-        		R.id.button_calendar_provider,
+        		R.id.button_pie_chart_provider
         		}) {
         	findViewById(view).setOnClickListener(this);
         }
@@ -112,40 +110,12 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
             Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
 			break;
 		}
-		case R.id.button_calendar:
-		{
-			List<EventWrapper> generated_events = generateRandomEvents(5);
-			int event_count = generated_events.size();
-			long[] event_ids = new long[event_count];
-			long[] event_times = new long[event_count];
-			for (int i = 0; i < event_count; i++) {
-				EventWrapper event = generated_events.get(i);
-				event_ids[i] = event.id;
-				event_times[i] = event.timestamp;
-			}
-			
-            Intent i = new Intent(IntentConstants.ACTION_PLOT);
-            i.addCategory(IntentConstants.CATEGORY_CALENDAR);
-			
-			i.putExtra(IntentConstants.EXTRA_EVENT_IDS, event_ids);
-			i.putExtra(IntentConstants.EXTRA_EVENT_TIMESTAMPS, event_times);
-			
-            Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
-			break;
-		}
 		case R.id.button_pie_chart_provider:
 		{
 	    	Uri u = DataContentProvider.constructUri(12345);
 			Intent i = new Intent(Intent.ACTION_VIEW, u);
 			i.putExtra(Intent.EXTRA_TITLE, "This is a really long title, isn't it?");
 			Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, Market.NO_RESULT);
-			break;
-		}
-		case R.id.button_calendar_provider:
-		{
-	    	Uri u = EventContentProvider.constructUri(12345);
-			Intent i = new Intent(Intent.ACTION_VIEW, u);
-			Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_DETAILS_STRING, i, REQUEST_CODE_CALENDAR_SELECTION);
 			break;
 		}
 		}
@@ -189,7 +159,7 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
   	   	switch (requestCode) {
    		case REQUEST_CODE_CALENDAR_SELECTION:
    		{
-   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_SELECTION_ID, -1);
+   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, -1);
    			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
             break;
         }
