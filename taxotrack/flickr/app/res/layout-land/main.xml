@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:clipChildren="false"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/main_crittr_panel">
+
+    <ImageView
+		android:scaleType="centerInside"
+		android:adjustViewBounds="true"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:src="@drawable/flickr_wordmark_vertical"/>
+
+	<LinearLayout
+		android:clipChildren="false"
+		android:orientation="horizontal"
+		android:layout_margin="5dip"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+		android:layout_centerInParent="true">
+
+		<LinearLayout style="@style/MainPageButtonBar"
+			android:layout_marginRight="15dip">
+			<include layout="@layout/main_buttonbar"/>
+		</LinearLayout>
+		
+		<LinearLayout style="@style/MainPageButtonBar"
+			android:layout_marginLeft="15dip">
+			<include layout="@layout/main_buttonbar2"/>
+		</LinearLayout>
+	</LinearLayout>
+
+</RelativeLayout>

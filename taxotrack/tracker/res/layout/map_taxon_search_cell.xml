@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+
+    android:background="@drawable/panel_background"
+	android:layout_margin="5dip"
+	android:visibility="gone"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:orientation="vertical">
+
+<!-- 
+    <LinearLayout
+		android:layout_weight="0"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">	
+		<CheckBox
+			android:id="@+id/rank_tolerance_checkbox"
+			android:layout_weight="0"
+		    android:paddingRight="5dip"
+			android:text="Rank tolerance"
+			android:layout_gravity="center_vertical"
+			android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content" />
+	    
+        <Spinner 
+		    android:layout_weight="1"
+	        android:id="@+id/spinner_ranks"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:drawSelectorOnTop="true"
+	        android:prompt="@string/prompt_rank"
+	    />
+
+	</LinearLayout>
+   
+	-->
+
+	<LinearLayout android:id="@+id/taxon_highlighter_cell"
+		android:gravity="center_vertical"
+        android:layout_width="fill_parent"
+        android:focusable="true"
+        android:layout_height="wrap_content">
+        
+		<include android:id="@+id/taxon_choice_cell"
+        	android:layout_gravity="center"
+			android:layout_margin="5dip"
+		    android:layout_width="fill_parent"
+		    android:layout_weight="1"
+        	android:layout_height="wrap_content"
+			layout="@layout/list_item_taxon"
+		/>
+	
+
+		<LinearLayout
+			android:layout_margin="5dip"
+			android:orientation="vertical"
+			android:gravity="center_vertical"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content">
+	        
+			<Button
+			    android:layout_width="fill_parent"
+			    android:layout_height="30dip"
+			    android:text="Search"
+			    android:background="@drawable/compact_button"
+			    android:id="@+id/button_initiate_search"/>
+    
+       		<Button
+			    android:layout_width="fill_parent"
+			    android:layout_height="30dip"
+			    android:text="Cancel"
+			    android:background="@drawable/compact_button"
+			    android:id="@+id/button_close_taxon_search_box"/>
+
+		</LinearLayout>
+	
+	</LinearLayout>
+
+</LinearLayout>

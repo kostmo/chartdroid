@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.crittr.track"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <application android:label="@string/main_title" android:icon="@drawable/ladybug48">
+
+   		<provider android:label="Wikat categorization event"
+   			android:name=".provider.SightingEventContentProvider"
+	        android:authorities="org.crittr.sighting"
+		/>
+
+		<provider android:label="Crittr Social Data Provider"
+			android:icon="@drawable/itis_icon"
+		 	android:authorities="org.crittr.provider.AppEngineData"
+			android:name="org.crittr.track.provider.AppEngineDataProvider"
+			android:readPermission="org.crittr.permission.SOCIAL_DATA"
+			android:writePermission="org.crittr.permission.SOCIAL_DATA"/>
+
+
+
+	    
+	    
+        <service android:name=".provider.appengine.AppEngineService" />
+	    <activity android:name=".provider.appengine.AppEngineLogin" android:theme="@android:style/Theme.Translucent"></activity>
+
+	    <activity android:name=".activity.PrefsGlobal"></activity>
+
+	    <activity android:name=".activity.SightingsList"
+	        android:label="@string/sighting_tracker">
+            <intent-filter>
+			    <action android:name="android.intent.action.INSERT_OR_EDIT" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<data android:mimeType="vnd.android.cursor.item/vnd.org.crittr.sighting" /> 
+            </intent-filter>
+
+            <intent-filter android:label="@string/sighting_tracker_attach_data">
+			    <action android:name="android.intent.action.ATTACH_DATA" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<data android:mimeType="image/*" /> 
+            </intent-filter>
+	    </activity>
+
+	
+	    
+	    <activity android:name=".activity.HelpGlossary" android:theme="@android:style/Theme.Translucent"></activity>
+	    <!-- 
+	    <activity android:name=".activity.HelpAbout" android:theme="@android:style/Theme.Translucent"></activity>
+	 	-->
+	 	
+	    
+	    <activity android:name=".activity.Main">
+	        <intent-filter>
+	            <action android:name="android.intent.action.MAIN" />
+	            <category android:name="android.intent.category.LAUNCHER" />
+	        </intent-filter>
+	    </activity>
+	     
+	     
+
+		<activity android:name=".provider.appengine.AppEngineLogin"></activity>
+		<activity android:name=".provider.appengine.ClientLoginActivity"></activity>
+
+
+
+
+		<activity android:name=".activity.PhotoSelectionIntermediary"></activity>
+
+
+	</application>
+	
+	
+	
+	
+	  
+	
+	
+		
+	<uses-sdk android:minSdkVersion="4"/>
+
+	<permission-group android:icon="@drawable/ladybug48" android:name="org.crittr.permission.GROUP" android:label="@string/permission_group_label" android:description="@string/permission_group_description"></permission-group>
+	
+
+
+	<!-- ORIGINAL DEFINITION -->
+	<permission android:name="org.crittr.permission.SOCIAL_DATA" android:description="@string/permission_description_appengine" android:label="@string/permission_label_appengine" android:icon="@drawable/ladybug48" android:permissionGroup="org.crittr.permission.GROUP" android:protectionLevel="normal"></permission>	
+
+	<!-- DUPLICATED DEFINITION -->
+	<permission android:name="org.crittr.permission.ACCESS_TAXONOMY" android:description="@string/permission_description_taxonomy" android:label="@string/permission_label_taxonomy" android:icon="@drawable/ladybug48" android:permissionGroup="org.crittr.permission.GROUP" android:protectionLevel="normal"></permission>
+	
+
+
+	<uses-permission android:name="org.crittr.permission.ACCESS_TAXONOMY"></uses-permission>
+
+
+	<!-- 
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+	-->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	
+	<!-- This is for GPS acquisition: -->
+	<!-- 
+	<uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+	-->
+	
+	
+	<!-- This is mandatory for using the unpublished API for obtaining an account name -->
+	<uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH"></uses-permission>
+
+ 	
+	<!-- This is mandatory for using the unpublished API for obtaining the authToken -->
+	<uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH.ah"></uses-permission>
+
+</manifest> 

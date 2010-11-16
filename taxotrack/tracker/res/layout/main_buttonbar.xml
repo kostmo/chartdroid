@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Button
+		android:layout_width="90dip"
+		android:layout_weight="1"
+	    android:layout_height="fill_parent"
+	    android:text="Checklist"
+	    android:drawableTop="@drawable/main_sightitings_glow"
+	    android:id="@+id/button_list_sightings"/>
+	    
+	<Button
+		android:visibility="visible"
+	    android:layout_width="90dip" 
+	    android:layout_weight="1"
+	    android:drawableTop="@drawable/main_maps_glow"
+	    android:layout_height="fill_parent" 
+	    android:text="Map"
+	    android:id="@+id/button_crittr_map"/>
+	    
+	<Button
+		android:visibility="gone"
+		android:layout_weight="1"
+	    android:layout_width="90dip" 
+	    android:drawableTop="@drawable/main_tree_glow"
+	    android:layout_height="fill_parent" 
+	    android:text="Taxonomy"
+	    android:id="@+id/button_kingdom_list"/>
+
+</merge>

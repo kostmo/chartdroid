@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <string-array name="photo_longclick_actions">
+        <item>View on Flickr</item>
+    </string-array>
+
+
+    <string-array name="privacy_filter_options">
+    	<item>ignore</item>
+        <item>public photos</item>
+        <item>private photos visible to friends</item>
+        <item>private photos visible to family</item>
+        <item>private photos visible to friends &amp; family</item>
+        <item>completely private photos</item>
+    </string-array> 
+    
+    <string-array name="privacy_filter_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="geo_context_options">
+        <item>not defined</item>
+        <item>indoors</item>
+        <item>outdoors</item>
+    </string-array> 
+    
+    <string-array name="geo_context_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
+
+   
+    <string-array name="safe_search_options">
+        <item>safe</item>
+        <item>moderate</item>
+        <item>restricted</item>
+    </string-array> 
+    
+    <string-array name="safe_search_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    
+    
+    <string-array name="sort_order_options">
+        <item>Date posted (Desc)</item>
+        <item>Date posted (Asc)</item>
+        <item>Date taken (Desc)</item>
+        <item>Date taken (Asc)</item>
+        <item>Interestingness (Desc)</item>
+        <item>Interestingness (Asc)</item>
+        <item>Relevance</item>
+    </string-array> 
+    
+    <!-- Chosen to correspond with FlickrJ constants -->
+    <string-array name="sort_order_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    
+    <!-- 
+    <string-array name="sort_order_values">
+        <item>date-posted-asc</item>
+        <item>date-posted-desc</item>
+        <item>date-taken-asc</item>
+        <item>date-taken-desc</item>
+        <item>interestingness-desc</item>
+        <item>interestingness-asc</item>
+        <item>relevance</item>
+    </string-array> 
+     -->
+
+    
+    
+    <string-array name="content_type_upload_options">
+        <item>Photo</item>
+        <item>Screenshot</item>
+        <item>Other</item>
+    </string-array> 
+
+
+    <string-array name="content_type_upload_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    
+    
+    
+    <string-array name="content_type_search_options">
+        <item>photos only</item>
+        <item>screenshots only</item>
+        <item>\'other\' only</item>
+        <item>photos and screenshots</item>
+        <item>screenshots and \'other\'</item>
+        <item>photos and \'other\'</item>
+        <item>photos, screenshots, and \'other\' (all)</item>
+    </string-array> 
+
+
+    <string-array name="content_type_search_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    
+
+    <string-array name="flickr_tag_types">
+        <item>Standard tag</item>
+        <item>Machine tag (custom)</item>
+        <item>Machine tag (predefined)</item>
+    </string-array> 
+
+     <string-array name="entries_flickr_thumbnail_modes">
+        <item>Square</item>
+        <item>Original aspect</item>
+    </string-array>
+
+    <string-array name="entries_flickr_thumbnail_modes_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    
+</resources>

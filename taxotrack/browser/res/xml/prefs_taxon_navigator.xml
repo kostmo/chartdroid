@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Taxon Navigation">
+            
+        <CheckBoxPreference
+        	android:defaultValue="true"
+                android:key="enable_sort_taxon_by_popularity"
+                android:title="Sort by popularity"
+                android:summary="Enable sorting taxons by popularity (takes a little longer to load)" />
+
+        <CheckBoxPreference
+                android:key="blacklist_enabled"
+            	android:defaultValue="true"
+                android:title="Apply blacklist"
+                android:summary="Enable blacklisting of thumbnails" />
+
+    </PreferenceCategory>
+    
+    
+    
+    <PreferenceCategory
+    
+            android:title="Taxon Cache">
+            
+            
+            <Preference
+                android:key="clear_cached_taxons"
+                android:title="Clear cache"
+                android:summary="Wipe the cached taxons" />
+            
+            
+            <!-- 
+            <DialogPreference
+                android:key="clear_cached_taxons"
+                android:title="Clear cache"
+                android:dialogTitle="Clear cache"
+                android:dialogMessage="Clear cache now?"
+                android:negativeButtonText="No"
+                android:positiveButtonText="OK"
+                android:summary="Wipe the cached taxons" />
+             -->
+    </PreferenceCategory>
+
+</PreferenceScreen>

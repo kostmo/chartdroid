@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	<TextView  
+	     android:id="@+id/photo_list_heading"
+	     android:text="@string/flickr_photolist_title"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />  
+	
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent" 
+		android:layout_weight="1"
+	    >
+	    
+	    <com.google.android.maps.MapView 
+	        android:id="@+id/mapView"
+	        android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:enabled="true"
+	        android:clickable="true"
+	        android:apiKey="@string/maps_api_key"
+	        
+	    />
+	
+	    <LinearLayout android:id="@+id/zoom" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:layout_alignParentBottom="true" 
+	        android:layout_centerHorizontal="true" 
+	       />
+	       
+	
+		<ImageButton
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+			android:layout_marginRight="20dip"
+		    android:visibility="gone"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentRight="true"
+	        android:src="@drawable/ic_delete"
+		    android:id="@+id/button_cancel_search"/>
+		
+		
+		
+		
+		
+	
+	        
+			<include 
+				layout="@layout/map_marker_popup"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentBottom="true"
+			/>
+	
+		
+		
+		
+		
+		
+		<ImageView
+			android:id="@+id/left_nav_button"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentBottom="true"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_margin="10dip"
+			android:src="@drawable/btn_left"
+		/>
+		
+		<ImageView
+			android:id="@+id/right_nav_button"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentBottom="true"
+			android:layout_margin="10dip"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:src="@drawable/btn_right"
+		/>
+	
+	
+	</RelativeLayout>
+	
+</LinearLayout>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+
+	<include layout="@layout/taglist_photo"
+		android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="0"
+	/>
+	
+	
+	<TextView
+	     android:id="@+id/tag_list_header"
+	     android:text="Tags"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />  
+    
+    <ListView android:id="@android:id/list"
+    	android:fastScrollEnabled="true"
+        android:layout_width="fill_parent" 
+        android:layout_height="0dip"
+        android:layout_weight="1"/>
+
+
+     <TextView android:id="@id/android:empty"
+       android:layout_width="fill_parent" 
+       android:layout_height="fill_parent"
+       android:gravity="center"
+       android:text="getting tags..."/>
+
+</LinearLayout>

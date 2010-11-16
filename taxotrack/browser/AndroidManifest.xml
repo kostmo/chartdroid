@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.crittr.browse"
+      android:versionName="1.4.1" android:versionCode="6">
+    <application android:theme="@style/Fullscreen" android:label="@string/main_title" android:icon="@drawable/ladybug48" android:name="ApplicationState">
+
+		<provider android:label="Taxon Search Provider"
+			android:icon="@drawable/itis_icon"
+		 	android:authorities="org.crittr.provider.TaxonSearch"
+			android:name="org.crittr.provider.TaxonSearchProvider"
+			android:readPermission="org.crittr.permission.ACCESS_TAXONOMY"/>
+
+	    <activity android:name=".activity.TabActivityTaxonExtendedInfo"></activity>
+	    <activity android:name=".activity.ListActivityTaxonExtendedInfo"></activity>
+	    
+	    <activity android:name=".activity.ListActivityTextualSearch"
+	                        android:label="@string/taxonomy_search">
+			<intent-filter>
+			    <action android:name="android.intent.action.PICK" />
+			    <action android:name="android.intent.action.VIEW" />
+			    <action android:name="android.intent.action.SEARCH" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.TAXON" />
+			</intent-filter>
+	    
+	    </activity>
+	    <activity android:name=".activity.TaxonNavigatorLinear"
+	                    android:label="@string/taxonomy_explorer">
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW" />
+			    <action android:name="android.intent.action.PICK" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.TAXON" />
+			</intent-filter>
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW" />
+			    <action android:name="android.intent.action.PICK" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		
+	    		<data android:scheme="tsn" />
+	    		<category android:name="android.intent.category.BROWSABLE" />
+			</intent-filter>
+	    </activity>
+	    
+	    
+	    <activity android:name=".activity.prefs.PrefsTaxonSearch"></activity>
+	    <activity android:name=".activity.prefs.PrefsTaxonNavigator"></activity>
+
+	    
+	    <activity android:name=".activity.ListActivityBookmarks"></activity>
+	    <activity android:name=".activity.ListActivityPopularTaxons"></activity>
+	    <activity android:name=".activity.TabActivitySupplementaryTaxonLists"></activity>
+	    
+	    <activity android:name=".activity.TaxonNavigatorRadial"></activity>
+	    
+	
+	    
+	    <activity android:name=".activity.HelpGlossary" android:theme="@android:style/Theme.Translucent"></activity>
+	    <!-- 
+	    <activity android:name="HelpAbout" android:theme="@android:style/Theme.Translucent"></activity>
+	 	-->
+	 	
+	    <activity android:name=".activity.Main">
+	        <intent-filter>
+	            <!-- The MAIN action describes a main entry point into an
+	                 activity, without any associated data. -->
+	            <action android:name="android.intent.action.MAIN" />
+	
+	            <!-- This places this activity into the main app list. -->
+	            <category android:name="android.intent.category.LAUNCHER" />
+	        </intent-filter>
+	    </activity>
+	     
+
+		  
+		<receiver android:icon="@drawable/ladybug48" android:label="Crittr: Respond to Low Storage" android:name=".StorageLowReceiver">
+		    <intent-filter>
+		        <action android:name="android.intent.action.DEVICE_STORAGE_LOW"/>
+		    </intent-filter>
+		</receiver>
+
+	</application>
+	
+	
+	
+
+
+	<uses-sdk android:minSdkVersion="4"/>
+	
+	<permission-group android:icon="@drawable/ladybug48" android:name="org.crittr.permission.GROUP" android:label="@string/permission_group_label" android:description="@string/permission_group_description"></permission-group>
+
+
+	<!-- ORIGINAL DEFINITION -->
+	<permission android:name="org.crittr.permission.ACCESS_TAXONOMY" android:description="@string/permission_description_taxonomy" android:label="@string/permission_label_taxonomy" android:icon="@drawable/ladybug48" android:permissionGroup="org.crittr.permission.GROUP" android:protectionLevel="normal"></permission>
+
+	<!-- DUPLICATED DEFINITION -->
+	<permission android:name="org.crittr.permission.SOCIAL_DATA" android:description="@string/permission_description_appengine" android:label="@string/permission_label_appengine" android:icon="@drawable/ladybug48" android:permissionGroup="org.crittr.permission.GROUP" android:protectionLevel="normal"></permission>
+
+
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	
+	<uses-permission android:name="org.crittr.permission.SOCIAL_DATA"></uses-permission>
+
+
+</manifest> 

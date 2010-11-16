@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<Button
+	     android:id="@+id/new_search_empty_button"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_centerInParent="true"
+	     android:text="@string/new_search"
+	 />
+    
+    
+    
+    <ImageSwitcher
+		android:id="@+id/image_display"
+		android:layout_centerInParent="true"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:inAnimation="@anim/fade_in"
+	    android:outAnimation="@anim/fade_out"
+    >
+    	<ImageView
+		    android:layout_width="fill_parent" 
+		    android:layout_height="fill_parent"
+			android:adjustViewBounds="true"
+			android:scaleType="centerInside"
+		    />
+    
+    	<ImageView
+		    android:layout_width="fill_parent" 
+		    android:layout_height="fill_parent"
+			android:adjustViewBounds="true"
+			android:scaleType="centerInside"
+		    />
+    </ImageSwitcher>
+
+	<LinearLayout
+		android:id="@+id/progress_enhancing"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:visibility="gone"
+		android:padding="8dip"
+		android:gravity="right"
+	    android:background="@color/half_translucent_black"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+	
+		<ProgressBar
+			style="?android:attr/progressBarStyleSmall"
+			android:indeterminate="true"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"/>
+			
+		<TextView
+			android:text="Loading image..."
+			android:layout_marginLeft="5dip"
+			android:gravity="center_vertical"
+			android:layout_width="wrap_content"  
+			android:layout_height="fill_parent"/>
+
+	</LinearLayout>
+
+</RelativeLayout>

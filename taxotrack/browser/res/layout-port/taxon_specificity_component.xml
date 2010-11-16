@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+   	android:id="@+id/map_search_criteria_group"
+    android:layout_weight="0"
+    android:orientation="vertical"
+   	android:layout_width="fill_parent"
+   	android:visibility="gone"
+   	android:layout_height="wrap_content">
+
+	 <TextView  
+	     xmlns:android="http://schemas.android.com/apk/res/android"  
+	     android:id="@+id/flickr_grid_title"
+	     android:text="Rank filter"  
+	     android:visibility="gone"
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />
+	     
+	<LinearLayout
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content"
+		    android:gravity="center_vertical">
+	   	
+		<Spinner 
+	        android:id="@+id/spinner_rank_inequality"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:drawSelectorOnTop="true"
+	        android:entries="@array/rank_inequality_values"
+	        android:prompt="@string/prompt_kingdom"
+	    />
+	    
+	    <Spinner 
+	        android:id="@+id/spinner_ranks"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:drawSelectorOnTop="true"
+	        android:prompt="@string/prompt_rank"
+	    />
+	    
+   		<ImageView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/btn_close"
+		    android:id="@+id/button_rank_filter_disable"/>
+	    
+	</LinearLayout>
+	    
+   	<LinearLayout
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content">
+    
+	    <TextView 
+			android:text="in"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:gravity="center_vertical"
+		/>
+		
+		<Spinner 
+	        android:id="@+id/spinner_kingdoms"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:drawSelectorOnTop="true"
+	        android:prompt="@string/prompt_kingdom"
+	    />
+
+
+
+	</LinearLayout>
+
+   
+</LinearLayout>

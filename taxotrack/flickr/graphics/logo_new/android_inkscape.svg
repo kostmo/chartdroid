@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="500"
+   height="500"
+   version="1.0"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="android_piechart_inkscape.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   style="display:inline">
+  <metadata
+     id="metadata65">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs63">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 250 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="500 : 250 : 1"
+       inkscape:persp3d-origin="250 : 166.66667 : 1"
+       id="perspective67" />
+  </defs>
+  <sodipodi:namedview
+     inkscape:window-height="938"
+     inkscape:window-width="1278"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="1"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#30587c"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1.976"
+     inkscape:cx="219.19441"
+     inkscape:cy="294.77584"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:current-layer="layer3"
+     inkscape:window-maximized="0" />
+  <g
+     id="g6"
+     style="stroke-linecap:round" />
+  <g
+     transform="translate(28,416)"
+     id="g46"
+     style="fill:none;stroke:#ffffff;stroke-width:12;stroke-linecap:square" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Original Droid"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <g
+       id="g3257"
+       style="stroke-linecap:round">
+      <g
+         id="g3259"
+         style="stroke:#ffffff">
+        <path
+           d="M 303,49 291,67"
+           id="path3261"
+           style="stroke-width:30" />
+        <path
+           d="m 197,49 12,18"
+           id="path3263"
+           style="stroke-width:30" />
+        <path
+           d="m 216,300 0,38"
+           id="path3265"
+           style="stroke-width:60" />
+        <path
+           d="m 284,300 0,38"
+           id="path3267"
+           style="stroke-width:60" />
+        <path
+           d="m 136,162 0,77"
+           id="path3269"
+           style="stroke-width:60" />
+        <path
+           d="m 364,162 0,77"
+           id="path3271"
+           style="stroke-width:60" />
+        <ellipse
+           rx="90"
+           ry="75"
+           cx="250"
+           cy="132"
+           id="ellipse3273"
+           sodipodi:cx="250"
+           sodipodi:cy="132"
+           sodipodi:rx="90"
+           sodipodi:ry="75"
+           style="fill:#97c03d;stroke-width:12" />
+        <path
+           d="m 340,138 -180,0 0,138 c 0,13.80712 11.19288,25 25,25 l 130,0 c 13.80712,0 25,-11.19288 25,-25 l 0,-138 z"
+           id="path3275"
+           style="fill:#97c03d;stroke-width:12" />
+      </g>
+      <g
+         id="g3277"
+         style="fill:#ffffff;stroke:none">
+        <circle
+           cx="214"
+           cy="99"
+           r="9"
+           id="circle3279"
+           sodipodi:cx="214"
+           sodipodi:cy="99"
+           sodipodi:rx="9"
+           sodipodi:ry="9" />
+        <circle
+           cx="286"
+           cy="99"
+           r="9"
+           id="circle3281"
+           sodipodi:cx="286"
+           sodipodi:cy="99"
+           sodipodi:rx="9"
+           sodipodi:ry="9" />
+      </g>
+      <g
+         id="g3283"
+         style="stroke:#97c03d">
+        <path
+           d="M 303,49 279,85"
+           id="path3285"
+           style="stroke-width:6" />
+        <path
+           d="m 197,49 24,36"
+           id="path3287"
+           style="stroke-width:6" />
+        <path
+           d="m 216,300 0,38"
+           id="path3289"
+           style="stroke-width:36" />
+        <path
+           d="m 284,300 0,38"
+           id="path3291"
+           style="stroke-width:36" />
+        <path
+           d="m 136,162 0,77"
+           id="path3293"
+           style="stroke-width:36" />
+        <path
+           d="m 364,162 0,77"
+           id="path3295"
+           style="stroke-width:36" />
+      </g>
+    </g>
+  </g>
+</svg>

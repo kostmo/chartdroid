@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    >
+
+<TableLayout
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	android:layout_weight="1"
+	android:shrinkColumns="1"
+	android:padding="10px">
+	
+	
+	
+	<TableRow android:padding="5px">
+		<TextView android:textStyle="bold" android:text="Rank" />
+		<TextView android:text="@string/definition_rank" />
+	</TableRow>
+
+	<TableRow android:padding="5px">
+		<TextView android:textStyle="bold" android:text="Taxon" />
+		<TextView
+			android:id="@+id/links_test"
+			android:linksClickable="true"
+			android:layout_height="wrap_content"
+			android:text="@string/definition_taxon" />
+	</TableRow>
+	
+	<TableRow android:padding="5px">
+		<TextView
+		android:width="90dip"
+		android:paddingRight="10dip"
+		android:textStyle="bold" android:text="@string/glossary_vernacular" />
+		<TextView
+			android:layout_height="wrap_content"
+			android:text="@string/definition_vernacular" />
+	</TableRow>
+
+
+</TableLayout>
+
+
+
+
+
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Search Options">
+             
+        <CheckBoxPreference
+            android:key="match_all_tags"
+            android:title="@string/machine_tag_matching_checkbutton_label"
+            android:defaultValue="false"
+            android:summary="Require matches to posess all listed tags" /> 
+        
+        <CheckBoxPreference
+            android:key="commons_only"
+            android:title="Commons only"
+            android:defaultValue="false"
+            android:summary="Show only photos that are part of the Flickr Commons project" />
+
+        <ListPreference
+            android:key="sort_order"
+            android:defaultValue="4"
+            android:title="Sort order"
+            android:entries="@array/sort_order_options"
+            android:entryValues="@array/sort_order_values"
+            android:summary="Order of search results" />
+        
+        <ListPreference
+            android:key="geo_context"
+            android:defaultValue="0"
+            android:title="Geo context"
+            android:entries="@array/geo_context_options"
+            android:entryValues="@array/geo_context_values"
+            android:summary="Indoor / Outdoor" />
+
+        <ListPreference
+            android:key="search_privacy_level"
+            android:defaultValue="0"
+            android:title="Privacy level"
+            android:entries="@array/privacy_filter_options"
+            android:entryValues="@array/privacy_filter_values"
+            android:summary="Public, friends, family, etc." />
+
+        <ListPreference
+            android:key="safe_search"
+            android:defaultValue="2"
+            android:title="Safety level"
+            android:entries="@array/safe_search_options"
+            android:entryValues="@array/safe_search_values"
+            android:summary="Safe search level" />
+
+        <ListPreference
+            android:key="content_type"
+            android:defaultValue="6"
+            android:title="Content type"
+            android:entries="@array/content_type_search_options"
+            android:entryValues="@array/content_type_search_values"
+            android:summary="Photo / Screenshot / Other" />
+            
+    </PreferenceCategory>
+
+</PreferenceScreen>

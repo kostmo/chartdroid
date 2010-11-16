@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="instructions_taxon_search">Search by name for a taxon here.  You can either finalize your choice here (longpress), or you may navigate \"up\" (click) from a search result to a less specific taxon, if you\'re not sure.</string>
+    <string name="instructions_taxonav">You may make your taxon selection by either long-pressing an item or selecting \"Choose\" from the main menu.  Click on a taxon to proceed deeper into the hierarchy. Click on the thumbnail to see more specimens. <b>Note:</b> The BACK button moves \"up\" in the hierarchy.  To exit the taxonomy navigator, select \"Cancel\" from the menu.</string>
+    
+    <string name="instructions_reference_info">Here you can browse through the pictures from Flickr, Wikipedia, and Wikimedia Commons. The set of reference buttons are direct links to articles on Wikipedia, Encyclopedia of Life, etc.</string>
+</resources>
+

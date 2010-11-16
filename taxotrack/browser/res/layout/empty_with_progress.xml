@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:id="@id/android:empty" xmlns:android="http://schemas.android.com/apk/res/android"
+
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal">
+
+	    <ProgressBar
+			android:id="@+id/empty_list_progress"
+			android:indeterminate="true"
+			android:indeterminateOnly="true"
+			android:gravity="center"
+			android:paddingRight="5dip"	    	       
+			style="?android:attr/progressBarStyleSmall"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+	    />
+	    
+		<TextView
+	     	android:id="@+id/empty_list_text"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:text="@string/working_message"/>
+				
+	</LinearLayout>
+	
+	
+	<LinearLayout
+		android:visibility="gone"
+		android:id="@+id/leaf_button_bar"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_weight="1"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:drawableLeft="@drawable/ok"
+		    android:text="Choose this"
+		    android:id="@+id/button_choose_taxon"/>
+	
+		<Button
+			android:layout_weight="1"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:drawableLeft="@drawable/ic_launcher_gallery"
+		    android:text="View images"
+		    android:id="@+id/button_view_images"/>
+				
+	</LinearLayout>
+			
+</LinearLayout>

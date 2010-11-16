@@ -1,0 +1,55 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group
+		android:menuCategory="container">
+	    <item android:id="@+id/menu_slideshow_start"
+	          android:title="Start"
+	          android:alphabeticShortcut="s"
+	          android:icon="@drawable/ic_menu_play_clip" />
+	          
+	    <item android:id="@+id/menu_slideshow_pause"
+	          android:title="Pause"
+	          android:alphabeticShortcut="p"
+	          android:icon="@drawable/ic_menu_stop" />
+	</group>
+	<group android:menuCategory="container">
+	    <item android:id="@+id/menu_slideshow_previous"
+	          android:title="Previous"
+	          android:alphabeticShortcut="r"
+	          android:icon="@drawable/ic_menu_back" />
+	          
+	    <item android:id="@+id/menu_slideshow_next"
+	          android:title="Next"
+	          android:alphabeticShortcut="n"
+	          android:icon="@drawable/ic_menu_next" />
+	</group>
+
+    <item android:id="@+id/menu_change_orientation"
+          android:title="Orientation"
+          android:alphabeticShortcut="o"
+          android:icon="@android:drawable/ic_menu_always_landscape_portrait" />	
+
+	<group android:menuCategory="container">
+	    <item android:id="@+id/menu_search"
+	          android:title="@string/new_search"
+	          android:alphabeticShortcut="s"
+	          android:icon="@android:drawable/ic_menu_search" />
+	
+	    <item android:id="@+id/menu_save_search"
+	          android:title="Save this search"
+	          android:titleCondensed="Save search"
+	          android:alphabeticShortcut="a"
+	          android:icon="@android:drawable/ic_menu_save" />
+	</group>
+	
+     <item android:id="@+id/menu_help"
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_help" />
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="p"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
+</menu>

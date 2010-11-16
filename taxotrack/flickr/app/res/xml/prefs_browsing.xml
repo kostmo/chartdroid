@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.kostmo.flickr.bettr">
+    
+    <PreferenceCategory android:title="Photo Browsing">
+
+    	<com.kostmo.tools.view.preference.EditIntegerPreference
+            android:numeric="integer"
+            android:key="photos_per_page"
+            android:defaultValue="25"
+            app:maxValue="500"
+            android:title="Photos per page"
+            android:summary="How many photos to retrieve at once"
+            android:dialogTitle="Max photos" />
+
+        <CheckBoxPreference
+                android:key="start_details_view"
+            	android:defaultValue="true"
+                android:title="Prefer details view"
+                android:summary="Starts photo viewer in details mode" />
+
+        <CheckBoxPreference
+                android:key="launch_with_last_search"
+            	android:defaultValue="true"
+                android:title="Launch with last search"
+                android:summary="Runs last search when photo viewer started" />
+
+
+        <ListPreference
+                android:key="photo_list_click_action"
+                android:title="Photo click action"
+                android:summary="Show photo info page or larger image"
+                android:defaultValue="0"
+                android:entries="@array/photo_list_item_click_actions"
+                android:entryValues="@array/photo_list_item_click_values"/>  
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Other preferences">
+       <Preference
+            android:key="prefs_link_search"
+            android:title="Search Parameters"
+            android:summary="View detailed search options" />
+
+       <Preference
+            android:key="prefs_link_slideshow"
+            android:title="Slideshow Options"
+            android:summary="Set properties of slideshow" />
+
+<!-- 
+        <CheckBoxPreference
+                android:key="square_thumbnails"
+            	android:defaultValue="true"
+                android:title="Square Flickr thumnails"
+                android:summary="Forces square aspect ratio" />
+-->    
+                
+                
+<!--             
+		<ListPreference
+			android:key="thumbnail_mode"
+			android:title="Thumbnail mode"
+			android:summary="Specify thumbnail aspect ratio"
+			android:entries="@array/entries_flickr_thumbnail_modes"
+			android:entryValues="@array/entries_flickr_thumbnail_modes_values"
+			android:dialogTitle="Thumbnail mode" 
+			 />
+-->
+    </PreferenceCategory>
+</PreferenceScreen>

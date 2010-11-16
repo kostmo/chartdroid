@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="left"
+    android:orientation="vertical">
+
+	<TextView
+	     android:id="@+id/tag_list_header"
+     	 android:freezesText="true"
+	     android:text="Tags"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />  
+    
+    <ListView android:id="@android:id/list"
+    	android:fastScrollEnabled="true"
+		android:layout_weight="1"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"/>
+
+	<LinearLayout
+	 	android:id="@id/android:empty"
+		android:layout_weight="1"
+		android:gravity="center"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	    
+	     <Button
+	    	android:id="@+id/button_add_tag"
+		    android:text="Add"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    />
+	    
+	     <TextView
+	       android:layout_width="wrap_content" 
+	       android:layout_height="wrap_content"
+	       android:text="tags via the Menu"/>
+    </LinearLayout>
+
+
+	<Button
+		android:id="@+id/button_tag_selection_finished"
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content" 
+	     android:text="@string/use_these_tags"
+	/>
+
+</LinearLayout>

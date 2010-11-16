@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_remove_sighting_photo"
+		android:title="Unassociate photo"
+		android:titleCondensed="Unassociate"          
+        android:alphabeticShortcut="u" />
+
+</menu>

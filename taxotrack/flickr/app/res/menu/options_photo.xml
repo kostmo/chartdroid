@@ -1,0 +1,43 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item 
+		android:title="View"
+		android:titleCondensed="View"
+		android:alphabeticShortcut="v"
+		android:icon="@android:drawable/ic_menu_view">
+
+        <menu>
+		    <item android:id="@+id/menu_view_on_flickr"
+		      android:title="on Flickr"
+		      android:titleCondensed="Flickr"
+		      android:alphabeticShortcut="f" />
+		      
+		    <item android:id="@+id/menu_zoom_view"
+		      android:title="Zoom in"
+		      android:titleCondensed="Zoom"
+		      android:alphabeticShortcut="z"/>
+		</menu>
+   	</item>
+
+    <item 
+      android:title="Photo properties"
+      android:titleCondensed="Edit"
+      android:alphabeticShortcut="s"
+      android:icon="@android:drawable/ic_menu_edit">
+      
+        <menu>
+	
+		    <item android:id="@+id/menu_edit_title_description"
+		          android:title="Title/Description"
+		          android:titleCondensed="Title/Desc"
+		          android:alphabeticShortcut="c"
+		          android:icon="@android:drawable/ic_menu_edit" />
+         			          
+		    <item android:id="@+id/menu_add_comment"
+		          android:title="Comment on photo"
+      			  android:titleCondensed="Comment"
+		          android:alphabeticShortcut="c"
+		          android:icon="@drawable/ic_menu_comment" />
+		</menu>
+   	</item>
+</menu>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <plurals name="tag_count">
+        <item quantity="one">1 tag</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> tags
+        </item>
+    </plurals>
+
+
+	<string name="use_these_tags">Use these tags</string>
+	<string name="execute_search">Find</string>
+
+
+	<string name="auth_complete_message">Success! You\'re ready to go.</string>
+
+	<string name="dialog_title_login_trouble">Login Trouble</string>
+
+	<string name="flickr_photosets">Flickr photosets</string>
+	<string name="flickr_photos">Flickr photos</string>
+
+	<string name="tag_suggestions_upload">Tags from previous uploads will be suggested in dropdown.</string>
+	<string name="tag_suggestions_search">Tags from previously saved searches will be suggested in dropdown.</string>
+
+	<string name="upload_batch_tags">Batch Tags</string>
+	<string name="tags">Tags</string>
+
+
+	<string name="toast_upload_review_settings">Please review upload settings.</string>
+
+
+	<string name="frequency_hourly">Hourly</string>
+	<string name="frequency_daily">Daily</string>
+
+
+	<string name="no_user_search">No user selected</string>
+	<string name="no_group_search">No group selected</string>
+	
+	
+	<string name="no_user_search_button">Don\'t search by user</string>
+	<string name="no_group_search_button">Disregard groups</string>
+	
+	<string name="new_search">New search</string>
+
+
+
+    <string name="color_picker">Color pickr</string>
+
+
+	<string name="empty_tag_searchlist">no tags chosen...</string>
+
+	<string name="machine_tag_matching_checkbutton_label">Match all tags</string>
+	<string name="photo_text_search_title">Photo Text Search</string>
+
+
+	<string name="flickr_login_dialog_username">Username:</string>
+	
+	<string name="flickr_add_tag_title">Add tag</string>
+	<string name="flickr_change_tag_title">Change tag</string>
+	
+	<string name="open_field_guide_group_id">1144642@N25</string>
+	<string name="open_field_guide_group_name">Open Field Guide</string>
+	
+	
+	<string name="select_group">Select group:</string>
+	<string name="select_set">Select set:</string>
+	
+	<string name="flickr_login_dialog_reassurance"><i>This application will not store your password.</i></string>
+	
+
+	<string name="flickr_abort_authentication_title">Abort authentication?</string>
+	<string name="flickr_fallback_explanation">If you prefer, you may give this application access to your Flickr account the traditional way, from a browser.</string>
+
+
+
+
+	<string name="flickr_login_dialog_title">Please log in with your Flickr Account</string>
+
+
+    <string name="flickr_authorization_heading">Connect to your Flickr Account</string>
+    
+ 	<string name="flickr_authorization_instructions">This application integrates with Flickr.  A one-time authorization is needed to connect to your Flickr account.  You may do this now or later, but some features will not work properly until you do.</string>
+  	<string name="flickr_browser_instructions">A browser window will be launched so that you can approve the app.  You may need to provide your Yahoo/Flickr login, then you will need to click \"OK, I\'LL AUTHORIZE IT\". Finally, longpress the HOME key and return to BettrFlickr.</string>
+  	
+  	
+  	<string name="flickr_login_instructions">Please log in to your Flickr account.</string>
+  	<string name="flickr_please_wait">Please wait...</string>
+ 
+ 
+	<string name="flickr_photolist_title">Flickr images</string>
+
+ 
+ 	<string name="add_tag_heading">Add tags</string>
+ 
+ 
+ 	<string name="user_photo_list">User Photo List</string>
+ 	<string name="title_tags_list">Photo Tags</string>
+    
+    <string name="flickr_account_signup">or <a href="http://www.flickr.com/signup/">sign up</a> for a Flickr acccount</string>
+    
+</resources>
+

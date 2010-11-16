@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.kostmo.flickr.bettr"
+      xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2.1.1" android:versionCode="26">
+    <application android:label="@string/app_name" android:name="ApplicationState" android:icon="@drawable/launcher">
+    
+		<provider android:name="com.kostmo.flickr.provider.LocalFileContentProvider"
+		      android:authorities="com.kostmo.flickr.bettr.provider.localfile"
+		/>
+
+		<provider android:name="com.kostmo.flickr.provider.ExperimentalFileContentProvider"
+		      android:authorities="com.kostmo.flickr.bettr.provider.experimental"
+		/>
+
+		<receiver android:name=".BootReceiver">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    	<action android:name="android.intent.action.PACKAGE_REPLACED"></action>
+				<data android:scheme="package" />
+			</intent-filter>
+		</receiver>
+		
+		<service android:name="com.kostmo.flickr.service.CheckUpdateService" android:label="@string/app_name"></service>
+		
+		<service android:name="com.kostmo.flickr.service.UploadService" />
+
+        <activity android:name="com.kostmo.flickr.activity.Main"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+		<activity android:name="com.kostmo.flickr.activity.ImageZoomActivity"
+        	android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+
+        <!-- Alias activity used to set the wallpaper on Home. The alias is used
+             simply to have a different label. -->
+        <activity-alias android:name="WallpaperActivity"
+            android:targetActivity="com.kostmo.flickr.activity.Main"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.SET_WALLPAPER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+
+		<activity android:name="com.kostmo.flickr.activity.TabbedSearchActivity"
+        	android:theme="@android:style/Theme.Translucent"/>
+		
+
+		<activity android:name="com.kostmo.flickr.activity.BatchUploaderActivity" android:label="Flickr Batch Upload">
+            <intent-filter>
+			    <action android:name="android.intent.action.SEND" />
+			    <action android:name="android.intent.action.SEND_MULTIPLE" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<data android:mimeType="image/*" /> 
+            </intent-filter>
+		</activity>
+
+       	<activity android:name="com.kostmo.flickr.activity.ListActivitySearchHistory"/>
+       	<activity android:name="com.kostmo.flickr.activity.PhotosetsListActivity"
+       		android:label="@string/flickr_photosets">
+	   		<intent-filter>
+			    <action android:name="android.intent.action.PICK" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.FLICKR_PHOTO" />
+			</intent-filter>
+			
+	   		<intent-filter>
+			    <action android:name="android.intent.action.GET_CONTENT" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<data android:mimeType="image/*" /> 
+			</intent-filter>
+	    </activity>
+  
+        
+	    <activity android:name="com.kostmo.flickr.activity.ListActivityPhotoTags"
+	                    android:label="@string/flickr_tags">
+	   		<intent-filter>
+			    <action android:name="android.intent.action.VIEW" />
+			    <action android:name="android.intent.action.EDIT" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.FLICKR_TAGS" />
+			</intent-filter>
+
+	   		<intent-filter>
+			    <action android:name="org.openintents.action.TAG" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.FLICKR_PHOTO" />
+			</intent-filter>
+	    </activity>
+
+	    
+	    
+	    
+	    <activity android:name="com.kostmo.flickr.activity.ListActivityTagSelection"
+            android:theme="@style/Theme.DarkerWallpaperSettings"
+	    	android:label="Tag Selection"/>
+	    
+	    <activity android:name="com.kostmo.flickr.activity.MachineTagActivity"
+	    	android:label="Machine Tag"/>
+	    
+	    
+	    
+	    <activity android:name="com.kostmo.flickr.activity.LiveSlideshowActivity"
+	    android:label="Slideshow"/>
+	    
+	    
+	    <activity android:name="com.kostmo.flickr.activity.PhotoListActivity"
+			android:label="@string/flickr_photos">
+	   		<intent-filter>
+			    <action android:name="android.intent.action.PICK" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.FLICKR_PHOTO" />
+			</intent-filter>
+			
+			
+
+			<!-- NOTE: This version is for Crittr compatibility -->
+	   		<intent-filter>
+			    <action android:name="android.intent.action.PICK" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="image/*"></data>
+			</intent-filter>
+			
+			
+			<!-- NOTE: This version will actually save the file to disk first -->
+	   		<intent-filter>
+			    <action android:name="android.intent.action.GET_CONTENT" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="image/*"></data>
+			</intent-filter>
+			
+			
+			<!-- NOTE: The "SEND" action is what lets us "Share" photos.
+				 My use of the "GET_CONTENT" action was problematic - the framework
+				 generally won't let an InputStream be directly opened from
+				 a live socket after being passed around within a file descriptor.
+				 For this reason, I'm creating my own Action that does not permit
+				 use of the createInputStream method of ContentResolver. -->
+	   		<intent-filter>
+			    <!-- 
+			    <action android:name="android.intent.action.GET_CONTENT" />
+			     -->
+			    <action android:name="com.kostmo.intent.GET_SOCKET_CONTENT" />
+			    
+	    		<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="image/*"></data>
+			</intent-filter>
+	    </activity>
+	    
+   		<activity android:name="com.kostmo.flickr.activity.TabbedPhotoPageActivity">
+	   		<intent-filter>
+			    <action android:name="android.intent.action.VIEW" />
+	    		<category android:name="android.intent.category.DEFAULT" />
+	    		<category android:name="org.crittr.category.FLICKR_PHOTO" />
+			</intent-filter>
+		</activity>
+		
+		
+		<activity android:name="com.kostmo.flickr.activity.prefs.PrefsBrowsing"></activity>
+		<activity android:name="com.kostmo.flickr.activity.prefs.PrefsSearchOptions"></activity>
+	    <activity android:name="com.kostmo.flickr.activity.prefs.PrefsTaglist"></activity>
+	    <activity android:name="com.kostmo.flickr.activity.prefs.PrefsGlobal"></activity>
+	    <activity android:name="com.kostmo.flickr.activity.prefs.PrefsUpload"></activity>
+	    <activity android:name="com.kostmo.flickr.activity.prefs.PrefsWebView"></activity>
+		<activity android:name="com.kostmo.flickr.activity.prefs.PrefsMapView"></activity>
+		<activity android:name="com.kostmo.flickr.activity.prefs.PrefsSlideshow"></activity>
+
+	     
+		<uses-library android:name="com.google.android.maps" />
+		<activity android:name="com.kostmo.flickr.activity.PhotoMap"></activity>
+
+		<activity android:name="com.kostmo.flickr.activity.FlickrAuthRetrievalActivity" android:screenOrientation="landscape"></activity>
+		<activity android:name="com.kostmo.flickr.activity.FlickrApprovalBrowser" android:screenOrientation="landscape" android:configChanges="keyboardHidden|orientation"></activity>
+
+		<activity android:name="com.kostmo.flickr.activity.ListActivityTagConvention"></activity>
+		
+		<activity android:name="com.kostmo.flickr.activity.ListActivityContacts"></activity>
+		<activity android:name="com.kostmo.flickr.activity.ListActivityPhotoComments"></activity>
+
+	</application>
+	
+
+		
+	<uses-sdk android:minSdkVersion="7"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+	<!-- 
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+	-->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	
+	<!-- 
+	<uses-permission android:name="android.permission.SET_WALLPAPER"></uses-permission>
+	-->
+	
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+</manifest> 

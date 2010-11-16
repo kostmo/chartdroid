@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+     <item android:id="@+id/menu_toggle_controls"
+          android:title="Toogle controls"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_view" />
+          
+</menu>

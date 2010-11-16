@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- These are the attributes that we want to retrieve from the theme
+         in app/PreferencesFromCode.java -->
+    <declare-styleable name="TogglePrefAttrs">
+        <attr name="android:preferenceLayoutChild" />
+    </declare-styleable>
+    
+    <!-- These are the attributes that we want to retrieve from the theme
+         in view/Gallery1.java -->
+    <declare-styleable name="Gallery1">
+        <attr name="android:galleryItemBackground" />
+    </declare-styleable>
+    
+     <declare-styleable name="LabelView">
+        <attr name="text" format="string" />
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+
+
+
+
+
+
+     <declare-styleable name="EditIntegerPreference">
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+    </declare-styleable>
+
+</resources>

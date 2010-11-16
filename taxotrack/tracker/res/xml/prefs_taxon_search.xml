@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Taxon Search">
+        
+        <CheckBoxPreference
+            android:key="limit_taxon_search_results"
+            android:title="Limit search results"
+            android:defaultValue="true"
+            android:summary="Show only a subset of the fetched results" />
+        
+    	<com.kostmo.tools.view.EditIntegerPreference
+            android:numeric="integer"
+            android:key="max_taxon_search_results"
+            android:defaultValue="30"
+            android:title="Max results"
+            android:summary="How many taxon search results to display at once"
+            android:dependency="limit_taxon_search_results" 
+            android:dialogTitle="Max displayed results" />
+
+    	<com.kostmo.tools.view.EditIntegerPreference
+            android:numeric="integer"
+            android:key="max_rank_comparisons"
+            android:defaultValue="60"
+            android:title="Max rank comparions"
+            android:summary="Rank filtering can take a long time."
+            android:dependency="limit_taxon_search_results" />
+
+
+
+        <CheckBoxPreference
+            android:key="label_orphans"
+            android:title="Label orphans"
+            android:defaultValue="false"
+            android:summary="Indicate if a taxon is orphaned (slower)" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_rel_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical">
+	
+	
+	
+		<TextView
+			android:visibility="gone"
+			android:id="@+id/instruction_text"
+		    android:layout_width="fill_parent"
+		    android:layout_weight="0"
+		    android:layout_height="wrap_content" 
+		    android:text="Complete the steps in your browser"
+		/>
+
+		
+	    <WebView 
+	        android:id="@+id/webview"
+	        android:visibility="invisible"
+	        android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	    />
+	
+	</LinearLayout>
+
+	
+    <ListView
+    	android:id="@+id/task_items_list"
+    
+    	android:paddingTop="20dip"
+    	android:divider="@null"
+        android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent"
+        android:transcriptMode="alwaysScroll"/>
+</RelativeLayout>

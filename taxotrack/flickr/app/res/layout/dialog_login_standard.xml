@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView 
+        android:id="@+id/username_view"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="@string/flickr_login_dialog_username"
+        android:gravity="left"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+    <EditText
+        android:id="@+id/username_edit"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:scrollHorizontally="true"
+        android:autoText="false"
+        android:capitalize="none"
+        android:gravity="fill_horizontal"
+        android:inputType="text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/password_view"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="@string/alert_dialog_password"
+        android:gravity="left"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+    <EditText
+        android:id="@+id/password_edit"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:scrollHorizontally="true"
+        android:autoText="false"
+        android:capitalize="none"
+        android:gravity="fill_horizontal"
+        android:password="true"
+        android:inputType="text"
+        android:nextFocusDown="@id/android:button1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        
+                
+    <TextView
+		android:id="@+id/flickr_signup_link"
+		android:linksClickable="true"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/flickr_account_signup"
+        />
+        
+            <TextView
+        android:paddingTop="10px"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/flickr_login_dialog_reassurance"
+        />
+        
+        
+</LinearLayout>
+</ScrollView>

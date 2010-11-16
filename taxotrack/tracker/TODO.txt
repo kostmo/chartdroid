@@ -1,0 +1,212 @@
+TODO:
+=======
+
+
+
+Implement a "HostedImage" class
+Members include:
+* an "ImageHost" object
+    * Flickr, Commons, Picasa, Local, etc.
+* Servicewide ID
+    * Photo ID on Flickr, Article ID on Commons, Media URI for local images...
+* Thumbnail bitmap URI (so that it can be fetched asynchronously)
+    * Implement content providers for Flickr and Commons!
+
+
+
+Implement an "ImageHost" class
+Members include:
+* An "authority" String for the ContentProvider
+* A human-readable label for the ContentProvider
+* A static method to construct the media URI, given the Servicewide ID
+    * Must be a standardized scheme across content providers (e.g. content://[authority]/image/id
+
+
+
+* Implement openFile in the CrittrBrowser content provider
+    * Return the "preferred" thumbnail, which could be just the first one.
+
+
+
+
+Taxobrowser: photo longpress invokes "prefer"
+
+
+
+
+
+
+TaxoTrack:
+==========================================
+in concept it is pretty similar to the app "Pets Next Door".  PND emphasizes cats and dogs and allows you to select breeds, or you can choose "other" and specify the type of animal instead of a breed.
+
+
+
+
+
+
+
+
+
+Wikipedia search
+================
+How to harvest vernacular names for non-monophyletic groups, such as Antelope?
+http://en.wikipedia.org/wiki/Antelope
+
+
+-> I am thinking of performing clientside filtering based on the initial title characters using results from srwhat=text.  Is there a more bandwidth-efficient way to accomplish this?
+
+
+
+
+
+implement tag-convention-based search filters on photo lists
+
+
+tags need a border-revealing background
+
+
+
+Short and long-press on bookmarks does not work
+
+Check whether popularity increment still works!
+
+
+Option to group sightings by "named place"
+-> Should this correspond to a "Set" in Flickr?
+
+
+Make thumbnail_search_quota in FlickrPhotoDrawableManager into a Preference
+
+Put more content in "empty" taxon list, including "choose this" button and "hierarchy graph" button
+
+
+
+Use the word "contributor rating" rather than "score"
+Other home screen stats (use periodic animated transitions):
+- Tags rated
+- Species tracked
+
+-> How many sightings you've made
+
+-> How many pics on flickr
+
+-> List user points on home screen (low-visibility color)
+
+----> Accumulate points by specificity?
+
+
+
+"Pro" version features:
+- backup functionality?
+- offline tree + image caching
+- media search (audio from McCaulay library)?
+
+Upload chartdroid to "tools" category on market
+
+Don't prompt to change a tag that isn't yours
+
+Implement alternate flickr authentication method.
+
+
+-> Make association between url and Preferred thumbnail image path on SDcard
+
+
+
+Implement +/- flickr tag votes; put stars on them!  Only vote for the "most specific" tag; the other tags are "implied" but are there for search purposes.
+
+
+Make sightings list nicer, do data analysis with charts!
+
+Add statistical overview above sightings list
+-unique species sighted
+-coverage
+
+Use the "Count:" number in Bookmarks for "visits" instead.
+
+
+===========================
+
+Mapview:
+
+
+Either enable "Locations" in the Map options menu, or integrate it with Flickr's Places API.
+
+
+Remember map taxon box visibility after returning from taxon search selection and orientation change
+
+Implement "Fit window to results" option in the CrittrMap
+
+Show search indeterminate plus quota progressbar in window title
+
+Use dual semaphores and check for equality.  Map to primary/ secondary progress bars.  Use indeterminate simultaneously.
+
+
+
+
+=======================
+
+Test and clean up gps acquisition activity
+
+-> include message regarding wake lock and auto-exit
+
+Make an animated fade-in drawable for listview semaphore progress
+
+Show wait dialog while photos list is loading
+
+Show photolists in gridview with ellipsized taxon and color-coded offset rank dropshadow
+
+Make a pie chart of the taxon distribution within the given map rectangle
+
+Create nested pie charts indicating how many of the current taxon's immediate children you have marked as "sighted".
+
+Show pie chart of tag consumption (out of 75)
+
+Create pref to sort by flickr search hits
+
+=================
+
+Code cleanup tasks:
+
+Clean up appengine login code
+Reuse the methods from AsyncPopulator for getting the Taxon hierarchy in the tag-setter.
+
+======================
+
+Later:
+
+-> plot sightings over time
+
+Handle "ActionSightingsUpload" in AppEngine
+
+Implement lazy-load of taxons and flickr photos.
+
+Implement tag voting
+
+Vibrate when GPS gets a lock
+
+
+======================
+
+Docs:
+
+Use the word "disputed" in describing "contested" tags in docs
+
+======================
+
+upon Internal Server Error in App Engine, re-prompt for user password.  Make sure not to get into any infinite loops, though.
+
+When this is fixed, make sure to parse the XML response instead of showing it to the user.
+-> Alternatively, don't output XML from App engine, just the word "OK".
+
+======================
+
+
+Distant future:
+
+Add "upload sightings" button, with ("public") checkmark
+
+Desktop icons direct to taxon list
+
+-> Separate the machine and normal tags with a header in the same list?
+

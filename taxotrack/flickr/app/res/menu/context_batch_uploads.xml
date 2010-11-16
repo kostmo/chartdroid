@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_remove"
+          android:title="Remove"
+          android:alphabeticShortcut="r" />
+
+    <item android:id="@+id/menu_title"
+          android:title="Re-title"
+          android:alphabeticShortcut="t" />
+
+</menu>

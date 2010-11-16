@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	 <TextView
+	     android:id="@+id/flickr_grid_title"
+	     android:text="Photos"
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />  
+        
+    <GridView android:id="@+id/flickr_photo_grid"
+	
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:layout_weight="1"
+	    android:padding="10dp"
+	    android:verticalSpacing="5dp"
+	    android:horizontalSpacing="5dp"
+	    android:numColumns="auto_fit"
+	    android:columnWidth="80dp"
+	    android:stretchMode="columnWidth"
+	    
+	    android:gravity="center"
+	    />
+     
+
+</LinearLayout>

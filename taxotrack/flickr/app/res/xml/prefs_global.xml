@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Uploads">
+            
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prompt_for_crop"
+            android:title="Crop uploads"
+            android:summary="Gives you a chance to crop the selected photo before uploading" />
+
+        <Preference
+            android:defaultValue="false"
+            android:key="prefs_link_uploads"
+            android:title="Upload options"
+            android:summary="More options for uploading" />
+        
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notifications">
+        <CheckBoxPreference
+                android:key="enable_hourly_checkin"
+                android:title="Photo activity"
+                android:defaultValue="true"
+                android:summary="Notify when someone tags or comments on your photos" />
+                
+        <ListPreference
+        		android:dependency="enable_hourly_checkin" 
+                android:key="checkin_update_rate"
+                android:title="Update frequency"
+                android:summary="Duration between checkins"
+                android:defaultValue="@string/frequency_hourly"
+                android:entries="@array/entries_update_frequency_choices"
+                android:entryValues="@array/entries_update_frequency_choices"/>      
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Help">
+	    <Preference
+	          android:key="reset_help_dialogs"
+	          android:title="Reset help dialogs"
+	          android:summary="Show the help dialogs at each newly visited screen." 
+	    ></Preference>
+    </PreferenceCategory>
+    
+</PreferenceScreen>

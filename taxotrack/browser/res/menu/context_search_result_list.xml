@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_taxon_accept"
+          android:title="Choose this taxon"
+          android:alphabeticShortcut="c" />
+
+    <item android:id="@+id/menu_goto"
+    	android:visible="false"
+        android:icon="@drawable/ic_menu_goto"
+        android:title="Go to this taxon"
+        android:alphabeticShortcut="g" />
+
+    <item android:id="@+id/menu_usage_stats"
+    android:visible="false"
+      android:title="Plot usage statistics"
+          android:alphabeticShortcut="u" />
+</menu>

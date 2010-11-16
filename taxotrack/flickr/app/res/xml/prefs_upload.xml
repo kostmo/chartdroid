@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Photo Uploads">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="geotag_uploads"
+            android:title="Automatic geotag"
+            android:summary="Geotag uploads by phone's current location" />
+                        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="upload_public"
+            android:title="Publically viewable"
+            android:summary="Make all uploads public" />
+                
+        <ListPreference
+            android:key="upload_safety_level"
+            android:title="Safety level"
+            android:entries="@array/safe_search_options"
+            android:entryValues="@array/safe_search_values"
+            android:defaultValue="2"
+            android:summary="Default safety level for uploads" />
+            
+        <ListPreference
+            android:key="upload_content_type"
+            android:title="Content type"
+            android:entries="@array/content_type_upload_options"
+            android:entryValues="@array/content_type_upload_values"
+            android:summary="Default content type for uploads" />
+        
+        <!-- 
+        <EditTextPreference
+            android:key="default_tag"
+            android:title="Default tag"
+            android:summary="Leave blank for none." />
+         -->
+
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Groups and Sets">
+            
+        <CheckBoxPreference
+            android:key="set_auto_add"
+            android:title="Photoset auto-add"
+            android:defaultValue="false"
+            android:summary="Automatically adds uploaded photos to a set" />
+
+
+        <Preference
+            android:key="default_upload_set"
+            android:title="Default upload set"
+            android:summary="Specify set to automatically add add images to"
+            android:dependency="set_auto_add" />
+
+
+
+        <CheckBoxPreference
+            android:key="group_auto_add"
+            android:title="Group auto-add"
+            android:defaultValue="false"
+            android:summary="Automatically adds uploaded photos to a group" />
+
+        <ListPreference
+            android:key="default_upload_group"
+            android:title="Default upload pool"
+            android:defaultValue="@string/open_field_guide_group_id"
+            android:summary="Specify group pool to automatically add uploaded images to"
+            android:entries="@array/entries_list_preference"
+            android:entryValues="@array/entryvalues_list_preference"
+            android:dialogTitle="@string/select_group" 
+            android:dependency="group_auto_add" />
+            
+    </PreferenceCategory>
+
+</PreferenceScreen>

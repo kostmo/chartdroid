@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/menu_edit_title_description"
+          android:title="Title/Description"
+          android:titleCondensed="Title/Desc"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_edit" />
+
+    <item android:id="@+id/menu_disband_photoset"
+          android:title="Disband photoset"
+          android:titleCondensed="Disband"
+          android:alphabeticShortcut="d"/>
+          
+    <item android:id="@+id/menu_add_photo"
+    	android:visible="false"
+          android:title="Add photo"
+          android:titleCondensed="Add photo"
+          android:alphabeticShortcut="c"
+          android:icon="@drawable/ic_menu_add_picture" />
+          
+          
+    <item android:id="@+id/menu_add_comment"
+    	android:visible="false"
+         android:title="Comment on photoset"
+    	 android:titleCondensed="Comment"
+          android:alphabeticShortcut="c"
+          android:icon="@drawable/ic_menu_comment" />
+    
+</menu>

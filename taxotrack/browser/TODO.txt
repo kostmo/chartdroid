@@ -1,0 +1,5 @@
+TODO:
+=======
+
+Implement invalidaterect for new and previous text box in Radial view
+

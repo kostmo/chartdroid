@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Button
+		android:id="@+id/button_photo_upload"
+	    android:drawableLeft="@drawable/main_button_upload"
+	    android:text="Upload"
+    	style="@style/MainPageButton"/>
+
+	<Button
+	    android:id="@+id/button_photo_stream"
+	    android:drawableLeft="@drawable/main_button_home"
+	    android:text="My Photos"
+    	style="@style/MainPageButton"/>
+
+
+	<Button
+	    android:id="@+id/button_photo_sets"
+	    android:drawableLeft="@drawable/main_button_sets"
+	    android:text="Photosets"
+    	style="@style/MainPageButton"/>
+
+</merge>

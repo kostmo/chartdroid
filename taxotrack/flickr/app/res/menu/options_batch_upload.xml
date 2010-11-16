@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_add_upload"
+          android:title="Add"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_add" />
+
+
+    <item android:id="@+id/menu_clear_finished"
+          android:title="Clear finished"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_delete" />
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+          
+ 
+</menu>

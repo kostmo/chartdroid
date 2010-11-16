@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    
+	<include layout="@layout/taxon_specificity_component"/>
+    
+    <LinearLayout android:id="@+id/search_view_group"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:orientation="horizontal">
+
+	    <LinearLayout android:id="@+id/search_view_group"
+		    android:layout_weight="4"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="fill_parent"
+	    	android:gravity="right"
+	    	android:orientation="vertical">
+
+			<Spinner 
+		        android:id="@+id/spinner2"
+		        android:entries="@array/string_search_criteria"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:drawSelectorOnTop="true"
+		        android:prompt="@string/search_criteria_title"
+		    />
+	
+	    	<Spinner 
+		        android:id="@+id/spinner"
+		        android:entries="@array/string_search_variants"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:drawSelectorOnTop="true"
+		        android:prompt="@string/search_type_title"
+		    />
+
+	        <AutoCompleteTextView android:id="@+id/taxon_searchbox"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:completionThreshold="3"
+		        android:hint="e.g. 'bullfrog'"
+		        android:singleLine="true"
+			/>
+		 	
+			<ImageButton
+				android:layout_width="wrap_content"
+			    android:layout_height="wrap_content" 
+			    android:src="@drawable/ic_btn_search"
+			    android:id="@+id/button_initiate_search"/>
+
+		</LinearLayout>
+		
+	    <LinearLayout android:id="@+id/search_view_group"
+		    android:layout_weight="3"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="fill_parent"
+	    	android:orientation="vertical">
+	
+	   		 <TextView  
+			     android:id="@+id/search_result_count"
+				 android:text="0 search results"
+			     android:visibility="gone"
+			     android:layout_width="fill_parent"  
+			     android:layout_height="wrap_content"  
+			     android:paddingTop="2dip"  
+			     android:paddingBottom="2dip"  
+			     android:paddingLeft="5dip"  
+			     style="?android:attr/listSeparatorTextViewStyle" />
+			
+		    <ListView android:id="@android:id/list"
+		    	android:paddingTop="5dip"
+		    	android:fastScrollEnabled="false"
+		        android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+		        android:layout_weight="1"
+		        android:transcriptMode="disabled"/>
+		
+		    <TextView android:id="@id/android:empty"
+					android:layout_weight="1"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:gravity="center"
+					android:text="@string/no_results"/>
+			
+	 	</LinearLayout>
+ 
+ 	</LinearLayout>
+ 
+</LinearLayout>
