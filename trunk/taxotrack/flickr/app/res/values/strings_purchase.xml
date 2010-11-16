@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="purchase_advertisement_message">But don\'t fret, the <i>full version</i> can be had for a <i>pittance</i>!  Pony up!</string>
+    <string name="purchase_button_message">Get full version</string>
+    <string name="purchase_dialog_title">Not available in Lite</string>
+    <string name="feature_nag_dialog_title">Consider Full Version</string>
+
+	<string name="purchase_main_dialog_title">Get BettrFlickr Full Version</string>
+
+
+    
+    <string name="disabled_color_chooser">Choosing colors is not available in Lite version.</string>
+    <string name="disabled_map_box_search">Local map search is not available in Lite version.</string>    
+
+	<string name="disabled_search_save">Saving searches is not available in Lite version.</string>
+	<string name="disabled_search_history">Search history is not available in Lite version.</string>
+	
+	
+	<string name="disabled_next_page">Browsing beyond the first page is not available in Lite version.</string>
+	
+	
+	<string name="disabled_generic">This feature is not available in Lite version.</string>
+
+</resources>
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Taglist Preferences">
+            
+        <CheckBoxPreference
+        	android:defaultValue="true"
+                android:key="suppress_unchangeable_tags"
+                android:title="Suppress taxon tags"
+                android:summary="Only show machine tags that you can toggle" />
+
+        <CheckBoxPreference
+        	android:defaultValue="false"
+                android:key="suppress_plain_tags"
+                android:title="Suppress plain tags"
+                android:summary="Don't show non-machine tags" />
+    
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,97 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_page_navigation_group"
+    	  android:title="Page"
+          android:alphabeticShortcut="p"
+          android:icon="@drawable/ic_menu_chat_dashboard">
+
+        <menu>
+		    <item android:id="@+id/menu_next_page"
+		          android:title="Next page"
+		          android:titleCondensed="Next page"
+		          android:alphabeticShortcut="n"
+		          android:icon="@drawable/ic_menu_next" />
+		
+		    <item android:id="@+id/menu_prev_page"
+		          android:title="Previous page"
+		          android:titleCondensed="Prev page"
+		          android:alphabeticShortcut="n"
+		          android:icon="@drawable/ic_menu_back" />
+		
+		    <item android:id="@+id/menu_goto_page"
+		          android:title="@string/menu_go_to_page"
+		          android:titleCondensed="@string/menu_go_to_page"
+		          android:alphabeticShortcut="g"
+		          android:icon="@drawable/ic_menu_goto" />
+		</menu>
+	</item>
+
+    <item android:id="@+id/menu_slideshow"
+          android:title="Slideshow"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_slideshow" />
+
+    <item android:title="View mode"
+    	android:id="@+id/menu_display_mode_base"
+    	android:titleCondensed="View"
+          android:alphabeticShortcut="v"
+          android:icon="@android:drawable/ic_menu_view" />
+          
+    <item android:id="@+id/menu_search"
+          android:title="@string/new_search"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_search" />
+
+    <item android:id="@+id/menu_save_search"
+          android:title="Save this search"
+          android:titleCondensed="Save search"
+          android:alphabeticShortcut="a"
+          android:icon="@android:drawable/ic_menu_save" />
+        
+    <item android:id="@+id/menu_view_list"
+    	android:visible="false"
+          android:title="Show details view"
+          android:titleCondensed="Details view"
+          android:alphabeticShortcut="b"
+          android:icon="@android:drawable/ic_menu_info_details" />
+          
+    <item android:id="@+id/menu_view_grid"
+    	android:visible="false"
+          android:title="Show grid view"
+          android:titleCondensed="Grid view"
+          android:alphabeticShortcut="v"
+          android:icon="@android:drawable/ic_menu_gallery" />
+        <!-- 
+        <menu>
+   			<group android:id="@+id/menu_photolist_display_mode"
+				android:checkableBehavior="single">
+	
+			    <item android:id="@+id/menu_view_list"
+			          android:title="Show details view"
+			          android:titleCondensed="Details view"
+			          android:alphabeticShortcut="b"
+			          android:icon="@android:drawable/ic_menu_info_details" />
+			          
+			    <item android:id="@+id/menu_view_grid"
+			          android:title="Show grid view"
+			          android:titleCondensed="Grid view"
+			          android:alphabeticShortcut="v"
+			          android:icon="@android:drawable/ic_menu_gallery" />
+			          
+			</group>
+		</menu>
+		
+		 -->
+
+
+     <item android:id="@+id/menu_help"
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_help" />
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="p"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
+
+</menu>

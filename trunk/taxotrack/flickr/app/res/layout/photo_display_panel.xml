@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+	<LinearLayout
+	    android:padding="5dip"
+	    android:gravity="center_horizontal"
+		android:layout_weight="1"
+	    android:layout_width="fill_parent" android:layout_height="fill_parent"
+	    android:orientation="vertical">
+    
+		<TextView
+		    android:layout_width="fill_parent"
+	    	android:gravity="right"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:layout_height="wrap_content"
+		    android:textStyle="bold"
+		    android:text="Title"
+		    android:layout_weight="0"
+		    android:id="@+id/flickr_main_title"/>
+	    
+	    <TextView
+		    android:layout_width="fill_parent"
+		    
+	    	android:gravity="right"
+		    android:layout_height="fill_parent"
+		    android:text="Description"
+		    android:layout_weight="1"
+		    android:id="@+id/flickr_main_blurb"/>
+	    
+	</LinearLayout> 
+
+	<ImageView android:id="@+id/flickr_main_photo"
+		android:layout_margin="6dip"
+		android:layout_weight="0"
+		android:maxWidth="150dip"
+		android:maxHeight="150dip"
+		android:adjustViewBounds="true"
+		android:scaleType="fitStart"
+		android:src="@drawable/picture_unknown_1"
+        android:layout_width="wrap_content"
+        android:background="@drawable/picture_frame"
+        android:layout_height="wrap_content" />
+        
+</LinearLayout>

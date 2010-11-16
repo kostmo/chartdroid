@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	<TextView  
+	     android:id="@+id/photo_list_heading"
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle"
+	     android:freezesText="true" />  
+	     
+    <FrameLayout
+    	android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+	    <ListView android:id="@android:id/list"
+	    	android:fastScrollEnabled="true"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:stackFromBottom="false"/>
+	        
+	        
+		<GridView android:id="@+id/photo_grid"
+	
+			android:background="@android:drawable/screen_background_dark"
+	
+		    android:padding="2px"
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+		    android:verticalSpacing="2px"
+		    android:horizontalSpacing="2px"
+		    android:numColumns="auto_fit"
+		    android:columnWidth="100px"
+		    android:stretchMode="columnWidth"
+		    
+		    android:gravity="center"
+		    />
+		    
+		<LinearLayout android:id="@android:id/empty"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:gravity="center"
+			android:orientation="vertical">
+			 <TextView  
+			     android:text="@string/empty_no_items"  
+			     android:layout_width="wrap_content"
+			     android:layout_height="wrap_content"  
+			 />
+			 <Button
+			     android:id="@+id/new_search_empty_button"
+			     android:layout_width="wrap_content"
+			     android:layout_height="wrap_content"
+			     android:text="@string/new_search"
+			 />
+		 </LinearLayout>
+		 
+	</FrameLayout>
+
+
+
+	<TextView  
+	     android:id="@+id/picking_indicator"
+	     android:text="@string/picking_ellipsis"
+	     android:gravity="center_horizontal"
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:textAppearance="?android:attr/textAppearanceMedium" />  
+
+</LinearLayout>

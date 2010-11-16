@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.kostmo.kanji"
+	android:id="@+id/activity_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+    <org.crittr.browse.view.TaxonTreeView
+    	android:id="@+id/taxon_tree_view"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:layout_margin="5dip"
+    />
+
+</RelativeLayout>

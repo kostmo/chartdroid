@@ -1,0 +1,49 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_remove_from_photoset"
+          android:title="Remove from photoset"
+          android:alphabeticShortcut="r" />
+
+    <item android:id="@+id/menu_photo_accept"
+    	android:visible="false"
+          android:title="Choose this photo"
+          android:alphabeticShortcut="c" />
+
+    <item android:id="@+id/menu_zoom"
+          android:title="Fullscreen (zoom)"
+          android:alphabeticShortcut="f" />
+          
+    <item android:id="@+id/menu_start_slideshow_here"
+          android:title="Start slideshow"
+          android:alphabeticShortcut="s" />
+
+    <item android:id="@+id/menu_share_photo"
+          android:title="Share photo"
+          android:alphabeticShortcut="h" />
+
+    <item android:id="@+id/menu_download_photo"
+          android:title="Download photo"
+          android:alphabeticShortcut="d" />          
+
+    <item android:id="@+id/menu_set_for_contact"
+          android:title="Set for contact / wallpaper"
+          android:alphabeticShortcut="t" />
+
+    <item android:id="@+id/menu_add_to_photoset"
+          android:title="Add to photoset"
+          android:alphabeticShortcut="p" />
+
+	<!-- Is this allowed as per terms of service?  It's in the API, so it must be OK -->
+    <item android:id="@+id/menu_flickr_favorite"
+          android:title="Favorite on Flickr"
+          android:alphabeticShortcut="v" />
+
+    <item android:id="@+id/menu_view_info"
+          android:title="View info"
+          android:alphabeticShortcut="t" />
+
+    <item android:id="@+id/menu_goto_flickr"
+          android:title="View on Flickr"
+          android:alphabeticShortcut="f" />
+
+</menu>

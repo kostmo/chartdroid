@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	<string name="definition_rank">Level within the taxonomic hierarchy, e.g. Kingdom, Phylum, etc.</string>
+    <string name="definition_taxon">The scientific name of an item at a particular rank, e.g. <a href="tsn://174371">Aves</a>, <a href="tsn://180596">Canis lupus</a>, etc.</string>
+    <string name="definition_vernacular">The \'common name\' of a taxon in English.  Not all taxons have them.</string>
+    
+    <string name="glossary_vernacular">Vernacular name</string>
+    
+</resources>
+

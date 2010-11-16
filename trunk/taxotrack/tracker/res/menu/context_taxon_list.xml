@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+          
+    <item android:id="@+id/menu_taxon_accept"
+          android:title="Choose this taxon"
+          android:alphabeticShortcut="c" />
+          
+    <item android:id="@+id/menu_taxon_photos"
+          android:title="Reference info"
+          android:alphabeticShortcut="g" />
+
+    <item android:id="@+id/menu_prefer_thumbnail"
+          android:title="Prefer this thumbnail"
+          android:alphabeticShortcut="p" />
+
+    <item android:id="@+id/menu_taxon_favorite"
+          android:title="Favorite this"
+          android:alphabeticShortcut="f" />
+
+    <item android:id="@+id/menu_taxon_log_sighting"
+          android:title="Log sighting"
+          android:alphabeticShortcut="l" />
+
+</menu>

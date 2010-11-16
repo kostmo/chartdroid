@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="@string/inline_preferences">
+            
+        <CheckBoxPreference
+                android:key="acquire_on_open"
+                android:title="@string/title_acquire_on_open"
+                android:summary="@string/summary_acquire_on_open" />
+                
+        <CheckBoxPreference
+                android:key="record_acquisition"
+                android:title="@string/title_record_acquisition"
+                android:summary="@string/summary_record_acquisition" />
+                
+        <CheckBoxPreference
+                android:key="quit_on_fix"
+                android:title="@string/title_quit_on_fix"
+                android:summary="@string/summary_quit_on_fix" />
+            
+    </PreferenceCategory>
+                
+    <PreferenceCategory
+            android:title="@string/dialog_based_preferences">
+
+        <EditTextPreference
+                android:key="hostname_preference"
+                android:title="@string/title_edittext_preference"
+                android:summary="@string/summary_edittext_preference"
+                
+                android:defaultValue="@string/default_hostname_string"
+                android:dialogTitle="@string/dialog_title_edittext_preference" />
+                
+                
+        <EditTextPreference
+                android:key="port_preference"
+                android:title="@string/title_editint_preference"
+                android:summary="@string/summary_editint_preference"
+                
+                android:defaultValue="@string/default_port_number"
+                android:dialogTitle="@string/dialog_title_editint_preference" />
+
+                
+        <ListPreference
+                android:key="list_preference"
+                android:title="@string/title_list_preference"
+                android:summary="@string/summary_list_preference"
+                android:entries="@array/entries_list_preference"
+                android:entryValues="@array/entryvalues_list_preference"
+                android:dialogTitle="@string/dialog_title_list_preference" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

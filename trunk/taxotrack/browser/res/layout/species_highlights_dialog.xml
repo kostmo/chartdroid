@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
+<ImageView android:id="@+id/image_placeholder"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+/>
+
+
+
+
+<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent"
+	android:layout_width="wrap_content"
+	android:padding="10px">
+	
+	<TableRow>
+		<TextView android:text="Order: " />
+		<TextView android:id="@+id/order_name" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="Family: " />
+		<TextView android:id="@+id/family_name" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="Genus: " />
+		<TextView android:id="@+id/genus_name" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="Species: " />
+		<TextView android:id="@+id/species_name" />
+	</TableRow>
+
+</TableLayout>
+
+
+
+
+
+</LinearLayout>

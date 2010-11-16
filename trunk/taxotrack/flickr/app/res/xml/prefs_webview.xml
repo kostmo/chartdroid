@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Login Preferences">
+            
+        <CheckBoxPreference
+       		android:defaultValue="true"
+               android:key="automate_authentication"
+               android:title="Automate authentication" />
+            
+        <CheckBoxPreference
+       		android:defaultValue="false"
+       		android:key="keep_webview_visible"
+               android:title="Keep browser visible"
+               android:dependency="automate_authentication" />
+    
+    </PreferenceCategory>
+
+</PreferenceScreen>

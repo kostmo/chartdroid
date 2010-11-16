@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_tag_remove"
+          android:title="Remove tag"
+          android:alphabeticShortcut="r" />
+          
+    <item android:id="@+id/menu_tag_change_value"
+          android:title="Change value"
+          android:alphabeticShortcut="v" />
+
+    <item android:id="@+id/menu_edit_machine_tag"
+    	android:visible="false"
+        android:title="Edit"
+        android:alphabeticShortcut="e" />
+
+</menu>

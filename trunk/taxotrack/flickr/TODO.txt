@@ -1,0 +1,62 @@
+OpenFlickr TODO List:
+======================
+
+
+TASK LIST 2010/10/1:
+===================
+
+* Add main screen button to view groups
+
+* Use flickr.people.findByUsername to search for photos of people not on your contacts list
+
+* Create a "view photostream" option for when viewing other peoples' photos
+
+
+
+TASK LIST 2010/5/1:
+===================
+
+
+
+* Use ChartDroid for Comments by date
+
+* Recent activity summary page (launch when activity notification is clicked)
+
+* Checkmark to parse a comma-separated tag list
+
+* Download in background
+
+* ability to make a comment on my contacts' photos.
+
+* within photosets, options to view only public visible photos.
+
+
+-> Show whether comments exist in the Comments Tab
+-> Enable hyperlinks in text
+-> Intercept flickr browser URLs?
+
+
+
+
+
+
+Long term tasks:
+================
+
+Tag list-item background
+
+Implement "Join new group" button
+
+
+Lack of encapsulationon gridview empty workaround
+-> doesn't disappear on "gone" as listview does
+
+
+Refactor duplicate "LargeImageFetcher" (in separate class and in PhotoListActivity.java)
+
+
+handle "cancel exception" in LargeImageFetcher
+(make the progress dialog cancellable, also, and handle that to cancel the task)
+
+
+Implement Tags (and MachineTags) autocomplete via AppEngine

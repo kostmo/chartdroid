@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <LinearLayout
+        android:id="@android:id/tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+        <Button
+        	android:id="@+id/tab1"
+        	android:background="@drawable/tab_indicator_fancy"
+        	android:textColor="@color/tabtext"
+        	android:layout_weight="1"
+        	android:text="Text"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"/>
+
+        <Button
+        	android:id="@+id/tab2"
+        	android:background="@drawable/tab_indicator_fancy"
+        	android:textColor="@color/tabtext"
+        	android:layout_weight="1"
+        	android:text="Color"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"/>
+        	
+	</LinearLayout>
+	
+	
+    <FrameLayout
+        android:background="@drawable/popup_bottom_dark"
+        android:id="@android:id/tabcontent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+        <include
+            android:id="@+id/text_search_tab"
+            layout="@layout/tab_text_search" />
+            
+        <include
+            android:id="@+id/color_search_tab"
+            layout="@layout/tab_color_search" />
+
+	</FrameLayout>
+</LinearLayout>

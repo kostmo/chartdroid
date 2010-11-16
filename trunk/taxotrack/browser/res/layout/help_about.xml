@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:padding="20px"
+    >
+
+
+
+<ImageView android:id="@+id/image_placeholder"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:src="@drawable/itis_icon"
+/>
+
+
+<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	android:padding="10px">
+	
+	<TableRow>
+		<TextView android:text="Image credits: " />
+		<TextView android:id="@+id/order_name" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="Taxonomy credits: " />
+		<TextView android:id="@+id/family_name" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="Graphing library: " />
+		<TextView android:id="@+id/genus_name" />
+	</TableRow>
+	<TableRow>
+		<TextView android:text="Species: " />
+		<TextView android:id="@+id/species_name" />
+	</TableRow>
+
+</TableLayout>
+
+
+
+
+
+</LinearLayout>

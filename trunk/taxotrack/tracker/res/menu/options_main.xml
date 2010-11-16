@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item 
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_info_details">
+          
+          <menu>
+          
+          	<item android:id="@+id/menu_instructions"
+	          android:title="Instructions"
+	          android:alphabeticShortcut="i"
+	          android:icon="@android:drawable/ic_menu_help" />
+
+	        <item android:id="@+id/menu_news"
+	          android:title="News"
+	          android:alphabeticShortcut="n"
+	          />
+  
+  		    <item android:id="@+id/menu_about"
+	          android:title="@string/menu_about"
+	          android:alphabeticShortcut="a"
+	          android:icon="@android:drawable/ic_menu_info_details" />
+		</menu>
+    </item>
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+          
+</menu>

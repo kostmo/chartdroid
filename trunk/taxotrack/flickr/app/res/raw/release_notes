@@ -1,0 +1,90 @@
+v2.1.1 - 10/15/2010
+- Fixed uploader bug
+
+v2.1 - 9/30/2010
+- Hard search button
+- Batch upload tags
+- Better machine tag handling
+- UI reorganization
+- Fixed crash on Original size download
+- Other bugfixes
+
+v2.0 (requires Android 2.1+) - 8/13/2010
+- Batch uploader
+- Modularized color picker
+- Bugfixes
+
+v1.9.6 - 5/23/2010
+- Bugfixes
+
+v1.9.5 - 5/1/2010
+- Better slideshow
+- Better Intent integration
+
+v1.9.4 - 3/5/2010
+- Use provided upload title
+- Slideshow stays awake
+- Start slideshow from photo
+- slideshow force orientation
+
+v1.9.3 - 2/6/2010
+- Bugfix
+
+v1.9.2 - 1/23/2010
+- Default privacy for uploads
+
+v1.9 - 1/14/2010
+- Online slideshow
+- Go to arbitrary page
+- Fix fullscreen/zoom crash
+
+v1.8 - 1/7/2010
+- System image provider
+- Contacts list
+- Comments list
+- Fix notifications
+
+v1.7.6 - 12/6/2009
+- Download for offline slideshow
+
+1.7.5 - 12/5/2009
+- Tag autocomplete
+- Upload to set
+
+1.7 - 11/26/2009
+- Upload in background
+- Upload with tags
+
+1.6 - 11/8/2009
+- Fixed login for Android 2.0
+
+1.5 - 10/23/2009
+- Added full-screen view/zoom
+- Better memory management
+
+v1.4 - 10/17/2009
+- Can now share photos
+- Photoset privacy bug
+- Photoset manipulation
+- better wallpaper setter
+
+v1.3 - 10/13/2009
+- Photosets
+- Swipe navigation
+- "Add to favorites" option
+- page back button
+
+v1.2 - 10/13/2009
+- Fixed mismatched img labels
+- Contacts in user search
+- misc. bug fixes
+
+v1.1 - 10/7/2009
+- Implemented privacy search filters
+- Added "My Photos" button
+- Fixed image capture for upload
+- Added "set contact icon" feature
+- Search by user bugfix
+
+v1.0 - 10/6/2009
+- Posted on Android Market!

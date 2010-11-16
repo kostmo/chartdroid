@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="instructions_taxon_search">Search by name for a taxon here.  You can either finalize your choice here (longpress), or you may navigate \"up\" (click) from a search result to a less specific taxon, if you\'re not sure.</string>
+    <string name="instructions_taxonav">You may make your taxon selection by either long-pressing an item or selecting \"Choose\" from the main menu.  Click on a taxon to proceed deeper into the hierarchy. Click on the thumbnail to see more specimens. <b>Note:</b> The BACK button moves \"up\" in the hierarchy.  To exit the taxonomy navigator, select \"Cancel\" from the menu.</string>
+    <string name="instructions_uploading">The next screen will let you select a photo on your device or capture a new photo to upload.  If you would like to crop before uploading, this is configurable through Crittr\'s Preferences menu. After uploading a photo, you can tag it with a taxon classification and associate it with a sighting on your checklist.</string>
+    <string name="instructions_tagging">Some predefined tags are available for you to use, denoted by \"gears\" icons. If you choose \"Classification\" from the menu, tags will be added for the full hierarchy of the taxon you select.</string>
+    <string name="instructions_sightings">This is your lifetime species <a href="http://en.wikipedia.org/wiki/Lifelist">checklist</a>, like <a href="http://en.wikipedia.org/wiki/Birdwatching">birdwatchers</a> use.  New sightings are automatically geotagged and dated.  Longpress on a sighting to associate photos.  You can import or back up this list to your SD card.\n\nIn future releases you\'ll be able to see how your checklist stacks up against others online or put your data to other good uses, such as wildlife monitoring and conservation efforts.</string>
+    <string name="instructions_group_photos">When someone else (who is in the same group as you) tags a photo of yours, Crittr will alert you.  You may specify the Group photos to list from the Settings menu.\n\nYou may join and leave groups from the Flickr website, and also create invitation-only groups on Flickr to make your collaboration more private.</string>
+    <string name="instructions_photo_selection">Longpress on a photo to make your selection.</string>
+    
+    <string name="instructions_reference_info">Reference info instructions go here.</string>
+    <string name="instructions_map">You may cycle through occurrences with the arrows at the bottom of the screen.</string>
+
+</resources>
+

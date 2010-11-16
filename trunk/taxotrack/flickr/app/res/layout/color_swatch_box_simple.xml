@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:background="@drawable/backrepeat"
+    android:layout_weight="1" 
+    android:padding="5px"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+>
+	<Button
+	    android:drawableTop="@android:drawable/ic_menu_add"
+	    android:text="Add color"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="0" 
+	    android:id="@+id/color_picker_button"/>
+	
+	
+	<!-- 
+		<com.kostmo.tools.view.FlowLayout
+	    android:id="@+id/color_grid"
+	    android:padding="2px"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+	/>
+	 -->
+	
+	<GridView android:id="@+id/color_grid"
+	
+	    android:padding="2px"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:layout_weight="1"
+	    android:verticalSpacing="5sp"
+	    android:horizontalSpacing="5sp"
+	    android:numColumns="auto_fit"
+	    android:columnWidth="48sp"
+	    android:stretchMode="columnWidth"
+	    
+	    android:gravity="center"
+	    />
+	
+	
+
+
+</LinearLayout>

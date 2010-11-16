@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    
+        <!--
+    <string name="crop_save_text">Save</string>
+    <string name="crop_discard_text">Discard</string>
+      -->
+    
+    <string name="google_login_dialog_title">Please log in with your Google Account</string>
+    <string name="alert_dialog_username">Email:</string>
+    
+    <string name="alert_dialog_captcha">Captcha:</string>
+    
+    
+    <string name="alert_dialog_password">Password:</string>
+    <string name="google_account_signup">or <a href="https://www.google.com/accounts/Login">sign up</a> for a Google acccount</string>
+
+    
+
+    <string name="local_service_started">Local service has started</string>
+    <string name="local_service_stopped">Local service has stopped</string>
+    <string name="local_service_label">Sample Local Service</string>
+
+    <string name="local_service_connected">Connected to local service</string>
+    <string name="local_service_disconnected">Disconnected from local service</string>
+    
+    
+</resources>
+

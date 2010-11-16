@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Map Preferences">
+            
+    	<com.kostmo.tools.view.EditIntegerPreference
+            android:numeric="integer"
+            android:key="max_map_points"
+            android:defaultValue="40"
+            android:title="Max results"
+            android:summary="How many taxon search results to display at once"
+            android:dialogTitle="Max displayed results" />
+            
+    	<com.kostmo.tools.view.EditIntegerPreference
+            android:numeric="integer"
+            android:key="taxon_search_quota"
+            android:defaultValue="5"
+            android:title="Search quota"
+            android:summary="Attempt to search taxons recursively until quota is met"
+            android:dialogTitle="Search quota" />
+    
+    </PreferenceCategory>
+
+</PreferenceScreen>

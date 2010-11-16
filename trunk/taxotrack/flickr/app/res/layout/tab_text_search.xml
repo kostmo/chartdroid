@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+   
+      
+	<TextView 
+		android:visibility="gone"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/chart_title_placeholder"
+		android:text="@string/photo_text_search_title"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+	    android:padding="5dip"
+	    android:background="@color/very_dark_tint"
+	    android:layout_marginBottom="5dip"
+		/>
+   
+   <include layout="@layout/dialog_search_fields_guts" />
+   
+</LinearLayout>

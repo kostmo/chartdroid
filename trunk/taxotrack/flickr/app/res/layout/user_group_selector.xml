@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<LinearLayout
+    	android:layout_weight="1"
+		android:gravity="center_vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+	
+	    <ImageButton
+      		android:id="@+id/button_user_search_selector"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:src="@drawable/user24"
+	        />
+	    
+	    <TextView 
+	    	android:id="@+id/selected_user_name_field"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:text="@string/no_user_search"
+	        android:gravity="left"
+	    	android:layout_weight="1"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	        
+    </LinearLayout>
+      
+	<LinearLayout
+    	android:layout_weight="1"
+		android:gravity="center_vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+
+       <ImageButton
+	      	android:id="@+id/button_group_search_selector"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:src="@drawable/group24"
+	        />
+	    
+	    <TextView
+	    	android:id="@+id/selected_group_name_field"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	    	android:layout_weight="1"
+	        android:text="@string/no_group_search"
+	        android:gravity="left"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+      </LinearLayout>
+</merge>

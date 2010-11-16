@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="main_title">TaxoTrack</string>
+	<string name="main_background_text">TaxoTrack</string>
+	
+    <string name="sighting_tracker">Sighting tracker</string>
+    <string name="sighting_tracker_attach_data">Taxon sighting</string>
+	
+	
+	<string name="permission_group_label">TaxoTrack</string>
+	<string name="permission_group_description">TaxoTrack-related permissions</string>
+	
+	<string name="permission_label_appengine">access social content</string>
+	<string name="permission_description_appengine">Allows the application to access user-contributed content.</string>
+	
+	<string name="permission_label_taxonomy">access taxonomy data</string>
+	<string name="permission_description_taxonomy">Allows the application to access taxonomy data. This data is shared with the Crittr paid app.</string>
+
+
+	<string name="no_results">There are no results to display.</string>
+
+    <string name="empty_no_bookmarks">No bookmarks to display.</string>
+    <string name="empty_no_sightings">No sightings to display.</string>
+    <string name="empty_no_taxons">No taxons to display.</string>
+    <string name="empty_no_items">No items to display.</string>
+
+
+    <string name="not_implemented_message">Not implemented.</string>
+
+
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    
+    <string name="working_message">working...</string>
+
+    
+    <string name="menu_get_data">Get data</string>
+    <string name="menu_back">Back</string>
+    <string name="menu_sort">Sort</string>
+    <string name="menu_no_sort">Don\'t sort</string>
+    <string name="menu_taxo_rank">by Rank</string>
+    <string name="menu_region">by Region</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_add">Import Taxonomy</string>
+    <string name="menu_purge">Purge Taxonomy</string>
+    <string name="menu_about">About</string>
+    <string name="menu_crop">Crop</string>
+    <string name="menu_clear">Clear</string>
+	<string name="menu_50_50">50/50</string>
+
+	<string name="menu_clear_missing">Clear missing</string>
+
+    
+
+    <string name="taxonomic_rank">List by taxonomic rank:</string>
+    <string name="taxonomic_region">List by region:</string>
+    
+
+
+    <string name="already_downloaded">Item is already downloaded.</string>
+
+
+
+
+
+    <string name="title_enable_realtime_search">Enable realtime search</string>
+    <string name="summary_enable_realtime_search">Updates search results while you type</string>
+
+
+
+
+    
+<string name="find">Find</string>
+<string name="default_search">empire state building</string>
+
+    <string name="ratingbar_rating">Rating:</string>
+    <string name="gallery_2_text">Testing</string>
+    
+    
+
+    
+    
+    
+    
+    <!-- EULA -->
+    <string name="eula_title">License agreement</string>
+    <string name="eula_adc2_title">License agreement</string>
+    
+    
+    <string name="eula_accept">Accept</string>
+    <string name="eula_refuse">Don\'t accept</string>
+
+    <string name="disclaimer_title">Disclaimer</string>    
+    <string name="disclaimer_accept">Accept</string>    
+    
+    
+    
+</resources>
+

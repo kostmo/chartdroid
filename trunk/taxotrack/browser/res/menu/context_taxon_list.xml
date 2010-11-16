@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+          
+    <item android:id="@+id/menu_taxon_accept"
+          android:title="Choose this taxon"
+          android:alphabeticShortcut="c" />
+
+    <item android:id="@+id/menu_info_blurb"
+          android:title="Information"
+          android:titleCondensed="Info"
+          android:alphabeticShortcut="i" />
+
+    <item android:id="@+id/menu_taxon_photos"
+          android:title="More pictures"
+          android:alphabeticShortcut="m" />
+
+    <item android:id="@+id/menu_wikipedia"
+          android:title="Wikipedia"
+          android:alphabeticShortcut="w" />
+
+    <item android:id="@+id/menu_prefer_thumbnail"
+          android:title="Prefer this thumbnail"
+          android:alphabeticShortcut="p" />
+
+    <item android:id="@+id/menu_taxon_log_sighting"
+          android:title="Log sighting"
+          android:alphabeticShortcut="l" />
+
+</menu>

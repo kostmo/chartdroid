@@ -1,0 +1,24 @@
+#!/bin/bash
+
+KEYS_DIR=~/android/keys/taxotrack
+GOOGLE_MAP_API_KEY_FILENAME=strings_map.xml
+GOOGLE_MAP_API_KEY_PROJECT_PATH=app/res/values/$GOOGLE_MAP_API_KEY_FILENAME
+
+TEMP_DIRECTORY=temp
+
+mkdir $TEMP_DIRECTORY
+
+cp $GOOGLE_MAP_API_KEY_PROJECT_PATH $TEMP_DIRECTORY
+cp $KEYS_DIR/$GOOGLE_MAP_API_KEY_FILENAME $GOOGLE_MAP_API_KEY_PROJECT_PATH
+
+cd app
+ant release
+cp bin/TaxoTracker-release.apk ../
+ant clean
+cd ..
+
+# Restore the dummy API keys file
+cp $TEMP_DIRECTORY/$GOOGLE_MAP_API_KEY_FILENAME $GOOGLE_MAP_API_KEY_PROJECT_PATH
+rm -r $TEMP_DIRECTORY
+
+

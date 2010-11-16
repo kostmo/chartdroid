@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="instructions_pre_uploading">The next screen will let you select a photo on your device or capture a new photo (MENU key) to upload.  If you prefer to crop your selection before uploading, this is configurable through MENU->Settings from the main screen.</string>
+    <string name="instructions_upload_batch">You can assign a target photoset or group pool from MENU->Settings.  After a photo is uploaded, you may click it to review/edit tags and description.</string>
+    
+    <string name="instructions_tagging">Click on the thumbnail for a larger view. In the tag list, \"machine tags\" are denoted \"gears\" icons.</string>
+
+	<string name="instructions_map_title">Photo map</string>
+    <string name="instructions_map">Start a new search to see photos plotted geographically.  Searches restricted to the current map window can also be made.</string>
+    
+    <string name="instructions_photo_list">Run a new search for a list of photos. Photos can be viewed in "Detail" mode or "Grid" mode, selectable from the menu. Shortpress for a fullscreen photo, longpress to set wallpaper, list/edit tags, or view on Flickr. You can fling popup photos left or right to cycle through the list, or longpress for fullscreen view.\n\nTIP: Create an offline slideshow by downloading images to the same folder, then longpress that folder from the Gallery.</string>
+    
+    
+	<string name="instructions_color_search_title">Photo search</string>
+    <string name="instructions_color_search">There are two search modes: text or color.  Text searches may filter on group, user, tags, or other criteria from the Options button.  These searches can be saved after viewing the results, and Search History is recalled from the MENU button.</string>
+    
+    <string name="instructions_slideshow">Slideshows operate on any set of search results. The number of slides can be adjusted from MENU->Settings.</string>
+    
+</resources>

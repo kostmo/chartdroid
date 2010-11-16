@@ -1,0 +1,33 @@
+Replaced java.awt.Rectangle with RectF
+Deleted SOAP interface
+Removed several deprecated methods that used BufferedImage
+Replaced remaining BufferedImage references with Bitmap
+Replaced single instance of getTextContent() with getNodeValue()
+Added "isMachineTag()" methods to Tag object
+Changed the delimiter in addTags() from "space" to "comma" to facilitate machine tags
+-> Added ", boolean quote_tags" parameter, so we can disable it when adding machine tags with quoted values.
+
+Added support for machine_tags extra of search (in PhotoUtils.java).
+
+
+In SearchParameters.java:
+-> getPrivacyFilter/setPrivacyFilter (Curiously, these 6 (BUT THERE SHOULD ONLY BE 5) constants already in Flickr.java)
+    -> It's actually part of the "PrefsInterface"
+        -> Uploads can have multiple values for this.
+    -> Why do the constants refer to PrefsInterface#getGeoPerms()?
+-> getContentType (Curiously, these 3 constants already in Flickr.java)
+    -> It's actually part of the "PrefsInterface" and used in UploadMetaData
+-> getGeoContext
+-> getCommonsOnly
+
+
+Added "api_sig" and "auth_token" to Search parameters when using a privacy level other than "1"
+
+
+Created an enum for photo sizes
+
+
+BUGS:
+======
+
+How come "Photo.setSizes(Collection sizes)" is not used anywhere?

@@ -1,0 +1,40 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:visible="false" android:title="Locations"
+          android:alphabeticShortcut="b"
+          android:icon="@drawable/ic_menu_bookmark">
+          
+        <menu>
+	          
+		    <item android:id="@+id/menu_bookmark"
+		          android:title="Save this"
+		          android:alphabeticShortcut="b"
+		          android:icon="@drawable/ic_menu_bookmark" />
+		          
+		    <item android:id="@+id/menu_view_bookmarks"
+		          android:title="View saved"
+		          android:alphabeticShortcut="v"
+		          android:icon="@android:drawable/ic_menu_view" />
+		</menu>
+    </item>
+
+    <item android:id="@+id/menu_option_new_search"
+          android:title="Global search"
+          android:alphabeticShortcut="g"
+          android:icon="@android:drawable/ic_menu_search" >
+	</item>
+	
+	<item android:id="@+id/menu_option_search_here"
+          android:title="Search here"
+          android:alphabeticShortcut="h"
+          android:icon="@drawable/ic_menu_mapmode" >
+	</item>
+          
+    <item android:id="@+id/menu_preferences"
+    	android:visible="false"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+ 
+</menu>

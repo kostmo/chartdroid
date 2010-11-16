@@ -1,0 +1,44 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/menu_add_tag"
+          android:title="Add tag"
+          android:alphabeticShortcut="t"
+          android:icon="@android:drawable/ic_menu_add" />
+
+    <item android:id="@+id/menu_clear_tags"
+          android:title="Clear tags"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+          
+          
+
+          
+    <item 
+    	android:visible="false"
+          android:title="Tagging conventions"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_manage">
+          
+          <menu>
+		    <item android:id="@+id/menu_load_convention"
+		          android:title="Import tag convention"
+		          android:alphabeticShortcut="i" />
+		
+		    <item android:id="@+id/menu_purge_convention"
+		          android:title="Purge convention"
+		          android:alphabeticShortcut="p"
+		          android:icon="@android:drawable/ic_menu_delete" />
+		          
+		    <item android:id="@+id/menu_update_convention"
+		          android:title="Update tag convention"
+		          android:alphabeticShortcut="u"
+		          android:icon="@android:drawable/ic_menu_manage" />
+		          
+   		    <item android:id="@+id/menu_browse_conventions"
+		          android:title="Browse conventions"
+		          android:alphabeticShortcut="b" />  
+		</menu>
+    </item>
+
+</menu>

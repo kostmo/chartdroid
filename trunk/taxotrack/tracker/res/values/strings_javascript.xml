@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+<string name="script_make_red_text">
+(
+function() {
+	document.getElementsByTagName(\'body\')[0].style.color = \'red\';
+})()
+</string>
+
+
+<string name="script_count_forms">
+document.getElementsByTagName(\'form\').length
+</string>
+
+
+<string name="script_submit_geo_privacy">
+for (var formid in document.forms)
+	if ( document.forms[formid].getAttribute(\"action\") == \"/account/geo/privacy/\") {
+		document.forms[formid].submit();
+		break;
+	}
+</string>
+
+<string name="script_submit_join_group">
+for (var formid in document.forms)
+	if ( document.forms[formid].getAttribute(\"action\").indexOf(\"groups_join.gne\") >= 0 ) {
+		document.forms[formid].submit();
+		break;
+	}
+</string>
+
+
+
+<string name="script_submit_authentication_part_1">
+for (var formid in document.forms) {
+	var form = document.forms[formid];
+	if ( form.getAttribute(\"action\") == \"/services/auth/\") {
+		/*var form_src = form.elements[\"source\"].value;*/
+		/*alert(\"Form source: \" + form_src);*/
+		/*if (form_src == \"good\") {*/ 
+			form.submit();
+			break;
+		/*}*/
+	}
+}
+</string>
+
+<string name="script_submit_authentication_part_2">
+function win() {
+	var correct_form;
+	var correct_button;
+	for (var formid in document.forms) {
+		var doc_form = document.forms[formid]; 
+		if ( doc_form.getAttribute(\"action\") == \"/services/auth/\") {
+			for (var el in doc_form.elements) {
+				var form_element = doc_form.elements[el]; 
+				/*alert(\"Element type: \" + form_element.value);*/
+				if (form_element.type == \"submit\") {
+					/*alert(\"Click on: \" + form_element.value);*/
+					correct_button = form_element; 
+					form_element.focus();
+					form_element.click();
+					correct_form = doc_form;
+					break;
+				}
+			}
+			break;
+		}
+	}
+	correct_form.submit();
+}
+win();
+</string>
+
+</resources>
+

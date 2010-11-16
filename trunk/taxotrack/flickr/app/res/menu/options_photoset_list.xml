@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/menu_select_user"
+          android:title="Select user"
+          android:titleCondensed="User"
+          android:alphabeticShortcut="u"
+          android:icon="@drawable/ic_menu_contact" />
+       			          
+    <item android:id="@+id/menu_new_photoset"
+          android:title="New photoset"
+          android:titleCondensed="New"
+          android:icon="@android:drawable/ic_menu_add" 
+          android:alphabeticShortcut="n"/>
+
+</menu>

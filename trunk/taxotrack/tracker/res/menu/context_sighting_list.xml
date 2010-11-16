@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/menu_confirm_attach_photo"
+    	android:visible="false"
+		android:title="Attach to this sighting"
+		android:titleCondensed="Attach here"
+        android:icon="@drawable/ic_menu_attachment"          
+        android:alphabeticShortcut="a" />
+
+    <item android:id="@+id/menu_assign_taxon"
+          android:title="Reassign taxon"
+          android:alphabeticShortcut="t" />
+          
+    <item android:id="@+id/menu_attach_sighting_photo"
+		android:title="Attach photo"
+		android:titleCondensed="Photo"
+        android:icon="@drawable/ic_menu_attachment"          
+        android:alphabeticShortcut="a" />
+
+    <item android:id="@+id/menu_delete_sighting"
+		android:title="Delete sighting"
+		android:titleCondensed="Delete"          
+        android:alphabeticShortcut="d" />
+
+    <item android:id="@+id/menu_propagate_taxon"
+		android:title="Label attached photos with this taxon"
+		android:visible="false"
+		android:titleCondensed="Label photos"          
+        android:alphabeticShortcut="l" />
+
+</menu>

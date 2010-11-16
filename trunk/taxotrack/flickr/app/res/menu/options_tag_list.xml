@@ -1,0 +1,65 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_add_tag"
+          android:title="Add tag"
+          android:alphabeticShortcut="t"
+          android:icon="@android:drawable/ic_menu_add" />
+
+    <item 
+      android:title="Statistics"
+      android:alphabeticShortcut="s"
+      android:icon="@android:drawable/ic_menu_info_details">
+      
+        <menu>
+         			          
+		    <item android:id="@+id/menu_plot_tag_usage"
+		          android:title="Tag usage"
+		          android:alphabeticShortcut="u"
+		          android:icon="@android:drawable/ic_menu_view" />
+	
+		    <item android:id="@+id/menu_plot_tag_authors"
+		          android:title="Tag authors"
+		          android:alphabeticShortcut="u"
+		          android:icon="@android:drawable/ic_menu_view" />
+		</menu>
+   	</item>
+
+          
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+          
+    <item 
+    	android:visible="false"
+          android:title="Tagging conventions"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_manage">
+          
+          <menu>
+		    <item android:id="@+id/menu_load_convention"
+		          android:title="Import tag convention"
+		          android:alphabeticShortcut="i" />
+		
+		    <item android:id="@+id/menu_purge_convention"
+		          android:title="Purge convention"
+		          android:alphabeticShortcut="p"
+		          android:icon="@android:drawable/ic_menu_delete" />
+		          
+		    <item android:id="@+id/menu_update_convention"
+		          android:title="Update tag convention"
+		          android:alphabeticShortcut="u"
+		          android:icon="@android:drawable/ic_menu_manage" />
+		          
+   		    <item android:id="@+id/menu_browse_conventions"
+		          android:title="Browse conventions"
+		          android:alphabeticShortcut="b" />  
+		</menu>
+    </item>
+
+    <item android:id="@+id/menu_help"
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_help" />
+    
+</menu>

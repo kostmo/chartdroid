@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="taxonomy_explorer">Crittr: Taxonomy Explorer</string>
+    <string name="taxonomy_search">Crittr: Taxonomy Search</string>
+    <string name="flickr_tags">Crittr: Flickr tags</string>
+    
+    
+    <string name="orphaned_taxon">This is an orphaned taxon.</string>
+	<string name="search_type_title">Name:</string>
+	<string name="search_criteria_title">Search by name:</string>
+
+    
+	<string name="prompt_kingdom">Select kingdom</string>
+	<string name="prompt_rank">Select rank</string>
+    
+    <string name="max_depth_reached">There are no more levels under this one.</string>
+    <!--
+    <string name="max_depth_reached">Maximum depth reached.</string>
+    -->
+    
+    
+    <string name="sightings_deletion_prompt">This will delete your entire checklist!</string>
+    <string name="sightings_backup_checkbox_label">Make a backup just in case</string>
+    
+
+
+
+
+</resources>
+

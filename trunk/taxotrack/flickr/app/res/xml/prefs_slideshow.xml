@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.kostmo.flickr.bettr">
+    
+    <PreferenceCategory android:title="Slides">
+
+        <CheckBoxPreference
+            android:key="slide_count_use_search_count"
+            android:disableDependentsState="true"
+            android:title="Use search results count"
+        	android:summary="Uses the value for 'Photos per page' from the Browsing the preferences below" 
+            android:defaultValue="true" />
+
+       <Preference
+            android:key="prefs_link_browsing"
+            android:title="Browsing preferences"
+            android:summary="With control for 'Photos per page'" />
+
+    	<com.kostmo.tools.view.preference.EditIntegerPreference
+       		android:dependency="slide_count_use_search_count"
+            android:numeric="integer"
+            android:key="independent_slide_count"
+            android:defaultValue="15"
+            app:minValue="1"
+            android:title="Slide count"
+            android:summary="Number of slides (uses search results)"/>
+
+    	<com.kostmo.tools.view.preference.EditIntegerPreference
+            android:numeric="integer"
+            android:key="slide_time"
+            android:defaultValue="8"
+            app:minValue="3"
+            android:title="Slide time"
+            android:summary="Number of seconds per slide"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Display">
+
+        <CheckBoxPreference
+                android:key="show_loading_bar"
+                android:title="Show loading bar"
+                android:defaultValue="true" />
+
+        <CheckBoxPreference
+                android:key="hide_title"
+                android:title="Hide titlebar"
+                android:defaultValue="true" />
+                
+        <CheckBoxPreference
+                android:key="full_screen"
+                android:title="Show fullscreen"
+                android:defaultValue="true" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

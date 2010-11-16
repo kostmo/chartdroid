@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_preferences"
+          android:title="More"
+          android:alphabeticShortcut="m"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
+    <item android:id="@+id/menu_clear_search"
+          android:title="Clear"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_close_clear_cancel" >
+	</item>
+
+    <item android:id="@+id/menu_search_history"
+          android:titleCondensed="History"
+          android:title="Search History"
+          android:alphabeticShortcut="i"
+          android:icon="@drawable/ic_menu_bookmark" >
+	</item>
+
+    <item android:id="@+id/menu_help"
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_help" />
+</menu>

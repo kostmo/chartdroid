@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+	<LinearLayout
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_weight="1"
+	    android:layout_marginRight="5dip"
+	    android:paddingLeft="5dip"
+	    android:layout_height="wrap_content">
+    
+	    <TextView android:id="@+id/flickr_photo_title"
+	        android:layout_gravity="center_vertical"
+	        android:singleLine="true"
+	        android:text="Title"
+	    	android:gravity="right"
+	        android:ellipsize="marquee"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="@color/flickr_blue"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" />
+
+	    <TextView android:id="@+id/flickr_photo_description"
+	    	android:text="description"
+	        android:layout_gravity="center_vertical"
+	        android:layout_width="fill_parent"
+	        android:singleLine="true"
+	        android:ellipsize="end"
+	    	android:gravity="right"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+	        android:layout_height="wrap_content" />
+
+	</LinearLayout>
+
+	<ImageView android:id="@+id/flickr_photo_thumbnail"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+		android:src="@drawable/picture_unknown_1"
+		android:scaleType="centerCrop"
+	/>
+
+</LinearLayout>

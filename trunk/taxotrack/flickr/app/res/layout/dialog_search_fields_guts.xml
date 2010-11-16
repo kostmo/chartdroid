@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+   
+   <!-- Portrait version -->
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+ 		android:layout_marginRight="10dip">
+
+
+		<LinearLayout
+	    	android:orientation="horizontal"
+	    	android:gravity="center_vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content">
+			
+		    <EditText
+		        android:selectAllOnFocus="true"
+		        android:id="@+id/search_phrase_textbox"
+				android:hint="Search phrase"
+		        android:layout_height="wrap_content"
+		        android:layout_width="fill_parent"
+		        android:layout_weight="1"
+		        android:scrollHorizontally="true"
+		        android:autoText="false"
+		        android:capitalize="none"
+		        android:inputType="text"
+	        	android:nextFocusDown="@+id/button_execute_search"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+			<Button
+				android:text="@string/execute_search"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:id="@id/button_execute_search"/>
+
+		</LinearLayout>
+
+		<include layout="@layout/user_group_selector" />
+
+	</LinearLayout>
+	    
+	<Button
+		android:text="Tags"
+		android:id="@+id/button_add_tags"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+		/>
+
+</merge>

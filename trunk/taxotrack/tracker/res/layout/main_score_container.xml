@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_margin="5dip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="vertical">
+    
+ 	<TextView
+ 		android:visibility="gone"
+		android:id="@+id/stats_user_count"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:textStyle="normal"
+		android:textColor="@color/flickr_blue"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="Photos uploaded: 100"
+	/>
+	
+	<TextView
+		android:visibility="gone"
+		android:id="@+id/stats_photos_uploaded"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:textStyle="normal"
+		android:textColor="@color/white"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="Photos uploaded: 100"
+	/>
+    
+	<TextView
+		android:visibility="gone"
+		android:id="@+id/stats_photos_identified"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:textStyle="normal"
+		android:textColor="@color/flickr_pink"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="Photos identified: 80"
+	/>
+
+	<TextView
+		android:visibility="gone"
+		android:id="@+id/stats_identification_rating"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:textStyle="normal"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	    android:text="Identification score: 2300"
+	/>
+
+</LinearLayout>

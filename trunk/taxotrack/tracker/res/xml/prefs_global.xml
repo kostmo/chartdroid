@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Taxon Browsing">
+    
+        <CheckBoxPreference
+                android:key="blacklist_enabled"
+            	android:defaultValue="true"
+                android:title="Apply blacklist"
+                android:summary="Enable blacklisting of thumbnails" />
+            
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Photo Browsing">
+
+    	<com.kostmo.tools.view.EditIntegerPreference
+            android:numeric="integer"
+            android:key="max_photos"
+            android:defaultValue="25"
+            android:title="Max gallery photos"
+            android:summary="How many photos to retrieve"
+            android:dialogTitle="Max photos" />
+            
+
+        <CheckBoxPreference
+                android:key="square_thumbnails"
+            	android:defaultValue="true"
+                android:title="Square Flickr thumnails"
+                android:summary="Forces square aspect ratio" />
+<!--             
+		<ListPreference
+			android:key="thumbnail_mode"
+			android:title="Thumbnail mode"
+			android:summary="Specify thumbnail aspect ratio"
+			android:entries="@array/entries_flickr_thumbnail_modes"
+			android:entryValues="@array/entries_flickr_thumbnail_modes_values"
+			android:dialogTitle="Thumbnail mode" 
+			 />
+-->
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Help">
+    <Preference
+          android:key="reset_help_dialogs"
+          android:title="Reset help dialogs"
+          android:summary="Show the help dialogs at each newly visited screen." 
+    ></Preference>
+    </PreferenceCategory>
+    
+</PreferenceScreen>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Button
+	    android:id="@+id/button_photo_tabs"
+	    android:drawableLeft="@drawable/main_button_search"
+	    android:text="Search"
+    	style="@style/MainPageButton"/>
+
+	<Button
+	    android:id="@+id/button_contacts"
+	    android:drawableLeft="@drawable/main_button_contacts"
+	    android:text="Contacts"
+    	style="@style/MainPageButton"/>
+
+	<Button
+	    android:id="@+id/button_crittr_map"
+	    android:drawableLeft="@drawable/main_button_map"
+	    android:text="Map"
+    	style="@style/MainPageButton"/>
+
+</merge>

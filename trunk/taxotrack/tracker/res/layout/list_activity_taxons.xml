@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_rel_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<LinearLayout
+		android:id="@+id/taxon_header_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical">
+	
+		<TextView
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0"
+		    android:gravity="left" 
+		    android:text="Hierarchy >>"
+		    android:textSize="10sp"
+		    android:id="@+id/hierarchy_key"/>
+
+
+		<LinearLayout
+			android:layout_weight="0"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal">
+	
+			<TextView
+				android:layout_weight="1"
+			    android:layout_width="fill_parent" 
+			    android:layout_height="wrap_content"
+			    android:gravity="center_horizontal"
+			    android:textColor="@color/white"
+			    android:text="Eukaryota"
+			    android:textSize="25sp"
+			    android:id="@+id/header_title_taxon_name"/>
+		
+			<LinearLayout
+				android:layout_weight="0"
+			    android:layout_width="wrap_content" android:layout_height="fill_parent"
+			    android:paddingRight="10dip"
+			    android:orientation="vertical">
+			
+				<LinearLayout
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:orientation="horizontal">
+					<TextView
+					    android:layout_width="fill_parent"
+						android:layout_weight="0"
+					    android:text="Rank: " 
+					    android:layout_height="wrap_content"
+					    android:textSize="13sp"/>
+				
+					<TextView
+					    android:layout_width="fill_parent"
+					    android:text="Division" 
+	    				android:textColor="@color/light_yellow"
+						android:layout_weight="1"
+					    android:layout_height="wrap_content"
+					    android:textSize="13sp"
+					    android:id="@+id/rank_name_subheading"/>
+				</LinearLayout>
+		    	<LinearLayout
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:orientation="horizontal">
+			    	<TextView
+					    android:layout_width="fill_parent"
+					    android:text="Members: " 
+						android:layout_weight="0"
+					    android:layout_height="wrap_content"
+					    android:textSize="13sp"/>
+				
+					<TextView
+					    android:text="0" 
+	    				android:textColor="@color/light_yellow"
+						android:layout_weight="1"
+					    android:layout_width="fill_parent" 
+					    android:layout_height="wrap_content"
+					    android:textSize="13sp"
+					    android:id="@+id/rank_member_count"/>
+				</LinearLayout>
+		    </LinearLayout>
+	    </LinearLayout>
+	
+
+	    <ListView android:id="@android:id/list"
+	    	android:paddingTop="5dip"
+	    	android:fastScrollEnabled="true"
+	        android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:transcriptMode="disabled"/>
+
+
+		<include layout="@layout/empty_with_progress" />
+		
+	</LinearLayout>
+
+
+
+	<!-- 
+
+	<LinearLayout android:id="@+id/search_view_group"
+		android:visibility="gone"
+    	android:layout_alignParentTop="true"
+	    android:gravity="center"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content">
+
+		<AutoCompleteTextView android:id="@+id/taxon_searchbox"
+			android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	    	android:completionThreshold="3"
+	    	android:completionHint="Type a name..."
+	    ></AutoCompleteTextView>
+	
+		<ImageButton
+			android:layout_width="wrap_content"
+			android:layout_weight="0"
+		    android:layout_height="wrap_content" 
+		    android:src="@drawable/ic_delete"
+		    android:id="@+id/hide_search_button"/>
+	
+	</LinearLayout>
+
+
+
+
+
+	<SlidingDrawer
+	  	animateOnClick="false"
+	  	 android:visibility="gone"
+	     android:id="@+id/sliding_drawer"
+	     android:layout_width="fill_parent"
+	     android:layout_height="fill_parent"
+	     android:orientation="vertical"
+	     android:handle="@+id/handle"
+	     android:topOffset="10dip"
+	     android:content="@+id/content">
+
+
+		<ImageView
+	         android:background="@drawable/top_chunk"
+	         android:id="@id/handle"
+	         android:src="@drawable/icon_flickr_tiny"
+	         android:layout_width="wrap_content"
+	         android:layout_height="35dip"
+	         android:gravity="center"/>
+			
+		<LinearLayout
+		    android:layout_width="fill_parent" android:layout_height="fill_parent"
+	         android:id="@id/content"
+		    android:orientation="vertical">
+    	    <ImageView
+				android:id="@+id/handle_bar_chunk"
+				android:layout_width="fill_parent"
+				android:layout_height="7dip"
+				android:layout_weight="0"
+				android:background="@drawable/tray_base"
+
+			/>
+			
+				 <TextView
+			     android:id="@+id/flickr_grid_title"
+			     android:text="@string/flickr_photolist_title"  
+			     android:layout_width="fill_parent"  
+			     android:layout_height="wrap_content"  
+			     android:paddingTop="2dip"  
+			     android:paddingBottom="2dip"  
+			     android:paddingLeft="5dip"  
+			     style="?android:attr/listSeparatorTextViewStyle" />  
+	     
+	    	<GridView
+				android:background="#D000"
+				android:layout_weight="1"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent" />
+		</LinearLayout>
+	</SlidingDrawer>
+
+ -->
+
+</RelativeLayout>

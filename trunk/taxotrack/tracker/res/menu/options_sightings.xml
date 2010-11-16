@@ -1,0 +1,84 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+     <item android:id="@+id/menu_log_sighting"
+          android:title="Log Sighting"
+          android:titleCondensed="New"
+          android:alphabeticShortcut="n"
+          android:icon="@android:drawable/ic_menu_view" />
+
+     <item android:id="@+id/menu_calendar"
+          android:title="By date"
+          android:titleCondensed="By date"
+          android:alphabeticShortcut="d"
+          android:icon="@drawable/ic_menu_today" />
+          
+
+	 <item android:id="@+id/menu_map_sightings"
+          android:title="Map Sightings"
+          android:titleCondensed="Map"
+          android:alphabeticShortcut="m"
+          android:icon="@android:drawable/ic_menu_myplaces" />
+
+    <item 
+      android:title="Statistics"
+      android:alphabeticShortcut="s"
+      android:icon="@android:drawable/ic_menu_info_details">
+      
+        <menu>
+		    <item android:id="@+id/menu_plot_photo_coverage"
+		    	  android:titleCondensed="Photos"
+		          android:title="Photo coverage"
+		          android:alphabeticShortcut="p"
+		          android:icon="@android:drawable/ic_menu_view" />
+		</menu>
+   	</item>
+
+    <item android:title="Manage"
+          android:alphabeticShortcut="b"
+          android:menuCategory="secondary"
+          android:icon="@drawable/ic_menu_export_contact">
+          
+          <menu>
+	          
+	    <item android:id="@+id/menu_export_sightings"
+	          android:title="Export to SD Card"
+	          android:titleCondensed="Export"
+	          android:alphabeticShortcut="x"
+	          android:icon="@drawable/ic_menu_export_contact" />
+	          
+	    <item android:id="@+id/menu_import_sightings"
+	          android:title="Import from SD Card"
+	          android:titleCondensed="Import"
+	          android:alphabeticShortcut="i"
+	          android:icon="@drawable/ic_menu_archive" />          
+	          
+	    <item android:id="@+id/menu_clear_sightings"
+	          android:title="Clear all sightings"
+	          android:titleCondensed="Clear all"
+	          android:alphabeticShortcut="c"
+	          android:icon="@android:drawable/ic_menu_delete" />
+	          
+	    <item android:id="@+id/menu_upload_sightings"
+	    	android:visible="false"
+	          android:title="Upload/Share sightings"
+	          android:titleCondensed="Upload"
+	          android:alphabeticShortcut="u"
+	          android:icon="@android:drawable/ic_menu_share" />
+		</menu>
+    </item>
+
+
+    <item android:id="@+id/menu_preferences"
+    		android:visible="false"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+ 
+      <item android:id="@+id/menu_help"
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_help" />
+ 
+ 
+</menu>

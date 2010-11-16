@@ -1,0 +1,98 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	
+    <item android:id="@+id/menu_finished"
+          android:title="Cancel"
+          android:alphabeticShortcut="x"
+          android:icon="@drawable/ic_menu_close_colored" />
+
+	<item android:id="@+id/menu_option_taxon_accept"
+          android:title="Choose this"
+          android:alphabeticShortcut="c"
+          android:icon="@drawable/ic_menu_mark_colored" />
+
+	<item android:id="@+id/menu_option_taxon_info"
+          android:title="Taxon information"
+			android:titleCondensed="Info"
+          android:alphabeticShortcut="i"
+          android:icon="@android:drawable/ic_menu_info_details" />
+
+         
+
+	<group android:id="@+id/menu_group_supplemental_lists">
+
+
+	    <item android:id="@+id/menu_option_search"
+	    		android:visible="false"
+	          android:title="Search"
+	          android:alphabeticShortcut="s"
+	          android:icon="@android:drawable/ic_menu_search" />
+
+	    <item android:title="Favorites"
+	          android:alphabeticShortcut="f"
+	          android:icon="@drawable/ic_menu_bookmark">
+	          
+	          <menu>
+		          
+			    <item android:id="@+id/menu_bookmark"
+			          android:title="Bookmark this"
+			          android:alphabeticShortcut="b"
+			          android:icon="@drawable/ic_menu_bookmark" />
+			          
+			    <item android:id="@+id/menu_view_bookmarks"
+			          android:title="View bookmarks"
+			          android:alphabeticShortcut="v"
+			          android:icon="@android:drawable/ic_menu_view" />
+			          
+			    <item android:id="@+id/menu_popular_taxons"
+			          android:title="View popular"
+				      android:titleCondensed="Popular"
+			          android:alphabeticShortcut="p"
+			          android:icon="@drawable/ic_menu_star" />
+			</menu>
+	    </item>
+    </group>
+    
+
+    <item android:id="@+id/menu_sort_mode"
+		android:title="Sort by popularity"
+		android:titleCondensed="Sort Pop."
+		android:menuCategory="secondary"
+		android:alphabeticShortcut="s"
+		android:icon="@drawable/ic_menu_sort_by_size">
+
+		<menu>
+			<group android:id="@+id/menu_group_taxon_sort_mode"
+				android:checkableBehavior="single">
+				<item android:id="@+id/menu_sort_alpha"
+			          android:titleCondensed="Sort A-Z"
+			          android:title="Sort alphabetically"
+			          android:alphabeticShortcut="z"
+			          android:icon="@drawable/ic_menu_sort_alphabetically" />
+		
+				<item android:id="@+id/menu_sort_popularity"
+			          android:titleCondensed="Sort Pop."
+			          android:title="Sort by popularity"
+			          android:checked="true"
+			          android:alphabeticShortcut="p"
+			          android:icon="@drawable/ic_menu_sort_by_size" />	
+			</group>
+
+		</menu>
+	</item>
+
+ 
+
+
+          
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
+     <item android:id="@+id/menu_help"
+          android:title="Help"
+          android:alphabeticShortcut="h"
+          android:icon="@android:drawable/ic_menu_info_details" />
+	
+</menu>
