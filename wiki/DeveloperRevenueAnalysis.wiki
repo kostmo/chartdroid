@@ -7,12 +7,14 @@
 
 Note: Requires Android 2.2 (Froyo)
 
-An essential app for independent Android developers and small/medium publishers.  Integrates data from Android Market with Google Checkout to provide sales insight (see screenshots below).
+An essential app for independent Android developers and small/medium publishers.  Integrates data from Android Market with Google Checkout to provide sales insight (see [#Screenshots screenshots below]).
 
   * Get notified of low-rated Market comments
   * Plot revenue across apps over time
   * Quantify how comments affect sales
   * Observe effect of app pricing on sales
+
+I also threw together some [http://chartdroid.googlecode.com/svn/graphics/devrev/presentation/slides.pdf slides] on the application architecture.
 
 http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market://search%3Fq%3Dpname:com.kostmo.market.revenue&.png
 
