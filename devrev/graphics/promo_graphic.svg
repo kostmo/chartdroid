@@ -14,10 +14,10 @@
    height="120"
    id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.0 r9654"
    sodipodi:docname="promo_graphic.svg"
    style="display:inline"
-   inkscape:export-filename="/home/kostmo/android/projects/MarketRevenuePlus/graphics/promo_graphic.png"
+   inkscape:export-filename="promo.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -65,9 +65,9 @@
      inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1280"
-     inkscape:window-height="949"
+     inkscape:window-height="951"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="25"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -144,12 +144,13 @@
            height="46.972092"
            x="237.38585"
            y="-39.604103" /></flowRegion><flowPara
-         id="flowPara2964"></flowPara></flowRoot>    <image
+         id="flowPara2964" /></flowRoot>    <image
+       sodipodi:absref="/home/kostmo/android/projects/chartdroid/trunk/devrev/graphics/posterized_mascot.png"
+       xlink:href="posterized_mascot.png"
        y="955.54877"
        x="1.2142867"
        id="image3990"
        height="96.384857"
-       width="74.46788"
-       xlink:href="file:///home/kostmo/android/projects/MarketRevenuePlus/graphics/posterized_mascot.png" />
+       width="74.46788" />
   </g>
 </svg>
