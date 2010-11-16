@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+	<LinearLayout
+	    android:id="@+id/deployments_ratings_count_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+	    <TextView android:id="@android:id/text1"
+	    	android:textColor="@android:color/white"
+        	android:text="Comment Author"
+	    	android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+
+	    <TextView android:id="@+id/comment_date"
+	    	android:textColor="@color/lemon_custard"
+			android:layout_marginRight="8sp"
+	    	android:text="Date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	</LinearLayout>
+	
+    <TextView android:id="@android:id/text2"
+    	android:layout_below="@id/deployments_ratings_count_holder"
+		android:layout_alignLeft="@android:id/text1"
+    	android:text="Comment text"
+        android:ellipsize="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        
+
+   <RatingBar android:id="@+id/rating"
+    	android:layout_below="@android:id/text2"
+       style="?android:attr/ratingBarStyleSmall"
+       android:isIndicator="true"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" />
+	
+</RelativeLayout>

@@ -1,0 +1,7 @@
+The essential app for independent Android developers and small/medium publishers.
+Integrates data from Android Market with Google Checkout to provide sales insight.
+
+* Get notified of low-rated Market comments
+* Plot revenue across apps over time.
+* Quantify how comments affect sales
+* Observe effect of app pricing on sales

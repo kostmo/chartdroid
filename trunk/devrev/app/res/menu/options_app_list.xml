@@ -1,0 +1,53 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_app_filter"
+		android:titleCondensed="Filter"
+		android:title="Filter apps"
+		android:alphabeticShortcut="f"
+		android:icon="@drawable/ic_menu_filter_settings">
+
+		<menu>
+			<group android:id="@+id/menu_group_app_filter"
+				android:checkableBehavior="single">
+				
+				<item android:id="@+id/menu_filter_all"
+			          android:title="All"
+			          android:alphabeticShortcut="a"
+						android:icon="@drawable/ic_menu_filter_settings" />
+				
+				<item android:id="@+id/menu_filter_free"
+			          android:title="Free"
+			          android:alphabeticShortcut="f"
+						android:icon="@drawable/ic_menu_sort_by_size" />
+		
+				<item android:id="@+id/menu_filter_paid"
+			          android:title="Paid"
+			          android:alphabeticShortcut="p"
+		android:icon="@drawable/ic_menu_sort_alphabetically" />	
+			</group>
+
+		</menu>
+	</item>
+
+    <item android:id="@+id/menu_set_all_thresholds"
+          android:titleCondensed="Thresholds"
+          android:title="Set all thresholds"
+          android:alphabeticShortcut="t"
+          android:icon="@drawable/ic_menu_star" />
+
+    <item android:id="@+id/menu_unread_comments"
+          android:title="Unread comments"
+          android:alphabeticShortcut="c"
+          android:icon="@android:drawable/ic_menu_view" />
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
+	<item android:id="@+id/menu_instructions"
+		android:title="Help"
+		android:alphabeticShortcut="h"
+		android:icon="@android:drawable/ic_menu_help" />
+
+</menu>

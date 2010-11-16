@@ -1,0 +1,46 @@
+==============================================================
+BUGS
+==============================================================
+
+* Check whether comment monitor gets restarted on reboot ***
+
+==============================================================
+TODO
+==============================================================
+
+
+
+Make more granular progress bar for record fetcher
+
+
+Cache app icon bitmaps in db 
+
+
+Use a different icon for "new comments" than "caching finished"
+-> Alter icon_resize script to add a percent margin after finding the bbox
+
+
+
+
+
+.. make animated popup layout that appears if either there are no apps or there are unfetched comments.
+
+Show "retries" count in notification bar
+.. if retry is made, update fetch-target id set
+
+
+
+If the first fetcher stage fails, stop the "ongoing" notification and create a new "standard" notification.
+
+
+
+
+Features to add eventually:
+======================================
+* When updating the Market Apps table:
+  -> First, use the old "package names" to update the CANONICAL IDS
+  -> Second, delete the old packages
+
+* Implement Export CSV data option
+
+* Daily cache update preference option

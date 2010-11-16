@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+	    
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical">
+	    
+		<Spinner
+		 	android:id="@+id/app_chooser"
+		 	android:layout_weight="1"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+		/>
+
+		<Button android:id="@+id/button_sync_apps"
+			android:text="@string/sync_apps"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"/>
+
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical">
+	
+	    <TextView android:id="@+id/cached_ratings_range"
+			android:layout_width="fill_parent"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:text="X ratings cached from Y to Z foo abcd efgh ijkl mnop qrstuv"/>
+	
+		<Button android:id="@+id/button_update_ratings"
+			android:text="@string/sync_comments"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+	</LinearLayout>
+</LinearLayout>

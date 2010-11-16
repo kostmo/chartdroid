@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string-array name="clear_cache_options">
+        <item>@string/cache_option_purchase_records</item>
+        <item>@string/cache_option_record_links</item>
+        <item>@string/cache_option_market_apps</item>
+        <item>@string/cache_option_market_comments</item>
+    </string-array>
+
+    <string-array name="entries_update_frequency_choices">
+    <!-- <item>@string/quarter_hourly</item> -->
+        <item>@string/frequency_hourly</item>
+        <item>@string/frequency_twice_daily</item>
+        <item>@string/frequency_daily</item>
+    </string-array>
+
+    <string-array name="entries_update_frequency_values">
+        <!-- <item>900000</item> -->
+        <item>3600000</item>
+        <item>43200000</item>
+        <item>86400000</item>
+    </string-array>
+
+
+    <string-array name="window_evaluator_options">
+        <item>Average</item>
+        <item>Minimum</item>
+    </string-array>
+    
+    <string-array name="correlation_mode_options">
+        <item>Timeline</item>
+        <item>Correlation</item>
+    </string-array>
+    
+
+    <string-array name="bin_mode_options">
+        <item>@string/bins_custom</item>
+        <item>@string/bins_hourly</item>
+        <item>@string/bins_daily</item>
+        <item>@string/bins_weekly</item>
+        <item>@string/bins_monthly</item>
+    </string-array>
+
+
+    <string-array name="revenue_queries_options">
+        <item>Revenue timelines</item>
+        <item>Overall revenue</item>
+        <item>Revenue bar chart</item>
+        <item>Revenue/Ratings</item>
+        <item>Revenue/Price</item>
+    </string-array>
+    
+    <string-array name="analysis_type_explanations">
+        <item>@string/analysis_method_revenue_timeline</item>
+        <item>@string/analysis_method_overall_revenue</item>
+        <item>@string/analysis_method_total_app_revenues</item>
+        <item>@string/analysis_method_revenue_ratings_correlation</item>
+        <item>@string/analysis_method_revenue_price_correlation</item>
+    </string-array>
+    
+</resources>

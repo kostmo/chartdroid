@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <plurals name="day_count">
+        <item quantity="one">1 day</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> days
+        </item>
+    </plurals>
+    
+    <plurals name="child_count">
+        <item quantity="one">1 child</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> children
+        </item>
+    </plurals>
+
+    <plurals name="version_count">
+        <item quantity="one">1 version</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> versions
+        </item>
+    </plurals>
+    
+    <plurals name="app_count">
+        <item quantity="one">1 app</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> apps
+        </item>
+    </plurals>
+    
+    <plurals name="item_count">
+        <item quantity="one">1 item</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> items
+        </item>
+    </plurals>
+    
+    <plurals name="sale_count">
+        <item quantity="one">1 sale</item>
+        <item quantity="other">
+            <xliff:g id="count">%d</xliff:g> sales
+        </item>
+    </plurals>
+    
+    <plurals name="sale_count_word">
+        <item quantity="one">sale</item>
+        <item quantity="other">sales</item>
+    </plurals>
+    
+    <plurals name="rating_count_word">
+        <item quantity="one">rating</item>
+        <item quantity="other">ratings</item>
+    </plurals>
+
+</resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.kostmo.market.revenue"
+	android:title="Revenue Analyzer Settings">
+
+
+    <PreferenceCategory android:title="Notifications">
+        <CheckBoxPreference
+                android:key="enable_periodic_checkin"
+                android:title="Comments"
+                android:defaultValue="false"
+                android:summary="Notify when someone leaves a comment on your apps" />
+                
+        <ListPreference
+        		android:dependency="enable_periodic_checkin" 
+                android:key="checkin_update_rate"
+                android:title="Update frequency"
+                android:summary="Duration between updates"
+                android:defaultValue="43200000"
+                android:entries="@array/entries_update_frequency_choices"
+                android:entryValues="@array/entries_update_frequency_values"/>
+                
+        <ListPreference
+       		android:dependency="enable_periodic_checkin" 
+            android:key="preferred_publisher"
+            android:title="Publisher"
+            android:defaultValue="@string/default_publisher_name"
+            android:summary="Publisher name for apps to check for new comments" />
+    </PreferenceCategory>
+
+	<PreferenceCategory android:title="Data Synchronization">
+
+		<Preference android:key="wipe_cache"
+			android:title="@string/pref_title_wipe_cache"
+			android:summary="@string/pref_summary_wipe_cache"
+			/>
+
+    	<EditTextPreference
+            android:key="alternate_device_id"
+            android:title="@string/pref_title_alternate_device_id"
+            android:summary="@string/pref_summary_alternate_device_id"
+            android:dialogMessage="Enter hexadecimal value:"
+            android:defaultValue="200145da555806cf"
+            />
+
+    	<com.kostmo.tools.view.preference.EditIntegerPreference
+            android:inputType="number"
+            app:minValue="1"
+            android:key="max_http_threads"
+            android:defaultValue="30"
+            android:title="Max HTTP threads"
+            android:summary="Maximum number of threads to download in parallel"
+            />
+
+    	<com.kostmo.tools.view.preference.EditIntegerPreference
+            android:inputType="number"
+            app:minValue="0"
+            android:key="max_comments"
+            android:defaultValue="100"
+            android:title="Max comments"
+            android:summary="Maximum number of comments to retrieve"
+            />
+
+    	<com.kostmo.tools.view.preference.EditIntegerPreference
+            android:inputType="number"
+            app:minValue="0"
+            android:key="max_fetch_retries"
+            android:defaultValue="2"
+            android:title="Max fetch retries"
+            android:summary="If there is an error in data retrieval, try again this many times"
+            />
+
+	</PreferenceCategory>
+
+
+	
+    <PreferenceCategory android:title="Help">
+	    <Preference
+	          android:key="reset_help_dialogs"
+	          android:title="@string/pref_help_reset_title"
+	          android:summary="@string/pref_help_reset_summary" 
+	    ></Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

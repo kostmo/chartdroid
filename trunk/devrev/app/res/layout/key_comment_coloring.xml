@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.kostmo.market.revenue"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:paddingLeft="5sp"
+	android:paddingRight="5sp">
+
+	    <TextView
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:text="@string/instructions_comment_color_key"
+		    android:layout_marginBottom="5dip"
+	    />
+	 
+	    <com.kostmo.tools.view.LabeledSwatch
+	    	android:layout_marginTop="3dip"
+		    android:gravity="left"
+		    android:text="@string/comments_key_got_all"
+		    app:swatchColor="@color/light_green"
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    />
+	    
+	    <com.kostmo.tools.view.LabeledSwatch
+	    	android:layout_marginTop="3dip"
+		    android:gravity="left"
+		    android:text="@string/comments_key_got_max"
+		    app:swatchColor="@color/light_yellow"
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    />
+	    
+	    <com.kostmo.tools.view.LabeledSwatch
+	    	android:layout_marginTop="3dip"
+		    android:gravity="left"
+		    android:text="@string/comments_key_some_missing"
+		    app:swatchColor="@color/light_red"
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    />
+</LinearLayout>

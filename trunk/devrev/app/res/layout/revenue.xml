@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	
+	<Button android:id="@+id/button_execute_plot"
+		android:text="@string/prepare_plot"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	 	android:layout_marginTop="6sp"
+		android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+		<LinearLayout
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			 android:layout_margin="2sp">
+
+		   	<TextView
+			     android:text="@string/time_span"  
+			     android:layout_width="fill_parent"  
+			     android:layout_height="wrap_content"  
+			     android:paddingTop="2dip"  
+			     android:paddingBottom="2dip"  
+			     android:paddingLeft="5dip"  
+			     style="?android:attr/listSeparatorTextViewStyle" />
+		
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_marginTop="5sp"
+				android:layout_height="wrap_content" android:gravity="center_vertical">
+		
+				<TextView android:text="@string/start_date" android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="5sp"
+					android:gravity="right"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+				<Button android:id="@+id/button_calendar_date"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="xxx"
+					android:textAppearance="?android:attr/textAppearanceLarge" />
+					
+				<TextView
+					android:text="for"
+					android:layout_marginLeft="5sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+				<TextView android:id="@+id/day_count"
+					android:text="1"
+					android:layout_marginLeft="5sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+			</LinearLayout>
+
+		
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:gravity="center_vertical">
+		
+				<TextView android:text="@string/start" android:layout_marginRight="5sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		
+				<SeekBar android:id="@+id/seek_bar" android:progress="1"
+					android:max="1" android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:layout_weight="1" />
+		
+				<Button android:id="@+id/today_button"
+					android:text="@string/present" android:layout_marginLeft="5sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		
+			</LinearLayout>
+		
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:gravity="center_horizontal">
+		
+				<TextView android:text="@string/ending_on" android:layout_marginRight="5sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+				<TextView android:id="@+id/textview_ending_date" android:text="X" android:layout_marginRight="5sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+			</LinearLayout>
+		
+		   	<TextView
+			     android:text="@string/header_analysis_options"  
+			     android:layout_width="fill_parent"  
+			     android:layout_height="wrap_content"  
+			     android:paddingTop="2dip"  
+			     android:paddingBottom="2dip"  
+			     android:paddingLeft="5dip"  
+			     style="?android:attr/listSeparatorTextViewStyle" />
+
+			<LinearLayout
+			 	android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical">
+				
+				<TextView android:text="@string/analysis_colon"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:singleLine="true"
+					android:ellipsize="none"
+					android:layout_marginRight="5sp"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent"
+					android:gravity="center_vertical" />
+	
+				<Spinner
+				 	android:id="@+id/revenue_query_option"
+				 	android:layout_marginTop="6sp"
+					android:entries="@array/revenue_queries_options"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+				/>
+			</LinearLayout>
+
+			<LinearLayout
+			 	android:id="@+id/bincount_wrapper"
+			 	android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical">
+				
+				<TextView android:text="@string/intervals_colon"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:singleLine="true"
+					android:ellipsize="none"
+					android:layout_marginRight="5sp"
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent"
+					android:gravity="center_vertical" />
+				
+				<Spinner
+				 	android:id="@+id/bin_modes"
+					android:entries="@array/bin_mode_options"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+				/>
+				
+				<EditText
+				android:layout_marginRight="5sp"
+					android:id="@+id/bins_field"
+					android:inputType="number"
+					android:text="25"
+					android:hint="@string/bins"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+
+					
+
+				
+			</LinearLayout>
+
+			<TextView android:text="@string/description_colon"
+				android:layout_marginRight="5sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		   	<TextView
+		   		android:id="@+id/analysis_explanation_textview"
+			     android:text="Explanation"  
+			     android:layout_width="fill_parent"  
+			     android:layout_height="wrap_content" />
+
+			<LinearLayout
+			 	android:id="@+id/correlation_mode_wrapper"
+			 	android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_vertical">
+					
+				<TextView android:text="Mode:"
+					android:layout_marginRight="5sp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+			
+				<Spinner
+				 	android:id="@+id/correlation_modes"
+					android:entries="@array/correlation_mode_options"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+				/>
+			</LinearLayout>
+
+			<include
+			 	android:id="@+id/comment_window_wrapper"
+			 	layout="@layout/dialog_comment_window_width"
+				android:padding="0dip"/>
+	
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

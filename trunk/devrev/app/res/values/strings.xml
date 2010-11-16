@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+	<string name="plot_date_range">%s to %s</string>
+
+    <string name="app_name_full">DevRev: Developer Revenue Analysis</string>
+    <string name="app_name_abbreviated">DevRev</string>
+    <string name="app_name">Developer Revenue Analysis</string>
+
+
+	<string name="analysis_colon">Analysis:</string>
+	<string name="intervals_colon">Intervals:</string>
+	<string name="bins_custom">Custom</string>
+	<string name="bins_hourly">Hourly</string>
+	<string name="bins_daily">Daily</string>
+	<string name="bins_weekly">Weekly</string>
+	<string name="bins_monthly">Monthly</string>
+
+
+	<string name="cache_option_purchase_records">Google Checkout purchases</string>
+	<string name="cache_option_record_links">Checkout-Market associations</string>
+	<string name="cache_option_market_apps">Android Market apps</string>
+	<string name="cache_option_market_comments">Android Market comments</string>
+
+
+	<string name="error_title_market_data_retrieval">Error retrieving Market data</string>
+    <string name="error_instructions_bad_device_id">If your device has been rooted or factory reset, you might need to find a working Device ID from another handset. You can then input this hexadecimal number as the Alternate Device ID in the Settings.</string>
+
+
+
+
+	<string name="app_iterator">App %d of %d</string>
+
+	<string name="empty_comments_list">No comments to show</string>
+	<string name="empty_apps_list">No apps to show</string>
+	<string name="empty_building_apps_list">Computing app totals...</string>
+
+	<string name="rating_window_evaluator">Rating window evaluator</string>
+	<string name="revenue_analysis">Revenue Analysis</string>
+	<string name="review_app_data">Review App Data</string>
+	
+	<string name="ratings_notifications">Ratings Notifications</string>
+	
+	
+	<string name="comments_key_got_all">All comments cached.</string>
+	<string name="comments_key_got_max">Max (but not all) comments cached.</string>
+	<string name="comments_key_some_missing">Fewer than max comments cached.</string>
+
+	<string name="default_publisher_name">Karl Ostmo</string>
+	<string name="publisher_hint">Publisher name</string>
+	<string name="publisher_colon">Publisher:</string>
+	<string name="publisher">Publisher</string>
+	
+	<string name="description_colon">Description:</string>
+
+
+	<string name="dialog_title_choose_market_app">Choose market app</string>
+	<string name="dialog_title_assign_market_app">Assign market app</string>
+    <string name="sync_apps">Sync Apps</string>
+    <string name="sync_paid_apps">Sync Paid Apps</string>
+    
+	<string name="comments_syncing">Synching comments...</string>
+	<string name="sync_comments">Sync Ratings</string>
+
+	<string name="menu_context_applist_action_title">App actions:</string>
+	<string name="dialog_comment_window_length_title">Comment window</string>
+
+	<string name="rating_alerts_explanation">Set to zero to disable alerts.</string>
+	<string name="dialog_rating_alerts_title">Alert threshold</string>
+
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_save">Save</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+
+    <string name="start_date">From</string>
+    <string name="start">Start</string>
+    <string name="ending_on">Ending on</string>
+    <string name="present">Today</string>
+    <string name="bins">bins</string>
+
+    <string name="login_dialog_fetch">Fetch</string>
+    
+    <string name="prepare_plot">Prepare Plot</string>
+    <string name="plot">Plot</string>
+	<string name="time_span">Date span</string>
+	<string name="header_analysis_options">Analysis options</string>
+	<string name="alert_threshold">Alert threshold:</string>
+
+
+	<string name="menu_context_child_title">Purchased app</string>
+	<string name="menu_context_parent_title">Market app</string>
+
+    <string name="market_syncing_apps">Syncing apps...</string>
+    <string name="market_syncing_paid_apps">Syncing paid apps...</string>
+    
+    
+    <string name="task_complete_notification">Fetch complete</string>
+    <string name="task_failed_notification">Fetch failed</string>
+    <string name="task_fetching_batches">Fetching batch %d of %d</string>
+    
+    
+    <string name="task_failiure_title">Operation failed.</string>
+    <string name="task_timed_finish_title">Finished in %s.</string>
+    <string name="task_finished_subtitle">Click to create plot.</string>
+    <string name="task_notifications_fetcher">Obtaining purchase records...</string>
+
+
+    <string name="consolidation_editor_title">App consolidation (all cached sales)</string>
+    <string name="dialog_title_database_error">Database error</string>
+
+
+
+    
+    <string name="merchant_obtain_records">Obtain records</string>
+    <string name="merchant_id">Google merchant ID</string>
+    <string name="merchant_key">Google merchant key</string>
+    <string name="merchant_fetch_automatically">Fetch automatically</string>
+    <string name="merchant_save_credentials">Save merchant credentials</string>
+    <string name="merchant_credentials_dialog_title">Merchant credentials</string>
+    <string name="merchant_fetching_credentials">Fetching credentials...</string>
+    <string name="merchant_retrieval_error_title">Retrieval error</string>
+    
+    <string name="merchant_syncing_records">Syncing records...</string>
+    <string name="merchant_completing_records">Linking sales records...</string>
+    
+    
+    
+    
+    <string name="chartdroid_needed_dialog_title">ChartDroid needed</string>
+    <string name="chartdroid_needed_dialog_message">Download ChartDroid application from the Market?</string>
+
+    
+    
+    
+	<string name="login_dialog_password_reassurance"><i>This app maintains password confidentiality.</i></string>
+    <string name="google_login_dialog_title">Please log in with your Google Account</string>
+	    
+	    
+    <string name="login_dialog_title">Log in to Google Checkout</string>
+	    
+    <string name="email">Username/E-mail</string>
+    <string name="password">Password</string>
+</resources>

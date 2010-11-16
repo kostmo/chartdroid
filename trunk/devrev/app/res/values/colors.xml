@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="partially_translucent_black">#E000</color>
+    <color name="half_translucent_black">#8000</color>
+    <color name="transparent">#0000</color>
+
+    <color name="lemon_custard">#ffb</color>
+    <color name="aquamarine">#bff</color>
+    
+    
+    <color name="light_yellow">#ff8</color>
+    <color name="light_red">#f88</color>
+    <color name="light_green">#8f8</color>
+    
+    <color name="gray_summary_background">#333</color>
+</resources>

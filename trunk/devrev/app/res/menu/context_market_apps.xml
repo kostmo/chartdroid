@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_plot_windowed_comments"
+          android:title="Comment timeline"
+          android:alphabeticShortcut="t" />
+          
+    <item android:id="@+id/menu_plot_rating_histogram"
+          android:title="Comment histogram"
+          android:alphabeticShortcut="h" />
+
+    <item android:id="@+id/menu_context_app_rating_alert_threshold"
+          android:title="Alert threshold"
+          android:alphabeticShortcut="a" />
+          
+    <item android:id="@+id/menu_view_on_market"
+          android:title="View on Market"
+          android:alphabeticShortcut="m" />
+          
+    <item android:id="@+id/menu_update_ratings"
+          android:title="@string/sync_comments"
+          android:alphabeticShortcut="r" />
+</menu>

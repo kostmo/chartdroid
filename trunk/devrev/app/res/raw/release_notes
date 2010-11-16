@@ -1,0 +1,35 @@
+v1.2 - 11/5/2010
+* 3G warning
+* Publisher filter
+
+v1.1.2 - 11/1/2010
+* Monthly bin option
+* Merchant credentials fetcher activity
+* Better error handling
+* Crash fix
+
+v1.1 - 10/4/2010
+* Faster record retrieval
+* Support for formerly-paid apps
+* More efficient comment updates
+* Clickable comments in notification summary
+
+v1.0.5 - 9/26/2010
+* Fixed comments timeline
+
+v1.0.4 - 9/25/2010
+* Bugfix
+
+v1.0.3 - 9/24/2010
+ * Combined revenue
+ * UI tweaks
+ * Fix crash
+
+v1.0.2 - 8/25/2010
+ * Handle record download IOException
+ 
+v1.0.1 - 8/23/2010
+ * Fixed icon loader crash
+
+v1.0 - 8/18/2010
+ * Initial Release

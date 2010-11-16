@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	<Button android:id="@+id/button_mark_all_read"
+		android:text="Mark all as read"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	 	android:layout_marginTop="6sp"
+		android:textAppearance="?android:attr/textAppearanceLarge" />
+
+   	<TextView android:id="@+id/list_header"
+	     android:text="New comments"  
+	     android:layout_width="fill_parent"  
+	     android:layout_height="wrap_content"  
+	     android:paddingTop="2dip"  
+	     android:paddingBottom="2dip"  
+	     android:paddingLeft="5dip"  
+	     style="?android:attr/listSeparatorTextViewStyle" />
+
+    <ExpandableListView android:id="@android:id/list"
+    	android:paddingTop="5dip"
+    	android:choiceMode="multipleChoice"
+    	android:fastScrollEnabled="false"
+        android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:cacheColorHint="@color/transparent"
+        android:transcriptMode="disabled"/>
+
+    <TextView android:id="@android:id/empty"
+			android:layout_weight="1"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:gravity="center"
+			android:text="@string/empty_comments_list"/>
+
+</LinearLayout>
