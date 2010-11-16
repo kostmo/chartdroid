@@ -29,3 +29,12 @@ cp $TEMP_DIRECTORY/$GOOGLE_MAP_API_KEY_FILENAME $GOOGLE_MAP_API_KEY_PROJECT_PATH
 rm -r $TEMP_DIRECTORY
 
 
+echo -n "Do you want to install the new .apk on your device? [Y/n]: "
+read character
+case $character in
+    [Yy] | "" ) echo "You responded in the affirmative."
+        adb uninstall com.kostmo.flickr.bettr
+        adb install OpenFlickr-release.apk
+        ;;
+    * ) echo "Fine, then."
+esac
