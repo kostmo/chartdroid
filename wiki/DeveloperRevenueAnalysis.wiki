@@ -9,6 +9,8 @@ Note: Requires Android 2.2 (Froyo)
 
 An essential app for independent Android developers and small/medium publishers.  Integrates data from Android Market with Google Checkout to provide sales insight (see [#Screenshots screenshots below]).
 
+== Features ==
+
   * Get notified of low-rated Market comments
   * Plot revenue across apps over time
   * Quantify how comments affect sales
@@ -18,7 +20,7 @@ I also threw together some [http://chartdroid.googlecode.com/svn/graphics/devrev
 
 http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market://search%3Fq%3Dpname:com.kostmo.market.revenue&.png
 
-= Usage =
+== Usage ==
 
 This app is best suited for developers with less than ~100K app purchases, since caching data from Google Checkout may take a long time, depending on sales volume.  If synching a large batch of records, you may want to plug in and find wifi.  Caching the ~3K sales records used in the screen grabs below took about two and a half minutes.
 
