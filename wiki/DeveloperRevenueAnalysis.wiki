@@ -1,6 +1,8 @@
 #summary Developer Revenue Analysis
 #labels Featured
 
+http://chartdroid.googlecode.com/svn/graphics/devrev/promo.png
+
 <wiki:toc max_depth="3" />
 
 = Introduction =
