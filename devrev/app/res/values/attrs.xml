@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+     <declare-styleable name="EditIntegerPreference">
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+    </declare-styleable>
+    
+	<declare-styleable name="LabeledSwatch">
+		<attr name="swatchColor" format="color" />
+	</declare-styleable>
+
+</resources>

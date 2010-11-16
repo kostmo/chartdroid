@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.kostmo.market.revenue" android:installLocation="auto" android:versionName="1.2" android:versionCode="10">
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    
+    
+        <!-- The following are DEMO providers that you should place in your own apps. -->
+      	<provider android:label="Some random data"
+   			android:name="com.kostmo.market.revenue.provider.SalesContentProvider"
+	        android:authorities="com.kostmo.market.revenue.provider"
+		/>
+
+	
+		<receiver android:name="com.kostmo.market.revenue.service.BootReceiver">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    	<action android:name="android.intent.action.PACKAGE_REPLACED"/>
+				<data android:scheme="package" />
+			</intent-filter>
+		</receiver>
+		
+		<service android:name="com.kostmo.market.revenue.service.CheckUpdateService" android:label="@string/app_name"/>
+		
+		
+		
+    
+        <service android:name="com.kostmo.market.revenue.service.DownloadRecordsService" />
+    
+        <activity android:name="com.kostmo.market.revenue.activity.Main"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name="com.kostmo.market.revenue.activity.MerchantCredentialsActivity"
+                  android:label="@string/merchant_credentials_dialog_title">
+        </activity>
+
+
+        <activity android:name="com.kostmo.market.revenue.activity.RevenueActivity"
+                  android:label="@string/revenue_analysis">
+        </activity>
+
+        <activity android:name="com.kostmo.market.revenue.activity.AppsOverviewActivity"
+                  android:label="Apps Overview" android:theme="@style/Fullscreen">
+        </activity>
+
+        <activity android:name="com.kostmo.market.revenue.activity.NewCommentsActivity"
+                  android:label="New comments">
+        </activity>
+        
+        <activity android:name="com.kostmo.market.revenue.activity.prefs.MainPreferences"
+          android:label="Main Preferences">
+        </activity>
+        
+        <activity android:name="com.kostmo.market.revenue.activity.CacheActivity"
+                  android:label="Cache Ranges">
+        </activity>
+
+        <activity android:name="com.kostmo.market.revenue.activity.ConsolidationActivity"
+                  android:label="@string/review_app_data" android:theme="@style/Fullscreen">
+        </activity>
+
+		<activity android:name="com.kostmo.market.revenue.ClientLoginActivity"></activity>
+
+    </application>
+    <uses-sdk android:targetSdkVersion="8" android:minSdkVersion="7"/>
+
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
+	<uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
+	<uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+
+
+</manifest> 

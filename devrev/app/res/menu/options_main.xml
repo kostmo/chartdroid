@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+
+    <item android:id="@+id/menu_about"
+         android:title="Website"
+         android:alphabeticShortcut="w"
+         android:icon="@android:drawable/ic_menu_info_details" />
+
+    <item android:id="@+id/menu_more_apps"
+          android:title="More apps"
+          android:alphabeticShortcut="m"
+          android:icon="@drawable/ic_menu_star" />
+
+    <item
+    	android:visible="false"
+        android:title="Debug"
+        android:alphabeticShortcut="d" >
+		<menu>
+			<item android:id="@+id/menu_view_cache"
+		          android:title="View Cache"
+		          android:alphabeticShortcut="c"/>
+
+			<item android:id="@+id/menu_app_engine_login"
+		          android:title="App Engine Login"
+		          android:alphabeticShortcut="a"/>
+		</menu>
+	</item>
+</menu>

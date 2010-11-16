@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="release_notes">Release Notes</string>
+
+    <string name="dialog_title_instructions">Instructions</string>
+
+
+	<string name="merchant_info_fetcher_blurb">If you like, your Merchant ID and Key can be automatically fetched. Otherwise, you must copy them into the boxes below in this panel after finding them on the \"Integration\" pane under the \"Settings\" tab of <a href="https://checkout.google.com/sell/settings?section=Integration">Google Checkout</a>.</string>
+
+
+    <string name="instructions_title_consolidation_editor">App Consolidation</string>
+    <string name="instructions_consolidation_editor">Google Checkout has a different ID for each deployed version of an App on the Android Market. Until you Sync Apps with the Market, all App purchases will be Ungrouped. Doing this will match the Ungrouped deployments to the published Market apps by name.\n\nRemaining deployments can be grouped manually. Checkmark children then longpress a group to associate them. Unassociate children from a group with the Longpress menu.</string>
+    <string name="instructions_comment_color_key">Comment and Rating counts are given in the form C (R) and are color coded as follows:</string>
+    
+    <string name="instructions_title_revenue_analysis">Revenue Analysis</string>
+    <string name="instructions_revenue_analysis">Select a date range and the type of analysis to perform. When you click \"Prepare Plot\", the app will fetch the required data from Google Checkout, which could take some time. If there is a problem while downloading, you can try it again; partial progress will be saved.</string>
+    
+    <string name="instructions_comment_alerts_title">Comment alerts</string>
+    <string name="instructions_comment_alerts">Enter your publisher name (case sensitive) to list your apps. For each app, you can set a threshold to alert you when comments are left with less than a certain rating. Longpress an app to see comment timelines and histograms.</string>
+    
+    <string name="instructions_title_new_comments">New Comments</string>
+    <string name="instructions_new_comments">Only the comments at or below the \"alert threshold\" of that app are visible. Comments can be marked as read, either individually or by app, from the longpress menu. All comments can be marked as unread from the Menu.</string>
+
+    
+	
+	<string name="analysis_method_revenue_timeline">Revenue is plotted on a timeline in daily, weekly, or custom intervals determined by the number of bins.</string>
+	<string name="analysis_method_overall_revenue">Revenue summed from all apps is plotted on a timeline in daily, weekly, or custom intervals determined by the number of bins.</string>
+	<string name="analysis_method_total_app_revenues">Revenue is totaled for each app within the specified timeframe and plotted in a bar chart.</string>
+	
+	<string name="analysis_method_revenue_ratings_correlation">Revenue is totaled for each contiguous constant-rating time interval, then plotted as Revenue vs. \"Windowed\" Rating. This may indicate how strongly the last 3 ratings (those immediately visible to users on the Android Market) affect sales. Aggregate rating may be calculated as either the average or minimum of those three ratings.</string>
+	<string name="analysis_method_revenue_price_correlation">Revenue is totaled for each contiguous constant-price time interval, then plotted as Revenue vs. Price. This may help you determine the best price for your app. You may want to hold trials for a certain time period at different prices to acquire more pricing data.</string>
+
+	<string name="main_description_revenue_analysis">Plot revenue across applications over time, quantify how comments affect sales, and observe the effect of app pricing on sales volume.</string>
+	<string name="main_description_comment_notifications">Get notified when low-rated comments are left on the Android Market.</string>
+
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:gravity="center_horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5px"
+    android:orientation="vertical">
+
+     <TextView
+		android:id="@+id/rating_threshold_app_text"
+        android:text="For ALL apps"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+        />
+
+     <TextView
+        android:text="@string/rating_alerts_explanation"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_gravity="center_horizontal"
+        />
+
+	<RatingBar
+		android:id="@+id/rating_threshold"
+		android:stepSize="1"
+		android:numStars="5"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+	/>
+
+</LinearLayout>

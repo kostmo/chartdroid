@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<LinearLayout style="@style/MainPageActionContainer">
+		 
+		<Button android:id="@+id/button_revenue"
+			android:text="@string/revenue_analysis"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+		 	android:layout_marginTop="6sp"
+			android:textAppearance="?android:attr/textAppearanceLarge" />
+
+		<TextView
+			android:textColor="@android:color/white"
+			android:text="@string/main_description_revenue_analysis"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+			
+	</LinearLayout>
+
+	<LinearLayout style="@style/MainPageActionContainer">
+		
+		<Button android:id="@+id/button_ratings"
+			android:text="@string/ratings_notifications"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+		 	android:layout_marginTop="6sp"
+			android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		<TextView
+			android:textColor="@android:color/white"
+			android:text="@string/main_description_comment_notifications"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
+</merge>

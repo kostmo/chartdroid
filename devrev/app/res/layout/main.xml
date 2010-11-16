@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+
+>
+	
+	<ImageView
+		android:src="@drawable/buddy_fullsize"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="20sp"
+	/>
+	
+	<LinearLayout
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		 android:layout_margin="5sp">
+	
+		<Button android:id="@+id/button_revenue"
+			android:text="Revenue"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+		 	android:layout_marginTop="6sp"
+			android:textAppearance="?android:attr/textAppearanceLarge" />
+			
+		<Button android:id="@+id/button_ratings"
+			android:text="Ratings Notifications"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+		 	android:layout_marginTop="6sp"
+			android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,66 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_autogroup"
+          android:title="Autogroup"
+          android:titleCondensed="Group by name"
+          android:icon="@drawable/ic_menu_merge"
+          android:alphabeticShortcut="a" />
+
+    <item
+		android:titleCondensed="Resync"
+		android:title="Sync with Market"
+		android:alphabeticShortcut="s"
+		android:icon="@drawable/ic_menu_import_export">
+		<menu>
+			<item android:id="@+id/menu_sync_all_apps"
+		          android:title="Sync All Apps"
+		          android:alphabeticShortcut="a"/>
+			
+			<item android:id="@+id/menu_sync_comments"
+		          android:title="Sync Comments"
+		          android:alphabeticShortcut="c"/>
+		</menu>
+	</item>
+
+	<item android:id="@+id/menu_publishers"
+		android:title="Filter by Publisher"
+		android:titleCondensed="Publishers"
+		android:alphabeticShortcut="p"
+		android:icon="@android:drawable/ic_menu_edit" />
+
+	<item android:id="@+id/menu_instructions"
+		android:title="Help"
+		android:alphabeticShortcut="h"
+		android:icon="@android:drawable/ic_menu_help" />
+
+    <item android:id="@+id/menu_preferences"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
+          android:icon="@android:drawable/ic_menu_preferences" />
+          
+
+    <item
+    	android:visible="true"
+        android:title="Debug"
+        android:alphabeticShortcut="d" >
+		<menu>
+			<item android:id="@+id/menu_dump_consolidation_details"
+		          android:title="Consolidation details"
+		          android:alphabeticShortcut="c"/>
+			<item android:id="@+id/menu_dump_market_apps"
+		          android:title="Market apps"
+		          android:alphabeticShortcut="m"/>
+			<item android:id="@+id/menu_dump_unique_raw_merchant_item_ids"
+		          android:title="Unique Merchant Item IDs"
+		          android:alphabeticShortcut="u"/>		          
+			<item android:id="@+id/menu_dump_checkout_items"
+		          android:title="Checkout items"
+		          android:alphabeticShortcut="i"/>
+			<item android:id="@+id/menu_dump_parents_children_joined"
+		          android:title="Parents and Children (joined)"
+		          android:alphabeticShortcut="j"/>
+			<item android:id="@+id/menu_dump_parents_children_raw"
+		          android:title="Parents and Children (raw)"
+		          android:alphabeticShortcut="r"/>
+		</menu>
+	</item>
+</menu>

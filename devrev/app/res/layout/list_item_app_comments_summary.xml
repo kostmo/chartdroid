@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/main_view">
+
+	<ImageView android:id="@android:id/icon"
+		android:src="@drawable/sym_def_app_icon"
+		android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+		android:layout_margin="6sp"
+		android:layout_width="48sp"
+		android:layout_height="48sp"
+		android:scaleType="fitCenter"
+	    />
+
+    <TextView android:id="@android:id/text1"
+		android:layout_marginTop="2sp"
+		android:layout_alignParentTop="true"
+    	android:layout_toRightOf="@android:id/icon"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="App name"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+	<LinearLayout
+	    android:id="@+id/deployments_ratings_count_holder"
+    	android:layout_below="@android:id/text1"
+		android:layout_alignLeft="@android:id/text1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        
+	    <TextView android:id="@+id/new_count"
+	    	android:textStyle="bold"
+	    	android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	    	android:text="X New" />
+
+	    <TextView android:id="@+id/ratings_count"
+			android:layout_marginRight="8sp"
+	    	android:text="Ratings"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	</LinearLayout>
+	
+    <TextView android:id="@android:id/text2"
+    	android:layout_below="@id/deployments_ratings_count_holder"
+		android:layout_alignLeft="@android:id/text1"
+    	android:text="Most recent: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_ungroup_item"
+          android:title="Ungroup this"
+          android:alphabeticShortcut="u" />
+
+    <item android:id="@+id/menu_set_market_app"
+          android:title="Set Market App"
+          android:alphabeticShortcut="m" />
+
+</menu>

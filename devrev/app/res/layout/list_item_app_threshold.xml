@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/main_view">
+
+	<ImageView android:id="@android:id/icon"
+		android:src="@drawable/sym_def_app_icon"
+		android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+		android:layout_margin="6sp"
+		android:layout_width="48sp"
+		android:layout_height="48sp"
+		android:scaleType="fitCenter"
+	    />
+
+    <TextView android:id="@android:id/text1"
+		android:layout_marginTop="2sp"
+		android:layout_alignParentTop="true"
+    	android:layout_toRightOf="@android:id/icon"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="App name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+	<LinearLayout
+	    android:id="@+id/ratings_count_date_holder"
+    	android:layout_below="@android:id/text1"
+		android:layout_alignLeft="@android:id/text1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+	    <TextView android:id="@+id/ratings_count"
+	    	android:textColor="@color/aquamarine"
+	    	android:text="Ratings"
+	    	android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" />
+        
+	    <TextView android:id="@+id/latest_comment_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+    		android:layout_marginRight="8dip"
+	    	android:text="Latest: " />
+
+	</LinearLayout>
+
+    <TextView android:id="@android:id/text2"
+    	android:layout_below="@id/ratings_count_date_holder"
+		android:layout_alignLeft="@id/ratings_count_date_holder"
+    	android:text="Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+	
+
+
+	<LinearLayout
+		android:gravity="center_vertical"
+    	android:layout_below="@id/ratings_count_date_holder"
+    	android:layout_alignParentRight="true"
+    	android:layout_marginBottom="8dip"
+    	android:layout_marginRight="8dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+	    <TextView
+	    	android:text="@string/alert_threshold"
+	    	android:layout_marginRight="5sp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	            
+	    <RatingBar android:id="@+id/rating_threshold"
+	        style="?android:attr/ratingBarStyleSmall"
+	        android:isIndicator="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+
+	</LinearLayout>
+
+</RelativeLayout>
