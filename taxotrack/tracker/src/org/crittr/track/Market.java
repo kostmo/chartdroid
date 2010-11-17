@@ -14,8 +14,16 @@ import android.widget.Toast;
 
 public class Market {
 
-	public static final String DEBUG_TAG = "Crittr";
+	public static final String DEBUG_TAG = "TaxoTrack";
 
+	
+	public final static String PACKAGE_NAME_CALENDAR_PICKER = "org.openintents.calendarpicker";
+	public final static String CALENDAR_PICKER_WEBSITE = "http://www.openintents.org/en/calendarpicker";
+	public final static Uri APK_DOWNLOAD_URI_CALENDAR_PICKER = Uri.parse(CALENDAR_PICKER_WEBSITE);
+
+	
+	
+	
     public static final String MARKET_PACKAGE_DETAILS_PREFIX = "market://details?id=";
     public static final String MARKET_AUTHOR_SEARCH_PREFIX = "market://search?q=";
     
@@ -84,5 +92,11 @@ public class Market {
 	    List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
 	                    PackageManager.MATCH_DEFAULT_ONLY);
 	    return list.size() > 0;
+	}
+	
+	// ================================================
+	public static Intent getMarketDownloadIntent(String package_name) {
+		Uri market_uri = Uri.parse(MARKET_PACKAGE_DETAILS_PREFIX + package_name);
+		return new Intent(Intent.ACTION_VIEW, market_uri);
 	}
 }

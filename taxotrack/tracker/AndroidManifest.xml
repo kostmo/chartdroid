@@ -76,7 +76,7 @@
 	
 	
 		
-	<uses-sdk android:minSdkVersion="4"/>
+	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="4"/>
 
 	<permission-group android:icon="@drawable/ladybug48" android:name="org.crittr.permission.GROUP" android:label="@string/permission_group_label" android:description="@string/permission_group_description"></permission-group>
 	

@@ -1,6 +1,10 @@
 package org.crittr.browse.activity;
 
-import org.crittr.browse.ApplicationState;
+import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.crittr.browse.Market;
 import org.crittr.browse.R;
 import org.crittr.containers.IntentDependentRunnable;
@@ -37,11 +41,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-
-import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 public class TaxonNavigatorLinear extends TaxonNavigatorAbstract implements OnItemClickListener {
@@ -507,36 +506,45 @@ public class TaxonNavigatorLinear extends TaxonNavigatorAbstract implements OnIt
 			
 			break;
 		}
+		case R.id.menu_taxon_accept:
+		{
+
+//			String taxon_name = getSelectedTaxonName(info.position);
+			
+			Intent i = new Intent();
+   	    	
+   	    	// Note: the full hierarchy can be recovered by API methods.
+   	    	i.putExtra(Constants.INTENT_EXTRA_TSN, tsn);
+   	    	i.putExtra(Constants.INTENT_EXTRA_TAXON_NAME, taxon.taxon_name);
+   	    	
+	    	setResult(Activity.RESULT_OK, i);
+	    	finish();
+	    	break;
+		}
 		case R.id.menu_taxon_log_sighting:
 		{
-			if ( ((ApplicationState) getApplication() ).hasPaid() ) {
 
-				
-				String taxon_name = TabActivityTaxonExtendedInfo.get_taxon_name_now(this, taxon, tsn);
-				
-				
-	   	    	Intent i = new Intent();
-	
-	   	    	i.putExtra(Constants.INTENT_EXTRA_TSN, tsn);
-	   	    	i.putExtra(Constants.INTENT_EXTRA_TAXON_NAME, taxon_name);
-	   	    	String mime_type = "vnd.android.cursor.item/vnd.org.crittr.sighting";
-	   	    	i.setType(mime_type);
-	   	    	i.setAction(Intent.ACTION_INSERT_OR_EDIT);
-	   	    	startActivity(i);
-//		    	setResult(Activity.RESULT_OK, i);
-//		    	finish();
-				
-			} else {
-				globally_stored_feature_nag = false;
-				globally_stored_disabled_function_description = getResources().getString(R.string.disabled_generic);
-				showDialog(DIALOG_PURCHASE_MESSAGE);
-			}
+			String taxon_name = TabActivityTaxonExtendedInfo.get_taxon_name_now(this, taxon, tsn);
+			
+			
+   	    	Intent i = new Intent();
+
+   	    	i.putExtra(Constants.INTENT_EXTRA_TSN, tsn);
+   	    	i.putExtra(Constants.INTENT_EXTRA_TAXON_NAME, taxon_name);
+   	    	String mime_type = "vnd.android.cursor.item/vnd.org.crittr.sighting";
+   	    	i.setType(mime_type);
+   	    	i.setAction(Intent.ACTION_INSERT_OR_EDIT);
+   	    	startActivity(i);
+//		    setResult(Activity.RESULT_OK, i);
+//		    finish();
+
 			break;
 		}
 		default:
-			break;
+			return super.onContextItemSelected(item);
 		}
-		return super.onContextItemSelected(item);
+		
+		return true;
 	}
     // ========================================================================
     @Override

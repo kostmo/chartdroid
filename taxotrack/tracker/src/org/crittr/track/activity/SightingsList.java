@@ -1,5 +1,20 @@
 package org.crittr.track.activity;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.crittr.shared.browser.Constants;
 import org.crittr.shared.browser.utilities.AsyncTaxonInfoPopulatorModified;
 import org.crittr.track.DatabaseSightings;
@@ -51,21 +66,6 @@ import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ExpandableListView.OnChildClickListener;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 public class SightingsList extends ExpandableListActivity {
 
 
@@ -86,6 +86,7 @@ public class SightingsList extends ExpandableListActivity {
 	final int DIALOG_IMPORT_NO_FILE_MANAGER = 3;
 	final int DIALOG_CONFIRM_SIGHTING_ADD = 4;
 	final int DIALOG_CONFIRM_PHOTO_ATTACHMENT = 5;
+	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 6;
 
 
 
@@ -126,8 +127,8 @@ public class SightingsList extends ExpandableListActivity {
 		taxon_populator = new AsyncTaxonInfoPopulatorModified(this);
 		
 		
-		//    	boolean show_title = getIntent().getBooleanExtra(INTENT_EXTRA_SHOW_TITLE, true);
-		//		findViewById(R.id.title_header).setVisibility(show_title ? View.VISIBLE : View.GONE);
+//    	boolean show_title = getIntent().getBooleanExtra(INTENT_EXTRA_SHOW_TITLE, true);
+//		findViewById(R.id.title_header).setVisibility(show_title ? View.VISIBLE : View.GONE);
 
 
 		this.getExpandableListView().setOnChildClickListener(new OnChildClickListener() {
@@ -224,12 +225,58 @@ public class SightingsList extends ExpandableListActivity {
 	}
 
 
+	// ========================================================================
+	void downloadLaunchCheck(Intent intent, int request_code) {
+		if (Market.isIntentAvailable(this, intent))
+			startActivityForResult(intent, request_code);
+		else
+			showDialog(DIALOG_CALENDARPICKER_DOWNLOAD);
+	}
 
+	// ========================================================================
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
 
+		switch (id) {
+		case DIALOG_CALENDARPICKER_DOWNLOAD:
+		{
+			boolean has_android_market = Market.isIntentAvailable(this,
+					Market.getMarketDownloadIntent(Market.PACKAGE_NAME_CALENDAR_PICKER));
+
+			Log.d(TAG, "has_android_market? " + has_android_market);
+
+			dialog.findViewById(android.R.id.button1).setVisibility(
+					has_android_market ? View.VISIBLE : View.GONE);
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	// ========================================================================
 	@Override
 	protected Dialog onCreateDialog(int id) {
 
 		switch (id) {
+		case DIALOG_CALENDARPICKER_DOWNLOAD:
+		{
+			return new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle(R.string.download_calendar_picker)
+			.setMessage(R.string.calendar_picker_modularization_explanation)
+			.setPositiveButton(R.string.download_calendar_picker_market, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(Market.getMarketDownloadIntent(Market.PACKAGE_NAME_CALENDAR_PICKER));
+				}
+			})
+			.setNeutralButton(R.string.download_calendar_picker_web, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Market.APK_DOWNLOAD_URI_CALENDAR_PICKER));
+				}
+			})
+			.create();
+		}
 		case DIALOG_CONFIRM_PHOTO_ATTACHMENT:
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -254,6 +301,7 @@ public class SightingsList extends ExpandableListActivity {
 		case DIALOG_CONFIRM_SIGHTING_ADD:
 		{
 			final long chosen_tsn = getIntent().getLongExtra(Constants.INTENT_EXTRA_TSN, Constants.INVALID_TSN);
+			final String taxon_name = getIntent().getStringExtra(Constants.INTENT_EXTRA_TAXON_NAME);
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_alert)
@@ -262,7 +310,7 @@ public class SightingsList extends ExpandableListActivity {
 				public void onClick(DialogInterface dialog, int whichButton) {
 
 					DatabaseSightings helper = new DatabaseSightings(SightingsList.this);
-					helper.record_sighting(chosen_tsn);
+					helper.recordSighting(chosen_tsn, taxon_name);
 
 					// Now, we re-query the database.
 					refereshSightings();
@@ -276,7 +324,7 @@ public class SightingsList extends ExpandableListActivity {
 					finish();
 				}
 			});
-			String taxon_name = getIntent().getStringExtra(Constants.INTENT_EXTRA_TAXON_NAME);
+
 			if (taxon_name != null) {
 				builder.setMessage("Add sighting of \"" + taxon_name + "\"?");
 			}
@@ -311,7 +359,7 @@ public class SightingsList extends ExpandableListActivity {
 
 					if (backup_ok) {
 
-						database_ref.wipe_sightings_table();
+						database_ref.wipe();
 
 						// Refresh the list
 						refereshSightings();
@@ -491,8 +539,6 @@ public class SightingsList extends ExpandableListActivity {
 
 			return true;
 		}
-
-
 		case R.id.menu_assign_taxon:
 		{
 			pending_sighting_id = info.id;
@@ -607,17 +653,11 @@ public class SightingsList extends ExpandableListActivity {
 
 		case R.id.menu_calendar:
 		{
+			Log.d(TAG, "Viewing events in calendar format...");
 			Uri x = SightingEventContentProvider.constructUri("/x");
 
-			Log.i(TAG, "Setting intent data: " + x);
-
 			Intent i = new Intent(Intent.ACTION_VIEW, x);
-//			Intent i = new Intent(Intent.ACTION_VIEW);
-//			i.setData(x);
-//			i.setType(CategorizationEventContentProvider.CONTENT_TYPE_CHARTDROID_EVENT);
-
-			Market.intentLaunchMarketFallback(this, Market.MARKET_CHARTDROID_PACKAGE_SEARCH, i, REQUEST_CODE_EVENT_SELECTION);
-//	    	startActivityForResult(i, RETURN_CODE_EVENT_SELECTION);
+	    	downloadLaunchCheck(i, REQUEST_CODE_EVENT_SELECTION);
 			return true;
 		}
 		case R.id.menu_help:
@@ -752,12 +792,13 @@ public class SightingsList extends ExpandableListActivity {
 			case REQUEST_CODE_TAXON_CHOOSER:
 			{
 				long chosen_tsn = data.getLongExtra(Constants.INTENT_EXTRA_TSN, DatabaseSightings.INVALID_TSN);
+				String taxon_name = data.getStringExtra(Constants.INTENT_EXTRA_TAXON_NAME);
 
 				DatabaseSightings helper = new DatabaseSightings(this);
 				if (pending_sighting_id >= 0)
-					helper.update_sighting(pending_sighting_id, chosen_tsn);
+					helper.updateSightingTaxon(pending_sighting_id, chosen_tsn, taxon_name);
 				else
-					helper.record_sighting(chosen_tsn);
+					helper.recordSighting(chosen_tsn, taxon_name);
 
 				// Now, we re-query the database.
 				refereshSightings();

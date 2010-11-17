@@ -1,17 +1,16 @@
 package org.crittr.track.activity;
 
 
-import com.kostmo.tools.StreamUtils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 import org.crittr.shared.browser.Constants;
 import org.crittr.track.Market;
 import org.crittr.track.R;
-import org.crittr.track.R.anim;
-import org.crittr.track.R.drawable;
-import org.crittr.track.R.id;
-import org.crittr.track.R.layout;
-import org.crittr.track.R.menu;
-import org.crittr.track.R.string;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,12 +36,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
+import com.kostmo.tools.StreamUtils;
 
 
 public class Main extends Activity {
