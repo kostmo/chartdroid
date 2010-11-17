@@ -45,7 +45,7 @@ Another feature of the app allows you to specify a "rating" threshold for each a
 
 If you want, you can compile the source yourself:
 {{{
-svn checkout https://chartdroid.googlecode.com/svn/trunk/devrev/app developer_revenue_analysis
+svn checkout http://chartdroid.googlecode.com/svn/trunk/devrev/app developer_revenue_analysis
 }}}
 
 = Limitations/Issues =
