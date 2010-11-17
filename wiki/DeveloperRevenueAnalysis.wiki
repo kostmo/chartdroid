@@ -43,6 +43,11 @@ Another feature of the app allows you to specify a "rating" threshold for each a
 
 [http://market.android.com/details?id=com.kostmo.market.revenue Here's a direct market link if you're browsing on a phone.]
 
+If you want, you can compile the source yourself:
+{{{
+svn checkout https://chartdroid.googlecode.com/svn/trunk/devrev/app developer_revenue_analysis
+}}}
+
 = Limitations/Issues =
 
 == SSL handshake failure ==
