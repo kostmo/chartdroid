@@ -7,13 +7,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.provider.BaseColumns;
+import android.text.TextUtils;
 import android.util.Log;
 
-public class DatabaseSightings extends SQLiteOpenHelper 
-{
+public class DatabaseSightings extends SQLiteOpenHelper {
+	
 	public static final String TAG = Market.DEBUG_TAG;
 	
 	static final String DATABASE_NAME = "SIGHTINGS_DATA";
@@ -21,18 +24,21 @@ public class DatabaseSightings extends SQLiteOpenHelper
     
     
 	public static final long INVALID_TSN = -1;
-	public static final long UNKNOWN_PARENT_ID = -1;
 	public static final long NO_PARENT_ID = 0;
 	public static final long ORPHAN_PARENT_ID = NO_PARENT_ID;
 	public static final int INVALID_RANK_ID = -1;
-	public static final int UNKNOWN_ITIS_KINGDOM = -1;
 
-    public static final String IMPLICIT_ROWID = "ROWID";
 
+    
     public static final String TABLE_SIGHTINGS = "TABLE_SIGHTINGS";
     public static final String TABLE_PHOTOGRAPH_SIGHTING_ASSOCIATIONS = "TABLE_PHOTOGRAPH_SIGHTING_ASSOCIATIONS";
 
-    public static final String KEY_ROWID = "_id";
+	public static final String VIEW_EVENTS_PROVIDER = "VIEW_EVENTS_PROVIDER";
+
+    
+
+    public static final String IMPLICIT_ROWID = "ROWID";
+    public static final String KEY_ROWID = BaseColumns._ID;
     public static final String KEY_TSN = "KEY_TSN";
     public static final String KEY_USE_COUNT = "KEY_USE_COUNT";
 
@@ -43,6 +49,7 @@ public class DatabaseSightings extends SQLiteOpenHelper
     public static final String KEY_ACCURACY = "KEY_ACCURACY";
     
     public static final String KEY_SIGHTING_ID = "KEY_SIGHTING_ID";
+    public static final String KEY_SIGHTING_TITLE = "KEY_SIGHTING_TITLE";
     public static final String KEY_IMAGE_URI = "KEY_FLICKR_PHOTO_ID";
     
 
@@ -55,6 +62,7 @@ public class DatabaseSightings extends SQLiteOpenHelper
         "create table " + TABLE_SIGHTINGS + " (" 
         + KEY_ROWID + " integer primary key autoincrement, "
         + KEY_TSN + " integer default " + INVALID_TSN + ", "
+        + KEY_SIGHTING_TITLE + " text, "
         + KEY_LAT + " float, "
         + KEY_LON + " float, " 
         + KEY_ACCURACY + " float,"
@@ -67,62 +75,131 @@ public class DatabaseSightings extends SQLiteOpenHelper
         + "PRIMARY KEY(" + KEY_SIGHTING_ID + ", " + KEY_IMAGE_URI + ") ON CONFLICT IGNORE);";
    
     
+	final static String SQL_CREATE_EVENTS_PROVIDER_VIEW = "create view "
+		+ VIEW_EVENTS_PROVIDER + " AS "
+		+ buildEventsProviderViewQuery();
     
     
+
     final static String[] table_list = {
     	TABLE_SIGHTINGS,
     	TABLE_PHOTOGRAPH_SIGHTING_ASSOCIATIONS};
     
+	final static String[] view_list = {
+		VIEW_EVENTS_PROVIDER
+	};
+    
     final static String[] table_creation_commands = {
     	SQL_CREATE_SIGHTINGS_TABLE,
-    	SQL_CREATE_PHOTOGRAPH_ASSOCIATIONS_TABLE};
+    	SQL_CREATE_PHOTOGRAPH_ASSOCIATIONS_TABLE,
+    	
+    	SQL_CREATE_EVENTS_PROVIDER_VIEW
+	};
     
     
-
+    
     Context context;
-    
-    // ==================================================================
-    public void wipe_sightings_table() {
-
-    	SQLiteDatabase db = getWritableDatabase();
-	    
-		db.beginTransaction();
-		
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIGHTINGS);
-    	db.execSQL( SQL_CREATE_SIGHTINGS_TABLE );
-    	
-    	db.execSQL("DROP TABLE IF EXISTS " + TABLE_PHOTOGRAPH_SIGHTING_ASSOCIATIONS);
-    	db.execSQL( SQL_CREATE_PHOTOGRAPH_ASSOCIATIONS_TABLE );
-    	
-	    try {
-	    	db.setTransactionSuccessful();
-	    } finally {
-	    	db.endTransaction();
-	    }
-	    
-    	db.close();
-    }
-    
-
     // ==================================================================
     public DatabaseSightings(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        
         this.context = context;
     }
     
+	// ========================================================================
+	private static String buildEventsProviderViewQuery() {
+
+		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+		query_builder.setTables(TABLE_SIGHTINGS);
+
+		// Here we have an extra column for aggregates
+		return query_builder.buildQuery(
+				new String[] {
+				KEY_ROWID,
+				KEY_SIGHTING_TITLE + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.COLUMN_EVENT_TITLE,
+				"CAST((CAST(strftime('%s', " + KEY_TIMESTAMP + ") AS INTEGER)*1000) AS INTEGER) AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.COLUMN_EVENT_TIMESTAMP},
+				null, null, null, null, null, null);
+	}
+    
     // ==================================================================
-    public void record_sighting(long tsn) {
+    public void wipe() {
+
+    	SQLiteDatabase db = getWritableDatabase();
+    	db.beginTransaction();
+
+    	drop_all_tables(db);
+
+    	try {
+    		db.setTransactionSuccessful();
+    	} finally {
+    		db.endTransaction();
+    	}
+
+    	db.close();
+    }
+
+    // ==================================================================
+    public void dumpSightingsView() {
+
+
+	    SQLiteDatabase db = getReadableDatabase();
+	    Cursor cursor = db.query(VIEW_EVENTS_PROVIDER, null, null, null, null, null, null);
+	    
+	    Log.d(TAG, "Available columns:");
+	    Log.i(TAG, TextUtils.join(", ", cursor.getColumnNames()));
+	    
+	    while (cursor.moveToNext()) {
+	    	Log.w(TAG, "Row " + cursor.getPosition());
+	    	for (int i=0; i<cursor.getColumnCount(); i++) {
+	    		Log.d(TAG, cursor.getString(i));
+	    	}
+	    }
+	    
+	    cursor.close();
+	    db.close();
+    }
+
+    // ==================================================================
+    public void dumpSightingsTable() {
+    	
+    	String[] projection = new String[] {
+	    		KEY_ROWID,
+	            KEY_TSN,
+	            KEY_LAT,
+	            KEY_LON,
+	            KEY_ACCURACY,
+	            KEY_TIMESTAMP
+	    };
+    	
+	    SQLiteDatabase db = getReadableDatabase();
+	    Cursor cursor = db.query(TABLE_SIGHTINGS, null, null, null, null, null, null);
+	    
+	    Log.d(TAG, "Available columns:");
+	    Log.i(TAG, TextUtils.join(", ", cursor.getColumnNames()));
+	    
+	    while (cursor.moveToNext()) {
+	    	Log.w(TAG, "Row " + cursor.getPosition());
+	    	for (int i=0; i<cursor.getColumnCount(); i++) {
+	    		Log.d(TAG, cursor.getString(i));
+	    	}
+	    }
+	    
+	    cursor.close();
+	    db.close();
+    }
+
+    
+    // ==================================================================
+    public void recordSighting(long tsn, String title) {
     	
 	    SQLiteDatabase db = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(KEY_TSN, tsn);
+        cv.put(KEY_SIGHTING_TITLE, title);
 		
     	LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     	Location last_location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     	if (last_location != null) {
-
     		cv.put(KEY_LAT, last_location.getLatitude());
             cv.put(KEY_LON, last_location.getLongitude());
             cv.put(KEY_ACCURACY, last_location.getAccuracy());
@@ -136,13 +213,13 @@ public class DatabaseSightings extends SQLiteOpenHelper
     }
 
     // ==================================================================
-    public int update_sighting(long sighting_id, long tsn) {
+    public int updateSightingTaxon(long sighting_id, long tsn, String title) {
 
 	    SQLiteDatabase db = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(KEY_TSN, tsn);
-
+        cv.put(KEY_SIGHTING_TITLE, title);
 	    int updates = db.update(TABLE_SIGHTINGS, cv, KEY_ROWID + " = ?", new String[] {Long.toString(sighting_id)});
 
 	    db.close();
@@ -205,17 +282,17 @@ public class DatabaseSightings extends SQLiteOpenHelper
     }
     
     // ==================================================================
-    public Cursor list_sightings_2(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor sightingsProvider(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
     	
 	    SQLiteDatabase db = getReadableDatabase();
-	    Cursor c = db.query(TABLE_SIGHTINGS,
+	    Cursor c = db.query(VIEW_EVENTS_PROVIDER,
 	    		projection,
-//	    		new String[] {KEY_ROWID, KEY_TSN, KEY_LAT, KEY_LON, KEY_ACCURACY, "strftime('%s', " + KEY_TIMESTAMP + ") AS " + KEY_TIMESTAMP},
 	    		selection,
 	    		selectionArgs,
 	    		null, null,
 	    		sortOrder);
-//	    		KEY_TIMESTAMP + " DESC");
+	    
+	    Log.d(TAG,"Number of rows retrieved: " + c.getCount());
 
 	    return c;
     }
@@ -293,23 +370,20 @@ public class DatabaseSightings extends SQLiteOpenHelper
 
     // ==================================================================
     @Override
-    public void onCreate(SQLiteDatabase db) 
-    {
+    public void onCreate(SQLiteDatabase db)  {
     	for (String sql : table_creation_commands)
         	db.execSQL( sql );
     }
-    
-
 
     // ==================================================================
     public void drop_all_tables(SQLiteDatabase db) 
     {
-    	for (String table : table_list)
-    		db.execSQL("DROP TABLE IF EXISTS " + table);
-    }
-    
+		for (String view : view_list)
+			db.execSQL("DROP VIEW IF EXISTS " + view);
 
-    
+		for (String table : table_list)
+			db.execSQL("DROP TABLE IF EXISTS " + table);
+    }
 
     // ==================================================================
     @Override

@@ -5,7 +5,9 @@ import org.crittr.browse.Market;
 import org.crittr.browse.R;
 import org.crittr.browse.activity.prefs.PrefsTaxonNavigator;
 import org.crittr.shared.browser.Constants;
+import org.crittr.shared.browser.containers.TaxonInfo;
 import org.crittr.shared.browser.provider.DatabaseTaxonomy;
+import org.crittr.shared.browser.utilities.ListAdapterTaxons;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,7 +49,6 @@ abstract public class TaxonNavigatorAbstract extends Activity {
     // =============================================
 
 	final int DIALOG_BACK_KEY_INSTRUCTIONS = 1;
-	final int DIALOG_PURCHASE_MESSAGE = 2;
 	
 
 	final static int APPENGINE_FETCH_RETURN_CODE = 1;
@@ -62,14 +63,6 @@ abstract public class TaxonNavigatorAbstract extends Activity {
     	
     	
         switch (id) {
-        case DIALOG_PURCHASE_MESSAGE:
-        {
-	        TextView feature_overview_blurb = (TextView) dialog.findViewById(R.id.disabled_function_description);
-	        feature_overview_blurb.setText(Html.fromHtml(globally_stored_disabled_function_description), TextView.BufferType.SPANNABLE);
-	        feature_overview_blurb.setMovementMethod(LinkMovementMethod.getInstance());
-
-	        break;
-        }
         default:
         	break;
         }
@@ -81,43 +74,6 @@ abstract public class TaxonNavigatorAbstract extends Activity {
 
         LayoutInflater factory = LayoutInflater.from(this);
         switch (id) {
-
-        case DIALOG_PURCHASE_MESSAGE:
-        {
-        	
-        	// NOTE: This dialog is customized differently from the others.
-        	
-	        View tagTextEntryView = factory.inflate(R.layout.dialog_purchase_nagger, null);
-
-	        TextView feature_overview_blurb = (TextView) tagTextEntryView.findViewById(R.id.disabled_function_description);
-	        feature_overview_blurb.setText(Html.fromHtml(globally_stored_disabled_function_description), TextView.BufferType.SPANNABLE);
-	        feature_overview_blurb.setMovementMethod(LinkMovementMethod.getInstance());
-	        
-	        tagTextEntryView.findViewById(R.id.purchase_nag_secondary_text).setVisibility(View.GONE);
-	        
-	        
-	        
-
-            return new AlertDialog.Builder(this)
-            .setIcon(android.R.drawable.ic_dialog_info)
-            .setTitle(R.string.purchase_main_dialog_title)
-            .setView(tagTextEntryView)
-            .setPositiveButton(R.string.purchase_button_message, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-	
-                	// Launch market intent
-                	Uri market_uri = Uri.parse(Market.MARKET_PACKAGE_SEARCH);
-                	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
-                	startActivity(i);
-                }
-            })
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-	
-                }
-            })
-            .create();
-        }
         case DIALOG_BACK_KEY_INSTRUCTIONS:
         {
 
@@ -170,8 +126,7 @@ abstract public class TaxonNavigatorAbstract extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		
-//		TaxonInfo taxon = ((ListAdapterTaxons) getListView().getAdapter()).taxon_list.get(info.position);
-//		String taxon_name = getSelectedTaxonName(info.position);
+
 		long tsn = info.id;
 
 		
@@ -186,21 +141,13 @@ abstract public class TaxonNavigatorAbstract extends Activity {
 		}
 		case R.id.menu_taxon_accept:
 		{
-			if ( ((ApplicationState) getApplication() ).hasPaid() ) {
+   	    	Intent i = new Intent();
 
-	   	    	Intent i = new Intent();
-
-	   	    	// Note: the full hierarchy can be recovered by API methods.
-	   	    	i.putExtra(Constants.INTENT_EXTRA_TSN, tsn);
-		    	setResult(Activity.RESULT_OK, i);
-		    	finish();
-				
-			} else {
-				globally_stored_feature_nag = false;
-				globally_stored_disabled_function_description = getResources().getString(R.string.disabled_generic);
-				showDialog(DIALOG_PURCHASE_MESSAGE);
-			}
-			
+   	    	// Note: the full hierarchy can be recovered by API methods.
+   	    	i.putExtra(Constants.INTENT_EXTRA_TSN, tsn);
+   	    	
+	    	setResult(Activity.RESULT_OK, i);
+	    	finish();
 	    	break;
 		}
 		default:

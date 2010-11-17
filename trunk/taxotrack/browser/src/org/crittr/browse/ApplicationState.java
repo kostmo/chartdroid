@@ -14,7 +14,6 @@ public class ApplicationState extends Application {
 	
 	
 	public boolean hasPaid() {
-		
 		return Market.isPackageInstalled(this, Market.FULL_VERSION_PACKAGE);
 	}
 }

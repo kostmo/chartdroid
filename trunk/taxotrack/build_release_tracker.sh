@@ -14,7 +14,7 @@ cp $KEYS_DIR/$GOOGLE_MAP_API_KEY_FILENAME $GOOGLE_MAP_API_KEY_PROJECT_PATH
 cd tracker
 ant release
 cp bin/TaxoTracker-release.apk ../
-ant clean
+#ant clean
 cd ..
 
 # Restore the dummy API keys file
@@ -22,12 +22,16 @@ cp $TEMP_DIRECTORY/$GOOGLE_MAP_API_KEY_FILENAME $GOOGLE_MAP_API_KEY_PROJECT_PATH
 rm -r $TEMP_DIRECTORY
 
 
-echo -n "Do you want to install the new .apk on your device? [Y/n]: "
+echo -n "[u]pdate, [f]resh reinstall, or [n]either? [U/f/n]: "
 read character
 case $character in
-    [Yy] | "" ) echo "You responded in the affirmative."
+    [Ff] ) echo "Will now uninstall then reinstall."
         adb uninstall org.crittr.track
         adb install TaxoTracker-release.apk
         ;;
+    [Uu] | "" ) echo "Will now update the app."
+        adb install -r TaxoTracker-release.apk
+        ;;
     * ) echo "Fine, then."
 esac
+
