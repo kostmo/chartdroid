@@ -17,6 +17,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.crittr.shared.browser.Constants;
 import org.crittr.shared.browser.utilities.AsyncTaxonInfoPopulatorModified;
+import org.crittr.track.CalendarPickerConstants;
 import org.crittr.track.DatabaseSightings;
 import org.crittr.track.Market;
 import org.crittr.track.R;
@@ -86,7 +87,7 @@ public class SightingsList extends ExpandableListActivity {
 	final int DIALOG_IMPORT_NO_FILE_MANAGER = 3;
 	final int DIALOG_CONFIRM_SIGHTING_ADD = 4;
 	final int DIALOG_CONFIRM_PHOTO_ATTACHMENT = 5;
-	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 6;
+	static final int DIALOG_CALENDARPICKER_DOWNLOAD = 6;
 
 
 
@@ -227,7 +228,7 @@ public class SightingsList extends ExpandableListActivity {
 
 	// ========================================================================
 	void downloadLaunchCheck(Intent intent, int request_code) {
-		if (Market.isIntentAvailable(this, intent))
+		if (CalendarPickerConstants.DownloadInfo.isIntentAvailable(this, intent))
 			startActivityForResult(intent, request_code);
 		else
 			showDialog(DIALOG_CALENDARPICKER_DOWNLOAD);
@@ -241,7 +242,7 @@ public class SightingsList extends ExpandableListActivity {
 		case DIALOG_CALENDARPICKER_DOWNLOAD:
 		{
 			boolean has_android_market = Market.isIntentAvailable(this,
-					Market.getMarketDownloadIntent(Market.PACKAGE_NAME_CALENDAR_PICKER));
+					CalendarPickerConstants.DownloadInfo.getMarketDownloadIntent(CalendarPickerConstants.DownloadInfo.PACKAGE_NAME_CALENDAR_PICKER));
 
 			Log.d(TAG, "has_android_market? " + has_android_market);
 
@@ -267,12 +268,12 @@ public class SightingsList extends ExpandableListActivity {
 			.setMessage(R.string.calendar_picker_modularization_explanation)
 			.setPositiveButton(R.string.download_calendar_picker_market, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
-					startActivity(Market.getMarketDownloadIntent(Market.PACKAGE_NAME_CALENDAR_PICKER));
+					startActivity(CalendarPickerConstants.DownloadInfo.getMarketDownloadIntent(CalendarPickerConstants.DownloadInfo.PACKAGE_NAME_CALENDAR_PICKER));
 				}
 			})
 			.setNeutralButton(R.string.download_calendar_picker_web, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Market.APK_DOWNLOAD_URI_CALENDAR_PICKER));
+					startActivity(new Intent(Intent.ACTION_VIEW, CalendarPickerConstants.DownloadInfo.APK_DOWNLOAD_URI));
 				}
 			})
 			.create();

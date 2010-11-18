@@ -27,19 +27,21 @@ import com.gc.android.market.api.model.Market.App;
 import com.gc.android.market.api.model.Market.Comment;
 import com.gc.android.market.api.model.Market.AppsRequest.ViewType;
 import com.googlecode.chartdroid.core.ColumnSchema;
+import com.kostmo.market.revenue.CalendarPickerConstants;
 import com.kostmo.market.revenue.activity.AppsOverviewActivity;
 import com.kostmo.market.revenue.activity.ConsolidationActivity;
 import com.kostmo.market.revenue.activity.RevenueActivity;
 import com.kostmo.market.revenue.activity.AppsOverviewActivity.WindowEvaluatorMode;
 import com.kostmo.market.revenue.container.DateRange;
 import com.kostmo.market.revenue.xml.CheckoutXmlUtils.ChargeAmount;
+import com.kostmo.tools.DurationStrings.TimescaleTier;
 
 public class DatabaseRevenue extends SQLiteOpenHelper {
 
 	static final String TAG = "DatabaseRevenue";
 
 	static final String DATABASE_NAME = "REVENUE";
-	static final int DATABASE_VERSION = 5;
+	static final int DATABASE_VERSION = 7;	// TODO Return to 6
 
 	public static final int FALSE = 0;
 	public static final int TRUE = 1;
@@ -139,6 +141,14 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 	 */
 	public static final String VIEW_RAW_TRANSACTION_ITEMS = "VIEW_RAW_TRANSACTION_ITEMS";
 
+	/**
+	 * A helper view to provide events to the Calendar app with the correct
+	 * column names
+	 */
+	public static final String VIEW_CALENDAR_SALES_EVENTS = "VIEW_CALENDAR_SALES_EVENTS";
+	public static final String VIEW_CALENDAR_SALES_EVENTS_TRUNCATED_DAY = "VIEW_CALENDAR_SALES_EVENTS_TRUNCATED_DAY";
+	
+	
 	/**
 	 * A FULL OUTER JOIN on the Apps and Items table (linking Market and
 	 * Checkout), using {@link #KEY_APP_ID} from
@@ -257,7 +267,7 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 			+ " ("
 			+ KEY_APP_ID
 			+ " integer, "
-			// Author ID uses unsigned long values, requires BigInteger
+			// XXX Author ID uses unsigned long values, requires BigInteger
 			// conversion to signed
 			+ KEY_COMMENT_AUTHOR_ID + " integer, " + KEY_COMMENT_AUTHOR_NAME
 			+ " text, " + KEY_RATING_VALUE + " integer, " + KEY_COMMENT_TEXT
@@ -324,6 +334,15 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 			+ VIEW_RAW_TRANSACTION_ITEMS + " AS "
 			+ ViewQueries.buildRawAssociatedTransactionQuery();
 
+	final static String SQL_CREATE_CALENDAR_SALES_EVENTS_VIEW = "create view "
+		+ VIEW_CALENDAR_SALES_EVENTS + " AS "
+		+ ViewQueries.buildCalendarSalesEventsQuery();
+
+	final static String SQL_CREATE_CALENDAR_SALES_EVENTS_TRUNCATED_DAY_VIEW = "create view "
+		+ VIEW_CALENDAR_SALES_EVENTS_TRUNCATED_DAY + " AS "
+		+ ViewQueries.buildCalendarSalesEventsQueryTruncatedDay();
+	
+	
 	final static String SQL_CREATE_MARKET_COMMENTS_LINKED_VIEW = "create view "
 			+ VIEW_MARKET_COMMENTS_LINKED + " AS "
 			+ ViewQueries.buildLinkedMarketCommentsQuery();
@@ -370,7 +389,10 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 			PARTIAL_AND_FULL_LINKED_COMMENT_AGGREGATION,
 
 			VIEW_CONSOLIDATED_GOOGLE_CHECKOUT_ITEMS, VIEW_LABELED_TRANSACTIONS,
-			VIEW_RAW_TRANSACTION_ITEMS, VIEW_AGGREGATE_PURCHASES,
+			VIEW_RAW_TRANSACTION_ITEMS,
+			VIEW_CALENDAR_SALES_EVENTS,
+			VIEW_CALENDAR_SALES_EVENTS_TRUNCATED_DAY,
+			VIEW_AGGREGATE_PURCHASES,
 			VIEW_AGGREGATE_RATINGS, VIEW_MARKET_COMMENTS_LINKED,
 			VIEW_SIMPLE_MARKET_LINKED,
 			VIEW_AGGREGATE_CONSOLIDATED_MARKET_LINKED, };
@@ -400,8 +422,12 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 			SQL_CREATE_RATED_MARKET_APPS_COMMENTS_VIEW,
 			SQL_CREATE_PARTIAL_AND_FULL_LINKED_COMMENT_AGGREGATION_VIEW,
 
-			SQL_CREATE_RAW_TRANSACTION_ITEMS_VIEW, // This must precede
-													// SQL_CREATE_AGGREGATE_PURCHASES_VIEW
+			SQL_CREATE_RAW_TRANSACTION_ITEMS_VIEW, // This must precede both
+													// SQL_CREATE_AGGREGATE_PURCHASES_VIEW and SQL_CREATE_CALENDAR_SALES_EVENTS_VIEW
+			
+			SQL_CREATE_CALENDAR_SALES_EVENTS_VIEW,
+			SQL_CREATE_CALENDAR_SALES_EVENTS_TRUNCATED_DAY_VIEW,
+			
 			SQL_CREATE_AGGREGATE_PURCHASES_VIEW, // This must precede
 													// SQL_CREATE_SIMPLE_MARKET_LINKED_VIEW
 			SQL_CREATE_SIMPLE_MARKET_LINKED_VIEW, // This must precede
@@ -412,6 +438,47 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 	public DatabaseRevenue(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
+
+	// ========================================================================
+	public Cursor getCalendarSalesEvents(String[] projection,
+			String selection, String[] selection_args, String order_by) {
+		
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = db.query(VIEW_CALENDAR_SALES_EVENTS,
+				projection, selection, selection_args,
+				null, null, order_by);
+
+		return cursor;
+	}
+	
+	
+	// ========================================================================
+	public Cursor getCalendarSalesEventsGrouped(String[] projection,
+			String selection, String[] selection_args, String order_by) {
+		
+		SQLiteDatabase db = getReadableDatabase();
+		
+		
+		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+		query_builder.setTables(VIEW_CALENDAR_SALES_EVENTS_TRUNCATED_DAY);
+
+		Cursor cursor = query_builder.query(
+				db,
+				new String[] {
+				BaseColumns._ID,
+				CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.CALENDAR_ID,
+				"SUM(" + SalesEventsContentProvider.COLUMN_QUANTITY0 + ") AS " + SalesEventsContentProvider.COLUMN_QUANTITY0,
+				"COUNT(" + BaseColumns._ID + ") AS " + SalesEventsContentProvider.COLUMN_QUANTITY1,
+				"'Aggregate Sales' AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TITLE,
+				CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
+				selection, selection_args,
+				// Group by:
+				CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP,
+				null, order_by, null);
+		
+		return cursor;
+	}
+
 
 	// ========================================================================
 	private static class ViewQueries {
@@ -472,6 +539,40 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 					KEY_ORDER_NUMBER, KEY_REVENUE_CENTS, KEY_ORDER_TIMESTAMP,
 					KEY_ITEM_NAME, KEY_ITEM_DESCRIPTION }, null, null, null,
 					null, null, null);
+		}
+
+		
+		// ========================================================================
+		private static String buildCalendarSalesEventsQuery() {
+
+			SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+			query_builder.setTables(VIEW_RAW_TRANSACTION_ITEMS);
+
+			return query_builder.buildQuery(
+					new String[] {
+							KEY_ORDER_NUMBER + " AS "
+							+ BaseColumns._ID,
+					KEY_CANONICAL_ITEM_ID + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.CALENDAR_ID,
+					KEY_REVENUE_CENTS + "/CAST(100 AS REAL) AS " + SalesEventsContentProvider.COLUMN_QUANTITY0,
+					KEY_ITEM_NAME + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TITLE,
+					KEY_ORDER_TIMESTAMP + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
+					null, null, null, null, null, null);
+		}
+		
+		// ========================================================================
+		private static String buildCalendarSalesEventsQueryTruncatedDay() {
+
+			SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+			query_builder.setTables(VIEW_CALENDAR_SALES_EVENTS);
+
+			return query_builder.buildQuery(
+					new String[] {
+					BaseColumns._ID,
+					CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.CALENDAR_ID,
+					SalesEventsContentProvider.COLUMN_QUANTITY0,
+					CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TITLE,
+					"CAST((CAST(" + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP + "/" + TimescaleTier.DAYS.millis + " AS INTEGER)*" + TimescaleTier.DAYS.millis + ") AS INTEGER) " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
+					null, null, null, null, null, null);
 		}
 
 		// ========================================================================
@@ -1317,9 +1418,7 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 	}
 
 	// ========================================================================
-	public boolean hasUngroupedAppDeployments() {
-
-		SQLiteDatabase db = getReadableDatabase();
+	public boolean hasUngroupedAppDeployments(SQLiteDatabase db) {
 
 		Cursor cursor = db.query(VIEW_AGGREGATE_CONSOLIDATED_MARKET_LINKED,
 				null, KEY_APP_TITLE + " ISNULL", null, null, null, null,
@@ -1327,7 +1426,6 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 		boolean has = cursor.moveToFirst();
 
 		cursor.close();
-		db.close();
 		return has;
 	}
 
@@ -2715,17 +2813,12 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 	// ========================================================================
 	// We only want to list apps for which we have an entry stored in the Market
 	// table.
-	public boolean hasLinkedPaidMarketApps() {
-
-		SQLiteDatabase db = getReadableDatabase();
-
+	public boolean hasLinkedPaidMarketApps(SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_MARKET_APPS, null, KEY_APP_PRICE_MICROS
 				+ "!=" + 0, null, null, null, null, Integer.toString(1));
 
 		boolean has = cursor.moveToFirst();
-
 		cursor.close();
-		db.close();
 		return has;
 	}
 

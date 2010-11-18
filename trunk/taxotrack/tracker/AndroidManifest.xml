@@ -5,7 +5,7 @@
       android:versionName="1.0">
     <application android:label="@string/main_title" android:icon="@drawable/ladybug48">
 
-   		<provider android:label="Wikat categorization event"
+   		<provider android:label="Sightings provider"
    			android:name=".provider.SightingEventContentProvider"
 	        android:authorities="org.crittr.sighting"
 		/>

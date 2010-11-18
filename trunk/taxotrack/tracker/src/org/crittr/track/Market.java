@@ -15,13 +15,6 @@ import android.widget.Toast;
 public class Market {
 
 	public static final String DEBUG_TAG = "TaxoTrack";
-
-	
-	public final static String PACKAGE_NAME_CALENDAR_PICKER = "org.openintents.calendarpicker";
-	public final static String CALENDAR_PICKER_WEBSITE = "http://www.openintents.org/en/calendarpicker";
-	public final static Uri APK_DOWNLOAD_URI_CALENDAR_PICKER = Uri.parse(CALENDAR_PICKER_WEBSITE);
-
-	
 	
 	
     public static final String MARKET_PACKAGE_DETAILS_PREFIX = "market://details?id=";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.crittr.track;
+package com.kostmo.market.revenue;
 
 import java.util.List;
 
