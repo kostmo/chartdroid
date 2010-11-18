@@ -18,6 +18,9 @@ public class Market {
     public static final int NO_RESULT = -1;
 
     public static final String TAG = "MarketIncome";
+
+    
+    
     
     
     public static final String WEBSITE_URL = "http://code.google.com/p/chartdroid/wiki/DeveloperRevenueAnalysis";
@@ -83,4 +86,10 @@ public class Market {
         return -1;
       }
     }
+    
+	// ================================================
+	public static Intent getMarketDownloadIntent(String package_name) {
+		Uri market_uri = Uri.parse(MARKET_PACKAGE_DETAILS_PREFIX + package_name);
+		return new Intent(Intent.ACTION_VIEW, market_uri);
+	}
 }

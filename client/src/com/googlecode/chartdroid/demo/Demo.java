@@ -1,8 +1,5 @@
 package com.googlecode.chartdroid.demo;
 
-import com.googlecode.chartdroid.core.IntentConstants;
-import com.googlecode.chartdroid.demo.provider.EventContentProvider;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Demo extends Activity implements View.OnClickListener {
     
@@ -23,10 +19,6 @@ public class Demo extends Activity implements View.OnClickListener {
 
 
 	static final String TAG = "ChartDroid";
-	
-	
-	// XXX Experimental
-	final int REQUEST_CODE_CALENDAR_SELECTION = 1;
 	
 	// ========================================================================
     @Override
@@ -119,12 +111,8 @@ public class Demo extends Activity implements View.OnClickListener {
         }
         
   	   	switch (requestCode) {
-   		case REQUEST_CODE_CALENDAR_SELECTION:
-   		{
-   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, -1);
-   			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
-            break;
-        }
+   		default:
+   			break;
   	   	}
     }
 }

@@ -143,11 +143,6 @@ public class Main extends Activity {
 			startActivity(new Intent(this, CacheActivity.class));
 			return true;
 		}
-		case R.id.menu_app_engine_login:
-		{
-			startActivity(new Intent(this, ClientLoginActivity.class));
-			return true;
-		}
 		case R.id.menu_preferences:
 		{
 			startActivity(new Intent(this, MainPreferences.class));

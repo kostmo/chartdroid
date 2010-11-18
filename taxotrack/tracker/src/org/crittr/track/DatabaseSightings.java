@@ -115,8 +115,8 @@ public class DatabaseSightings extends SQLiteOpenHelper {
 		return query_builder.buildQuery(
 				new String[] {
 				KEY_ROWID,
-				KEY_SIGHTING_TITLE + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.COLUMN_EVENT_TITLE,
-				"CAST((CAST(strftime('%s', " + KEY_TIMESTAMP + ") AS INTEGER)*1000) AS INTEGER) AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.COLUMN_EVENT_TIMESTAMP},
+				KEY_SIGHTING_TITLE + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TITLE,
+				"CAST((CAST(strftime('%s', " + KEY_TIMESTAMP + ") AS INTEGER)*1000) AS INTEGER) AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
 				null, null, null, null, null, null);
 	}
     

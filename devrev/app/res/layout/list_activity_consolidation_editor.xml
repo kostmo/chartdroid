@@ -43,14 +43,6 @@
 		</LinearLayout>	
 	</LinearLayout>
 
-   	<TextView
-	     android:text="@string/consolidation_editor_title"  
-	     android:layout_width="fill_parent"  
-	     android:layout_height="wrap_content"  
-	     android:paddingTop="2dip"  
-	     android:paddingLeft="5dip"  
-	     style="?android:attr/listSeparatorTextViewStyle" />
-
    	<TextView android:id="@+id/revenue_summary_textview"
 	     android:text="Summary"  
 	     android:layout_width="fill_parent"  

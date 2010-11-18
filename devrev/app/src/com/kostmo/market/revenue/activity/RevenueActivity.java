@@ -443,15 +443,21 @@ public class RevenueActivity extends Activity implements Disablable {
 	// ========================================================================
 	void wrap3gCheck() {
 		
+		Log.d(TAG, "Currently checking for WiFi or 3G connections...");
+		
 		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 	    NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
     	NetworkInfo mMobile = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-	    if (mWifi.isAvailable()) {
+	    if (mWifi.isAvailable() && mWifi.isConnected()) {
 
 	    	promptCredentialsOrExecute();
 	    	
-	    } else if (mMobile.isAvailable()) {
+	    } else if (mMobile.isAvailable() && mMobile.isConnected()) {
+	    	
+	    	Log.d(TAG, "Was WiFi available? " + mWifi.isAvailable());
+	    	Log.d(TAG, "Was WiFi connected? " + mWifi.isConnected());
+	    	
 	    	showDialog(DIALOG_3G_WARNING);
 	    } else {
 	    	showDialog(DIALOG_NO_CONNECTION);

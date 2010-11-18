@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -52,6 +53,7 @@ import android.widget.SimpleCursorAdapter.CursorToStringConverter;
 import com.gc.android.market.api.model.Market.App;
 import com.gc.android.market.api.model.Market.AppsRequest.ViewType;
 import com.googlecode.chartdroid.core.IntentConstants;
+import com.kostmo.market.revenue.CalendarPickerConstants;
 import com.kostmo.market.revenue.Market;
 import com.kostmo.market.revenue.R;
 import com.kostmo.market.revenue.activity.AppsOverviewActivity.WindowEvaluatorMode;
@@ -63,6 +65,7 @@ import com.kostmo.market.revenue.adapter.AppExpandableListAdapter;
 import com.kostmo.market.revenue.container.CommentsProgressPacket;
 import com.kostmo.market.revenue.container.DateRange;
 import com.kostmo.market.revenue.provider.DatabaseRevenue;
+import com.kostmo.market.revenue.provider.SalesEventsContentProvider;
 import com.kostmo.market.revenue.provider.UriGenerator;
 import com.kostmo.market.revenue.provider.DatabaseRevenue.Debug;
 import com.kostmo.market.revenue.provider.plotmodes.CorrelationAbsoluteRevenuePrice;
@@ -114,6 +117,11 @@ public class ConsolidationActivity extends ExpandableListActivity implements Sem
 	private static final int DIALOG_PROGRESS_COMMENT_SYNC = 5;
 	private static final int DIALOG_MARKET_API_ERROR = 6;
 	private static final int DIALOG_PUBLISHER_FILTER = 7;
+	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 8;
+	
+	
+	// FIXME Not used
+	private static final int REQUEST_CODE_EVENT_SELECTION = 1;
 	
 	
 	
@@ -511,6 +519,24 @@ public class ConsolidationActivity extends ExpandableListActivity implements Sem
         LayoutInflater factory = LayoutInflater.from(this);
         
 		switch (id) {
+		case DIALOG_CALENDARPICKER_DOWNLOAD:
+		{
+			return new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle(R.string.download_calendar_picker)
+			.setMessage(R.string.calendar_picker_modularization_explanation)
+			.setPositiveButton(R.string.download_calendar_picker_market, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(CalendarPickerConstants.DownloadInfo.getMarketDownloadIntent(CalendarPickerConstants.DownloadInfo.PACKAGE_NAME_CALENDAR_PICKER));
+				}
+			})
+			.setNeutralButton(R.string.download_calendar_picker_web, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(new Intent(Intent.ACTION_VIEW, CalendarPickerConstants.DownloadInfo.APK_DOWNLOAD_URI));
+				}
+			})
+			.create();
+		}
 		case DIALOG_MARKET_API_ERROR:
 		{
 			return new AlertDialog.Builder(this)
@@ -704,13 +730,33 @@ public class ConsolidationActivity extends ExpandableListActivity implements Sem
         	showDialog(DIALOG_PUBLISHER_FILTER);
 	    }
 	}
-	
+
+
+	// ========================================================================
+	void downloadLaunchCheck(Intent intent, int request_code) {
+		if (CalendarPickerConstants.DownloadInfo.isIntentAvailable(this, intent))
+			startActivityForResult(intent, request_code);
+		else
+			showDialog(DIALOG_CALENDARPICKER_DOWNLOAD);
+	}
+
 	// ========================================================================
 	@Override
 	protected void onPrepareDialog(int id, final Dialog dialog) {
 		super.onPrepareDialog(id, dialog);
 
 		switch (id) {
+		case DIALOG_CALENDARPICKER_DOWNLOAD:
+		{
+			boolean has_android_market = Market.isIntentAvailable(this,
+					CalendarPickerConstants.DownloadInfo.getMarketDownloadIntent(CalendarPickerConstants.DownloadInfo.PACKAGE_NAME_CALENDAR_PICKER));
+
+			Log.d(TAG, "has_android_market? " + has_android_market);
+
+			dialog.findViewById(android.R.id.button1).setVisibility(
+					has_android_market ? View.VISIBLE : View.GONE);
+			break;
+		}
         case DIALOG_PROGRESS_APP_SEARCH:
         {
 			// Customize the message
@@ -800,31 +846,53 @@ public class ConsolidationActivity extends ExpandableListActivity implements Sem
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	boolean temp = super.onPrepareOptionsMenu(menu);
-    	menu.findItem(R.id.menu_sync_comments).setVisible(this.database.countLinkedPaidMarketApps() > 0);
     	
+    	
+    	// Old, inefficient version:
 //    	int ungrouped_depoloyments = this.database.countUngroupedAppDeployments();
 //    	Log.d(TAG, "Ungrouped deployments: " + ungrouped_depoloyments);
-    	
-    	boolean has_ungrouped_deploymenrs = this.database.hasUngroupedAppDeployments();
-    	Log.d(TAG, "Has ungrouped deployments: " + has_ungrouped_deploymenrs);
-    	
-    	int available_paid_apps = this.database.countLinkedPaidMarketApps();
+//    	int available_paid_apps = this.database.countLinkedPaidMarketApps();
 //    	Log.d(TAG, "Available paid apps: " + available_paid_apps);
-
-    	boolean has_available_paid_apps = this.database.hasLinkedPaidMarketApps();
-    	Log.d(TAG, "Has available paid apps: " + has_available_paid_apps);
-    	
 //    	menu.findItem(R.id.menu_autogroup).setVisible(ungrouped_depoloyments > 0 && available_paid_apps > 0);
-    	menu.findItem(R.id.menu_autogroup).setVisible(has_ungrouped_deploymenrs && has_available_paid_apps);
+//    	menu.findItem(R.id.menu_sync_comments).setVisible(available_paid_apps > 0);
+
     	
+
+    	menu.findItem(R.id.menu_sync_comments).setVisible(has_available_paid_apps);
+    	menu.findItem(R.id.menu_autogroup).setVisible(has_ungrouped_deployments && has_available_paid_apps);
     	
     	return temp;
     }
+    
+    boolean has_ungrouped_deployments=false, has_available_paid_apps=false;
     
 	// ========================================================================
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.menu_calendar_by_event:
+        {
+			Log.d(TAG, "Viewing events in calendar format (by event)...");
+			Uri u = Uri.withAppendedPath(SalesEventsContentProvider.constructUri(), SalesEventsContentProvider.URI_PATH_INDIVIDUAL_EVENTS);
+			Intent i = new Intent(Intent.ACTION_VIEW, u);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[0], SalesEventsContentProvider.COLUMN_QUANTITY0);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_VISUALIZE_QUANTITIES, true);
+	    	downloadLaunchCheck(i, REQUEST_CODE_EVENT_SELECTION);
+            return true;
+        }
+        case R.id.menu_calendar_aggregated:
+        {
+			Log.d(TAG, "Viewing events in calendar format (aggregated)...");
+			Uri u = Uri.withAppendedPath(SalesEventsContentProvider.constructUri(), SalesEventsContentProvider.URI_PATH_AGGREGATE_EVENTS);
+			Intent i = new Intent(Intent.ACTION_VIEW, u);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[0], SalesEventsContentProvider.COLUMN_QUANTITY0);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[1], SalesEventsContentProvider.COLUMN_QUANTITY1);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_BACKGROUND_COLORMAP_QUANTITY_INDEX, 0);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_VISUALIZE_QUANTITIES, true);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_SHOW_EVENT_COUNT, false);
+	    	downloadLaunchCheck(i, REQUEST_CODE_EVENT_SELECTION);
+            return true;
+        }
         case R.id.menu_autogroup:
         {
         	this.database.autoGroupMerchantItems();
@@ -1227,9 +1295,51 @@ public class ConsolidationActivity extends ExpandableListActivity implements Sem
 //	        startManagingCursor(cursor);	// XXX This has caused a crash, I think.
 			((CursorTreeAdapter) getExpandableListAdapter()).changeCursor(cursor);
 
-			// Maybe we must do this *after* changeCursor is applied?
+
+			new UpdateButtonVisibilityTask().execute();
+		}
+	}
+
+	// ========================================================================
+	
+	// TODO Update activity on orientation change
+	public class UpdateButtonVisibilityTask extends AsyncTask<Void, Void, Cursor> {
+
+		@Override
+		protected void onPreExecute() {
+			incSemaphore();
+
+			TextView empty_text = (TextView) findViewById(R.id.empty_text_consolidation);
+			View progress_throbber = findViewById(R.id.empty_list_progress);
+			
+			empty_text.setText(R.string.empty_building_apps_list);
+			progress_throbber.setVisibility(View.VISIBLE);
+		}
+
+		// ========================================================================
+		@Override
+		protected Cursor doInBackground(Void... params) {
+
+			SQLiteDatabase db = database.getReadableDatabase();
+			has_available_paid_apps = database.hasLinkedPaidMarketApps(db);
+	    	Log.d(TAG, "Has available paid apps: " + has_available_paid_apps);
+
+	    	has_ungrouped_deployments = database.hasUngroupedAppDeployments(db);
+	    	Log.d(TAG, "Has ungrouped deployments: " + has_ungrouped_deployments);
+	    	db.close();
+
+			return null;
+		}
+		
+		// ========================================================================
+		@Override
+		public void onPostExecute(Cursor cursor) {
+			
+			decSemaphore();
+			
 			button_update_ratings.setVisibility(
-					database.countLinkedPaidMarketApps() > 0
+//					database.countLinkedPaidMarketApps() > 0
+					has_available_paid_apps
 					? View.VISIBLE : View.GONE);
 		}
 	}

@@ -24,10 +24,6 @@ import java.util.Random;
 public class OldChartsActivity extends Activity implements View.OnClickListener {
 
 	static final String TAG = "ChartDroid"; 
-
-	
-
-	final int REQUEST_CODE_CALENDAR_SELECTION = 1;
 	
 	
     public static final String[] demo_pie_labels = new String[] {
@@ -157,12 +153,8 @@ public class OldChartsActivity extends Activity implements View.OnClickListener 
         }
         
   	   	switch (requestCode) {
-   		case REQUEST_CODE_CALENDAR_SELECTION:
-   		{
-   			long id = data.getLongExtra(IntentConstants.INTENT_EXTRA_CALENDAR_EVENT_ID, -1);
-   			Toast.makeText(this, "Result: " + id, Toast.LENGTH_SHORT).show();
-            break;
-        }
+  	   	default:
+  	   		break;
   	   	}
     }
 }

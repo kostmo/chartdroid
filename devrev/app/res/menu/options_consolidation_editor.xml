@@ -36,7 +36,22 @@
           android:title="Settings"
           android:alphabeticShortcut="s"
           android:icon="@android:drawable/ic_menu_preferences" />
-          
+
+     <item
+          android:title="Calendar view"
+          android:titleCondensed="Calendar"
+          android:alphabeticShortcut="c"
+          android:icon="@drawable/ic_menu_today">
+   		<menu>
+			<item android:id="@+id/menu_calendar_by_event"
+		          android:title="Indivdual events"
+		          android:alphabeticShortcut="i"/>
+		          
+			<item android:id="@+id/menu_calendar_aggregated"
+		          android:title="Day-aggregated"
+		          android:alphabeticShortcut="d"/>		          
+		</menu>
+	</item>
 
     <item
     	android:visible="true"
