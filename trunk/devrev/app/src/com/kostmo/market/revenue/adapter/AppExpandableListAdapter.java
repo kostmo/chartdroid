@@ -218,6 +218,15 @@ public class AppExpandableListAdapter extends ResourceCursorTreeAdapter implemen
 	// ============================================================================
 	static void bindColoredCommentsCountView(View view, Context context, Cursor cursor) {
 
+		if (cursor == null) {
+			Log.e(TAG, "Encountered a null Cursor in bindColoredCommentsCountView()");
+			return;
+		}
+		if (view == null) {
+			Log.e(TAG, "Encountered a null View in bindColoredCommentsCountView()");
+			return;
+		}
+		
 		TextView ratings_count_textbox = (TextView) view.findViewById(R.id.ratings_count);
 		if (cursor.getLong(cursor.getColumnIndex(BaseColumns._ID)) == 0) {
 			ratings_count_textbox.setVisibility(View.GONE);

@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -866,29 +867,40 @@ public class ConsolidationActivity extends ExpandableListActivity implements Sem
     
     boolean has_ungrouped_deployments=false, has_available_paid_apps=false;
     
+    final int[] COLORMAP_COLORS = new int[] {Color.BLUE, Color.GREEN, Color.RED};
 	// ========================================================================
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_calendar_by_event:
         {
-			Log.d(TAG, "Viewing events in calendar format (by event)...");
 			Uri u = Uri.withAppendedPath(SalesEventsContentProvider.constructUri(), SalesEventsContentProvider.URI_PATH_INDIVIDUAL_EVENTS);
 			Intent i = new Intent(Intent.ACTION_VIEW, u);
-			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[0], SalesEventsContentProvider.COLUMN_QUANTITY0);
+			
+			String extra_name = CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[0];
+			i.putExtra(extra_name, SalesEventsContentProvider.COLUMN_QUANTITY0);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_FORMATS[0], ConsolidationActivity.DOLLAR_AXIS_FORMAT);
+			
 			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_VISUALIZE_QUANTITIES, true);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_BACKGROUND_COLORMAP_COLORS, COLORMAP_COLORS);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_SHOW_EVENT_COUNT, false);
 	    	downloadLaunchCheck(i, REQUEST_CODE_EVENT_SELECTION);
             return true;
         }
         case R.id.menu_calendar_aggregated:
         {
-			Log.d(TAG, "Viewing events in calendar format (aggregated)...");
 			Uri u = Uri.withAppendedPath(SalesEventsContentProvider.constructUri(), SalesEventsContentProvider.URI_PATH_AGGREGATE_EVENTS);
 			Intent i = new Intent(Intent.ACTION_VIEW, u);
 			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[0], SalesEventsContentProvider.COLUMN_QUANTITY0);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_FORMATS[0], ConsolidationActivity.DOLLAR_AXIS_FORMAT);
+			
 			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[1], SalesEventsContentProvider.COLUMN_QUANTITY1);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_FORMATS[1], "%.0f Sales");
+			
 			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_BACKGROUND_COLORMAP_QUANTITY_INDEX, 0);
 			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_VISUALIZE_QUANTITIES, true);
+			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_BACKGROUND_COLORMAP_COLORS, COLORMAP_COLORS);
+			
 			i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_SHOW_EVENT_COUNT, false);
 	    	downloadLaunchCheck(i, REQUEST_CODE_EVENT_SELECTION);
             return true;

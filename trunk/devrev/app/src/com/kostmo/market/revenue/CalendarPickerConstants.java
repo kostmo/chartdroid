@@ -118,9 +118,15 @@ public class CalendarPickerConstants {
 				"org.openintents.calendarpicker.intent.extra.QUANTITY1_COLUMN_NAME"
 			};
 			
+			public static final String[] EXTRA_QUANTITY_FORMATS = new String[] {
+				"org.openintents.calendarpicker.intent.extra.QUANTITY0_NUMBER_FORMAT",
+				"org.openintents.calendarpicker.intent.extra.QUANTITY1_NUMBER_FORMAT"
+			};
+			
 			/** Integer for selecting the quantity for determining the background color values
 			 * If this value is omitted, the day's event count will be used for the color value. */
 			public static final String EXTRA_BACKGROUND_COLORMAP_QUANTITY_INDEX = "org.openintents.calendarpicker.intent.extra.BACKGROUND_COLORMAP_QUANTITY_INDEX";
+			public static final String EXTRA_BACKGROUND_COLORMAP_COLORS = "org.openintents.calendarpicker.intent.extra.BACKGROUND_COLORMAP_COLORS";
 		}
 		
 		/** Columns to supply when implementing a ContentProvider for events */

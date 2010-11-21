@@ -443,6 +443,8 @@ public class DatabaseRevenue extends SQLiteOpenHelper {
 	public Cursor getCalendarSalesEvents(String[] projection,
 			String selection, String[] selection_args, String order_by) {
 		
+		Log.w(TAG, "Querying with projection: " + TextUtils.join(",",projection));
+		
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = db.query(VIEW_CALENDAR_SALES_EVENTS,
 				projection, selection, selection_args,
