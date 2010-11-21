@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.googlecode.chartdroid.core.ColumnSchema;
-import com.kostmo.market.revenue.ClientLoginActivity;
 import com.kostmo.market.revenue.Market;
 import com.kostmo.market.revenue.R;
 import com.kostmo.market.revenue.activity.prefs.MainPreferences;

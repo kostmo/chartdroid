@@ -24,8 +24,12 @@ public class Market {
 	public final static String ACTION_PICK_COLOR = "org.openintents.action.PICK_COLOR";
 	public final static String PACKAGE_NAME_COLOR_PICKER = "org.openintents.colorpicker";
 	public final static String COLOR_PICKER_WEBSITE = "http://www.openintents.org/en/colorpicker";
-	public final static Uri APK_DOWNLOAD_URI_COLOR_PICKER = Uri.parse(COLOR_PICKER_WEBSITE);
+//	public final static Uri APK_DOWNLOAD_URI_COLOR_PICKER = Uri.parse(COLOR_PICKER_WEBSITE);
 
+	public final static String APK_DOWNLOAD_URL_PREFIX = "http://openintents.googlecode.com/files/";
+	public final static String APK_APP_NAME = "ColorPicker";
+	public final static String APK_VERSION_NAME = "1.1.0";
+	public final static Uri APK_DOWNLOAD_URI = Uri.parse(APK_DOWNLOAD_URL_PREFIX + APK_APP_NAME + "-" + APK_VERSION_NAME + ".apk");
 	
     
 	
