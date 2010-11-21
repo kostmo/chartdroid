@@ -18,13 +18,10 @@ An essential app for independent Android developers and small/medium publishers.
   * Quantify how comments affect sales
   * Observe effect of app pricing on sales
 
-
-http://chartdroid.googlecode.com/svn/graphics/devrev/mini_revenue_plot.png
-
+||http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market://search%3Fq%3Dpname:com.kostmo.market.revenue&.png||http://chartdroid.googlecode.com/svn/graphics/devrev/mini_revenue_plot.png||
 
 I also threw together some [http://chartdroid.googlecode.com/svn/graphics/devrev/presentation/slides.pdf slides] about the application architecture.
 
-http://chart.apis.google.com/chart?cht=qr&chs=350x350&chl=market://search%3Fq%3Dpname:com.kostmo.market.revenue&.png
 
 == Usage ==
 
@@ -73,9 +70,7 @@ String android_id = android.provider.Settings.Secure.getString(
 Not all countries support the Google Checkout API, and thus do not provide a "Merchant Item Key".  Developers from these countries are out of luck, for now.
 
 = Screenshots =
-
 http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/revenue_price_overlay.png
 http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_revenue_timelines.png
-http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_revenue_totals.png
-http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_consolidator_activity.png
 http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/revenue_ratings_timeline.png
+|| http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_revenue_totals.png || http://chartdroid.googlecode.com/svn/graphics/screenshots/devrev/app_consolidator_activity.png ||
