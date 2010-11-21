@@ -9,6 +9,10 @@ TODO
 ==============================================================
 
 
+Implement revenue widget
+
+
+
 
 Make more granular progress bar for record fetcher
 
