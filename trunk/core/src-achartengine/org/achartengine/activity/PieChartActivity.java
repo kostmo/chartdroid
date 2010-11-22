@@ -66,9 +66,9 @@ public class PieChartActivity extends RadialChartActivity {
 		// NOTE: Axes labels are not applicable to the donut chart. 
 		Log.d(TAG, "chart_title: " + chart_title);
 
-
+		List<String> datam_labels = axes_container.datam_labels.get(0);
 		List<Number> first_series = axes_container.y_axis_series.get(0);
-		CategorySeries dataset = org.achartengine.ChartGenHelper.buildCategoryDataset(chart_title, first_series);
+		CategorySeries dataset = org.achartengine.ChartGenHelper.buildCategoryDataset(chart_title, first_series, datam_labels);
 
 		DefaultRenderer renderer = org.achartengine.ChartGenHelper.buildCategoryRenderer(colors);
 		renderer.setApplyBackgroundColor(true);

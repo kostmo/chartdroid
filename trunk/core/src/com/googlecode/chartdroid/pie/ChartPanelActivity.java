@@ -22,11 +22,8 @@ import com.googlecode.chartdroid.pie.ColorSwatchKeyAdapter.PieDataElement;
 
 public class ChartPanelActivity extends ListActivity {
 	
-	static final String TAG = "Chartdroid"; 
+	static final String TAG = "ChartPanelActivity"; 
     
-    
-    public ChartPanelActivity() {
-    }
 
     String[] data_labels;
     int[] data_values;

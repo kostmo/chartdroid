@@ -81,15 +81,14 @@ public class AceDataContentProvider extends ContentProvider {
 
 		sUriMatcher.addURI(AUTHORITY, CHART_DATA_SERIES_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_LABELED_SERIES);
 
-		String labeled_multiseries_path = CHART_DATA_MULTISERIES_PATH + "/" + CHART_DATA_LABELED_PATH;
-		Log.d(TAG, "UriMatcher labeled_multiseries_path: " + labeled_multiseries_path);
 
 
 		sUriMatcher.addURI(AUTHORITY, CHART_DATA_TIMELINE_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_LABELED_TIMELINE);
 		
 		sUriMatcher.addURI(AUTHORITY, CHART_DATA_MULTI_TIMELINE_PATH + "/" + CHART_DATA_LABELED_PATH, CHART_DATA_MULTI_TIMELINE);
 
-
+		String labeled_multiseries_path = CHART_DATA_MULTISERIES_PATH + "/" + CHART_DATA_LABELED_PATH;
+		Log.d(TAG, "UriMatcher labeled_multiseries_path: " + labeled_multiseries_path);
 		sUriMatcher.addURI(AUTHORITY, labeled_multiseries_path, CHART_DATA_LABELED_MULTISERIES);
 	}
 

@@ -168,11 +168,17 @@ public abstract class ChartGenHelper {
 	}
 
 	// ========================================================================
-	public static CategorySeries buildCategoryDataset(String title, List<Number> values) {
+	public static CategorySeries buildCategoryDataset(String title, List<Number> values, List<String> datum_labels) {
 		CategorySeries series = new CategorySeries(title);
-		int k = 0;
-		for (Number value : values) {
-			series.add("Project " + (++k), value);
+
+		for (int i=0; i<values.size(); i++) {
+			String label = datum_labels.get(i);
+
+			if (label == null) {
+				label = "Datum " + i;
+			}
+			
+			series.add(label, values.get(i));
 		}
 
 		return series;
