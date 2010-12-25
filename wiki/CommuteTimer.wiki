@@ -1,0 +1,5 @@
+#summary Statistically analyze duration of your daily commute
+
+= Related = 
+
+http://androidcommunity.com/forums/f44/idea-daily-commute-tracking-41169/
