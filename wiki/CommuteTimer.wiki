@@ -1,5 +1,6 @@
 #summary Statistically analyze duration of your daily commute
 
+Source code: http://code.google.com/p/chartdroid/source/browse/#svn%2Ftrunk%2Fcommute
 = Related = 
 
   * http://androidcommunity.com/forums/f44/idea-daily-commute-tracking-41169/
