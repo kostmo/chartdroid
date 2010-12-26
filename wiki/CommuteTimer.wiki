@@ -1,5 +1,8 @@
 #summary Statistically analyze duration of your daily commute
 
+=Introduction=
+Satisfy your curiosity with this convenient data collection tool.
+
 Source code: http://code.google.com/p/chartdroid/source/browse/#svn%2Ftrunk%2Fcommute
 = Related = 
 
