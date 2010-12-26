@@ -1,5 +1,7 @@
 package com.kostmo.commute;
 
+import com.kostmo.commute.provider.DataContentProvider;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -88,8 +90,18 @@ public class Main extends ListActivity {
         }
         case R.id.menu_more_apps:
         {
+        	
 	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
+	    	startActivity(i);
+            return true;
+        }
+        case R.id.menu_plot_times:
+        {
+	    
+        	// FIXME
+        	long data_id = 0;
+	    	Intent i = new Intent(Intent.ACTION_VIEW, DataContentProvider.constructUri(data_id));
 	    	startActivity(i);
             return true;
         }

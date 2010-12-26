@@ -10,11 +10,16 @@
          android:title="About"
          android:alphabeticShortcut="b"
          android:icon="@android:drawable/ic_menu_info_details" />
-
           
     <item android:id="@+id/menu_more_apps"
           android:title="More apps"
           android:alphabeticShortcut="m"
           android:icon="@drawable/ic_menu_star" />
+
+    <item android:id="@+id/menu_plot_times"
+          android:title="Plot"
+          android:alphabeticShortcut="p"
+          android:icon="@drawable/ic_menu_star" />
+
 
 </menu>
