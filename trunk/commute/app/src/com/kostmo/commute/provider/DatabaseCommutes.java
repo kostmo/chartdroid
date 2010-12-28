@@ -1,4 +1,4 @@
-package com.kostmo.commute;
+package com.kostmo.commute.provider;
 
 
 import android.content.ContentValues;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 public class DatabaseCommutes extends SQLiteOpenHelper {
@@ -16,7 +17,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "COMMUTES";
     static final int DATABASE_VERSION = 1;
 
-    public static final String TABLE_DESTINATIONS = "TABLE_DESTINATION_PAIRS";
+    public static final String TABLE_DESTINATIONS = "TABLE_DESTINATIONS";
     public static final String TABLE_DESTINATION_PAIRS = "TABLE_DESTINATION_PAIRS";
     public static final String TABLE_TRIPS = "TABLE_TRIPS";
     public static final String TABLE_TRIP_BREADCRUMBS = "TABLE_TRIP_BREADCRUMBS";
@@ -48,7 +49,6 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
     final static String SQL_CREATE_DESTINATION_PAIRS_TABLE =
         "create table " + TABLE_DESTINATION_PAIRS + " ("
-        + KEY_DESTINATION_PAIR_ID + " integer autoincrement, "
         + KEY_TITLE + " text, "
         + KEY_START_DESTINATION_ID + " integer, "
         + KEY_END_DESTINATION_ID + " integer, "
@@ -127,7 +127,13 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public Cursor getDestinationPairs() {
     	
     	SQLiteDatabase db = getReadableDatabase();
-    	Cursor cursor = db.query(TABLE_DESTINATION_PAIRS, null, null, null, null, null, null);
+    	Cursor cursor = db.query(TABLE_DESTINATION_PAIRS,
+    			new String[] {
+    			"ROWID AS " + BaseColumns._ID,
+    			KEY_TITLE,
+    	        KEY_START_DESTINATION_ID,
+    	        KEY_END_DESTINATION_ID},
+    			null, null, null, null, null);
     	cursor.moveToFirst();
 	    db.close();
 	    
@@ -136,7 +142,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
     
     // ============================================================
-    public long storeDestination(float lat, float lon) {
+    public long storeDestination(double lat, double lon) {
     	
     	SQLiteDatabase db = getWritableDatabase();
     	ContentValues cv = new ContentValues();
@@ -152,9 +158,26 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     }
     
     // ============================================================
+    public long storePair(long from_id, long to_id, String title) {
+    	
+    	SQLiteDatabase db = getWritableDatabase();
+    	ContentValues cv = new ContentValues();
+    	
+
+    	cv.put(KEY_START_DESTINATION_ID, from_id);
+    	cv.put(KEY_END_DESTINATION_ID, to_id);
+    	cv.put(KEY_TITLE, title);
+
+    	long pair_id = db.insert(TABLE_DESTINATION_PAIRS, null, cv);
+
+	    db.close();
+	    
+	    return pair_id;
+    }
     
-    public void drop_all_tables(SQLiteDatabase db) 
-    {
+    // ============================================================
+    public void drop_all_tables(SQLiteDatabase db) {
+    	
     	for (String table : table_list)
     		db.execSQL("DROP TABLE IF EXISTS " + table);
     }
