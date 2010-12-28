@@ -13,18 +13,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.kostmo.commute.CalendarPickerConstants;
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
-import com.kostmo.commute.R.id;
-import com.kostmo.commute.R.layout;
-import com.kostmo.commute.R.menu;
-import com.kostmo.commute.R.string;
 import com.kostmo.commute.provider.DataContentProvider;
 import com.kostmo.commute.provider.DatabaseCommutes;
+import com.kostmo.commute.provider.EventContentProvider;
 
 public class Main extends ListActivity {
 
@@ -35,6 +34,7 @@ public class Main extends ListActivity {
 	DatabaseCommutes database;
 	
 	private static final int DIALOG_PLOT_METHOD = 1;
+	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 8;
 
 
 	private static final int REQUEST_CODE_NEW_PAIR = 1;
@@ -64,11 +64,50 @@ public class Main extends ListActivity {
     	((CursorAdapter) this.getListAdapter()).changeCursor(cursor);
     }
 
+
+	// ========================================================================
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+
+        switch (id) {
+		case DIALOG_CALENDARPICKER_DOWNLOAD:
+		{
+			boolean has_android_market = CalendarPickerConstants.DownloadInfo.isIntentAvailable(this,
+					CalendarPickerConstants.DownloadInfo.getMarketDownloadIntent(CalendarPickerConstants.DownloadInfo.PACKAGE_NAME_CALENDAR_PICKER));
+
+			Log.d(TAG, "has_android_market? " + has_android_market);
+
+			dialog.findViewById(android.R.id.button1).setVisibility(
+					has_android_market ? View.VISIBLE : View.GONE);
+			break;
+		}
+        default:
+        	break;
+        }
+    }
 	// ========================================================
 	@Override
 	protected Dialog onCreateDialog(int id) {
         
 		switch (id) {
+		case DIALOG_CALENDARPICKER_DOWNLOAD:
+		{
+			return new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle(R.string.download_calendar_picker)
+			.setMessage(R.string.calendar_picker_modularization_explanation)
+			.setPositiveButton(R.string.download_calendar_picker_market, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(CalendarPickerConstants.DownloadInfo.getMarketDownloadIntent(CalendarPickerConstants.DownloadInfo.PACKAGE_NAME_CALENDAR_PICKER));
+				}
+			})
+			.setNeutralButton(R.string.download_calendar_picker_web, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					startActivity(new Intent(Intent.ACTION_VIEW, CalendarPickerConstants.DownloadInfo.APK_DOWNLOAD_URI));
+				}
+			})
+			.create();
+		}
 		case DIALOG_PLOT_METHOD:
 		{
 			return new AlertDialog.Builder(this)
@@ -86,12 +125,6 @@ public class Main extends ListActivity {
 						plotCalendar();
 						break;
 					}
-				}
-			})
-			.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-
-			    	long destination_id = database.storeDestination(0, 0);
 				}
 			})
 			.setNegativeButton(R.string.alert_dialog_cancel, null)
@@ -120,9 +153,37 @@ public class Main extends ListActivity {
         return true;
     }
 
-    
+
+	// ========================================================================
+	void downloadLaunchCheck(Intent intent, int request_code) {
+		if (CalendarPickerConstants.DownloadInfo.isIntentAvailable(this, intent))
+			if (request_code >= 0)
+				startActivityForResult(intent, request_code);
+			else
+				startActivity(intent);
+		else
+			showDialog(DIALOG_CALENDARPICKER_DOWNLOAD);
+	}
+	
+    // ========================================================================	
     void plotCalendar() {
-    	
+    
+
+		long calendar_id = 1;	// XXX Irrelevant
+		Uri u = EventContentProvider.constructUri(calendar_id);
+		Intent i = new Intent(Intent.ACTION_VIEW, u);
+		
+		
+		String extra_name = CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_COLUMN_NAMES[0];
+		i.putExtra(extra_name, EventContentProvider.COLUMN_QUANTITY0);
+		i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_QUANTITY_FORMATS[0], "%.0f minutes");
+		
+		i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_VISUALIZE_QUANTITIES, true);
+//		i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_BACKGROUND_COLORMAP_COLORS, COLORMAP_COLORS);
+		i.putExtra(CalendarPickerConstants.CalendarEventPicker.IntentExtras.EXTRA_SHOW_EVENT_COUNT, false);
+
+		
+		downloadLaunchCheck(i, -1);
     	
     }
 
@@ -190,6 +251,8 @@ public class Main extends ListActivity {
         
   	   	switch (requestCode) {
   	   	case REQUEST_CODE_NEW_PAIR:
+
+  	        this.refreshCursor();
   	   		break;
    		default:
 	    	break;

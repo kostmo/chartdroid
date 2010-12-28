@@ -6,8 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import com.kostmo.commute.CalendarPickerConstants;
+import com.kostmo.tools.DurationStrings.TimescaleTier;
 
 public class DatabaseCommutes extends SQLiteOpenHelper {
 	
@@ -15,7 +19,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
  
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_DESTINATIONS = "TABLE_DESTINATIONS";
     public static final String TABLE_DESTINATION_PAIRS = "TABLE_DESTINATION_PAIRS";
@@ -24,6 +28,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     
 
     public static final String KEY_DESTINATION_ID = "KEY_DESTINATION_ID";
+    public static final String KEY_ADDRESS = "KEY_ADDRESS";
     public static final String KEY_LATITUDE = "KEY_LATITUDE";
     public static final String KEY_LONGITUDE = "KEY_LONGITUDE";
     
@@ -37,13 +42,26 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     
     
     public static final String KEY_BREADCRUMB_ID = "KEY_BREADCRUMB_ID";
+    
     public static final String KEY_TITLE = "KEY_TITLE";
     
+    public static final String KEY_TRIP_DURATION_MS = "KEY_TRIP_DURATION_MS";
     
+    
+
+    public static final String VIEW_TRIP_TIMES_TRUNCATED_DAY = "VIEW_TRIP_TIMES_TRUNCATED_DAY";
+    public static final String VIEW_TRIP_TIMES = "VIEW_TRIP_TIMES";
+    
+
+
+    
+	
+	
 
     final static String SQL_CREATE_DESTINATIONS_TABLE =
         "create table " + TABLE_DESTINATIONS + " ("
         + KEY_DESTINATION_ID + " integer primary key autoincrement, "
+        + KEY_ADDRESS + " text, "
         + KEY_LATITUDE + " float, "
         + KEY_LONGITUDE + " float);";
 
@@ -62,12 +80,26 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
         + KEY_END_TIME + " integer);";
    
 
-    final static String SQL_CREATE_TRIP_BREADCRUBS_TABLE =
+    final static String SQL_CREATE_TRIP_BREADCRUMBS_TABLE =
         "create table " + TABLE_TRIP_BREADCRUMBS + " ("
         + KEY_BREADCRUMB_ID + " integer primary key autoincrement, "
         + KEY_TRIP_ID + " integer, "
         + KEY_LATITUDE + " float, "
         + KEY_LONGITUDE + " float);";
+    
+    
+    
+    
+
+	final static String SQL_CREATE_TRIP_TIMES_VIEW = "create view "
+		+ VIEW_TRIP_TIMES + " AS "
+		+ buildTripTimesQuery();
+
+	
+	final static String SQL_CREATE_TRIP_TIMES_TRUNCATED_DAY_VIEW = "create view "
+		+ VIEW_TRIP_TIMES_TRUNCATED_DAY + " AS "
+		+ buildTripTimesTruncatedDayQuery();
+    
     
     final static String[] table_list = {
     	TABLE_DESTINATIONS,
@@ -76,11 +108,21 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	TABLE_TRIP_BREADCRUMBS
     };
 
+
+    final static String[] view_list = {
+    	VIEW_TRIP_TIMES,
+    	VIEW_TRIP_TIMES_TRUNCATED_DAY
+    };
+    
+    
     final static String[] table_creation_commands = {
     	SQL_CREATE_DESTINATIONS_TABLE,
     	SQL_CREATE_DESTINATION_PAIRS_TABLE,
     	SQL_CREATE_TRIPS_TABLE,
-    	SQL_CREATE_TRIP_BREADCRUBS_TABLE
+    	SQL_CREATE_TRIP_BREADCRUMBS_TABLE,
+
+    	SQL_CREATE_TRIP_TIMES_VIEW,
+    	SQL_CREATE_TRIP_TIMES_TRUNCATED_DAY_VIEW,
     };
 
     // ============================================================
@@ -100,6 +142,38 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	}
     }
 
+    // ============================================================
+	static String buildTripTimesQuery() {
+
+		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+		query_builder.setTables(TABLE_TRIPS);
+		
+		return query_builder.buildQuery(
+				new String[] {
+						KEY_TRIP_ID,
+						KEY_DESTINATION_PAIR_ID,
+						KEY_START_TIME,
+						 KEY_END_TIME, 
+						 "(" + KEY_END_TIME + "-" + KEY_START_TIME + ")" + " AS " + KEY_TRIP_DURATION_MS},
+				null, null, null, null, null, null);
+	}
+
+
+    // ============================================================
+	static String buildTripTimesTruncatedDayQuery() {
+
+		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+		query_builder.setTables(VIEW_TRIP_TIMES);
+		
+		return query_builder.buildQuery(
+				new String[] {
+				KEY_TRIP_ID + " AS " + BaseColumns._ID,
+				KEY_TRIP_DURATION_MS + " AS " + EventContentProvider.COLUMN_QUANTITY0,
+				"CAST((CAST(" + KEY_START_TIME + "*1000/" + TimescaleTier.DAYS.millis + " AS INTEGER)*" + TimescaleTier.DAYS.millis + ") AS INTEGER) " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
+				null, null, null, null, null, null);
+	}
+
+    
     // ============================================================
     /** Kind of a pointless function */
     public int deleteWithCount() {
@@ -142,13 +216,14 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
     
     // ============================================================
-    public long storeDestination(double lat, double lon) {
+    public long storeDestination(double lat, double lon, String address) {
     	
     	SQLiteDatabase db = getWritableDatabase();
     	ContentValues cv = new ContentValues();
     	
     	cv.put(KEY_LATITUDE, lat);
     	cv.put(KEY_LONGITUDE, lon);
+    	cv.put(KEY_ADDRESS, address);
 
     	long destination_id = db.insert(TABLE_DESTINATIONS, null, cv);
 
@@ -174,6 +249,34 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    
 	    return pair_id;
     }
+    
+
+	// ========================================================================
+	public Cursor getCalendarPlayTimesGrouped(String[] projection,
+			String selection, String[] selection_args, String order_by) {
+		
+		SQLiteDatabase db = getReadableDatabase();
+		
+		
+		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+		query_builder.setTables(VIEW_TRIP_TIMES_TRUNCATED_DAY);
+
+		Cursor cursor = query_builder.query(
+				db,
+				new String[] {
+				BaseColumns._ID,
+				0 + " AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.CALENDAR_ID,
+				"SUM(" + EventContentProvider.COLUMN_QUANTITY0 + ")/" + TimescaleTier.MINUTES.millis + " AS " + EventContentProvider.COLUMN_QUANTITY0,
+				"COUNT(" + BaseColumns._ID + ") AS " + EventContentProvider.COLUMN_QUANTITY1,
+				"'Total play time' AS " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TITLE,
+				CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
+				selection, selection_args,
+				// Group by:
+				CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP,
+				null, order_by, null);
+		
+		return cursor;
+	}
     
     // ============================================================
     public void drop_all_tables(SQLiteDatabase db) {

@@ -16,7 +16,8 @@ public class DataContentProvider extends ContentProvider {
 	
 	// This must be the same as what as specified as the Content Provider authority
 	// in the manifest file.
-	public static final String AUTHORITY = "com.googlecode.chartdroid.demo.provider.data";
+
+	public static final String AUTHORITY = "com.kostmo.commute.provider.data";
 	
 	
 	static Uri BASE_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).path("data").build();

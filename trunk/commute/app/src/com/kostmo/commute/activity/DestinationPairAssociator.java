@@ -79,7 +79,7 @@ public class DestinationPairAssociator extends Activity {
 				int i=0;
 		    	for (int selector_id : COMPOUND_SELECTORS) {
 		        	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(selector_id);
-		        	destination_ids[i] = database.storeDestination(compound_selector.lat, compound_selector.lon);
+		        	destination_ids[i] = database.storeDestination(compound_selector.lat, compound_selector.lon, compound_selector.getAddress());
 		        	i++;
 		    	}
 
@@ -138,7 +138,7 @@ public class DestinationPairAssociator extends Activity {
 			.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 
-			    	long destination_id = database.storeDestination(0, 0);
+			    	long destination_id = database.storeDestination(0, 0, null);
 				}
 			})
 			.setNegativeButton(R.string.alert_dialog_cancel, null)
