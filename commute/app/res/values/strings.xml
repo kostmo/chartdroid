@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Main!</string>
-    <string name="app_name">CommuteTimer</string>
+    <string name="app_name">Commute Timer</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="choose_ellipsis">Choose...</string>
+    <string name="view_on_map">View on map</string>
+    
 </resources>

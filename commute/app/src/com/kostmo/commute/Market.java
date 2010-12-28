@@ -17,7 +17,7 @@ public class Market {
     
     public static final int NO_RESULT = -1;
 
-    public static final String TAG = "Market";
+    public static final String TAG = "CommuteTimer";
 
     
 

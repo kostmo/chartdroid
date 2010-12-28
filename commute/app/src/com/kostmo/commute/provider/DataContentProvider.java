@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.googlecode.chartdroid.core.ColumnSchema;
-import com.kostmo.commute.DatabaseCommutes;
 
 public class DataContentProvider extends ContentProvider {
 	

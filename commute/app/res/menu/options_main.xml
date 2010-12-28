@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:id="@+id/menu_add"
-         android:title="Add"
-         android:alphabeticShortcut="a"
+    <item android:id="@+id/new_pair"
+         android:title="New pair"
+         android:alphabeticShortcut="n"
          android:icon="@android:drawable/ic_menu_add" />
 
     <item android:id="@+id/menu_about"
@@ -19,6 +19,12 @@
     <item android:id="@+id/menu_plot_times"
           android:title="Plot"
           android:alphabeticShortcut="p"
+          android:icon="@drawable/ic_menu_star" />
+          
+          
+    <item android:id="@+id/pick_address"
+          android:title="Get Location"
+          android:alphabeticShortcut="l"
           android:icon="@drawable/ic_menu_star" />
 
 
