@@ -85,6 +85,10 @@ public class DestinationSelectorLayout extends LinearLayout {
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
     	this.context.startActivity(intent);
     }
+    
+    public String getAddress() {
+    	return this.address;
+    }
 
 	// ========================================================
     public void setAddress(String address) {
