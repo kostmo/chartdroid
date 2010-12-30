@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -25,10 +27,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import com.kostmo.commute.CalendarPickerConstants;
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
+import com.kostmo.commute.activity.DestinationPairAssociator.AddressPair;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DataContentProvider;
 import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.provider.EventContentProvider;
+import com.kostmo.commute.service.RouteTrackerService;
 
 public class Main extends ListActivity {
 
@@ -43,6 +47,9 @@ public class Main extends ListActivity {
 
 	private static final int REQUEST_CODE_NEW_PAIR = 1;
 
+
+	SharedPreferences settings;
+	
     // ========================================================================
 	/** Called when the activity is first created. */
     @Override
@@ -51,6 +58,7 @@ public class Main extends ListActivity {
 
         this.setContentView(R.layout.main);
     	this.database = new DatabaseCommutes(this);
+        this.settings = PreferenceManager.getDefaultSharedPreferences(this);
     	
         SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, null,
         		new String[] {
@@ -233,6 +241,15 @@ public class Main extends ListActivity {
 		case R.id.menu_start_logging:
 		{
 			// TODO Register a location listener for the destination
+			
+			if (this.settings.getBoolean(TriggerPreferences.PREFKEY_ENABLE_RECORD_BREADCRUMBS, TriggerPreferences.DEFAULT_ENABLE_RECORD_BREADCRUMBS)) {
+				startService(new Intent(this, RouteTrackerService.class));
+				
+			} else {
+				AddressPair pair = this.database.getAddressPair(info.id);
+				this.database.startTrip(info.id);
+			}
+			
         	Log.e(TAG, "Not implemented.");
 			break;
 		}

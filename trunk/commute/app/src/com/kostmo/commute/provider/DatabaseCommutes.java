@@ -20,7 +20,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
  
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 3;
+    static final int DATABASE_VERSION = 4;
 
     public static final String TABLE_DESTINATIONS = "TABLE_DESTINATIONS";
     public static final String TABLE_DESTINATION_PAIRS = "TABLE_DESTINATION_PAIRS";
@@ -39,7 +39,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
     public static final String KEY_TRIP_ID = "KEY_TRIP_ID";
     public static final String KEY_DESTINATION_PAIR_ID = "KEY_DESTINATION_PAIR_ID";
-    public static final String KEY_START_TIME = "KEY_START_TIME";	// Unix time milliseconds since epoch
+    public static final String KEY_START_TIME = "KEY_START_TIME";	// Timestamp string
     public static final String KEY_END_TIME = "KEY_END_TIME";	// ditto
     
     
@@ -82,8 +82,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
         "create table " + TABLE_TRIPS + " ("
         + KEY_TRIP_ID + " integer primary key autoincrement, "
         + KEY_DESTINATION_PAIR_ID + " integer, "
-        + KEY_START_TIME + " integer, "
-        + KEY_END_TIME + " integer);";
+        + KEY_START_TIME + " TIMESTAMP NULL default CURRENT_TIMESTAMP, "
+        + KEY_END_TIME + " TIMESTAMP);";
    
 
     final static String SQL_CREATE_TRIP_BREADCRUMBS_TABLE =
@@ -290,6 +290,19 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	
     	cursor.close();
 	    db.close();
+    }
+
+    // ============================================================
+    public long startTrip(long pair_id) {
+    	
+    	SQLiteDatabase db = getWritableDatabase();
+    	ContentValues cv = new ContentValues();
+    	
+    	cv.put(KEY_DESTINATION_PAIR_ID, pair_id);
+    	long trip_id = db.insert(TABLE_TRIPS, null, cv);
+	    db.close();
+	    
+	    return trip_id;
     }
     
     // ============================================================

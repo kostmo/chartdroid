@@ -5,12 +5,23 @@
 	android:title="Tracking Triggers">
 
 
-    <PreferenceCategory android:title="Notifications">
+    <PreferenceCategory android:title="Tracking">
         <CheckBoxPreference
-                android:key="enable_periodic_checkin"
-                android:title="Comments"
+                android:key="enable_record_breadcrumbs"
+                android:title="Enable Breadcrumbs"
                 android:defaultValue="false"
-                android:summary="Notify when someone leaves a comment on your apps" />
+                android:summary="Run a tracking service constantly during the trip" />
+                
+    </PreferenceCategory>
+
+
+
+    <PreferenceCategory android:title="Starting Triggers">
+        <CheckBoxPreference
+                android:key="enable_wifi_trigger"
+                android:title="WiFi Trigger"
+                android:defaultValue="false"
+                android:summary="Wifi change triggers route start" />
                 
     </PreferenceCategory>
 
