@@ -24,11 +24,6 @@ import android.widget.Toast;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
-import com.kostmo.commute.R.id;
-import com.kostmo.commute.R.layout;
-import com.kostmo.commute.R.menu;
-import com.kostmo.commute.R.string;
-import com.kostmo.commute.provider.DataContentProvider;
 import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.view.DestinationSelectorLayout;
 
@@ -38,14 +33,16 @@ public class DestinationPairAssociator extends Activity {
 
     
 	DatabaseCommutes database;
-	private static final int DIALOG_CONFIRM_PLACE_ADDITION = 1;
-	private static final int DIALOG_ROUTE_NAME = 2;
+	private static final int DIALOG_PLACE_SELECTION_METHOD = 1;
+	private static final int DIALOG_ENTER_ADDRESS = 2;
 	
+	public static final String EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID";
 	
 	static int[] COMPOUND_SELECTORS = {R.id.compound_selector_origin, R.id.compound_selector_destination};
 	
 
     private EditText titleEditText;
+    int global_selector_id;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -56,21 +53,28 @@ public class DestinationPairAssociator extends Activity {
 
     	this.database = new DatabaseCommutes(this);
 
-
         this.titleEditText = (EditText) findViewById(R.id.field_pair_title);
     	
     	
+        boolean is_editing = Intent.ACTION_EDIT.equals(getIntent().getAction());
+        
     	for (final int selector_id : COMPOUND_SELECTORS) {
         	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(selector_id);
-        	compound_selector.mPickButton.setOnClickListener(new OnClickListener() {
-    			@Override
-    			public void onClick(View v) {
-    				pickAddress(selector_id);
-    			}
-        	});	
+        	if (is_editing) {
+        		compound_selector.mPickButton.setEnabled(false);
+        	} else {
+	        	compound_selector.mPickButton.setOnClickListener(new OnClickListener() {
+	    			@Override
+	    			public void onClick(View v) {
+	    				global_selector_id = selector_id;
+	    				showDialog(DIALOG_PLACE_SELECTION_METHOD);
+	    			}
+	        	});	
+        	}
     	}
 
-    	findViewById(R.id.button_save_pair).setOnClickListener(new OnClickListener() {
+    	View save_button = findViewById(R.id.button_save_pair);
+    	save_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
@@ -92,7 +96,61 @@ public class DestinationPairAssociator extends Activity {
 				finish();
 			}
     	});
+    	
+
+    	DestinationSelectorLayout compound_selector_origin = (DestinationSelectorLayout) findViewById(R.id.compound_selector_origin);
+    	DestinationSelectorLayout compound_selector_destination = (DestinationSelectorLayout) findViewById(R.id.compound_selector_destination);
+    	
+    	
+    	AddressPair pair = null;
+		final StateObject state = (StateObject) getLastNonConfigurationInstance();
+		if (state != null) {
+			this.global_selector_id = state.selector_id;
+			pair = state.address_pair;
+
+		} else if (is_editing) {
+			long pair_id = getIntent().getLongExtra(EXTRA_ROUTE_ID, -1);
+			
+			pair = this.database.getAddressPair(pair_id);
+			this.titleEditText.setText(pair.title);
+		}
+		
+		if (pair != null) {
+			compound_selector_origin.setAddress(pair.origin);
+	    	compound_selector_destination.setAddress(pair.destination);
+		}
     }
+
+	// ========================================================================
+    public static class AddressPair {
+
+		public String origin, destination, title;
+		public AddressPair(String origin, String destination) {
+			this.origin = origin;
+			this.destination = destination;
+		}
+    }
+    
+	// ========================================================================
+	class StateObject {
+		int selector_id;
+		AddressPair address_pair;
+	}
+	
+	// ========================================================================
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+
+		StateObject state = new StateObject();
+		state.selector_id = this.global_selector_id;
+		
+    	DestinationSelectorLayout compound_selector_origin = (DestinationSelectorLayout) findViewById(R.id.compound_selector_origin);
+    	DestinationSelectorLayout compound_selector_destination = (DestinationSelectorLayout) findViewById(R.id.compound_selector_destination);
+    	state.address_pair = new AddressPair(compound_selector_origin.getAddress(), compound_selector_destination.getAddress());
+    	
+		
+		return state;
+	}
 
 	// ========================================================
     void pickAddress(int request_code) {
@@ -109,7 +167,7 @@ public class DestinationPairAssociator extends Activity {
         LayoutInflater factory = LayoutInflater.from(this);
         
 		switch (id) {
-		case DIALOG_ROUTE_NAME:
+		case DIALOG_ENTER_ADDRESS:
 		{
             View dialog_view = factory.inflate(R.layout.dialog_name_entry, null);
 
@@ -117,28 +175,40 @@ public class DestinationPairAssociator extends Activity {
 
             return new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_info)
-			.setTitle("Route Name")
+			.setTitle("Address:")
             .setView(dialog_view)
             .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                	String name = name_box.getText().toString().trim();
-                	Toast.makeText(DestinationPairAssociator.this, name + " saved.", Toast.LENGTH_SHORT).show();
+                	String address = name_box.getText().toString().trim();
+                	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(global_selector_id);
+                	compound_selector.setAddress(address);
                 }
             })
             .setNegativeButton(R.string.alert_dialog_cancel, null)
             .create();
 		}
-		case DIALOG_CONFIRM_PLACE_ADDITION:
+		case DIALOG_PLACE_SELECTION_METHOD:
 		{
 			return new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_alert)
-			.setTitle("Add current location?")
-			.setMessage("Click OK to add the current location.")
-			.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
+			.setTitle("Select location:")
+			.setItems(new String[] {"Contacts", "Current location", "Type address"}, new DialogInterface.OnClickListener() {
 
-			    	long destination_id = database.storeDestination(0, 0, null);
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					switch (which) {
+					case 0:
+						pickAddress(global_selector_id);
+						break;
+					case 1:
+			        	addCurrentLocation();
+						break;
+					case 2:
+			        	showDialog(DIALOG_ENTER_ADDRESS);
+						break;
+					}					
 				}
 			})
 			.setNegativeButton(R.string.alert_dialog_cancel, null)
@@ -161,6 +231,31 @@ public class DestinationPairAssociator extends Activity {
 
 
     // ========================================================================
+    void addCurrentLocation() {
+
+    	// FIXME
+
+    	LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+
+    	// TODO Use this!
+//    	lm.addProximityAlert (double latitude, double longitude, float radius, long expiration, PendingIntent intent)
+    	
+    	
+    	Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+    	if (location != null) {
+    		
+        	Uri uri = Uri.parse("geo:"+location.getLatitude() + "," + location.getLongitude());
+
+        	Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
+        	startActivity(intent);
+    	} else {
+    		Log.e(TAG, "Location was null!");
+    	}    	
+    }
+    
+    // ========================================================================
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -172,54 +267,6 @@ public class DestinationPairAssociator extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_add:
-        {
-        	showDialog(DIALOG_CONFIRM_PLACE_ADDITION);
-            return true;
-        }
-        case R.id.menu_add_here:
-        {
-
-
-        	// FIXME
-
-        	LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-  
-        	// TODO Use this!
-//        	lm.addProximityAlert (double latitude, double longitude, float radius, long expiration, PendingIntent intent)
-        	
-        	
-        	Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        	if (location != null) {
-        		
-	        	Uri uri = Uri.parse("geo:"+location.getLatitude() + "," + location.getLongitude());
-	
-	        	Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
-	        	startActivity(intent);
-        	} else {
-        		Log.e(TAG, "Location was null!");
-        	}
-            return true;
-        }
-        case R.id.menu_more_apps:
-        {
-        	
-	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
-	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
-	    	startActivity(i);
-            return true;
-        }
-        case R.id.menu_plot_times:
-        {
-	    
-        	// FIXME
-        	long data_id = 0;
-	    	Intent i = new Intent(Intent.ACTION_VIEW, DataContentProvider.constructUri(data_id));
-	    	startActivity(i);
-            return true;
-        }
         }
 
         return super.onOptionsItemSelected(item);

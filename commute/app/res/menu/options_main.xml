@@ -16,16 +16,15 @@
           android:alphabeticShortcut="m"
           android:icon="@drawable/ic_menu_star" />
 
-    <item android:id="@+id/menu_plot_times"
-          android:title="Plot"
-          android:alphabeticShortcut="p"
-          android:icon="@drawable/ic_menu_star" />
-          
-          
-    <item android:id="@+id/pick_address"
-          android:title="Get Location"
-          android:alphabeticShortcut="l"
-          android:icon="@drawable/ic_menu_star" />
 
+    <item android:id="@+id/menu_triggers"
+          android:title="Triggers"
+          android:alphabeticShortcut="t"
+          android:icon="@android:drawable/ic_menu_preferences" />
+          
+    <item android:id="@+id/menu_dump_wifi"
+          android:title="Dump wifi"
+          android:alphabeticShortcut="w"
+          android:icon="@android:drawable/ic_menu_info_details" />
 
 </menu>
