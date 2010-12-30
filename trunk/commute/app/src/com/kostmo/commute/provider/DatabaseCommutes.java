@@ -1,6 +1,9 @@
 package com.kostmo.commute.provider;
 
 
+
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +15,8 @@ import android.util.Log;
 
 import com.kostmo.commute.CalendarPickerConstants;
 import com.kostmo.commute.activity.DestinationPairAssociator.AddressPair;
+import com.kostmo.commute.activity.DestinationPairAssociator.GeoAddress;
+import com.kostmo.commute.activity.DestinationPairAssociator.LatLonDouble;
 import com.kostmo.tools.DurationStrings.TimescaleTier;
 
 public class DatabaseCommutes extends SQLiteOpenHelper {
@@ -133,8 +138,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     };
 
     // ============================================================
-    public DatabaseCommutes(Context context)
-    {
+    public DatabaseCommutes(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -179,7 +183,6 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 				"CAST((CAST(" + KEY_START_TIME + "*1000/" + TimescaleTier.DAYS.millis + " AS INTEGER)*" + TimescaleTier.DAYS.millis + ") AS INTEGER) " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
 				null, null, null, null, null, null);
 	}
-
     
     // ============================================================
     /** Kind of a pointless function */
@@ -202,12 +205,6 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    return total_deletions;
     }
 
-    
-
-    
-    
-    
-
     // ============================================================
     public AddressPair getAddressPair(long pair_id) {
     	
@@ -228,23 +225,29 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	String title = cursor.getString(2);
 	    cursor.close();
 	    
-	    String[] places = new String[2];
+	    GeoAddress[] places = new GeoAddress[2];
 	    int i=0;
 	    for (long place_id : place_ids) {
 	    	
 	    	Cursor cursor2 = db.query(TABLE_DESTINATIONS,
 	    			new String[] {
-	    			KEY_ADDRESS,
-	    			KEY_LATITUDE,
-	    			KEY_LONGITUDE},
+		    			KEY_ADDRESS,
+		    			KEY_LATITUDE,
+		    			KEY_LONGITUDE
+		    		},
 	    			"KEY_DESTINATION_ID=?", new String[] {Long.toString(place_id)}, null, null, null);
 	    	cursor2.moveToFirst();
-	    	places[i] = cursor2.getString(0);
+	    	GeoAddress geo_address = new GeoAddress( cursor2.getString(0) );
+	    	LatLonDouble latlon = new LatLonDouble();
+	    	latlon.lat = cursor2.getDouble(1);
+	    	latlon.lon = cursor2.getDouble(2);
+	    	
+	    	geo_address.latlon = latlon;
+	    	
 		    cursor2.close();
 	    	
 		    i++;
 	    }
-	    
 	    
 	    AddressPair pair = new AddressPair(places[0], places[1]);
 	    pair.title = title;
@@ -304,6 +307,21 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    
 	    return trip_id;
     }
+
+    // ============================================================
+    public int finishTrip(long trip_id) {
+    	
+    	SQLiteDatabase db = getWritableDatabase();
+    	ContentValues cv = new ContentValues();
+    	
+    	cv.put(KEY_END_TIME, new Date().toGMTString());
+    	int update_count = db.update(TABLE_TRIPS, cv, KEY_DESTINATION_PAIR_ID + "=?", new String[] {Long.toString(trip_id)});
+	    db.close();
+	    
+	    return update_count;
+    }
+    
+    
     
     // ============================================================
     public long storeDestination(double lat, double lon, String address) {

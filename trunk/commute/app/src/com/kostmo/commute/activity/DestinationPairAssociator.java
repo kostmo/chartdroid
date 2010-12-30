@@ -116,16 +116,34 @@ public class DestinationPairAssociator extends Activity {
 		}
 		
 		if (pair != null) {
-			compound_selector_origin.setAddress(pair.origin);
-	    	compound_selector_destination.setAddress(pair.destination);
+			compound_selector_origin.setAddress(pair.origin.address);
+	    	compound_selector_destination.setAddress(pair.destination.address);
 		}
     }
 
 	// ========================================================================
-    public static class AddressPair {
+    public static class LatLonDouble {
+    	public double lat, lon;
+    }
 
-		public String origin, destination, title;
-		public AddressPair(String origin, String destination) {
+	// ========================================================================
+    public static class GeoAddress {
+
+    	public String address;
+    	public GeoAddress(String address) {
+    		this.address = address;
+    	}
+    	public LatLonDouble latlon = new LatLonDouble();
+    }
+    
+    
+	// ========================================================================
+    public static class AddressPair {
+    	
+		public GeoAddress origin, destination;
+		public String title;
+		
+		public AddressPair(GeoAddress origin, GeoAddress destination) {
 			this.origin = origin;
 			this.destination = destination;
 		}
@@ -146,7 +164,9 @@ public class DestinationPairAssociator extends Activity {
 		
     	DestinationSelectorLayout compound_selector_origin = (DestinationSelectorLayout) findViewById(R.id.compound_selector_origin);
     	DestinationSelectorLayout compound_selector_destination = (DestinationSelectorLayout) findViewById(R.id.compound_selector_destination);
-    	state.address_pair = new AddressPair(compound_selector_origin.getAddress(), compound_selector_destination.getAddress());
+    	state.address_pair = new AddressPair(
+    			new GeoAddress(compound_selector_origin.getAddress()),
+    			new GeoAddress(compound_selector_destination.getAddress()));
     	
 		
 		return state;
@@ -236,12 +256,6 @@ public class DestinationPairAssociator extends Activity {
     	// FIXME
 
     	LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-
-    	// TODO Use this!
-//    	lm.addProximityAlert (double latitude, double longitude, float radius, long expiration, PendingIntent intent)
-    	
-    	
     	Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
     	if (location != null) {
