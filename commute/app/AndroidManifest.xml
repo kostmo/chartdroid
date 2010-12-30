@@ -13,6 +13,7 @@
         </activity>
         
         
+		<service android:name=".service.RouteTrackerService" />
         
 		<receiver android:name=".service.WifiReceiver">
 		    <intent-filter>
