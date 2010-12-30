@@ -13,6 +13,22 @@
         </activity>
         
         
+        
+		<receiver android:name=".service.WifiReceiver">
+		    <intent-filter>
+		        <action android:name="android.net.wifi.NETWORK_IDS_CHANGED" />
+		        <action android:name="android.net.wifi.RSSI_CHANGED" />
+		        <action android:name="android.net.wifi.STATE_CHANGE" />
+		        <action android:name="android.net.wifi.SCAN_RESULTS" />
+		        <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+		        <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
+		        <action android:name="android.net.wifi.supplicant.STATE_CHANGE" />
+			</intent-filter>
+		</receiver>
+		
+		
+		
+        <activity android:name=".activity.prefs.TriggerPreferences" android:label="@string/app_name"></activity>
         <activity android:name=".activity.DestinationPairAssociator" android:label="@string/app_name"></activity>
         <activity android:name=".activity.Map" android:label="@string/app_name"></activity>
         
@@ -34,10 +50,11 @@
         
 	   <uses-library android:name="com.google.android.maps" />
 
-    </application>
+</application>
 
 
 <uses-sdk android:targetSdkVersion="8" android:minSdkVersion="8"></uses-sdk>
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
 </manifest> 

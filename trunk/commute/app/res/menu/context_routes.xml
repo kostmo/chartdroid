@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_start_logging"
+          android:title="Start logging"
+          android:alphabeticShortcut="s"
+          android:icon="@drawable/ic_menu_star" />
+
+    <item android:id="@+id/menu_edit"
+          android:title="Edit"
+          android:alphabeticShortcut="e"
+          android:icon="@android:drawable/ic_menu_edit" />
+
+    <item android:id="@+id/menu_plot_times"
+          android:title="Plot"
+          android:alphabeticShortcut="p"
+          android:icon="@android:drawable/ic_menu_info_details" />
+          
+</menu>

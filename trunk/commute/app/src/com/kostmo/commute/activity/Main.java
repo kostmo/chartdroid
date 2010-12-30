@@ -10,17 +10,22 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.kostmo.commute.CalendarPickerConstants;
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
+import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DataContentProvider;
 import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.provider.EventContentProvider;
@@ -32,9 +37,8 @@ public class Main extends ListActivity {
 
     
 	DatabaseCommutes database;
-	
 	private static final int DIALOG_PLOT_METHOD = 1;
-	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 8;
+	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 2;
 
 
 	private static final int REQUEST_CODE_NEW_PAIR = 1;
@@ -56,14 +60,44 @@ public class Main extends ListActivity {
         this.setListAdapter(sca);
         
         this.refreshCursor();
+    
+    
+
+		registerForContextMenu(getListView());
+		
+		final StateObject state = (StateObject) getLastNonConfigurationInstance();
+		if (state != null) {
+			this.global_route_id = state.global_route_id;
+		}
     }
 
+    long global_route_id;
+	// ========================================================================
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+
+		StateObject state = new StateObject();
+		state.global_route_id = this.global_route_id;		
+		return state;
+	}
+	
+	// ========================================================================
+	class StateObject {
+		long global_route_id;
+	}
+
+	// ========================================================================
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	this.global_route_id = id;
+    	showDialog(DIALOG_PLOT_METHOD);
+    }
+    
 	// ========================================================
     void refreshCursor() {
     	Cursor cursor = this.database.getDestinationPairs();
     	((CursorAdapter) this.getListAdapter()).changeCursor(cursor);
     }
-
 
 	// ========================================================================
     @Override
@@ -112,7 +146,7 @@ public class Main extends ListActivity {
 		{
 			return new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_alert)
-			.setTitle("Add current location?")
+			.setTitle("Plot method:")
 			.setItems(new String[] {"Chart", "Calendar"}, new OnClickListener() {
 
 				@Override
@@ -135,24 +169,6 @@ public class Main extends ListActivity {
 	}
 
     
-    // ======================================================================== 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_main, menu);
-        return true;
-    }
-
-    // ========================================================================
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
 
 	// ========================================================================
 	void downloadLaunchCheck(Intent intent, int request_code) {
@@ -194,18 +210,90 @@ public class Main extends ListActivity {
     	long data_id = 0;
     	Intent i = new Intent(Intent.ACTION_VIEW, DataContentProvider.constructUri(data_id));
     	startActivity(i);
-    	
     }
-    
+
+	// ========================================================================
+    public void onCreateContextMenu(ContextMenu menu, View v,
+            ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_routes, menu);
+        
+        menu.setHeaderIcon(android.R.drawable.ic_dialog_alert);
+        menu.setHeaderTitle("Route action:");
+	}
+
+	// ========================================================================
+    @Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
+		switch ( item.getItemId() ) {
+		case R.id.menu_start_logging:
+		{
+			// TODO Register a location listener for the destination
+        	Log.e(TAG, "Not implemented.");
+			break;
+		}
+		case R.id.menu_edit:
+		{
+        	Intent intent = new Intent(this, DestinationPairAssociator.class);
+        	intent.setAction(Intent.ACTION_EDIT);
+        	intent.putExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, info.id);
+        	startActivityForResult(intent, REQUEST_CODE_NEW_PAIR);
+			break;
+		}
+        case R.id.menu_plot_times:
+        {
+        	this.global_route_id = info.id;
+        	showDialog(DIALOG_PLOT_METHOD);
+            return true;
+        }
+		default:
+			break;
+		}
+
+		return super.onContextItemSelected(item);
+	}
+
+    // ======================================================================== 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_main, menu);
+        return true;
+    }
+
+    // ========================================================================
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        return true;
+    }
+
     // ========================================================================	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.menu_triggers:
+        {
+        	Intent intent = new Intent(this, TriggerPreferences.class);
+        	startActivity(intent);
+        	return true;
+        }
+        case R.id.menu_dump_wifi:
+        {
+        	this.database.dumpWifiTable();
+        	return true;
+        }
         case R.id.new_pair:
         {
-        	startActivityForResult(new Intent(this, DestinationPairAssociator.class), REQUEST_CODE_NEW_PAIR);
-
-
+        	Intent intent = new Intent(this, DestinationPairAssociator.class);
+        	startActivityForResult(intent, REQUEST_CODE_NEW_PAIR);
         	return true;
         }
         case R.id.menu_about:
@@ -223,12 +311,6 @@ public class Main extends ListActivity {
 	    	Uri market_uri = Uri.parse(Market.MARKET_AUTHOR_SEARCH_STRING);
 	    	Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
 	    	startActivity(i);
-            return true;
-        }
-        case R.id.menu_plot_times:
-        {
-        	
-        	showDialog(DIALOG_PLOT_METHOD);
             return true;
         }
         }

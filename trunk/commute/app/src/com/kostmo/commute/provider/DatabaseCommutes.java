@@ -11,6 +11,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.kostmo.commute.CalendarPickerConstants;
+import com.kostmo.commute.activity.DestinationPairAssociator.AddressPair;
 import com.kostmo.tools.DurationStrings.TimescaleTier;
 
 public class DatabaseCommutes extends SQLiteOpenHelper {
@@ -19,12 +20,13 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
  
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 2;
+    static final int DATABASE_VERSION = 3;
 
     public static final String TABLE_DESTINATIONS = "TABLE_DESTINATIONS";
     public static final String TABLE_DESTINATION_PAIRS = "TABLE_DESTINATION_PAIRS";
     public static final String TABLE_TRIPS = "TABLE_TRIPS";
     public static final String TABLE_TRIP_BREADCRUMBS = "TABLE_TRIP_BREADCRUMBS";
+    public static final String TABLE_WIFI_EVENTS = "TABLE_WIFI_EVENTS";
     
 
     public static final String KEY_DESTINATION_ID = "KEY_DESTINATION_ID";
@@ -46,7 +48,9 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public static final String KEY_TITLE = "KEY_TITLE";
     
     public static final String KEY_TRIP_DURATION_MS = "KEY_TRIP_DURATION_MS";
-    
+
+    public static final String KEY_EVENT_TYPE = "KEY_EVENT_TYPE";
+    public static final String KEY_TIMESTAMP = "KEY_TIMESTAMP";
     
 
     public static final String VIEW_TRIP_TIMES_TRUNCATED_DAY = "VIEW_TRIP_TIMES_TRUNCATED_DAY";
@@ -54,9 +58,11 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     
 
 
-    
-	
-	
+    final static String SQL_CREATE_WIFI_EVENTS_TABLE =
+        "create table " + TABLE_WIFI_EVENTS + " ("
+        + BaseColumns._ID + " integer primary key autoincrement, "
+        + KEY_EVENT_TYPE + " text, "
+        + KEY_TIMESTAMP + " TIMESTAMP NULL default CURRENT_TIMESTAMP);";
 
     final static String SQL_CREATE_DESTINATIONS_TABLE =
         "create table " + TABLE_DESTINATIONS + " ("
@@ -100,12 +106,12 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 		+ VIEW_TRIP_TIMES_TRUNCATED_DAY + " AS "
 		+ buildTripTimesTruncatedDayQuery();
     
-    
     final static String[] table_list = {
     	TABLE_DESTINATIONS,
     	TABLE_DESTINATION_PAIRS,
     	TABLE_TRIPS,
-    	TABLE_TRIP_BREADCRUMBS
+    	TABLE_TRIP_BREADCRUMBS,
+    	TABLE_WIFI_EVENTS
     };
 
 
@@ -120,7 +126,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	SQL_CREATE_DESTINATION_PAIRS_TABLE,
     	SQL_CREATE_TRIPS_TABLE,
     	SQL_CREATE_TRIP_BREADCRUMBS_TABLE,
-
+    	SQL_CREATE_WIFI_EVENTS_TABLE,
+    	
     	SQL_CREATE_TRIP_TIMES_VIEW,
     	SQL_CREATE_TRIP_TIMES_TRUNCATED_DAY_VIEW,
     };
@@ -197,6 +204,58 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
     
 
+    
+    
+    
+
+    // ============================================================
+    public AddressPair getAddressPair(long pair_id) {
+    	
+    	SQLiteDatabase db = getReadableDatabase();
+    	Cursor cursor = db.query(TABLE_DESTINATION_PAIRS,
+    			new String[] {
+    	        KEY_START_DESTINATION_ID,
+    	        KEY_END_DESTINATION_ID,
+    			KEY_TITLE},
+    			"ROWID=?", new String[] {Long.toString(pair_id)}, null, null, null);
+    	cursor.moveToFirst();
+    	
+
+	    long[] place_ids = new long[2];
+	    for (int i=0; i<2; i++) {
+		    place_ids[i] = cursor.getLong(i);
+	    }
+    	String title = cursor.getString(2);
+	    cursor.close();
+	    
+	    String[] places = new String[2];
+	    int i=0;
+	    for (long place_id : place_ids) {
+	    	
+	    	Cursor cursor2 = db.query(TABLE_DESTINATIONS,
+	    			new String[] {
+	    			KEY_ADDRESS,
+	    			KEY_LATITUDE,
+	    			KEY_LONGITUDE},
+	    			"KEY_DESTINATION_ID=?", new String[] {Long.toString(place_id)}, null, null, null);
+	    	cursor2.moveToFirst();
+	    	places[i] = cursor2.getString(0);
+		    cursor2.close();
+	    	
+		    i++;
+	    }
+	    
+	    
+	    AddressPair pair = new AddressPair(places[0], places[1]);
+	    pair.title = title;
+	    
+
+	    db.close();
+	    
+	    return pair;
+    }
+
+    
     // ============================================================
     public Cursor getDestinationPairs() {
     	
@@ -214,6 +273,24 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    return cursor;
     }
 
+    // ============================================================
+    public void dumpWifiTable() {
+    	
+    	SQLiteDatabase db = getReadableDatabase();
+    	Cursor cursor = db.query(TABLE_WIFI_EVENTS,
+    			new String[] {
+    			BaseColumns._ID,
+    			KEY_TIMESTAMP,
+    	        KEY_EVENT_TYPE},
+    			null, null, null, null, null);
+    	
+    	while (cursor.moveToNext()) {
+    		Log.d(TAG, "EVENT " + cursor.getLong(0) + " (" + cursor.getString(1) + "): " + cursor.getString(2));
+    	}
+    	
+    	cursor.close();
+	    db.close();
+    }
     
     // ============================================================
     public long storeDestination(double lat, double lon, String address) {
@@ -230,6 +307,22 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    db.close();
 	    
 	    return destination_id;
+    }
+
+    // ============================================================
+    public long storeWifiEvent(String event_type) {
+
+        Log.i(TAG, "Storing action to database: " + event_type);
+    	
+    	SQLiteDatabase db = getWritableDatabase();
+    	ContentValues cv = new ContentValues();
+    	
+    	cv.put(KEY_EVENT_TYPE, event_type);
+    	long event_id = db.insert(TABLE_WIFI_EVENTS, null, cv);
+
+	    db.close();
+	    
+	    return event_id;
     }
     
     // ============================================================
@@ -280,9 +373,12 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     
     // ============================================================
     public void drop_all_tables(SQLiteDatabase db) {
-    	
+
     	for (String table : table_list)
     		db.execSQL("DROP TABLE IF EXISTS " + table);
+
+    	for (String table : view_list)
+    		db.execSQL("DROP VIEW IF EXISTS " + table);
     }
     
     // ============================================================

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.kostmo.market.revenue"
+	android:title="Tracking Triggers">
+
+
+    <PreferenceCategory android:title="Notifications">
+        <CheckBoxPreference
+                android:key="enable_periodic_checkin"
+                android:title="Comments"
+                android:defaultValue="false"
+                android:summary="Notify when someone leaves a comment on your apps" />
+                
+    </PreferenceCategory>
+
+</PreferenceScreen>
