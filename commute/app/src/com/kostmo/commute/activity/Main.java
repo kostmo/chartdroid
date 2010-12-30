@@ -3,11 +3,14 @@ package com.kostmo.commute.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -246,8 +249,21 @@ public class Main extends ListActivity {
 				startService(new Intent(this, RouteTrackerService.class));
 				
 			} else {
+				long trip_id = this.database.startTrip(info.id);
+				
+
+		    	LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		    	
+		    	float radius = this.settings.getFloat(TriggerPreferences.PREFKEY_TRIP_COMPLETION_RADIUS, TriggerPreferences.DEFAULT_TRIP_COMPLETION_RADIUS);
+		    	long expiration = this.settings.getLong(TriggerPreferences.PREFKEY_TRIP_EXPIRATION_MS, TriggerPreferences.DEFAULT_TRIP_EXPIRATION_MS);
+		    	
+		    	
+		    	Intent activity_intent = new Intent(this, TripSummaryActivity.class);
+		    	activity_intent.putExtra(TripSummaryActivity.EXTRA_TRIP_ID, trip_id);
+		    	PendingIntent pending_intent = PendingIntent.getActivity(this, 0, activity_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 				AddressPair pair = this.database.getAddressPair(info.id);
-				this.database.startTrip(info.id);
+		    	lm.addProximityAlert(pair.destination.latlon.lat, pair.destination.latlon.lon, radius, expiration, pending_intent);
 			}
 			
         	Log.e(TAG, "Not implemented.");
