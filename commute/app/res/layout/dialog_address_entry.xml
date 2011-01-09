@@ -22,13 +22,12 @@
         android:selectAllOnFocus="true"/>
  -->
     <EditText
-        android:id="@+id/name_edit"
+        android:id="@+id/address_edit"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:hint="Enter name"
-        android:inputType="textCapWords"
+        android:hint="Enter address"
         android:selectAllOnFocus="true"/>
 
 </LinearLayout>

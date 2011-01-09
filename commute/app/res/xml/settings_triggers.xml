@@ -6,6 +6,15 @@
 
 
     <PreferenceCategory android:title="Tracking">
+    
+        <ListPreference
+                android:key="location_source"
+                android:title="Location Source"
+                android:summary="Use Network or GPS location source"
+                android:defaultValue="@string/location_provider_key_gps"
+                android:entries="@array/entries_location_source_choices"
+                android:entryValues="@array/entries_location_source_values"/>
+                
         <CheckBoxPreference
                 android:key="enable_record_breadcrumbs"
                 android:title="Enable Breadcrumbs"
