@@ -16,10 +16,9 @@
           android:alphabeticShortcut="m"
           android:icon="@drawable/ic_menu_star" />
 
-
-    <item android:id="@+id/menu_triggers"
-          android:title="Triggers"
-          android:alphabeticShortcut="t"
+    <item android:id="@+id/menu_settings"
+          android:title="Settings"
+          android:alphabeticShortcut="s"
           android:icon="@android:drawable/ic_menu_preferences" />
           
     <item android:id="@+id/menu_dump_wifi"

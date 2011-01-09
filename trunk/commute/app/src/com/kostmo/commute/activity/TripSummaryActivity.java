@@ -42,7 +42,6 @@ public class TripSummaryActivity extends Activity {
     	textview_trip_summary.setText("foo bar");
     }
 
-
     // ======================================================================== 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,7 +60,7 @@ public class TripSummaryActivity extends Activity {
         return true;
     }
 
-	
+    // ========================================================================	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -69,8 +68,6 @@ public class TripSummaryActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-    
-    
 
     // ========================================================================
     @Override

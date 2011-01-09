@@ -3,13 +3,9 @@ package com.kostmo.commute.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -24,8 +20,10 @@ import android.widget.Toast;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
+import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.view.DestinationSelectorLayout;
+import com.kostmo.commute.view.DestinationSelectorLayout.AddressReverseLookupTaskExtended;
 
 public class DestinationPairAssociator extends Activity {
 
@@ -36,9 +34,14 @@ public class DestinationPairAssociator extends Activity {
 	private static final int DIALOG_PLACE_SELECTION_METHOD = 1;
 	private static final int DIALOG_ENTER_ADDRESS = 2;
 	
+
+	private static final int REQUEST_CODE_WIFI_SELECTION = 1;
+	
+	
 	public static final String EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID";
 	
 	static int[] COMPOUND_SELECTORS = {R.id.compound_selector_origin, R.id.compound_selector_destination};
+	DestinationSelectorLayout selector_layouts[] = new DestinationSelectorLayout[2];
 	
 
     private EditText titleEditText;
@@ -58,8 +61,15 @@ public class DestinationPairAssociator extends Activity {
     	
         boolean is_editing = Intent.ACTION_EDIT.equals(getIntent().getAction());
         
-    	for (final int selector_id : COMPOUND_SELECTORS) {
+
+        
+    	for (int i=0; i<COMPOUND_SELECTORS.length; i++) {
+    		
+    		final int selector_id = COMPOUND_SELECTORS[i];
+    		
         	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(selector_id);
+        	this.selector_layouts[i] = compound_selector;
+        	
         	if (is_editing) {
         		compound_selector.mPickButton.setEnabled(false);
         	} else {
@@ -71,24 +81,50 @@ public class DestinationPairAssociator extends Activity {
 	    			}
 	        	});	
         	}
+        	
+        	
+        	compound_selector.mWifiButton.setOnClickListener(new OnClickListener() {
+    			@Override
+    			public void onClick(View v) {
+    				global_selector_id = selector_id;
+
+
+    		    	Intent i = new Intent(Intent.ACTION_PICK);
+    		    	i.setClass(DestinationPairAssociator.this, ListActivityWirelessNetworks.class);
+    		    	startActivityForResult(i, REQUEST_CODE_WIFI_SELECTION);	
+    			}
+        	});	
     	}
+
 
     	View save_button = findViewById(R.id.button_save_pair);
     	save_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				
+		    	String title = titleEditText.getText().toString();
+		    	if (title.length() == 0) {
+	            	Toast.makeText(DestinationPairAssociator.this, "You must enter a title.", Toast.LENGTH_SHORT).show();
+	            	return;
+		    	}
 
 				long[] destination_ids = new long[2];
 				int i=0;
 		    	for (int selector_id : COMPOUND_SELECTORS) {
 		        	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(selector_id);
-		        	destination_ids[i] = database.storeDestination(compound_selector.lat, compound_selector.lon, compound_selector.getAddress());
+		        	destination_ids[i] = database.storeDestination(
+		        			compound_selector.latlon.lat,
+		        			compound_selector.latlon.lon,
+		        			compound_selector.getAddress(),
+		        			compound_selector.getWifiNetwork());
 		        	i++;
 		    	}
 
-		    	String text = titleEditText.getText().toString();
-		    	long pair_id = database.storePair(destination_ids[0], destination_ids[1], text);
+		    	long pair_id = database.storePair(
+		    			destination_ids[0],
+		    			destination_ids[1],
+		    			title
+    			);
             	Toast.makeText(DestinationPairAssociator.this, "Added pair with id: " + pair_id, Toast.LENGTH_SHORT).show();
 
 				Intent result = new Intent();
@@ -97,10 +133,6 @@ public class DestinationPairAssociator extends Activity {
 			}
     	});
     	
-
-    	DestinationSelectorLayout compound_selector_origin = (DestinationSelectorLayout) findViewById(R.id.compound_selector_origin);
-    	DestinationSelectorLayout compound_selector_destination = (DestinationSelectorLayout) findViewById(R.id.compound_selector_destination);
-    	
     	
     	AddressPair pair = null;
 		final StateObject state = (StateObject) getLastNonConfigurationInstance();
@@ -108,16 +140,26 @@ public class DestinationPairAssociator extends Activity {
 			this.global_selector_id = state.selector_id;
 			pair = state.address_pair;
 
+	    	for (int i=0; i<this.selector_layouts.length; i++) {
+	    		AddressReverseLookupTaskExtended task = state.reverse_geocode_tasks[i];
+	    		this.selector_layouts[i].setAddressLookupTask( task );
+	    	}
+			
 		} else if (is_editing) {
+			
 			long pair_id = getIntent().getLongExtra(EXTRA_ROUTE_ID, -1);
+			Log.d(TAG, "Editing location with pair ID: " + pair_id);
 			
 			pair = this.database.getAddressPair(pair_id);
 			this.titleEditText.setText(pair.title);
 		}
 		
 		if (pair != null) {
-			compound_selector_origin.setAddress(pair.origin.address);
-	    	compound_selector_destination.setAddress(pair.destination.address);
+			selector_layouts[0].setWifiNetwork(pair.origin.ssid);
+			selector_layouts[0].setAddress(pair.origin.address);
+
+			selector_layouts[1].setWifiNetwork(pair.destination.ssid);
+			selector_layouts[1].setAddress(pair.destination.address);
 		}
     }
 
@@ -129,13 +171,12 @@ public class DestinationPairAssociator extends Activity {
 	// ========================================================================
     public static class GeoAddress {
 
-    	public String address;
+    	public String address, ssid;
     	public GeoAddress(String address) {
     		this.address = address;
     	}
     	public LatLonDouble latlon = new LatLonDouble();
     }
-    
     
 	// ========================================================================
     public static class AddressPair {
@@ -153,6 +194,7 @@ public class DestinationPairAssociator extends Activity {
 	class StateObject {
 		int selector_id;
 		AddressPair address_pair;
+    	AddressReverseLookupTaskExtended[] reverse_geocode_tasks = new AddressReverseLookupTaskExtended[2];
 	}
 	
 	// ========================================================================
@@ -168,6 +210,9 @@ public class DestinationPairAssociator extends Activity {
     			new GeoAddress(compound_selector_origin.getAddress()),
     			new GeoAddress(compound_selector_destination.getAddress()));
     	
+    	for (int i=0; i<this.selector_layouts.length; i++) {
+    		state.reverse_geocode_tasks[i] = this.selector_layouts[i].getAddressLookupTask();
+    	}
 		
 		return state;
 	}
@@ -189,9 +234,9 @@ public class DestinationPairAssociator extends Activity {
 		switch (id) {
 		case DIALOG_ENTER_ADDRESS:
 		{
-            View dialog_view = factory.inflate(R.layout.dialog_name_entry, null);
+            View dialog_view = factory.inflate(R.layout.dialog_address_entry, null);
 
-			final EditText name_box = (EditText) dialog_view.findViewById(R.id.name_edit);
+			final EditText name_box = (EditText) dialog_view.findViewById(R.id.address_edit);
 
             return new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_info)
@@ -213,7 +258,7 @@ public class DestinationPairAssociator extends Activity {
 			return new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setTitle("Select location:")
-			.setItems(new String[] {"Contacts", "Current location", "Type address"}, new DialogInterface.OnClickListener() {
+			.setItems(new String[] {"Contacts", "Current location", "New address"}, new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -223,7 +268,9 @@ public class DestinationPairAssociator extends Activity {
 						pickAddress(global_selector_id);
 						break;
 					case 1:
-			        	addCurrentLocation();
+
+				    	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(global_selector_id);
+				    	compound_selector.getLocationFix();
 						break;
 					case 2:
 			        	showDialog(DIALOG_ENTER_ADDRESS);
@@ -238,7 +285,6 @@ public class DestinationPairAssociator extends Activity {
 		return null;
 	}
 
-
     // ======================================================================== 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -249,26 +295,6 @@ public class DestinationPairAssociator extends Activity {
         return true;
     }
 
-
-    // ========================================================================
-    void addCurrentLocation() {
-
-    	// FIXME
-
-    	LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-    	Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-    	if (location != null) {
-    		
-        	Uri uri = Uri.parse("geo:"+location.getLatitude() + "," + location.getLongitude());
-
-        	Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
-        	startActivity(intent);
-    	} else {
-    		Log.e(TAG, "Location was null!");
-    	}    	
-    }
-    
     // ========================================================================
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -277,17 +303,20 @@ public class DestinationPairAssociator extends Activity {
         return true;
     }
 
-	
+    // ========================================================================	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.menu_settings:
+        {
+        	Intent intent = new Intent(this, TriggerPreferences.class);
+        	startActivity(intent);
+        	return true;
+        }
         }
 
         return super.onOptionsItemSelected(item);
     }
-    
-    
-
     // ========================================================================
     void resultLocationPicked(Intent data, int view_id) {
 
@@ -307,8 +336,6 @@ public class DestinationPairAssociator extends Activity {
 			} finally {
 			    c.close();
 			}
-			
-			
 
 	    	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(view_id);
 	    	compound_selector.setAddress(address);
@@ -334,6 +361,17 @@ public class DestinationPairAssociator extends Activity {
    			resultLocationPicked(data, requestCode);
    			break;
    		}
+   		case REQUEST_CODE_WIFI_SELECTION:
+   		{
+   			String ssid = data.getStringExtra(ListActivityWirelessNetworks.EXTRA_WIFI_SSID);
+   			
+
+	    	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(global_selector_id);
+	    	compound_selector.setWifiNetwork(ssid);
+   			Log.d(TAG, "Selected wifi network for " + global_selector_id + ": " + ssid);
+   			// TODO
+   			break;
+   		}   		
    		default:
 	    	break;
   	   	}

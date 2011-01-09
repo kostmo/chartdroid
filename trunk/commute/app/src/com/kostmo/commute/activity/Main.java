@@ -66,7 +66,7 @@ public class Main extends ListActivity {
         SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, null,
         		new String[] {
 		    		DatabaseCommutes.KEY_TITLE,
-		    		DatabaseCommutes.KEY_START_DESTINATION_ID},
+		    		DatabaseCommutes.KEY_TRIP_COUNT},
         		new int[] {android.R.id.text1, android.R.id.text2});
         this.setListAdapter(sca);
         
@@ -312,7 +312,7 @@ public class Main extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_triggers:
+        case R.id.menu_settings:
         {
         	Intent intent = new Intent(this, TriggerPreferences.class);
         	startActivity(intent);

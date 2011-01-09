@@ -5,5 +5,12 @@
     <string name="alert_dialog_cancel">Cancel</string>
     <string name="choose_ellipsis">Choose...</string>
     <string name="view_on_map">View on map</string>
+    <string name="wireless_network_ellipsis">Wireless network...</string>
+    <string name="departure_window_ellipsis">Departure window...</string>
+    
+    <string name="empty_route_list">No routes created</string>
+    
+    <string name="location_provider_key_gps">gps</string>
+    <string name="location_provider_key_network">network</string>
     
 </resources>

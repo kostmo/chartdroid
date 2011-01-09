@@ -1,6 +1,7 @@
 package com.kostmo.commute.activity.prefs;
 
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -26,6 +27,10 @@ public class TriggerPreferences extends PreferenceActivity {
 
 	public static final String PREFKEY_TRIP_EXPIRATION_MS = "trip_expiration_ms";
 	public static final long DEFAULT_TRIP_EXPIRATION_MS = TimescaleTier.HOURS.millis*2;	// Two hours max
+	
+
+	public static final String PREFKEY_LOCATION_SOURCE = "location_source";
+	public static final String DEFAULT_LOCATION_SOURCE = LocationManager.GPS_PROVIDER;
 	
 	
 	SharedPreferences settings;
