@@ -23,7 +23,7 @@ import com.kostmo.commute.R;
 import com.kostmo.commute.activity.Disablable;
 import com.kostmo.commute.activity.Main;
 import com.kostmo.commute.activity.TripSummaryActivity;
-import com.kostmo.commute.activity.DestinationPairAssociator.AddressPair;
+import com.kostmo.commute.activity.RouteConfigurator.AddressPair;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DatabaseCommutes;
 

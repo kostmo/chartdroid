@@ -24,10 +24,10 @@ import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DatabaseCommutes;
-import com.kostmo.commute.view.DestinationSelectorLayout;
-import com.kostmo.commute.view.DestinationSelectorLayout.AddressReverseLookupTaskExtended;
+import com.kostmo.commute.view.LocationConfiguratorLayout;
+import com.kostmo.commute.view.LocationConfiguratorLayout.AddressReverseLookupTaskExtended;
 
-public class DestinationPairAssociator extends TabActivity {
+public class RouteConfigurator extends TabActivity {
 
     public static final String TAG = Market.TAG;
 
@@ -38,13 +38,14 @@ public class DestinationPairAssociator extends TabActivity {
 	
 
 	private static final int REQUEST_CODE_WIFI_SELECTION = 1;
+	private static final int REQUEST_CODE_STORED_LOCATION_SELECTION = 2;
 	
 	
 	public static final String EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID";
 	public static final long INVALID_ROUTE_ID = -1;
 	
 	static int[] COMPOUND_SELECTORS = {R.id.compound_selector_origin, R.id.compound_selector_destination};
-	DestinationSelectorLayout selector_layouts[] = new DestinationSelectorLayout[2];
+	LocationConfiguratorLayout selector_layouts[] = new LocationConfiguratorLayout[2];
 	
 
     private EditText titleEditText;
@@ -81,7 +82,7 @@ public class DestinationPairAssociator extends TabActivity {
     		
     		final int selector_id = COMPOUND_SELECTORS[i];
     		
-        	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(selector_id);
+        	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(selector_id);
         	this.selector_layouts[i] = compound_selector;
         	
         	if (is_editing) {
@@ -104,7 +105,7 @@ public class DestinationPairAssociator extends TabActivity {
 
 
     		    	Intent i = new Intent(Intent.ACTION_PICK);
-    		    	i.setClass(DestinationPairAssociator.this, ListActivityWirelessNetworks.class);
+    		    	i.setClass(RouteConfigurator.this, ListActivityWirelessNetworks.class);
     		    	startActivityForResult(i, REQUEST_CODE_WIFI_SELECTION);	
     			}
         	});	
@@ -118,18 +119,18 @@ public class DestinationPairAssociator extends TabActivity {
 				
 		    	String title = titleEditText.getText().toString();
 		    	if (title.length() == 0) {
-	            	Toast.makeText(DestinationPairAssociator.this, "You must enter a title.", Toast.LENGTH_SHORT).show();
+	            	Toast.makeText(RouteConfigurator.this, "You must enter a title.", Toast.LENGTH_SHORT).show();
 	            	return;
 		    	} else if (database.hasRouteTitle(title)) {
 		    		
-		    		Toast.makeText(DestinationPairAssociator.this, "Title is already taken.", Toast.LENGTH_SHORT).show();
+		    		Toast.makeText(RouteConfigurator.this, "Title is already taken.", Toast.LENGTH_SHORT).show();
 		    		return;
 		    	}
 
 				long[] destination_ids = new long[2];
 				int i=0;
 		    	for (int selector_id : COMPOUND_SELECTORS) {
-		        	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(selector_id);
+		        	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(selector_id);
 		        	destination_ids[i] = database.storeDestination(
 		        			compound_selector.latlon.lat,
 		        			compound_selector.latlon.lon,
@@ -143,7 +144,7 @@ public class DestinationPairAssociator extends TabActivity {
 		    			destination_ids[1],
 		    			title
     			);
-            	Toast.makeText(DestinationPairAssociator.this, "Added pair with id: " + pair_id, Toast.LENGTH_SHORT).show();
+            	Toast.makeText(RouteConfigurator.this, "Added pair with id: " + pair_id, Toast.LENGTH_SHORT).show();
 
 				Intent result = new Intent();
 				setResult(Activity.RESULT_OK, result);
@@ -227,8 +228,8 @@ public class DestinationPairAssociator extends TabActivity {
 		StateObject state = new StateObject();
 		state.selector_id = this.global_selector_id;
 		
-    	DestinationSelectorLayout compound_selector_origin = (DestinationSelectorLayout) findViewById(R.id.compound_selector_origin);
-    	DestinationSelectorLayout compound_selector_destination = (DestinationSelectorLayout) findViewById(R.id.compound_selector_destination);
+    	LocationConfiguratorLayout compound_selector_origin = (LocationConfiguratorLayout) findViewById(R.id.compound_selector_origin);
+    	LocationConfiguratorLayout compound_selector_destination = (LocationConfiguratorLayout) findViewById(R.id.compound_selector_destination);
     	state.address_pair = new AddressPair(
     			new GeoAddress(compound_selector_origin.getAddress()),
     			new GeoAddress(compound_selector_destination.getAddress()));
@@ -241,7 +242,14 @@ public class DestinationPairAssociator extends TabActivity {
 	}
 
 	// ========================================================
-    void pickAddress(int request_code) {
+	void pickPreviousLocation(int selector_id) {
+		this.global_selector_id = selector_id;
+    	Intent intent = new Intent(this, ListActivityLocations.class);
+    	startActivityForResult(intent, REQUEST_CODE_STORED_LOCATION_SELECTION);
+	}
+	
+	// ========================================================
+    void pickContactAddress(int request_code) {
 
     	Intent i = new Intent(Intent.ACTION_PICK);
     	i.setType("vnd.android.cursor.dir/postal-address_v2");
@@ -269,7 +277,7 @@ public class DestinationPairAssociator extends TabActivity {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                 	String address = name_box.getText().toString().trim();
-                	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(global_selector_id);
+                	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(global_selector_id);
                 	compound_selector.setAddress(address);
                 }
             })
@@ -281,21 +289,23 @@ public class DestinationPairAssociator extends TabActivity {
 			return new AlertDialog.Builder(this)
 			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setTitle("Select location:")
-			.setItems(new String[] {"Contacts", "Current location", "New address"}, new DialogInterface.OnClickListener() {
+			.setItems(new String[] {"Previous Address", "Contacts", "Current location", "Manual input"}, new DialogInterface.OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 
 					switch (which) {
 					case 0:
-						pickAddress(global_selector_id);
+						pickPreviousLocation(global_selector_id);
 						break;
 					case 1:
-
-				    	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(global_selector_id);
-				    	compound_selector.getLocationFix();
+						pickContactAddress(global_selector_id);
 						break;
 					case 2:
+				    	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(global_selector_id);
+				    	compound_selector.getLocationFix();
+						break;
+					case 3:
 			        	showDialog(DIALOG_ENTER_ADDRESS);
 						break;
 					}					
@@ -360,7 +370,7 @@ public class DestinationPairAssociator extends TabActivity {
 			    c.close();
 			}
 
-	    	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(view_id);
+	    	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(view_id);
 	    	compound_selector.setAddress(address);
     }
 
@@ -387,12 +397,21 @@ public class DestinationPairAssociator extends TabActivity {
    		case REQUEST_CODE_WIFI_SELECTION:
    		{
    			String ssid = data.getStringExtra(ListActivityWirelessNetworks.EXTRA_WIFI_SSID);
-   			
 
-	    	DestinationSelectorLayout compound_selector = (DestinationSelectorLayout) findViewById(global_selector_id);
+	    	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(global_selector_id);
 	    	compound_selector.setWifiNetwork(ssid);
    			Log.d(TAG, "Selected wifi network for " + global_selector_id + ": " + ssid);
    			// TODO
+   			break;
+   		}
+   		case REQUEST_CODE_STORED_LOCATION_SELECTION:
+   		{
+   			long location_id = data.getLongExtra(ListActivityLocations.EXTRA_LOCATION_ID, ListActivityLocations.INVALID_LOCATION_ID);
+
+   			Log.d(TAG, "Selected known location for " + global_selector_id + ": " + location_id);
+
+   			// TODO FIXME
+
    			break;
    		}   		
    		default:
