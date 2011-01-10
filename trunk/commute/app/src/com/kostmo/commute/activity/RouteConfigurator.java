@@ -33,12 +33,9 @@ public class RouteConfigurator extends TabActivity {
 
     
 	DatabaseCommutes database;
-	private static final int DIALOG_PLACE_SELECTION_METHOD = 1;
-	private static final int DIALOG_ENTER_ADDRESS = 2;
 	
 
 	private static final int REQUEST_CODE_WIFI_SELECTION = 1;
-	private static final int REQUEST_CODE_STORED_LOCATION_SELECTION = 2;
 	
 	
 	public static final String EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID";
@@ -56,17 +53,17 @@ public class RouteConfigurator extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.setContentView(R.layout.pair_associator);
+        this.setContentView(R.layout.route_configurator);
 
         
         TabHost tabHost = getTabHost();
 
-
+        
         tabHost.addTab(tabHost.newTabSpec("tab1")
-                .setIndicator("Origin")
+                .setIndicator("Origin", getResources().getDrawable(R.drawable.ic_menu_home))
                 .setContent(R.id.compound_selector_origin));
-        tabHost.addTab(tabHost.newTabSpec("tab3")
-                .setIndicator("Destination")
+        tabHost.addTab(tabHost.newTabSpec("tab2")
+                .setIndicator("Destination", getResources().getDrawable(R.drawable.ic_menu_myplaces))
                 .setContent(R.id.compound_selector_destination));
 
     	this.database = new DatabaseCommutes(this);
@@ -91,8 +88,7 @@ public class RouteConfigurator extends TabActivity {
 	        	compound_selector.mPickButton.setOnClickListener(new OnClickListener() {
 	    			@Override
 	    			public void onClick(View v) {
-	    				global_selector_id = selector_id;
-	    				showDialog(DIALOG_PLACE_SELECTION_METHOD);
+	    				pickPreviousLocation(selector_id);
 	    			}
 	        	});	
         	}
@@ -241,20 +237,12 @@ public class RouteConfigurator extends TabActivity {
 		return state;
 	}
 
-	// ========================================================
-	void pickPreviousLocation(int selector_id) {
-		this.global_selector_id = selector_id;
-    	Intent intent = new Intent(this, ListActivityLocations.class);
-    	startActivityForResult(intent, REQUEST_CODE_STORED_LOCATION_SELECTION);
-	}
-	
-	// ========================================================
-    void pickContactAddress(int request_code) {
 
-    	Intent i = new Intent(Intent.ACTION_PICK);
-    	i.setType("vnd.android.cursor.dir/postal-address_v2");
-    	startActivityForResult(i, request_code);
-    }
+	// ========================================================
+	void pickPreviousLocation(int request_code) {
+    	Intent intent = new Intent(this, ListActivityLocations.class);
+    	startActivityForResult(intent, request_code);
+	}
 
 	// ========================================================
 	@Override
@@ -263,57 +251,6 @@ public class RouteConfigurator extends TabActivity {
         LayoutInflater factory = LayoutInflater.from(this);
         
 		switch (id) {
-		case DIALOG_ENTER_ADDRESS:
-		{
-            View dialog_view = factory.inflate(R.layout.dialog_address_entry, null);
-
-			final EditText name_box = (EditText) dialog_view.findViewById(R.id.address_edit);
-
-            return new AlertDialog.Builder(this)
-			.setIcon(android.R.drawable.ic_dialog_info)
-			.setTitle("Address:")
-            .setView(dialog_view)
-            .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                	String address = name_box.getText().toString().trim();
-                	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(global_selector_id);
-                	compound_selector.setAddress(address);
-                }
-            })
-            .setNegativeButton(R.string.alert_dialog_cancel, null)
-            .create();
-		}
-		case DIALOG_PLACE_SELECTION_METHOD:
-		{
-			return new AlertDialog.Builder(this)
-			.setIcon(android.R.drawable.ic_dialog_alert)
-			.setTitle("Select location:")
-			.setItems(new String[] {"Previous Address", "Contacts", "Current location", "Manual input"}, new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-					switch (which) {
-					case 0:
-						pickPreviousLocation(global_selector_id);
-						break;
-					case 1:
-						pickContactAddress(global_selector_id);
-						break;
-					case 2:
-				    	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(global_selector_id);
-				    	compound_selector.getLocationFix();
-						break;
-					case 3:
-			        	showDialog(DIALOG_ENTER_ADDRESS);
-						break;
-					}					
-				}
-			})
-			.setNegativeButton(R.string.alert_dialog_cancel, null)
-			.create();
-		}
 		}
 		return null;
 	}
@@ -350,30 +287,16 @@ public class RouteConfigurator extends TabActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    
     // ========================================================================
-    void resultLocationPicked(Intent data, int view_id) {
-
-			String address = null;
-			Cursor c = getContentResolver().query(data.getData(),
-					new String[]{ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS},
-					null,
-					null,
-					null
-			);
-			try {
-				if (c.moveToFirst()) {
-			    address = c.getString(0);
-				} else {
-					Log.e(TAG, "Address not found!");
-				}
-			} finally {
-			    c.close();
-			}
-
-	    	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(view_id);
-	    	compound_selector.setAddress(address);
+    /** The Map activity will abstract away all address/location selection to return simply a database record id.
+     * The request_code indicates which tab (origin/destination) was targeted. */
+    void locationPicked(Intent data, int request_code) {
+    	
+    	
     }
-
+    
     // ========================================================================
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -391,7 +314,7 @@ public class RouteConfigurator extends TabActivity {
    		case R.id.compound_selector_origin:
    		case R.id.compound_selector_destination:
    		{
-   			resultLocationPicked(data, requestCode);
+   			locationPicked(data, requestCode);
    			break;
    		}
    		case REQUEST_CODE_WIFI_SELECTION:
@@ -404,16 +327,6 @@ public class RouteConfigurator extends TabActivity {
    			// TODO
    			break;
    		}
-   		case REQUEST_CODE_STORED_LOCATION_SELECTION:
-   		{
-   			long location_id = data.getLongExtra(ListActivityLocations.EXTRA_LOCATION_ID, ListActivityLocations.INVALID_LOCATION_ID);
-
-   			Log.d(TAG, "Selected known location for " + global_selector_id + ": " + location_id);
-
-   			// TODO FIXME
-
-   			break;
-   		}   		
    		default:
 	    	break;
   	   	}

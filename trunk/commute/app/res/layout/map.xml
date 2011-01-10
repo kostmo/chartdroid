@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
 	
 	<com.google.android.maps.MapView
-	 android:layout_width="fill_parent"
-	 android:layout_height="fill_parent"
-	 android:enabled="true"
-	 android:clickable="true"
-	 android:apiKey="04qfJC-YwjSToSNbfHJjijSrMYL3FLKNe6-q8eQ"
-	 />
+	      android:id="@+id/mapview"
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
+				android:enabled="true"
+				android:clickable="true"
+                 android:apiKey="@string/map_api_key_debug"
+                 />
 
-</LinearLayout>
+	<LinearLayout android:layout_alignParentTop="true"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical" android:orientation="horizontal">
+
+		<EditText android:id="@+id/txtMapSearch" android:hint="Search"
+			android:layout_width="fill_parent" android:layout_weight="1"
+			android:layout_height="wrap_content" />
+
+		<Button android:id="@+id/btnSearch"
+		android:text="Search"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:padding="10dip" />
+
+	</LinearLayout>
+                 
+
+</RelativeLayout>

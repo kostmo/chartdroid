@@ -24,4 +24,10 @@
     <string name="location_provider_key_gps">gps</string>
     <string name="location_provider_key_network">network</string>
     
+    
+    
+    <string name="map_api_key_debug">04qfJC-YwjSToSNbfHJjijSrMYL3FLKNe6-q8eQ</string>
+    <string name="map_api_key_deployment">04qfJC-YwjSToSNbfHJjijSrMYL3FLKNe6-q8eQ</string>
+    
+    
 </resources>
