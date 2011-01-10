@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TabHost;
@@ -42,6 +41,7 @@ public class DestinationPairAssociator extends TabActivity {
 	
 	
 	public static final String EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID";
+	public static final long INVALID_ROUTE_ID = -1;
 	
 	static int[] COMPOUND_SELECTORS = {R.id.compound_selector_origin, R.id.compound_selector_destination};
 	DestinationSelectorLayout selector_layouts[] = new DestinationSelectorLayout[2];
@@ -120,6 +120,10 @@ public class DestinationPairAssociator extends TabActivity {
 		    	if (title.length() == 0) {
 	            	Toast.makeText(DestinationPairAssociator.this, "You must enter a title.", Toast.LENGTH_SHORT).show();
 	            	return;
+		    	} else if (database.hasRouteTitle(title)) {
+		    		
+		    		Toast.makeText(DestinationPairAssociator.this, "Title is already taken.", Toast.LENGTH_SHORT).show();
+		    		return;
 		    	}
 
 				long[] destination_ids = new long[2];
@@ -159,13 +163,18 @@ public class DestinationPairAssociator extends TabActivity {
 	    		this.selector_layouts[i].setAddressLookupTask( task );
 	    	}
 			
-		} else if (is_editing) {
+		} else if ( getIntent().hasExtra(EXTRA_ROUTE_ID) ) {
 			
 			long pair_id = getIntent().getLongExtra(EXTRA_ROUTE_ID, -1);
-			Log.d(TAG, "Editing location with pair ID: " + pair_id);
 			
 			pair = this.database.getAddressPair(pair_id);
-			this.titleEditText.setText(pair.title);
+			if (is_editing) {
+				Log.d(TAG, "Editing route with pair ID: " + pair_id);
+				this.titleEditText.setText(pair.title);
+			} else {
+
+				Log.d(TAG, "Duplicating route with pair ID: " + pair_id);
+			}
 		}
 		
 		if (pair != null) {

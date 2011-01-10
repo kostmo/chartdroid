@@ -95,8 +95,6 @@ public class Main extends ListActivity implements Disablable {
         
         this.refreshCursor();
     
-    
-
 		registerForContextMenu(getListView());
 		
 		final StateObject state = (StateObject) getLastNonConfigurationInstance();
@@ -114,7 +112,6 @@ public class Main extends ListActivity implements Disablable {
 		
 		this.service_connection_status.setText(R.string.status_connecting);
 		Main.this.button_cancel_tracker.setEnabled(false);
-		
 		
 		Intent i = new Intent(this, RouteTrackerService.class);
 		bindService(i, this.mConnection, Context.BIND_AUTO_CREATE | Context.BIND_DEBUG_UNBIND );
@@ -168,6 +165,7 @@ public class Main extends ListActivity implements Disablable {
         	break;
         }
     }
+    
 	// ========================================================
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -262,6 +260,26 @@ public class Main extends ListActivity implements Disablable {
     }
 
 	// ========================================================================
+    void startTripInService(long trip_id, boolean returning) {
+    	
+		if (this.record_fetcher_service != null) {
+			// We check for nullity again, just in case the service died while the menu was idly showing.
+			this.record_fetcher_service.startTrip(trip_id, returning);
+			
+			refreshCursor();
+		}
+    }
+
+	// ========================================================================
+    void openRoute(String action, long route_id) {
+    	
+    	Intent intent = new Intent(action);
+    	intent.setClass(this, DestinationPairAssociator.class);
+    	intent.putExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, route_id);
+    	startActivityForResult(intent, REQUEST_CODE_NEW_PAIR);
+    }
+    
+	// ========================================================================
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -278,7 +296,6 @@ public class Main extends ListActivity implements Disablable {
         menu.findItem(R.id.menu_start_logging_outbound).setVisible(service_connected);
         menu.findItem(R.id.menu_start_logging_return).setVisible(service_connected);
 	}
-
     
 	// ========================================================================
     @Override
@@ -288,29 +305,32 @@ public class Main extends ListActivity implements Disablable {
 		switch ( item.getItemId() ) {
 		
 		// NOTE: The logging option won't be visible until the service is connected.
+		
+		case R.id.menu_list_trips:
+		{
+	    	Intent intent = new Intent(this, ListActivityTrips.class);
+	    	intent.putExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, info.id);
+	    	startActivity(intent);
+			break;
+		}
 		case R.id.menu_start_logging_outbound:
 		{
-			if (this.record_fetcher_service != null) {
-				// We check for nullity again, just in case the service died while the menu was idly showing.
-				this.record_fetcher_service.startTrip(info.id, false);
-			}
-
+			startTripInService(info.id, false);
 			break;
 		}
 		case R.id.menu_start_logging_return:
 		{
-			if (this.record_fetcher_service != null) {
-				// We check for nullity again, just in case the service died while the menu was idly showing.
-				this.record_fetcher_service.startTrip(info.id, true);
-			}
+			startTripInService(info.id, true);
 			break;
 		}
-		case R.id.menu_edit:
+		case R.id.menu_edit_route:
 		{
-        	Intent intent = new Intent(this, DestinationPairAssociator.class);
-        	intent.setAction(Intent.ACTION_EDIT);
-        	intent.putExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, info.id);
-        	startActivityForResult(intent, REQUEST_CODE_NEW_PAIR);
+			openRoute(Intent.ACTION_EDIT, info.id);
+			break;
+		}
+		case R.id.menu_duplicate_route:
+		{
+			openRoute(Intent.ACTION_VIEW, info.id);
 			break;
 		}
         case R.id.menu_plot_times:
@@ -344,6 +364,9 @@ public class Main extends ListActivity implements Disablable {
         return true;
     }
 
+    
+    
+    
     // ========================================================================	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -418,6 +441,7 @@ public class Main extends ListActivity implements Disablable {
 	@Override
 	public void onDestroy() {
 
+		
 		Log.e(TAG, "The Activity was destroyed.");
 
 		if (this.mConnection != null) {
