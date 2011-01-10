@@ -22,11 +22,15 @@ import com.kostmo.tools.DurationStrings.TimescaleTier;
 public class DatabaseCommutes extends SQLiteOpenHelper {
 	
 	static final String TAG = "DatabaseCommutes"; 
- 
+
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 8;
+    static final int DATABASE_VERSION = 10;
 
+    static final int INTEGER_FALSE = 0;
+    static final int INTEGER_TRUE = 1;
+    
+    
     public static final String TABLE_DESTINATIONS = "TABLE_DESTINATIONS";
     public static final String TABLE_DESTINATION_PAIRS = "TABLE_DESTINATION_PAIRS";
     public static final String TABLE_TRIPS = "TABLE_TRIPS";
@@ -47,6 +51,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public static final String KEY_DESTINATION_PAIR_ID = "KEY_DESTINATION_PAIR_ID";
     public static final String KEY_START_TIME = "KEY_START_TIME";	// Timestamp string
     public static final String KEY_END_TIME = "KEY_END_TIME";	// ditto
+    public static final String KEY_IS_RETURN_TRIP = "KEY_IS_RETURN_TRIP";
     
     
     public static final String KEY_BREADCRUMB_ID = "KEY_BREADCRUMB_ID";
@@ -65,7 +70,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public static final String KEY_MAX_START_TIME = "KEY_MAX_START_TIME";
     public static final String KEY_MIN_END_TIME = "KEY_MIN_END_TIME";
     public static final String KEY_MAX_END_TIME = "KEY_MAX_END_TIME";
-    public static final String KEY_TRIP_COUNT = "KEY_TRIP_COUNT";
+    public static final String KEY_TOTAL_TRIP_COUNT = "KEY_TOTAL_TRIP_COUNT";
+    public static final String KEY_RETURN_TRIP_COUNT = "KEY_RETURN_TRIP_COUNT";
     
     public static final String KEY_CUMULATIVE_TRIP_DURATION_MS = "KEY_CUMULATIVE_TRIP_DURATION_MS";
     
@@ -105,6 +111,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
         "create table " + TABLE_TRIPS + " ("
         + KEY_TRIP_ID + " integer primary key autoincrement, "
         + KEY_DESTINATION_PAIR_ID + " integer, "
+        + KEY_IS_RETURN_TRIP + " integer default " + INTEGER_FALSE + ", "	// A boolean
         + KEY_START_TIME + " TIMESTAMP NULL default CURRENT_TIMESTAMP, "
         + KEY_END_TIME + " TIMESTAMP);";
    
@@ -202,6 +209,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     				new String[] {
     						KEY_TRIP_ID,
     						KEY_DESTINATION_PAIR_ID,
+    						KEY_IS_RETURN_TRIP,
     						KEY_START_TIME,
     						KEY_END_TIME, 
     						"(" + KEY_END_TIME + "-" + KEY_START_TIME + ")" + " AS " + KEY_TRIP_DURATION_MS
@@ -219,7 +227,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     		return query_builder.buildQuery(
     				new String[] {
     						KEY_DESTINATION_PAIR_ID,
-    						"COUNT(" + KEY_DESTINATION_PAIR_ID + ") AS " + KEY_TRIP_COUNT,
+    						"COUNT(" + KEY_DESTINATION_PAIR_ID + ") AS " + KEY_TOTAL_TRIP_COUNT,
+    						"SUM(" + KEY_IS_RETURN_TRIP + ") AS " + KEY_RETURN_TRIP_COUNT,
     						"MIN(" + KEY_START_TIME + ") AS " + KEY_MIN_START_TIME,
     						"MAX(" + KEY_START_TIME + ") AS " + KEY_MAX_START_TIME,
     						"MIN(" + KEY_END_TIME + ") AS " + KEY_MIN_END_TIME,
@@ -239,10 +248,10 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     		
     		return query_builder.buildQuery(
     				new String[] {
-    						"A1." + KEY_DESTINATION_PAIR_ID + " AS " + KEY_DESTINATION_PAIR_ID,
+    						"A2." + "ROWID" + " AS " + KEY_DESTINATION_PAIR_ID,
     						"A2." + KEY_TITLE + " AS " + KEY_TITLE,
 
-    						"A1." + KEY_TRIP_COUNT + " AS " + KEY_TRIP_COUNT,
+    						"A1." + KEY_TOTAL_TRIP_COUNT + " AS " + KEY_TOTAL_TRIP_COUNT,
     						"A1." + KEY_MIN_START_TIME + " AS " + KEY_MIN_START_TIME,
     						"A1." + KEY_MAX_START_TIME + " AS " + KEY_MAX_START_TIME,
     						"A1." + KEY_MIN_END_TIME + " AS " + KEY_MIN_END_TIME,
@@ -291,9 +300,9 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     // ============================================================
     public AddressPair getAddressPair(long pair_id) {
     	
-    	
     	AddressPair pair = null;
     	
+    	Log.d(TAG, "About to get address pair with ID: " + pair_id);
     	
     	SQLiteDatabase db = getReadableDatabase();
     	Cursor cursor = db.query(TABLE_DESTINATION_PAIRS,
@@ -304,18 +313,18 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     			"ROWID=?", new String[] {Long.toString(pair_id)}, null, null, null);
     	
     	if (cursor.moveToFirst()) {
-	    	
-	
+
 		    long[] place_ids = new long[2];
 		    for (int i=0; i<2; i++)
 			    place_ids[i] = cursor.getLong(i);
 		    
+		    
 	    	String title = cursor.getString(2);
 		    cursor.close();
 		    
+		    
 		    GeoAddress[] places = new GeoAddress[2];
-		    int i=0;
-		    for (long place_id : place_ids) {
+		    for (int i=0; i<place_ids.length; i++) {
 		    	
 		    	Cursor cursor2 = db.query(TABLE_DESTINATIONS,
 		    			new String[] {
@@ -325,22 +334,21 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 			    			KEY_WIRELESS_SSID
 			    		},
 		    			"KEY_DESTINATION_ID=?",
-		    			new String[] {Long.toString(place_id)},
+		    			new String[] {Long.toString(place_ids[i])},
 		    			null, null, null);
 		    	cursor2.moveToFirst();
-		    	GeoAddress geo_address = new GeoAddress( cursor2.getString(0) );
-		    	places[i] = geo_address;
 		    	
-		    	LatLonDouble latlon = new LatLonDouble();
-		    	latlon.lat = cursor2.getDouble(1);
-		    	latlon.lon = cursor2.getDouble(2);
+		    	places[i] = new GeoAddress( cursor2.getString(0) );
 		    	
-		    	geo_address.latlon = latlon;
-		    	geo_address.ssid = cursor2.getString(3);
+		    	places[i].latlon = new LatLonDouble();
+		    	places[i].latlon.lat = cursor2.getDouble(1);
+		    	places[i].latlon.lon = cursor2.getDouble(2);
+		    	
+		    	places[i].ssid = cursor2.getString(3);
 		    	
 			    cursor2.close();
 			    
-			    i++;
+			   
 		    }
 		    
 		    pair = new AddressPair(places[0], places[1]);
@@ -362,7 +370,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     			KEY_DESTINATION_PAIR_ID + " AS " + BaseColumns._ID,
     			KEY_TITLE,
 
-				KEY_TRIP_COUNT,
+				KEY_TOTAL_TRIP_COUNT,
 				KEY_MIN_START_TIME,
 				KEY_MAX_START_TIME,
 				KEY_MIN_END_TIME,

@@ -50,7 +50,7 @@ public class DestinationSelectorLayout extends LinearLayout {
     
     ProgressBar progress_bar_gps;
 
-    private TextView mHeader, mAddressView, mWifiView;
+    private TextView mAddressView, mWifiView;
     public Button mMapButton, mPickButton, mWifiButton, mDepartureWindowButton;
     
 	// ========================================================
@@ -88,8 +88,6 @@ public class DestinationSelectorLayout extends LinearLayout {
     	});
         this.mWifiButton = (Button) root.findViewById(R.id.button_wireless_network);
         this.mDepartureWindowButton = (Button) root.findViewById(R.id.button_departure_window);
-        this.mHeader = (TextView) root.findViewById(R.id.header);
-        this.mHeader.setText(title);
     
         this.progress_bar_gps = (ProgressBar) root.findViewById(R.id.progress_bar_gps);
         
@@ -214,27 +212,66 @@ public class DestinationSelectorLayout extends LinearLayout {
     	return this.address;
     }
 
+
+	// ========================================================
+    void lookupGeo(String address) {
+    	
+    }
+    
+	// ========================================================
+    public void setAddressAndGeo(String address) {
+
+    	this.address = address;
+		this.mAddressView.setText(address);
+		
+		boolean has_address = this.address != null && this.address.length() > 0;
+    	this.mMapButton.setEnabled( has_address );
+    	
+	    Log.d(TAG, "Address: " + address);
+	    
+	    if (has_address) {
+		    Geocoder gc = new Geocoder(this.context);
+		    try {
+				List<Address> matches = gc.getFromLocationName(address, 3);
+				if (matches.size() > 0) {
+					Address first_match = matches.get(0);
+					
+					this.latlon.lat = first_match.getLatitude();
+					this.latlon.lon = first_match.getLongitude();
+				}
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+	    }
+    }
+    
 	// ========================================================
     public void setAddress(String address) {
 
     	this.address = address;
 		this.mAddressView.setText(address);
-    	this.mMapButton.setEnabled( this.address != null && this.address.length() > 0 );
+		
+		boolean has_address = this.address != null && this.address.length() > 0;
+    	this.mMapButton.setEnabled( has_address );
     	
 	    Log.d(TAG, "Address: " + address);
-	    Geocoder gc = new Geocoder(this.context);
-	    try {
-			List<Address> matches = gc.getFromLocationName(address, 3);
-			if (matches.size() > 0) {
-				Address first_match = matches.get(0);
-				
-				this.latlon.lat = first_match.getLatitude();
-				this.latlon.lon = first_match.getLongitude();
+	    
+	    if (has_address) {
+		    Geocoder gc = new Geocoder(this.context);
+		    try {
+				List<Address> matches = gc.getFromLocationName(address, 3);
+				if (matches.size() > 0) {
+					Address first_match = matches.get(0);
+					
+					this.latlon.lat = first_match.getLatitude();
+					this.latlon.lon = first_match.getLongitude();
+				}
+			} catch (IOException e) {
+
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    }
     }
     
 	// ========================================================

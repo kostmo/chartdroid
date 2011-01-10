@@ -1,8 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_start_logging"
-          android:title="Start logging"
-          android:alphabeticShortcut="s"
+    <item android:id="@+id/menu_start_logging_outbound"
+          android:title="Start outbound trip"
+          android:alphabeticShortcut="o"
+          android:icon="@drawable/ic_menu_star" />
+          
+    <item android:id="@+id/menu_start_logging_return"
+          android:title="Start return trip"
+          android:alphabeticShortcut="r"
           android:icon="@drawable/ic_menu_star" />
 
     <item android:id="@+id/menu_edit"
