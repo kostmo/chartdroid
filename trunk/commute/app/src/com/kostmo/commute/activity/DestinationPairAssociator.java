@@ -3,6 +3,7 @@ package com.kostmo.commute.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.kostmo.commute.Market;
@@ -25,7 +28,7 @@ import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.view.DestinationSelectorLayout;
 import com.kostmo.commute.view.DestinationSelectorLayout.AddressReverseLookupTaskExtended;
 
-public class DestinationPairAssociator extends Activity {
+public class DestinationPairAssociator extends TabActivity {
 
     public static final String TAG = Market.TAG;
 
@@ -53,6 +56,17 @@ public class DestinationPairAssociator extends Activity {
         super.onCreate(savedInstanceState);
 
         this.setContentView(R.layout.pair_associator);
+
+        
+        TabHost tabHost = getTabHost();
+
+
+        tabHost.addTab(tabHost.newTabSpec("tab1")
+                .setIndicator("Origin")
+                .setContent(R.id.compound_selector_origin));
+        tabHost.addTab(tabHost.newTabSpec("tab3")
+                .setIndicator("Destination")
+                .setContent(R.id.compound_selector_destination));
 
     	this.database = new DatabaseCommutes(this);
 

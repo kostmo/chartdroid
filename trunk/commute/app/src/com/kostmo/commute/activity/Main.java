@@ -3,16 +3,17 @@ package com.kostmo.commute.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
-import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -21,29 +22,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.kostmo.commute.CalendarPickerConstants;
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
-import com.kostmo.commute.activity.DestinationPairAssociator.AddressPair;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DataContentProvider;
 import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.provider.EventContentProvider;
 import com.kostmo.commute.service.RouteTrackerService;
 
-public class Main extends ListActivity {
+public class Main extends ListActivity implements Disablable {
 
 
     public static final String TAG = Market.TAG;
 
     
-	DatabaseCommutes database;
 	private static final int DIALOG_PLOT_METHOD = 1;
 	private static final int DIALOG_CALENDARPICKER_DOWNLOAD = 2;
 
@@ -51,7 +52,13 @@ public class Main extends ListActivity {
 	private static final int REQUEST_CODE_NEW_PAIR = 1;
 
 
+	DatabaseCommutes database;
 	SharedPreferences settings;
+
+    long global_route_id;
+    
+    TextView service_connection_status;
+	Button button_cancel_tracker;
 	
     // ========================================================================
 	/** Called when the activity is first created. */
@@ -62,11 +69,27 @@ public class Main extends ListActivity {
         this.setContentView(R.layout.main);
     	this.database = new DatabaseCommutes(this);
         this.settings = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        
+        this.service_connection_status = (TextView) findViewById(R.id.service_connection_status);
+        this.button_cancel_tracker = (Button) findViewById(R.id.button_cancel_tracker);
+        this.button_cancel_tracker.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+
+				if (Main.this.record_fetcher_service != null) {
+					// We check for nullity again, just in case the service died while the menu was idly showing.
+					Main.this.record_fetcher_service.cancelAllProximityAlerts();
+				}
+			}
+        });
     	
         SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, null,
         		new String[] {
 		    		DatabaseCommutes.KEY_TITLE,
-		    		DatabaseCommutes.KEY_TRIP_COUNT},
+		    		DatabaseCommutes.KEY_TOTAL_TRIP_COUNT},
         		new int[] {android.R.id.text1, android.R.id.text2});
         this.setListAdapter(sca);
         
@@ -80,9 +103,24 @@ public class Main extends ListActivity {
 		if (state != null) {
 			this.global_route_id = state.global_route_id;
 		}
+		
+		
+		bindServiceOnly();
     }
+    
+	
+	// ========================================================================
+	void bindServiceOnly() {
+		
+		this.service_connection_status.setText(R.string.status_connecting);
+		Main.this.button_cancel_tracker.setEnabled(false);
+		
+		
+		Intent i = new Intent(this, RouteTrackerService.class);
+		bindService(i, this.mConnection, Context.BIND_AUTO_CREATE | Context.BIND_DEBUG_UNBIND );
+	}
 
-    long global_route_id;
+
 	// ========================================================================
 	@Override
 	public Object onRetainNonConfigurationInstance() {
@@ -233,40 +271,38 @@ public class Main extends ListActivity {
         
         menu.setHeaderIcon(android.R.drawable.ic_dialog_alert);
         menu.setHeaderTitle("Route action:");
+        
+        
+        
+        boolean service_connected = this.record_fetcher_service != null;
+        menu.findItem(R.id.menu_start_logging_outbound).setVisible(service_connected);
+        menu.findItem(R.id.menu_start_logging_return).setVisible(service_connected);
 	}
 
+    
 	// ========================================================================
     @Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		
 		switch ( item.getItemId() ) {
-		case R.id.menu_start_logging:
+		
+		// NOTE: The logging option won't be visible until the service is connected.
+		case R.id.menu_start_logging_outbound:
 		{
-			// TODO Register a location listener for the destination
-			
-			if (this.settings.getBoolean(TriggerPreferences.PREFKEY_ENABLE_RECORD_BREADCRUMBS, TriggerPreferences.DEFAULT_ENABLE_RECORD_BREADCRUMBS)) {
-				startService(new Intent(this, RouteTrackerService.class));
-				
-			} else {
-				long trip_id = this.database.startTrip(info.id);
-				
-
-		    	LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		    	
-		    	float radius = this.settings.getFloat(TriggerPreferences.PREFKEY_TRIP_COMPLETION_RADIUS, TriggerPreferences.DEFAULT_TRIP_COMPLETION_RADIUS);
-		    	long expiration = this.settings.getLong(TriggerPreferences.PREFKEY_TRIP_EXPIRATION_MS, TriggerPreferences.DEFAULT_TRIP_EXPIRATION_MS);
-		    	
-		    	
-		    	Intent activity_intent = new Intent(this, TripSummaryActivity.class);
-		    	activity_intent.putExtra(TripSummaryActivity.EXTRA_TRIP_ID, trip_id);
-		    	PendingIntent pending_intent = PendingIntent.getActivity(this, 0, activity_intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-				AddressPair pair = this.database.getAddressPair(info.id);
-		    	lm.addProximityAlert(pair.destination.latlon.lat, pair.destination.latlon.lon, radius, expiration, pending_intent);
+			if (this.record_fetcher_service != null) {
+				// We check for nullity again, just in case the service died while the menu was idly showing.
+				this.record_fetcher_service.startTrip(info.id, false);
 			}
-			
-        	Log.e(TAG, "Not implemented.");
+
+			break;
+		}
+		case R.id.menu_start_logging_return:
+		{
+			if (this.record_fetcher_service != null) {
+				// We check for nullity again, just in case the service died while the menu was idly showing.
+				this.record_fetcher_service.startTrip(info.id, true);
+			}
 			break;
 		}
 		case R.id.menu_edit:
@@ -373,5 +409,76 @@ public class Main extends ListActivity {
 	    	break;
   	   	}
     }
+    
+    
+    
 
+    RouteTrackerService record_fetcher_service;
+	// ========================================================================
+	@Override
+	public void onDestroy() {
+
+		Log.e(TAG, "The Activity was destroyed.");
+
+		if (this.mConnection != null) {
+			if (this.record_fetcher_service != null) {
+				this.record_fetcher_service.setDisablableHost(null);
+				
+				Log.e(TAG, "Now unbinding service...");
+				this.unbindService(this.mConnection);
+			}
+		}
+
+		super.onDestroy();
+	}
+
+	// ========================================================================
+	boolean starting_service = false;
+	private ServiceConnection mConnection = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder service) {
+
+			Log.d(TAG, "The service has connected.");
+			Main.this.service_connection_status.setText(R.string.status_connected);
+			Main.this.button_cancel_tracker.setEnabled(true);
+			
+			// This is called when the connection with the service has been
+			// established, giving us the service object we can use to
+			// interact with the service.  Because we have bound to a explicit
+			// service that we know is running in our own process, we can
+			// cast its IBinder to a concrete class and directly access it.
+			Main.this.record_fetcher_service = ((RouteTrackerService.LocalBinder) service).getService();
+			Main.this.record_fetcher_service.setDisablableHost(Main.this);
+
+			
+			if (Main.this.starting_service) {
+				Main.this.starting_service = false;
+
+
+			   	
+			} else {
+				
+				if (Main.this.record_fetcher_service != null && Main.this.record_fetcher_service.isInProgress()) {
+					disable();
+				}
+			}
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			// This is called when the connection with the service has been
+			// unexpectedly disconnected -- that is, its process crashed.
+			// Because it is running in our same process, we should never
+			// see this happen.
+			Main.this.record_fetcher_service = null;
+		}
+	};
+
+	@Override
+	public void disable() {
+		Log.e(TAG, "Host disabled.");	// FIXME
+	}
+
+	@Override
+	public void reEnable() {
+		Log.e(TAG, "Host re-enabled.");	// FIXME
+	}
 }
