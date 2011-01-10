@@ -27,16 +27,12 @@
 			</intent-filter>
 		</receiver>
 		
-		
-		
-        <activity android:name=".activity.prefs.TriggerPreferences" android:label="@string/app_name"></activity>
+        <activity android:name=".activity.prefs.TriggerPreferences" android:label="Commute Preferences"></activity>
         <activity android:name=".activity.RouteConfigurator" android:label="@string/configure_route"></activity>
-        <activity android:name=".activity.Map" android:label="@string/app_name"></activity>
-        <activity android:name=".activity.TripSummaryActivity" android:label="@string/app_name"></activity>
+        <activity android:name=".activity.Map" android:label="Location Selection"></activity>
+        <activity android:name=".activity.TripSummaryActivity" android:label="Trip Summary"></activity>
         <activity android:name=".activity.ListActivityTrips" android:label="Trip List"></activity>
         <activity android:name=".activity.ListActivityLocations" android:label="Locations List"></activity>
-        
-        
         
         
         <activity android:name=".activity.ListActivityWirelessNetworks" android:label="@string/app_name"></activity>
@@ -57,12 +53,13 @@
         
 	   <uses-library android:name="com.google.android.maps" />
 
-</application>
-
-
-<uses-sdk android:targetSdkVersion="8" android:minSdkVersion="8"></uses-sdk>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-<uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+	</application>
+	
+	
+	<uses-sdk android:targetSdkVersion="8" android:minSdkVersion="8"></uses-sdk>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET" />
 </manifest> 

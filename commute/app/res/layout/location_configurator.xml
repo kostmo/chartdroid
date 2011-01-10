@@ -1,144 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!-- NOTE This outer LinearLayout is kind of a "shim" -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-   	android:layout_weight="1"
-   	android:gravity="center"
-    android:orientation="vertical">
-   
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal">
-				  
-	       <Button
-	       android:id="@+id/button_choose_destination"
-	       android:text="@string/choose_ellipsis"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:layout_weight="1"/>
-		  
-		  
-	       <Button
-	       android:id="@+id/button_map_destination"
-	       android:text="@string/view_on_map"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:layout_weight="1"/>
-				     
-	  </LinearLayout>
-	  
-	  
-	<ProgressBar
-       android:id="@+id/progress_bar_gps"
-       android:visibility="gone"
-		     android:layout_width="wrap_content"  
-		     android:layout_height="wrap_content"
-	        />
+   	android:layout_weight="1">
 
-	  
-   	<TextView
-      android:id="@+id/addresss_view"
-	     android:layout_width="fill_parent"  
-	     android:layout_height="fill_parent"
-        android:layout_weight="1"
-	     />
-    
-    
-    
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+   	android:layout_weight="1">
+	
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:gravity="center_vertical"
-	    android:orientation="horizontal">
+	   	android:gravity="center"
+	    android:orientation="vertical">
+	   
+	 
+	   	<TextView
+		     android:text="Address"  
+		     android:layout_width="fill_parent"  
+		     android:layout_height="wrap_content"  
+		     android:paddingTop="2dip"  
+		     android:paddingBottom="2dip"  
+		     android:paddingLeft="5dip"  
+		     style="?android:attr/listSeparatorTextViewStyle" />
+	   
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal">
+					  
+		       <Button
+		       android:id="@+id/button_choose_destination"
+		       android:text="@string/choose_ellipsis"
+		        android:layout_height="wrap_content"
+		        android:layout_width="fill_parent"
+		        android:layout_weight="1"/>
+			  
+			  
+		       <Button
+		       android:id="@+id/button_map_destination"
+		       android:text="@string/view_on_map"
+		        android:layout_height="wrap_content"
+		        android:layout_width="fill_parent"
+		        android:layout_weight="1"/>
+					     
+		  </LinearLayout>
+		  
+		  
+		<ProgressBar
+	       android:id="@+id/progress_bar_gps"
+	       android:visibility="gone"
+			     android:layout_width="wrap_content"  
+			     android:layout_height="wrap_content"
+		        />
+	
+		  
+	   	<TextView
+	      android:id="@+id/addresss_view"
+		     android:layout_width="fill_parent"  
+		     android:layout_height="wrap_content"
+		     />
 	    
 	   	<TextView
+		     android:text="Tracking"  
+		     android:layout_width="fill_parent"  
+		     android:layout_height="wrap_content"  
+		     android:paddingTop="2dip"  
+		     android:paddingBottom="2dip"  
+		     android:paddingLeft="5dip"  
+		     style="?android:attr/listSeparatorTextViewStyle" />
+	    
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center_vertical"
+		    android:orientation="horizontal">
+		    
+		   	<TextView
+			     android:layout_width="wrap_content"  
+			     android:layout_height="wrap_content"
+			     android:text="Max trip duration:"
+			     android:layout_marginRight="5dip"
+			     />
+	
+			
+			<EditText
+		       android:id="@+id/edittext_max_trip_minutes"
+		       android:inputType="number"
+		       android:hint="minutes"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:layout_width="fill_parent"
+			/>
+			
+		   	<TextView
+			     android:layout_marginLeft="5dip"
 		     android:layout_width="wrap_content"  
 		     android:layout_height="wrap_content"
-		     android:text="Max trip duration:"
-		     android:layout_marginRight="5dip"
+		     android:text="minutes"
 		     />
-
 		
-		<EditText
-	       android:id="@+id/edittext_max_trip_minutes"
-	       android:inputType="number"
-	       android:hint="minutes"
+		</LinearLayout>
+	  
+	
+	   	<TextView
+		     android:text="Start Triggers"  
+		     android:layout_width="fill_parent"  
+		     android:layout_height="wrap_content"  
+		     android:paddingTop="2dip"  
+		     android:paddingBottom="2dip"  
+		     android:paddingLeft="5dip"  
+		     style="?android:attr/listSeparatorTextViewStyle" />
+	
+		<CheckBox
+	       android:id="@+id/checkbox_wireless_trigger"
+	       android:text="Trigger by wireless dissociation"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+	       />
+	       
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center_vertical"
+		    android:orientation="horizontal">
+		
+		
+	       <Button
+	       android:id="@+id/button_wireless_network"
+	       android:enabled="false"
+	       android:text="@string/wireless_network_ellipsis"
 	        android:layout_weight="1"
 	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-		/>
+	        android:layout_width="fill_parent"/>
+			  
+		   	<TextView
+		      android:id="@+id/wireless_network_view"
+		      android:maxLines="1"
+			     android:layout_width="fill_parent"  
+			     android:layout_height="wrap_content"
+		        android:layout_weight="1"
+			     />
 		
-	   	<TextView
-		     android:layout_marginLeft="5dip"
-	     android:layout_width="wrap_content"  
-	     android:layout_height="wrap_content"
-	     android:text="minutes"
-	     />
-	
-	</LinearLayout>
-  
-     
-	<CheckBox
-       android:id="@+id/checkbox_wireless_trigger"
-       android:text="Trigger by wireless dissociation"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-       />
-       
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:gravity="center_vertical"
-	    android:orientation="horizontal">
-	
-	
-       <Button
-       android:id="@+id/button_wireless_network"
-       android:enabled="false"
-       android:text="@string/wireless_network_ellipsis"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"/>
+		
+		</LinearLayout>
+	    
+	    <LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center_vertical"
+		    android:orientation="horizontal">
+		
+		
+	       <Button
+	       android:id="@+id/button_departure_window"
+	       android:enabled="false"
+	       android:text="@string/departure_window_ellipsis"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"/>
 		  
 	   	<TextView
-	      android:id="@+id/wireless_network_view"
+	      android:id="@+id/departure_window_view"
 	      android:maxLines="1"
 		     android:layout_width="fill_parent"  
 		     android:layout_height="wrap_content"
 	        android:layout_weight="1"
 		     />
-	
-	
+		
+		
+		</LinearLayout>
+	     		   		  
+	     		  
+		  
 	</LinearLayout>
-    
-    <LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:gravity="center_vertical"
-	    android:orientation="horizontal">
-	
-	
-       <Button
-       android:id="@+id/button_departure_window"
-       android:enabled="false"
-       android:text="@string/departure_window_ellipsis"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"/>
-	  
-   	<TextView
-      android:id="@+id/departure_window_view"
-      android:maxLines="1"
-	     android:layout_width="fill_parent"  
-	     android:layout_height="wrap_content"
-        android:layout_weight="1"
-	     />
-	
-	
+</ScrollView>
 	</LinearLayout>
-     		   		  
-     		  
-	  
-</LinearLayout>

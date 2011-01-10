@@ -1,13 +1,16 @@
 package com.kostmo.commute.activity;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SimpleCursorAdapter;
 
 import com.kostmo.commute.Market;
+import com.kostmo.commute.R;
 import com.kostmo.commute.provider.DatabaseCommutes;
 
 public class ListActivityLocations extends ListActivity {
@@ -17,6 +20,9 @@ public class ListActivityLocations extends ListActivity {
 
 	public static final String EXTRA_LOCATION_ID = "EXTRA_LOCATION_ID";
 	public static final long INVALID_LOCATION_ID = -1;
+	
+
+	private static final int REQUEST_CODE_MAP_LOCATION_SELECTION = 1;
 
 	DatabaseCommutes database;
 	
@@ -44,15 +50,22 @@ public class ListActivityLocations extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        /*
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_pair_associator, menu);
+        inflater.inflate(R.menu.options_locations, menu);
         
         
         return true;
-    	*/
-        return false;
     }
+    
+
+	// ========================================================
+	void pickMapLocation() {
+
+    	Intent intent = new Intent(Intent.ACTION_PICK);
+    	intent.setClass(this, Map.class);
+    	startActivityForResult(intent, REQUEST_CODE_MAP_LOCATION_SELECTION);
+	}
+	
 
     // ========================================================================
     @Override
@@ -66,6 +79,10 @@ public class ListActivityLocations extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.menu_new_location:
+        	
+        	pickMapLocation();
+        	return true;
         }
 
         return super.onOptionsItemSelected(item);

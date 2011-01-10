@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_pick_contact_address"
+         android:title="Pick contact"
+         android:alphabeticShortcut="n"
+         android:icon="@android:drawable/ic_menu_add" />
+
+    <item android:id="@+id/menu_show_previous_locations"
+         android:title="Previous Address"
+         android:alphabeticShortcut="b"
+         android:icon="@android:drawable/ic_menu_info_details" />
+          
+    <item android:id="@+id/menu_use_current_location"
+          android:title="Use Current"
+          android:alphabeticShortcut="c"
+          android:icon="@drawable/ic_menu_star" />
+
+</menu>
