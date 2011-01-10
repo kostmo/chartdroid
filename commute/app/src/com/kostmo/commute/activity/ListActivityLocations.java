@@ -15,6 +15,9 @@ public class ListActivityLocations extends ListActivity {
     public static final String TAG = Market.TAG;
 
 
+	public static final String EXTRA_LOCATION_ID = "EXTRA_LOCATION_ID";
+	public static final long INVALID_LOCATION_ID = -1;
+
 	DatabaseCommutes database;
 	
 	/** Called when the activity is first created. */
@@ -25,7 +28,7 @@ public class ListActivityLocations extends ListActivity {
 
     	this.database = new DatabaseCommutes(this);
     	
-    	long route_id = getIntent().getLongExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, DestinationPairAssociator.INVALID_ROUTE_ID);
+    	long route_id = getIntent().getLongExtra(RouteConfigurator.EXTRA_ROUTE_ID, RouteConfigurator.INVALID_ROUTE_ID);
 	    	
     	
     	Cursor cursor = this.database.getTrips(route_id);

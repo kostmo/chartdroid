@@ -35,16 +35,13 @@
 					android:layout_weight="1"
 					android:layout_height="fill_parent"
 					android:layout_width="fill_parent">
-			    
-				    
 					
-				<com.kostmo.commute.view.DestinationSelectorLayout
+				<com.kostmo.commute.view.LocationConfiguratorLayout
 					android:id="@+id/compound_selector_origin" app:title="Origin"
 					android:layout_weight="1" android:layout_height="fill_parent"
 					android:layout_width="fill_parent" />
 			
-			
-				<com.kostmo.commute.view.DestinationSelectorLayout
+				<com.kostmo.commute.view.LocationConfiguratorLayout
 					android:id="@+id/compound_selector_destination" app:title="Destination"
 					android:layout_weight="1" android:layout_height="fill_parent"
 					android:layout_width="fill_parent" />

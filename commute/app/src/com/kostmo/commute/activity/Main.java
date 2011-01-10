@@ -274,8 +274,8 @@ public class Main extends ListActivity implements Disablable {
     void openRoute(String action, long route_id) {
     	
     	Intent intent = new Intent(action);
-    	intent.setClass(this, DestinationPairAssociator.class);
-    	intent.putExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, route_id);
+    	intent.setClass(this, RouteConfigurator.class);
+    	intent.putExtra(RouteConfigurator.EXTRA_ROUTE_ID, route_id);
     	startActivityForResult(intent, REQUEST_CODE_NEW_PAIR);
     }
     
@@ -309,7 +309,7 @@ public class Main extends ListActivity implements Disablable {
 		case R.id.menu_list_trips:
 		{
 	    	Intent intent = new Intent(this, ListActivityTrips.class);
-	    	intent.putExtra(DestinationPairAssociator.EXTRA_ROUTE_ID, info.id);
+	    	intent.putExtra(RouteConfigurator.EXTRA_ROUTE_ID, info.id);
 	    	startActivity(intent);
 			break;
 		}
@@ -384,7 +384,7 @@ public class Main extends ListActivity implements Disablable {
         }
         case R.id.new_pair:
         {
-        	Intent intent = new Intent(this, DestinationPairAssociator.class);
+        	Intent intent = new Intent(this, RouteConfigurator.class);
         	startActivityForResult(intent, REQUEST_CODE_NEW_PAIR);
         	return true;
         }

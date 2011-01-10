@@ -14,9 +14,9 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.kostmo.commute.CalendarPickerConstants;
-import com.kostmo.commute.activity.DestinationPairAssociator.AddressPair;
-import com.kostmo.commute.activity.DestinationPairAssociator.GeoAddress;
-import com.kostmo.commute.activity.DestinationPairAssociator.LatLonDouble;
+import com.kostmo.commute.activity.RouteConfigurator.AddressPair;
+import com.kostmo.commute.activity.RouteConfigurator.GeoAddress;
+import com.kostmo.commute.activity.RouteConfigurator.LatLonDouble;
 import com.kostmo.tools.DurationStrings.TimescaleTier;
 
 public class DatabaseCommutes extends SQLiteOpenHelper {
@@ -25,7 +25,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 12;
+    static final int DATABASE_VERSION = 13;
 
     static final int INTEGER_FALSE = 0;
     static final int INTEGER_TRUE = 1;
@@ -46,6 +46,11 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     
     public static final String KEY_START_DESTINATION_ID = "KEY_START_DESTINATION_ID";
     public static final String KEY_END_DESTINATION_ID = "KEY_END_DESTINATION_ID";
+    
+
+    public static final String KEY_OUTBOUND_WINDOW_START_MINUTES = "KEY_OUTBOUND_WINDOW_START_MINUTES";
+    public static final String KEY_RETURN_WINDOW_START_MINUTES = "KEY_RETURN_WINDOW_START_MINUTES";
+    public static final String KEY_TRIP_START_WINDOW_WIDTH_MS = "KEY_TRIP_START_WINDOW_WIDTH_MS";
 
     public static final String KEY_TRIP_ID = "KEY_TRIP_ID";
     public static final String KEY_DESTINATION_PAIR_ID = "KEY_DESTINATION_PAIR_ID";
@@ -107,6 +112,9 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
         + KEY_START_DESTINATION_ID + " integer, "
         + KEY_END_DESTINATION_ID + " integer, "
         + KEY_ROUTE_MAX_MINUTES + " integer, "
+        + KEY_OUTBOUND_WINDOW_START_MINUTES + " integer, "
+        + KEY_RETURN_WINDOW_START_MINUTES + " integer, "
+        + KEY_TRIP_START_WINDOW_WIDTH_MS + " integer, "
     	+ "PRIMARY KEY(" + KEY_START_DESTINATION_ID + ", " + KEY_END_DESTINATION_ID + ") ON CONFLICT IGNORE);";
 
     final static String SQL_CREATE_TRIPS_TABLE =

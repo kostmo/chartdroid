@@ -1,9 +1,13 @@
 package com.kostmo.commute.view;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,17 +32,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
-import com.kostmo.commute.activity.DestinationPairAssociator.LatLonDouble;
+import com.kostmo.commute.activity.RouteConfigurator.LatLonDouble;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.task.AddressReverseLookupTask;
 
 
-public class DestinationSelectorLayout extends LinearLayout {
+public class LocationConfiguratorLayout extends LinearLayout {
 	
 
     public static final String TAG = Market.TAG;
@@ -54,13 +59,15 @@ public class DestinationSelectorLayout extends LinearLayout {
     
     ProgressBar progress_bar_gps;
 
-    private TextView mAddressView, mWifiView;
+    private TextView mAddressView, mWifiView, departure_window_view;
     public Button mMapButton, mPickButton, mWifiButton, mDepartureWindowButton;
     public CheckBox checkbox_wireless_trigger;
     public EditText edittext_max_trip_minutes;
     
+    public Date outbound_window_start_time = new Date();
+    
 	// ========================================================
-    public DestinationSelectorLayout(Context context, AttributeSet attrs) {
+    public LocationConfiguratorLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DestinationSelectorLayout);
@@ -71,18 +78,18 @@ public class DestinationSelectorLayout extends LinearLayout {
     }
 
 	// ========================================================
-    public DestinationSelectorLayout(Context context, String title) {
+    public LocationConfiguratorLayout(Context context, String title) {
         super(context);
         init(context, title);
     }
 
 	// ========================================================
-    void init(Context context, String title) {
+    void init(final Context context, String title) {
     	
         this.context = context;
 
         LayoutInflater factory = LayoutInflater.from(context);
-        View root = factory.inflate(R.layout.destination_selector, this);
+        View root = factory.inflate(R.layout.location_configurator, this);
         
         
         this.mPickButton = (Button) root.findViewById(R.id.button_choose_destination);
@@ -101,10 +108,13 @@ public class DestinationSelectorLayout extends LinearLayout {
         
         this.mAddressView = (TextView) root.findViewById(R.id.addresss_view);
         this.mWifiView = (TextView) root.findViewById(R.id.wireless_network_view);
+        this.departure_window_view = (TextView) root.findViewById(R.id.departure_window_view);
+        
 
         this.edittext_max_trip_minutes = (EditText) root.findViewById(R.id.edittext_max_trip_minutes);
          
 
+        this.checkbox_wireless_trigger = (CheckBox) root.findViewById(R.id.checkbox_wireless_trigger);
         this.checkbox_wireless_trigger.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -113,11 +123,36 @@ public class DestinationSelectorLayout extends LinearLayout {
 
 				mWifiView.setEnabled(isChecked);
 				mWifiButton.setEnabled(isChecked);
-				mWifiView.setEnabled(isChecked);
+				mDepartureWindowButton.setEnabled(isChecked);
 			}
         });
+        
+        
+        this.mDepartureWindowButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				TimePickerDialog tpd = new TimePickerDialog(context, new OnTimeSetListener() {
+					@Override
+					public void onTimeSet(TimePicker view, int hourOfDay,
+							int minute) {
+						updateDate(hourOfDay, minute);
+					}
+				}, 8, 0, false);
+				tpd.show();
+			}
+    	});        
     }
 
+	// ========================================================================
+    void updateDate(int hour, int minute) {
+
+    	this.outbound_window_start_time.setHours(hour);
+    	this.outbound_window_start_time.setMinutes(minute);
+
+    	SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+		this.departure_window_view.setText( sdf.format(this.outbound_window_start_time) );
+    }
+    
 	// ========================================================================
     public AddressReverseLookupTaskExtended getAddressLookupTask() {
     	return this.address_lookup_task;
