@@ -22,10 +22,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
@@ -52,6 +56,8 @@ public class DestinationSelectorLayout extends LinearLayout {
 
     private TextView mAddressView, mWifiView;
     public Button mMapButton, mPickButton, mWifiButton, mDepartureWindowButton;
+    public CheckBox checkbox_wireless_trigger;
+    public EditText edittext_max_trip_minutes;
     
 	// ========================================================
     public DestinationSelectorLayout(Context context, AttributeSet attrs) {
@@ -77,6 +83,8 @@ public class DestinationSelectorLayout extends LinearLayout {
 
         LayoutInflater factory = LayoutInflater.from(context);
         View root = factory.inflate(R.layout.destination_selector, this);
+        
+        
         this.mPickButton = (Button) root.findViewById(R.id.button_choose_destination);
         this.mMapButton = (Button) root.findViewById(R.id.button_map_destination);
         this.mMapButton.setEnabled(false);
@@ -93,7 +101,21 @@ public class DestinationSelectorLayout extends LinearLayout {
         
         this.mAddressView = (TextView) root.findViewById(R.id.addresss_view);
         this.mWifiView = (TextView) root.findViewById(R.id.wireless_network_view);
-        
+
+        this.edittext_max_trip_minutes = (EditText) root.findViewById(R.id.edittext_max_trip_minutes);
+         
+
+        this.checkbox_wireless_trigger.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+
+				mWifiView.setEnabled(isChecked);
+				mWifiButton.setEnabled(isChecked);
+				mWifiView.setEnabled(isChecked);
+			}
+        });
     }
 
 	// ========================================================================

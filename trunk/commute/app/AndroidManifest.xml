@@ -33,6 +33,10 @@
         <activity android:name=".activity.DestinationPairAssociator" android:label="@string/configure_route"></activity>
         <activity android:name=".activity.Map" android:label="@string/app_name"></activity>
         <activity android:name=".activity.TripSummaryActivity" android:label="@string/app_name"></activity>
+        <activity android:name=".activity.ListActivityTrips" android:label="Trip List"></activity>
+        <activity android:name=".activity.ListActivityLocations" android:label="Locations List"></activity>
+        
+        
         
         
         <activity android:name=".activity.ListActivityWirelessNetworks" android:label="@string/app_name"></activity>

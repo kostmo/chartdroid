@@ -10,9 +10,20 @@
           android:alphabeticShortcut="r"
           android:icon="@drawable/ic_menu_star" />
 
-    <item android:id="@+id/menu_edit"
+    <item android:id="@+id/menu_edit_route"
           android:title="Edit"
           android:alphabeticShortcut="e"
+          android:icon="@android:drawable/ic_menu_edit" />
+
+          
+    <item android:id="@+id/menu_duplicate_route"
+          android:title="@string/duplicate_route"
+          android:alphabeticShortcut="d"
+          android:icon="@android:drawable/ic_menu_edit" />
+          
+    <item android:id="@+id/menu_list_trips"
+          android:title="List trips"
+          android:alphabeticShortcut="l"
           android:icon="@android:drawable/ic_menu_edit" />
 
     <item android:id="@+id/menu_plot_times"

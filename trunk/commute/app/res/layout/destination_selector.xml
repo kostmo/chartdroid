@@ -44,9 +44,49 @@
 	     android:layout_height="fill_parent"
         android:layout_weight="1"
 	     />
+    
+    
+    
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal">
+	
+
+		  
+	   	<TextView
+		     android:layout_width="wrap_content"  
+		     android:layout_height="wrap_content"
+		     android:text="Max trip duration:"
+		     />
+
+		
+		<EditText
+	       android:id="@+id/edittext_max_trip_minutes"
+	       android:inputType="number"
+	       android:hint="minutes"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+		/>
+		
+	   	<TextView
+	     android:layout_width="wrap_content"  
+	     android:layout_height="wrap_content"
+	     android:text="minutes"
+	     />
+	
+	</LinearLayout>
+  
      
-     
-     			  
+	<CheckBox
+       android:id="@+id/checkbox_wireless_trigger"
+       android:text="Trigger by wireless dissociation"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+       />
+       
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -60,14 +100,14 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"/>
-	  
-   	<TextView
-      android:id="@+id/wireless_network_view"
-      android:maxLines="1"
-	     android:layout_width="fill_parent"  
-	     android:layout_height="wrap_content"
-        android:layout_weight="1"
-	     />
+		  
+	   	<TextView
+	      android:id="@+id/wireless_network_view"
+	      android:maxLines="1"
+		     android:layout_width="fill_parent"  
+		     android:layout_height="wrap_content"
+	        android:layout_weight="1"
+		     />
 	
 				
 				</LinearLayout>
