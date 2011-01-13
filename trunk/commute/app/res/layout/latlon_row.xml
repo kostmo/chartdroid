@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+	android:orientation="horizontal"
+      >
+      
+	<ImageView android:id="@+id/geo_icon"
+		android:src="@drawable/world"
+		android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:adjustViewBounds="true"
+	/>
+       
+    <TextView android:id="@+id/gps_lat"
+    	android:textColor="@android:color/white"
+       	android:text="Lat"
+    	android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView android:id="@+id/gps_lon"
+    	android:textColor="@android:color/white"
+       	android:text="Lon"
+    	android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
