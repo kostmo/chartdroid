@@ -65,7 +65,6 @@ public class Map extends MapActivity {
     	super.onPause();
     }
     
-    
     // ========================================================================
 	/** Called when the activity is first created. */
     @Override
@@ -82,14 +81,11 @@ public class Map extends MapActivity {
     	
 
     	this.my_location_overlay = new MyLocationOverlay(this, this.mapView);
-    	
     	List<Overlay> mapOverlays =  this.mapView.getOverlays();
     	mapOverlays.add( this.my_location_overlay );
     	
     	
     	Button button_map_search = (Button) findViewById(R.id.btnSearch);
-
-    	
     	button_map_search.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -114,8 +110,7 @@ public class Map extends MapActivity {
 
         double lat = 0;
         double lng = 0;
-        try
-        {
+        try {
        	 
        	 Geocoder g = new Geocoder(this, Locale.getDefault()); 
 
@@ -130,11 +125,10 @@ public class Map extends MapActivity {
             	Toast.makeText(this, "record not found", Toast.LENGTH_SHORT).show();
             	return;
             }
-        }
-        catch(IOException io)
-        {
+        } catch(IOException io) {
         	Toast.makeText(this, "Connection Error", Toast.LENGTH_SHORT).show();
         }
+        
         myLocation = new GeoPoint(
             (int) (lat * 1E6), 
             (int) (lng * 1E6));
@@ -152,11 +146,10 @@ public class Map extends MapActivity {
         LayoutInflater factory = LayoutInflater.from(this);
         
 		switch (id) {
+		
 		}
 		return null;
 	}
-    
-
 
     // ======================================================================== 
     @Override
@@ -202,19 +195,29 @@ public class Map extends MapActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    
+    
+    void insertAndReturnLocation(double lat, double lon, String address) {
 
+    	long location_id = this.database.storeDestination(lat, lon, address, null);
+    	    	
+    	// TODO
+    	Intent result = new Intent();
+//    	result.putExtra(EXTRA_LATITUDE, lat);
+//    	result.putExtra(EXTRA_LONGITUDE, lon);
+    	result.putExtra(ListActivityLocations.EXTRA_LOCATION_ID, location_id);
+    	result.putExtra(RouteConfigurator.EXTRA_IS_ORIGIN, getIntent().getBooleanExtra(RouteConfigurator.EXTRA_IS_ORIGIN, true));
+    	setResult(Activity.RESULT_OK, result);
+    	finish();
+    }
+    
 	// ========================================================
     void returnWithCurrentLocation() {
     	
     	double lat = this.my_location_overlay.getLastFix().getLatitude();
     	double lon = this.my_location_overlay.getLastFix().getLongitude();
-    	
-    	// TODO
-    	Intent result = new Intent();
-    	result.putExtra(EXTRA_LATITUDE, lat);
-    	result.putExtra(EXTRA_LONGITUDE, lon);
-    	setResult(Activity.RESULT_OK, result);
-    	finish();
+
+    	insertAndReturnLocation(lat, lon, null);
     }
     
 	// ========================================================

@@ -38,8 +38,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
+import com.kostmo.commute.activity.ListActivityLocations;
+import com.kostmo.commute.activity.RouteConfigurator.GeoAddress;
 import com.kostmo.commute.activity.RouteConfigurator.LatLonDouble;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
+import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.task.AddressReverseLookupTask;
 
 
@@ -52,7 +55,7 @@ public class LocationConfiguratorLayout extends LinearLayout {
     public LatLonDouble latlon = new LatLonDouble();
     String address;
     String wireless_ssid;
-    
+    long location_id = ListActivityLocations.INVALID_LOCATION_ID;
     
     
     AddressReverseLookupTaskExtended address_lookup_task;
@@ -65,6 +68,24 @@ public class LocationConfiguratorLayout extends LinearLayout {
     public EditText edittext_max_trip_minutes;
     
     public Date outbound_window_start_time = new Date();
+    
+
+	DatabaseCommutes database;
+	
+    
+	// ========================================================
+    public long getLocationId() {
+    	return this.location_id;
+    }
+
+	// ========================================================
+    public void setLocation(long location_id) {
+    	this.location_id = location_id;
+    	
+    	GeoAddress place = this.database.getLocationInfo(this.location_id);
+    	setWifiNetwork(place.ssid);
+		setAddress(place.address);
+    }
     
 	// ========================================================
     public LocationConfiguratorLayout(Context context, AttributeSet attrs) {
@@ -87,7 +108,9 @@ public class LocationConfiguratorLayout extends LinearLayout {
     void init(final Context context, String title) {
     	
         this.context = context;
-
+    	this.database = new DatabaseCommutes(context);
+    	
+    	
         LayoutInflater factory = LayoutInflater.from(context);
         View root = factory.inflate(R.layout.location_configurator, this);
         

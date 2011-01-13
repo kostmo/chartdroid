@@ -14,7 +14,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.kostmo.commute.CalendarPickerConstants;
-import com.kostmo.commute.activity.RouteConfigurator.AddressPair;
+import com.kostmo.commute.activity.RouteConfigurator.LocationIdPair;
 import com.kostmo.commute.activity.RouteConfigurator.GeoAddress;
 import com.kostmo.commute.activity.RouteConfigurator.LatLonDouble;
 import com.kostmo.tools.DurationStrings.TimescaleTier;
@@ -25,7 +25,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 13;
+    static final int DATABASE_VERSION = 14;
 
     static final int INTEGER_FALSE = 0;
     static final int INTEGER_TRUE = 1;
@@ -38,11 +38,15 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public static final String TABLE_WIFI_EVENTS = "TABLE_WIFI_EVENTS";
     
 
-    public static final String KEY_DESTINATION_ID = "KEY_DESTINATION_ID";
+    public static final String KEY_LOCATION_ID = "KEY_LOCATION_ID";
     public static final String KEY_STREET_ADDRESS = "KEY_STREET_ADDRESS";
     public static final String KEY_LATITUDE = "KEY_LATITUDE";
     public static final String KEY_LONGITUDE = "KEY_LONGITUDE";
     public static final String KEY_WIRELESS_SSID = "KEY_WIRELESS_SSID";
+    
+    public static final String KEY_LOCATION_USE_COUNT = "KEY_LOCATION_USE_COUNT";
+    
+    
     
     public static final String KEY_START_DESTINATION_ID = "KEY_START_DESTINATION_ID";
     public static final String KEY_END_DESTINATION_ID = "KEY_END_DESTINATION_ID";
@@ -53,7 +57,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public static final String KEY_TRIP_START_WINDOW_WIDTH_MS = "KEY_TRIP_START_WINDOW_WIDTH_MS";
 
     public static final String KEY_TRIP_ID = "KEY_TRIP_ID";
-    public static final String KEY_DESTINATION_PAIR_ID = "KEY_DESTINATION_PAIR_ID";
+    public static final String ROUTE_ID = "ROUTE_ID";
     public static final String KEY_START_TIME = "KEY_START_TIME";	// Timestamp string
     public static final String KEY_END_TIME = "KEY_END_TIME";	// ditto
     public static final String KEY_IS_RETURN_TRIP = "KEY_IS_RETURN_TRIP";
@@ -89,6 +93,9 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     public static final String VIEW_AGGREGATED_TRIPS = "VIEW_AGGREGATED_TRIPS";
     public static final String VIEW_AGGREGATED_LABELED_TRIPS = "VIEW_AGGREGATED_LABELED_TRIPS";
     
+    public static final String VIEW_AGGREGATE_LOCATIONS = "VIEW_AGGREGATE_LOCATIONS";
+    
+    
 
 
     final static String SQL_CREATE_WIFI_EVENTS_TABLE =
@@ -100,7 +107,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
     final static String SQL_CREATE_LOCATIONS_TABLE =
         "create table " + TABLE_LOCATIONS + " ("
-        + KEY_DESTINATION_ID + " integer primary key autoincrement, "
+        + KEY_LOCATION_ID + " integer primary key autoincrement, "
         + KEY_WIRELESS_SSID + " text, "
         + KEY_STREET_ADDRESS + " text, "
         + KEY_LATITUDE + " float, "
@@ -120,7 +127,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     final static String SQL_CREATE_TRIPS_TABLE =
         "create table " + TABLE_TRIPS + " ("
         + KEY_TRIP_ID + " integer primary key autoincrement, "
-        + KEY_DESTINATION_PAIR_ID + " integer, "
+        + ROUTE_ID + " integer, "
         + KEY_IS_RETURN_TRIP + " integer default " + INTEGER_FALSE + ", "	// A boolean
         + KEY_START_TIME + " TIMESTAMP NULL default CURRENT_TIMESTAMP, "
         + KEY_END_TIME + " TIMESTAMP);";
@@ -152,8 +159,11 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 		+ VIEW_TRIP_TIMES_TRUNCATED_DAY + " AS "
 		+ ViewQueries.buildTripTimesTruncatedDayQuery();
 	
+	final static String SQL_CREATE_AGGREGATE_LOCATIONS_VIEW = "create view "
+		+ VIEW_AGGREGATE_LOCATIONS + " AS "
+		+ ViewQueries.buildAggregateLocationsQuery();
 	
-
+	
 	
 	
     
@@ -183,6 +193,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	SQL_CREATE_AGGREGATED_TRIPS_VIEW,
     	SQL_CREATE_AGGREGATED_LABELED_TRIPS_VIEW,
     	SQL_CREATE_TRIP_TIMES_TRUNCATED_DAY_VIEW,
+    	SQL_CREATE_AGGREGATE_LOCATIONS_VIEW,
     };
 
     // ============================================================
@@ -213,7 +224,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     		return query_builder.buildQuery(
     				new String[] {
     						KEY_TRIP_ID,
-    						KEY_DESTINATION_PAIR_ID,
+    						ROUTE_ID,
     						KEY_IS_RETURN_TRIP,
     						KEY_START_TIME,
     						KEY_END_TIME, 
@@ -231,15 +242,15 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     		
     		return query_builder.buildQuery(
     				new String[] {
-    						KEY_DESTINATION_PAIR_ID,
-    						"COUNT(" + KEY_DESTINATION_PAIR_ID + ") AS " + KEY_TOTAL_TRIP_COUNT,
+    						ROUTE_ID,
+    						"COUNT(" + ROUTE_ID + ") AS " + KEY_TOTAL_TRIP_COUNT,
     						"SUM(" + KEY_IS_RETURN_TRIP + ") AS " + KEY_RETURN_TRIP_COUNT,
     						"MIN(" + KEY_START_TIME + ") AS " + KEY_MIN_START_TIME,
     						"MAX(" + KEY_START_TIME + ") AS " + KEY_MAX_START_TIME,
     						"MIN(" + KEY_END_TIME + ") AS " + KEY_MIN_END_TIME,
     						"MAX(" + KEY_END_TIME + ") AS " + KEY_MAX_END_TIME,
     						"SUM(" + KEY_TRIP_DURATION_MS + ") AS " + KEY_CUMULATIVE_TRIP_DURATION_MS},
-    				null, null, KEY_DESTINATION_PAIR_ID, null, null, null);
+    				null, null, ROUTE_ID, null, null, null);
     	}
     	
         // ============================================================
@@ -248,12 +259,12 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
 			query_builder.setTables(TABLE_ROUTES + " AS A2"
 					+ " LEFT JOIN " + VIEW_AGGREGATED_TRIPS + " AS A1"
-					+ " ON (A1." + KEY_DESTINATION_PAIR_ID + " = " + "A2." + "ROWID"
+					+ " ON (A1." + ROUTE_ID + " = " + "A2." + "ROWID"
 					+ ")");
     		
     		return query_builder.buildQuery(
     				new String[] {
-    						"A2." + "ROWID" + " AS " + KEY_DESTINATION_PAIR_ID,
+    						"A2." + "ROWID" + " AS " + ROUTE_ID,
     						"A2." + KEY_TITLE + " AS " + KEY_TITLE,
 
     						"A1." + KEY_TOTAL_TRIP_COUNT + " AS " + KEY_TOTAL_TRIP_COUNT,
@@ -265,6 +276,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     				null, null, null, null, null, null);
     	}
 
+    	
+    	
         // ============================================================
     	static String buildTripTimesTruncatedDayQuery() {
 
@@ -278,9 +291,62 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     				"CAST((CAST(" + KEY_START_TIME + "*1000/" + TimescaleTier.DAYS.millis + " AS INTEGER)*" + TimescaleTier.DAYS.millis + ") AS INTEGER) " + CalendarPickerConstants.CalendarEventPicker.ContentProviderColumns.TIMESTAMP},
     				null, null, null, null, null, null);
     	}
-        	
+    	
+    	
+        // ============================================================
+    	static String buildAggregateLocationsQuery() {
+
+    		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
+			query_builder.setTables(TABLE_LOCATIONS + " AS A1"
+					+ " LEFT JOIN " + TABLE_ROUTES + " AS A2"
+					+ " ON (A1." + KEY_LOCATION_ID + " = " + "A2." + "KEY_START_DESTINATION_ID"
+					+ " OR A1." + KEY_LOCATION_ID + " = " + "A2." + "KEY_END_DESTINATION_ID" + ")");
+			
+    		return query_builder.buildQuery(
+    				new String[] {
+    				KEY_LOCATION_ID + " AS " + BaseColumns._ID,
+    				KEY_WIRELESS_SSID,
+    				KEY_STREET_ADDRESS,
+    				KEY_LATITUDE,
+    				KEY_LONGITUDE,
+    				"COUNT(" + "A2.ROWID" + ") AS " + KEY_LOCATION_USE_COUNT},
+    				null, null,
+    				KEY_LOCATION_ID,
+    				null, null, null);
+    	}        	
     }
     
+    // ============================================================
+    public int deleteRoute(long route_id) {
+
+    	SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+
+		int total_deletions = 0;
+    	Cursor cursor = db.query(TABLE_TRIPS,
+    			new String[] {
+    				KEY_TRIP_ID},
+				ROUTE_ID + "=?",
+				new String[] {Long.toString(route_id)},
+				null, null, null);
+    	
+    	while (cursor.moveToNext())
+    		total_deletions += db.delete(TABLE_TRIP_BREADCRUMBS, KEY_TRIP_ID + "=?", new String[] {Long.toString(cursor.getLong(0))});
+	    cursor.close();
+		
+	    total_deletions += db.delete(TABLE_TRIPS, KEY_TRIP_ID + "=?", new String[] {Long.toString(route_id)});
+	    total_deletions += db.delete(TABLE_ROUTES, "ROWID=?", new String[] {Long.toString(route_id)});
+		
+	    try {
+	    	db.setTransactionSuccessful();
+	    } finally {
+	    	db.endTransaction();
+	    }
+	    db.close();
+	    
+	    return total_deletions;
+    }
+
     // ============================================================
     /** Kind of a pointless function */
     public int deleteWithCount() {
@@ -302,10 +368,47 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    return total_deletions;
     }
 
+
     // ============================================================
-    public AddressPair getAddressPair(long pair_id) {
+    public GeoAddress getLocationInfo(long location_id) {
     	
-    	AddressPair pair = null;
+
+    	SQLiteDatabase db = getReadableDatabase();
+    	
+    	GeoAddress place = null;
+    	
+    	Cursor cursor = db.query(TABLE_LOCATIONS,
+    			new String[] {
+	    			KEY_STREET_ADDRESS,
+	    			KEY_LATITUDE,
+	    			KEY_LONGITUDE,
+	    			KEY_WIRELESS_SSID
+	    		},
+    			"KEY_DESTINATION_ID=?",
+    			new String[] {Long.toString(location_id)},
+    			null, null, null);
+    	
+    	if (cursor.moveToFirst()) {
+	    	
+	    	place = new GeoAddress( cursor.getString(0) );
+	    	
+	    	place.latlon = new LatLonDouble();
+	    	place.latlon.lat = cursor.getDouble(1);
+	    	place.latlon.lon = cursor.getDouble(2);
+	    	
+	    	place.ssid = cursor.getString(3);
+    	}
+	    cursor.close();
+	       
+	    db.close();
+	    return place;
+    }
+    
+    
+    // ============================================================
+    public LocationIdPair getLocationPair(long pair_id) {
+    	
+    	LocationIdPair pair = null;
     	
     	Log.d(TAG, "About to get address pair with ID: " + pair_id);
     	
@@ -318,65 +421,28 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     			"ROWID=?", new String[] {Long.toString(pair_id)}, null, null, null);
     	
     	if (cursor.moveToFirst()) {
-
-		    long[] place_ids = new long[2];
-		    for (int i=0; i<2; i++)
-			    place_ids[i] = cursor.getLong(i);
-		    
-		    
-	    	String title = cursor.getString(2);
-		    cursor.close();
-		    
-		    
-		    GeoAddress[] places = new GeoAddress[2];
-		    for (int i=0; i<place_ids.length; i++) {
-		    	
-		    	Cursor cursor2 = db.query(TABLE_LOCATIONS,
-		    			new String[] {
-			    			KEY_STREET_ADDRESS,
-			    			KEY_LATITUDE,
-			    			KEY_LONGITUDE,
-			    			KEY_WIRELESS_SSID
-			    		},
-		    			"KEY_DESTINATION_ID=?",
-		    			new String[] {Long.toString(place_ids[i])},
-		    			null, null, null);
-		    	cursor2.moveToFirst();
-		    	
-		    	places[i] = new GeoAddress( cursor2.getString(0) );
-		    	
-		    	places[i].latlon = new LatLonDouble();
-		    	places[i].latlon.lat = cursor2.getDouble(1);
-		    	places[i].latlon.lon = cursor2.getDouble(2);
-		    	
-		    	places[i].ssid = cursor2.getString(3);
-		    	
-			    cursor2.close();
-			    
-			   
-		    }
-		    
-		    pair = new AddressPair(places[0], places[1]);
-		    pair.title = title;
+		    pair = new LocationIdPair(cursor.getLong(0), cursor.getLong(1));
+		    pair.title = cursor.getString(2);;
     	}
 
+	    cursor.close();
 	    db.close();
 	    
 	    return pair;
     }
-
     
     // ============================================================
     public Cursor getLocations() {
 
     	SQLiteDatabase db = getReadableDatabase();
-    	Cursor cursor = db.query(TABLE_LOCATIONS,
+    	Cursor cursor = db.query(VIEW_AGGREGATE_LOCATIONS,
     			new String[] {
-    			KEY_DESTINATION_ID + " AS " + BaseColumns._ID,
+    			KEY_LOCATION_ID + " AS " + BaseColumns._ID,
     	        KEY_WIRELESS_SSID,
     	        KEY_STREET_ADDRESS,
     	        KEY_LATITUDE,
-    	        KEY_LONGITUDE},
+    	        KEY_LONGITUDE,
+    	        KEY_LOCATION_USE_COUNT},
 			null, null, null, null, null);
 	
     	
@@ -403,7 +469,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 				KEY_START_TIME,
 				KEY_END_TIME, 
 				KEY_TRIP_DURATION_MS},
-			KEY_DESTINATION_PAIR_ID + "=?",
+			ROUTE_ID + "=?",
 			new String[] {Long.toString(route_id)},
 			null, null, null);
 	
@@ -425,7 +491,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	SQLiteDatabase db = getReadableDatabase();
     	Cursor cursor = db.query(VIEW_AGGREGATED_LABELED_TRIPS,
     			new String[] {
-    			KEY_DESTINATION_PAIR_ID + " AS " + BaseColumns._ID,
+    			ROUTE_ID + " AS " + BaseColumns._ID,
     			KEY_TITLE,
 
 				KEY_TOTAL_TRIP_COUNT,
@@ -474,7 +540,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	SQLiteDatabase db = getWritableDatabase();
     	ContentValues cv = new ContentValues();
     	
-    	cv.put(KEY_DESTINATION_PAIR_ID, pair_id);
+    	cv.put(ROUTE_ID, pair_id);
     	long trip_id = db.insert(TABLE_TRIPS, null, cv);
 	    db.close();
 	    
@@ -488,13 +554,30 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	ContentValues cv = new ContentValues();
     	
     	cv.put(KEY_END_TIME, new Date().toGMTString());
-    	int update_count = db.update(TABLE_TRIPS, cv, KEY_DESTINATION_PAIR_ID + "=?", new String[] {Long.toString(trip_id)});
+    	int update_count = db.update(TABLE_TRIPS, cv, ROUTE_ID + "=?", new String[] {Long.toString(trip_id)});
 	    db.close();
 	    
 	    return update_count;
     }
     
     
+    
+    
+
+    
+    // ============================================================
+    public int updateDestinationWireless(long location_id, String ssid) {
+    	
+    	SQLiteDatabase db = getWritableDatabase();
+    	
+    	ContentValues cv = new ContentValues();
+    	cv.put(KEY_WIRELESS_SSID, ssid);
+    	int update_count = db.update(TABLE_LOCATIONS, cv, KEY_LOCATION_ID + "=?", new String[] {Long.toString(location_id)});
+
+	    db.close();
+	    
+	    return update_count;
+    }
     
     // ============================================================
     public long storeDestination(double lat, double lon, String address, String ssid) {
@@ -504,8 +587,12 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	
     	cv.put(KEY_LATITUDE, lat);
     	cv.put(KEY_LONGITUDE, lon);
-    	cv.put(KEY_STREET_ADDRESS, address);
-    	cv.put(KEY_WIRELESS_SSID, ssid);
+
+    	if (address != null)
+        	cv.put(KEY_STREET_ADDRESS, address);
+
+    	if (ssid != null)
+    		cv.put(KEY_WIRELESS_SSID, ssid);
 
     	long destination_id = db.insert(TABLE_LOCATIONS, null, cv);
 

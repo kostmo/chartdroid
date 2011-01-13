@@ -26,6 +26,12 @@
           android:alphabeticShortcut="l"
           android:icon="@android:drawable/ic_menu_edit" />
 
+    <item android:id="@+id/menu_delete_route"
+          android:title="Delete route"
+          android:alphabeticShortcut="d"
+          android:icon="@android:drawable/ic_menu_edit" />
+
+
     <item android:id="@+id/menu_plot_times"
           android:title="Plot"
           android:alphabeticShortcut="p"

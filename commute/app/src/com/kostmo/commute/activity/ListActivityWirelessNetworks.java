@@ -51,6 +51,7 @@ public class ListActivityWirelessNetworks extends ListActivity {
     	String ssid = (String) l.getAdapter().getItem(position);
 		Intent result = new Intent();
 		result.putExtra(EXTRA_WIFI_SSID, ssid);
+    	result.putExtra(RouteConfigurator.EXTRA_IS_ORIGIN, getIntent().getBooleanExtra(RouteConfigurator.EXTRA_IS_ORIGIN, true));
 		setResult(Activity.RESULT_OK, result);
 		finish();
     }

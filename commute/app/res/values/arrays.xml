@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+
+    <string-array name="entries_location_source_choices">
+        <item>GPS</item>
+        <item>Network</item>
+    </string-array>
+
+    <string-array name="entries_location_source_values">
+        <item>@string/location_provider_key_gps</item>
+        <item>@string/location_provider_key_network</item>
+    </string-array>
+    
+</resources>

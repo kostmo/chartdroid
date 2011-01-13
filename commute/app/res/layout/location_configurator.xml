@@ -16,8 +16,7 @@
 	    android:layout_height="wrap_content"
 	   	android:gravity="center"
 	    android:orientation="vertical">
-	   
-	 
+
 	   	<TextView
 		     android:text="Address"  
 		     android:layout_width="fill_parent"  
