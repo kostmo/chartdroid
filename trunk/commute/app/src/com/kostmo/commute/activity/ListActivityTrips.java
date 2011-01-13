@@ -25,7 +25,10 @@ public class ListActivityTrips extends ListActivity {
 
     	this.database = new DatabaseCommutes(this);
     	
-    	Cursor cursor = this.database.getLocations();
+
+    	long route_id = getIntent().getLongExtra(RouteConfigurator.EXTRA_ROUTE_ID, RouteConfigurator.INVALID_ROUTE_ID);
+	    	
+    	Cursor cursor = this.database.getTrips(route_id);
     	
     	SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor,
     			new String[] {DatabaseCommutes.KEY_START_TIME, DatabaseCommutes.KEY_TRIP_DURATION_MS},

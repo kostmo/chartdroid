@@ -39,7 +39,7 @@ import com.kostmo.commute.provider.DatabaseCommutes;
 import com.kostmo.commute.provider.EventContentProvider;
 import com.kostmo.commute.service.RouteTrackerService;
 
-public class Main extends ListActivity implements Disablable {
+public class ListActivityRoutes extends ListActivity implements Disablable {
 
 
     public static final String TAG = Market.TAG;
@@ -71,6 +71,7 @@ public class Main extends ListActivity implements Disablable {
         this.settings = PreferenceManager.getDefaultSharedPreferences(this);
         
         
+        
         this.service_connection_status = (TextView) findViewById(R.id.service_connection_status);
         this.button_cancel_tracker = (Button) findViewById(R.id.button_cancel_tracker);
         this.button_cancel_tracker.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +80,9 @@ public class Main extends ListActivity implements Disablable {
 			public void onClick(View v) {
 
 
-				if (Main.this.record_fetcher_service != null) {
+				if (ListActivityRoutes.this.record_fetcher_service != null) {
 					// We check for nullity again, just in case the service died while the menu was idly showing.
-					Main.this.record_fetcher_service.cancelAllProximityAlerts();
+					ListActivityRoutes.this.record_fetcher_service.cancelAllProximityAlerts();
 				}
 			}
         });
@@ -111,7 +112,7 @@ public class Main extends ListActivity implements Disablable {
 	void bindServiceOnly() {
 		
 		this.service_connection_status.setText(R.string.status_connecting);
-		Main.this.button_cancel_tracker.setEnabled(false);
+		ListActivityRoutes.this.button_cancel_tracker.setEnabled(false);
 		
 		Intent i = new Intent(this, RouteTrackerService.class);
 		bindService(i, this.mConnection, Context.BIND_AUTO_CREATE | Context.BIND_DEBUG_UNBIND );
@@ -313,6 +314,11 @@ public class Main extends ListActivity implements Disablable {
 	    	startActivity(intent);
 			break;
 		}
+		case R.id.menu_delete_route:
+		{
+			this.database.deleteRoute(info.id);
+			break;
+		}
 		case R.id.menu_start_logging_outbound:
 		{
 			startTripInService(info.id, false);
@@ -364,9 +370,6 @@ public class Main extends ListActivity implements Disablable {
         return true;
     }
 
-    
-    
-    
     // ========================================================================	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -433,8 +436,6 @@ public class Main extends ListActivity implements Disablable {
   	   	}
     }
     
-    
-    
 
     RouteTrackerService record_fetcher_service;
 	// ========================================================================
@@ -462,26 +463,24 @@ public class Main extends ListActivity implements Disablable {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 
 			Log.d(TAG, "The service has connected.");
-			Main.this.service_connection_status.setText(R.string.status_connected);
-			Main.this.button_cancel_tracker.setEnabled(true);
+			ListActivityRoutes.this.service_connection_status.setText(R.string.status_connected);
+			ListActivityRoutes.this.button_cancel_tracker.setEnabled(true);
 			
 			// This is called when the connection with the service has been
 			// established, giving us the service object we can use to
 			// interact with the service.  Because we have bound to a explicit
 			// service that we know is running in our own process, we can
 			// cast its IBinder to a concrete class and directly access it.
-			Main.this.record_fetcher_service = ((RouteTrackerService.LocalBinder) service).getService();
-			Main.this.record_fetcher_service.setDisablableHost(Main.this);
+			ListActivityRoutes.this.record_fetcher_service = ((RouteTrackerService.LocalBinder) service).getService();
+			ListActivityRoutes.this.record_fetcher_service.setDisablableHost(ListActivityRoutes.this);
 
 			
-			if (Main.this.starting_service) {
-				Main.this.starting_service = false;
+			if (ListActivityRoutes.this.starting_service) {
+				ListActivityRoutes.this.starting_service = false;
 
-
-			   	
 			} else {
 				
-				if (Main.this.record_fetcher_service != null && Main.this.record_fetcher_service.isInProgress()) {
+				if (ListActivityRoutes.this.record_fetcher_service != null && ListActivityRoutes.this.record_fetcher_service.isInProgress()) {
 					disable();
 				}
 			}
@@ -492,7 +491,7 @@ public class Main extends ListActivity implements Disablable {
 			// unexpectedly disconnected -- that is, its process crashed.
 			// Because it is running in our same process, we should never
 			// see this happen.
-			Main.this.record_fetcher_service = null;
+			ListActivityRoutes.this.record_fetcher_service = null;
 		}
 	};
 

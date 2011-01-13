@@ -1,14 +1,10 @@
 package com.kostmo.commute.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,9 +32,12 @@ public class RouteConfigurator extends TabActivity {
 	
 
 	private static final int REQUEST_CODE_WIFI_SELECTION = 1;
+	private static final int REQUEST_CODE_PREVIOUS_LOCATION_SELECTION = 2;
+	private static final int REQUEST_CODE_MAP_LOCATION_SELECTION = 3;
 	
 	
 	public static final String EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID";
+	public static final String EXTRA_IS_ORIGIN = "EXTRA_IS_ORIGIN";
 	public static final long INVALID_ROUTE_ID = -1;
 	
 	static int[] COMPOUND_SELECTORS = {R.id.compound_selector_origin, R.id.compound_selector_destination};
@@ -57,8 +56,6 @@ public class RouteConfigurator extends TabActivity {
 
         
         TabHost tabHost = getTabHost();
-
-        
         tabHost.addTab(tabHost.newTabSpec("tab1")
                 .setIndicator("Origin", getResources().getDrawable(R.drawable.ic_menu_home))
                 .setContent(R.id.compound_selector_origin));
@@ -67,40 +64,31 @@ public class RouteConfigurator extends TabActivity {
                 .setContent(R.id.compound_selector_destination));
 
     	this.database = new DatabaseCommutes(this);
-
         this.titleEditText = (EditText) findViewById(R.id.field_pair_title);
-    	
-    	
         boolean is_editing = Intent.ACTION_EDIT.equals(getIntent().getAction());
-        
-
         
     	for (int i=0; i<COMPOUND_SELECTORS.length; i++) {
     		
-    		final int selector_id = COMPOUND_SELECTORS[i];
-    		
-        	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(selector_id);
-        	this.selector_layouts[i] = compound_selector;
+    		final boolean is_origin = i == 0;
+        	this.selector_layouts[i] = (LocationConfiguratorLayout) findViewById(COMPOUND_SELECTORS[i]);
         	
         	if (is_editing) {
-        		compound_selector.mPickButton.setEnabled(false);
+        		this.selector_layouts[i].mPickButton.setEnabled(false);
         	} else {
-	        	compound_selector.mPickButton.setOnClickListener(new OnClickListener() {
+        		this.selector_layouts[i].mPickButton.setOnClickListener(new OnClickListener() {
 	    			@Override
 	    			public void onClick(View v) {
-	    				pickPreviousLocation(selector_id);
+	    				pickPreviousLocation(is_origin);
 	    			}
 	        	});	
         	}
         	
         	
-        	compound_selector.mWifiButton.setOnClickListener(new OnClickListener() {
+        	this.selector_layouts[i].mWifiButton.setOnClickListener(new OnClickListener() {
     			@Override
     			public void onClick(View v) {
-    				global_selector_id = selector_id;
-
-
     		    	Intent i = new Intent(Intent.ACTION_PICK);
+    		    	i.putExtra(EXTRA_IS_ORIGIN, is_origin);
     		    	i.setClass(RouteConfigurator.this, ListActivityWirelessNetworks.class);
     		    	startActivityForResult(i, REQUEST_CODE_WIFI_SELECTION);	
     			}
@@ -127,10 +115,11 @@ public class RouteConfigurator extends TabActivity {
 				int i=0;
 		    	for (int selector_id : COMPOUND_SELECTORS) {
 		        	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(selector_id);
-		        	destination_ids[i] = database.storeDestination(
-		        			compound_selector.latlon.lat,
-		        			compound_selector.latlon.lon,
-		        			compound_selector.getAddress(),
+		        	
+		        	
+		        	destination_ids[i] = compound_selector.getLocationId();
+		        	database.updateDestinationWireless(
+		        			destination_ids[i],
 		        			compound_selector.getWifiNetwork());
 		        	i++;
 		    	}
@@ -149,11 +138,15 @@ public class RouteConfigurator extends TabActivity {
     	});
     	
     	
-    	AddressPair pair = null;
+    	LocationIdPair pair = null;
 		final StateObject state = (StateObject) getLastNonConfigurationInstance();
 		if (state != null) {
 			this.global_selector_id = state.selector_id;
-			pair = state.address_pair;
+			
+			
+			
+			
+			pair = state.location_pair;
 
 	    	for (int i=0; i<this.selector_layouts.length; i++) {
 	    		AddressReverseLookupTaskExtended task = state.reverse_geocode_tasks[i];
@@ -164,10 +157,10 @@ public class RouteConfigurator extends TabActivity {
 			
 			long pair_id = getIntent().getLongExtra(EXTRA_ROUTE_ID, -1);
 			
-			pair = this.database.getAddressPair(pair_id);
+			pair = this.database.getLocationPair(pair_id);
 			if (is_editing) {
 				Log.d(TAG, "Editing route with pair ID: " + pair_id);
-				this.titleEditText.setText(pair.title);
+//				this.titleEditText.setText(pair.title);	// THIS SHOULD BE FROZEN TEXT; DON'T NEED TO SAVE
 			} else {
 
 				Log.d(TAG, "Duplicating route with pair ID: " + pair_id);
@@ -175,11 +168,10 @@ public class RouteConfigurator extends TabActivity {
 		}
 		
 		if (pair != null) {
-			selector_layouts[0].setWifiNetwork(pair.origin.ssid);
-			selector_layouts[0].setAddress(pair.origin.address);
-
-			selector_layouts[1].setWifiNetwork(pair.destination.ssid);
-			selector_layouts[1].setAddress(pair.destination.address);
+			
+			
+			selector_layouts[0].setLocation(pair.origin);
+			selector_layouts[1].setLocation(pair.destination);
 		}
     }
 
@@ -199,12 +191,13 @@ public class RouteConfigurator extends TabActivity {
     }
     
 	// ========================================================================
-    public static class AddressPair {
+    public static class LocationIdPair {
     	
-		public GeoAddress origin, destination;
+		public long origin, destination;
 		public String title;
 		
-		public AddressPair(GeoAddress origin, GeoAddress destination) {
+		
+		public LocationIdPair(long origin, long destination) {
 			this.origin = origin;
 			this.destination = destination;
 		}
@@ -213,7 +206,7 @@ public class RouteConfigurator extends TabActivity {
 	// ========================================================================
 	class StateObject {
 		int selector_id;
-		AddressPair address_pair;
+		LocationIdPair location_pair;
     	AddressReverseLookupTaskExtended[] reverse_geocode_tasks = new AddressReverseLookupTaskExtended[2];
 	}
 	
@@ -224,11 +217,10 @@ public class RouteConfigurator extends TabActivity {
 		StateObject state = new StateObject();
 		state.selector_id = this.global_selector_id;
 		
-    	LocationConfiguratorLayout compound_selector_origin = (LocationConfiguratorLayout) findViewById(R.id.compound_selector_origin);
-    	LocationConfiguratorLayout compound_selector_destination = (LocationConfiguratorLayout) findViewById(R.id.compound_selector_destination);
-    	state.address_pair = new AddressPair(
-    			new GeoAddress(compound_selector_origin.getAddress()),
-    			new GeoAddress(compound_selector_destination.getAddress()));
+		
+    	state.location_pair = new LocationIdPair(
+    			this.selector_layouts[0].getLocationId(),
+    			this.selector_layouts[1].getLocationId());
     	
     	for (int i=0; i<this.selector_layouts.length; i++) {
     		state.reverse_geocode_tasks[i] = this.selector_layouts[i].getAddressLookupTask();
@@ -237,11 +229,11 @@ public class RouteConfigurator extends TabActivity {
 		return state;
 	}
 
-
 	// ========================================================
-	void pickPreviousLocation(int request_code) {
+	void pickPreviousLocation(boolean is_origin) {
     	Intent intent = new Intent(this, ListActivityLocations.class);
-    	startActivityForResult(intent, request_code);
+    	intent.putExtra(EXTRA_IS_ORIGIN, is_origin);
+    	startActivityForResult(intent, REQUEST_CODE_PREVIOUS_LOCATION_SELECTION);
 	}
 
 	// ========================================================
@@ -287,43 +279,72 @@ public class RouteConfigurator extends TabActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     
     // ========================================================================
     /** The Map activity will abstract away all address/location selection to return simply a database record id.
      * The request_code indicates which tab (origin/destination) was targeted. */
-    void locationPicked(Intent data, int request_code) {
+    void locationPicked(long location_id, boolean is_origin) {
     	
     	
     }
     
+    // ========================================================================
+	void pickMapLocation(boolean is_origin) {
+
+    	Intent intent = new Intent(Intent.ACTION_PICK);
+    	intent.setClass(this, Map.class);
+    	intent.putExtra(EXTRA_IS_ORIGIN, is_origin);
+    	startActivityForResult(intent, REQUEST_CODE_MAP_LOCATION_SELECTION);
+	}
+	
     // ========================================================================
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "onActivityResult(request " + requestCode
               + ", result " + resultCode + ", data " + data + ")...");
 
-        if (resultCode != RESULT_OK) {
+        if (resultCode == ListActivityLocations.RESULT_WANTS_NEW_LOCATION) {
+        	
+   			boolean is_origin = data.getBooleanExtra(EXTRA_IS_ORIGIN, true);
+        	pickMapLocation(is_origin);
+        	
+        } else if (resultCode != RESULT_OK) {
             Log.i(TAG, "==> result " + resultCode + " from subactivity!  Ignoring...");
             Toast t = Toast.makeText(this, "Action cancelled!", Toast.LENGTH_SHORT);
             t.show();
             return;
         }
+        
+        
 
   	   	switch (requestCode) {
-   		case R.id.compound_selector_origin:
-   		case R.id.compound_selector_destination:
+   		case REQUEST_CODE_PREVIOUS_LOCATION_SELECTION:
    		{
-   			locationPicked(data, requestCode);
+
+   			locationPicked(
+   					data.getLongExtra(ListActivityLocations.EXTRA_LOCATION_ID, ListActivityLocations.INVALID_LOCATION_ID),
+   					data.getBooleanExtra(EXTRA_IS_ORIGIN, true));
+   			break;
+   		}
+   		case REQUEST_CODE_MAP_LOCATION_SELECTION:
+   		{
+
+//   			double lat = data.getDoubleExtra(Map.EXTRA_LATITUDE, 0);
+//   			double lon = data.getDoubleExtra(Map.EXTRA_LONGITUDE, 0);
+
+   			locationPicked(
+   					data.getLongExtra(ListActivityLocations.EXTRA_LOCATION_ID, ListActivityLocations.INVALID_LOCATION_ID),
+   					data.getBooleanExtra(EXTRA_IS_ORIGIN, true));
    			break;
    		}
    		case REQUEST_CODE_WIFI_SELECTION:
    		{
+   			boolean is_origin = data.getBooleanExtra(EXTRA_IS_ORIGIN, true);
+   			
    			String ssid = data.getStringExtra(ListActivityWirelessNetworks.EXTRA_WIFI_SSID);
-
-	    	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(global_selector_id);
-	    	compound_selector.setWifiNetwork(ssid);
-   			Log.d(TAG, "Selected wifi network for " + global_selector_id + ": " + ssid);
+	    	this.selector_layouts[is_origin ? 0 : 1].setWifiNetwork(ssid);
+   			Log.d(TAG, "Selected wifi network: " + ssid);
+   			
    			// TODO
    			break;
    		}

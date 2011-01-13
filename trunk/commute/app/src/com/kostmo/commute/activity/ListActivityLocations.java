@@ -1,13 +1,16 @@
 package com.kostmo.commute.activity;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
@@ -21,8 +24,8 @@ public class ListActivityLocations extends ListActivity {
 	public static final String EXTRA_LOCATION_ID = "EXTRA_LOCATION_ID";
 	public static final long INVALID_LOCATION_ID = -1;
 	
+	public static final int RESULT_WANTS_NEW_LOCATION = Activity.RESULT_FIRST_USER;
 
-	private static final int REQUEST_CODE_MAP_LOCATION_SELECTION = 1;
 
 	DatabaseCommutes database;
 	
@@ -31,17 +34,24 @@ public class ListActivityLocations extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     	this.database = new DatabaseCommutes(this);
-    	
-    	long route_id = getIntent().getLongExtra(RouteConfigurator.EXTRA_ROUTE_ID, RouteConfigurator.INVALID_ROUTE_ID);
-	    	
-    	
-    	Cursor cursor = this.database.getTrips(route_id);
 
-    	SimpleCursorAdapter sca = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor,
-    			new String[] {DatabaseCommutes.KEY_WIRELESS_SSID, DatabaseCommutes.KEY_STREET_ADDRESS},
-    			new int[] {android.R.id.text1, android.R.id.text2});
+    	Cursor cursor = this.database.getLocations();
+    	SimpleCursorAdapter sca = new SimpleCursorAdapter(this, R.layout.list_item_location, cursor,
+    			new String[] {
+    				DatabaseCommutes.KEY_WIRELESS_SSID,
+    				DatabaseCommutes.KEY_STREET_ADDRESS,
+    				DatabaseCommutes.KEY_LATITUDE,
+    				DatabaseCommutes.KEY_LONGITUDE,
+    				DatabaseCommutes.KEY_LOCATION_USE_COUNT
+    			},
+    			new int[] {
+    				R.id.location_wireless,
+    				R.id.location_address,
+    				R.id.gps_lat,
+    				R.id.gps_lon,
+    				R.id.location_route_usage_count});
+    	
     	this.setListAdapter( sca );
     }
 
@@ -52,21 +62,10 @@ public class ListActivityLocations extends ListActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_locations, menu);
-        
-        
+                
         return true;
     }
-    
-
-	// ========================================================
-	void pickMapLocation() {
-
-    	Intent intent = new Intent(Intent.ACTION_PICK);
-    	intent.setClass(this, Map.class);
-    	startActivityForResult(intent, REQUEST_CODE_MAP_LOCATION_SELECTION);
-	}
 	
-
     // ========================================================================
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -80,11 +79,35 @@ public class ListActivityLocations extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_new_location:
+  
+        	Intent result = new Intent();
+        	result.putExtra(RouteConfigurator.EXTRA_IS_ORIGIN, getIntent().getBooleanExtra(RouteConfigurator.EXTRA_IS_ORIGIN, true));
+        	setResult(RESULT_WANTS_NEW_LOCATION, result);
         	
-        	pickMapLocation();
+        	finish();
+
         	return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // ========================================================================
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult(request " + requestCode
+              + ", result " + resultCode + ", data " + data + ")...");
+
+        if (resultCode != RESULT_OK) {
+            Log.i(TAG, "==> result " + resultCode + " from subactivity!  Ignoring...");
+            Toast t = Toast.makeText(this, "Action cancelled!", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
+
+  	   	switch (requestCode) {
+   		default:
+	    	break;
+  	   	}
     }
 }

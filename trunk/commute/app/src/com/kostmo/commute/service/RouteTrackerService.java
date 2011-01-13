@@ -21,9 +21,10 @@ import android.widget.Toast;
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
 import com.kostmo.commute.activity.Disablable;
-import com.kostmo.commute.activity.Main;
+import com.kostmo.commute.activity.ListActivityRoutes;
 import com.kostmo.commute.activity.TripSummaryActivity;
-import com.kostmo.commute.activity.RouteConfigurator.AddressPair;
+import com.kostmo.commute.activity.RouteConfigurator.GeoAddress;
+import com.kostmo.commute.activity.RouteConfigurator.LocationIdPair;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DatabaseCommutes;
 
@@ -118,12 +119,12 @@ public class RouteTrackerService extends Service {
 	    	long expiration = this.settings.getLong(TriggerPreferences.PREFKEY_TRIP_EXPIRATION_MS, TriggerPreferences.DEFAULT_TRIP_EXPIRATION_MS);
 	    	
 	    	
-			AddressPair pair = this.database.getAddressPair(route_id);
-			
-			
+			LocationIdPair pair = this.database.getLocationPair(route_id);
+//	    	GeoAddress place1 = this.database.getLocationInfo(pair.origin);
+	    	GeoAddress place2 = this.database.getLocationInfo(pair.destination);
 
 	        PendingIntent arrival_pending_intent = makePendingIntent(trip_id);
-	    	this.location_manager.addProximityAlert(pair.destination.latlon.lat, pair.destination.latlon.lon, radius, expiration, arrival_pending_intent);
+	    	this.location_manager.addProximityAlert(place2.latlon.lat, place2.latlon.lon, radius, expiration, arrival_pending_intent);
 		}
     }
 
@@ -170,7 +171,7 @@ public class RouteTrackerService extends Service {
 		
 		notification.contentView = content_view;
 		
-		Intent notificationIntent = new Intent(this, Main.class);
+		Intent notificationIntent = new Intent(this, ListActivityRoutes.class);
 
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		notification.contentIntent = contentIntent;
