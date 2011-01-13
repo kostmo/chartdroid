@@ -25,11 +25,10 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 14;
+    static final int DATABASE_VERSION = 1;
 
     static final int INTEGER_FALSE = 0;
     static final int INTEGER_TRUE = 1;
-    
     
     public static final String TABLE_LOCATIONS = "TABLE_LOCATIONS";
     public static final String TABLE_ROUTES = "TABLE_ROUTES";
@@ -304,7 +303,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 			
     		return query_builder.buildQuery(
     				new String[] {
-    				KEY_LOCATION_ID + " AS " + BaseColumns._ID,
+    				KEY_LOCATION_ID,
     				KEY_WIRELESS_SSID,
     				KEY_STREET_ADDRESS,
     				KEY_LATITUDE,
@@ -384,18 +383,15 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    			KEY_LONGITUDE,
 	    			KEY_WIRELESS_SSID
 	    		},
-    			"KEY_DESTINATION_ID=?",
+	    		KEY_LOCATION_ID + "=?",
     			new String[] {Long.toString(location_id)},
     			null, null, null);
     	
     	if (cursor.moveToFirst()) {
-	    	
 	    	place = new GeoAddress( cursor.getString(0) );
-	    	
 	    	place.latlon = new LatLonDouble();
 	    	place.latlon.lat = cursor.getDouble(1);
 	    	place.latlon.lon = cursor.getDouble(2);
-	    	
 	    	place.ssid = cursor.getString(3);
     	}
 	    cursor.close();

@@ -101,15 +101,18 @@ public class RouteConfigurator extends TabActivity {
 			@Override
 			public void onClick(View v) {
 				
-		    	String title = titleEditText.getText().toString();
-		    	if (title.length() == 0) {
-	            	Toast.makeText(RouteConfigurator.this, "You must enter a title.", Toast.LENGTH_SHORT).show();
-	            	return;
-		    	} else if (database.hasRouteTitle(title)) {
-		    		
-		    		Toast.makeText(RouteConfigurator.this, "Title is already taken.", Toast.LENGTH_SHORT).show();
-		    		return;
-		    	}
+				String title = null;
+				if (!Intent.ACTION_EDIT.equals( getIntent().getAction() )) {
+			    	title = titleEditText.getText().toString();
+			    	if (title.length() == 0) {
+		            	Toast.makeText(RouteConfigurator.this, "You must enter a title.", Toast.LENGTH_SHORT).show();
+		            	return;
+			    	} else if (database.hasRouteTitle(title)) {
+			    		
+			    		Toast.makeText(RouteConfigurator.this, "Title is already taken.", Toast.LENGTH_SHORT).show();
+			    		return;
+			    	}
+				}
 
 				long[] destination_ids = new long[2];
 				int i=0;
@@ -118,19 +121,25 @@ public class RouteConfigurator extends TabActivity {
 		        	
 		        	
 		        	destination_ids[i] = compound_selector.getLocationId();
-		        	database.updateDestinationWireless(
+		        	int update_count = database.updateDestinationWireless(
 		        			destination_ids[i],
 		        			compound_selector.getWifiNetwork());
 		        	i++;
 		    	}
 
-		    	long pair_id = database.storePair(
-		    			destination_ids[0],
-		    			destination_ids[1],
-		    			title
-    			);
-            	Toast.makeText(RouteConfigurator.this, "Added pair with id: " + pair_id, Toast.LENGTH_SHORT).show();
 
+				if (!Intent.ACTION_EDIT.equals( getIntent().getAction() )) {
+			    	long pair_id = database.storePair(
+			    			destination_ids[0],
+			    			destination_ids[1],
+			    			title
+	    			);
+	            	Toast.makeText(RouteConfigurator.this, "Added route with id: " + pair_id, Toast.LENGTH_SHORT).show();
+				} else {
+
+	            	Toast.makeText(RouteConfigurator.this, "Saved route.", Toast.LENGTH_SHORT).show();
+				}
+				
 				Intent result = new Intent();
 				setResult(Activity.RESULT_OK, result);
 				finish();
@@ -160,7 +169,7 @@ public class RouteConfigurator extends TabActivity {
 			pair = this.database.getLocationPair(pair_id);
 			if (is_editing) {
 				Log.d(TAG, "Editing route with pair ID: " + pair_id);
-//				this.titleEditText.setText(pair.title);	// THIS SHOULD BE FROZEN TEXT; DON'T NEED TO SAVE
+				this.titleEditText.setText(pair.title);	// THIS SHOULD BE FROZEN TEXT; DON'T NEED TO SAVE
 			} else {
 
 				Log.d(TAG, "Duplicating route with pair ID: " + pair_id);
@@ -284,7 +293,13 @@ public class RouteConfigurator extends TabActivity {
     /** The Map activity will abstract away all address/location selection to return simply a database record id.
      * The request_code indicates which tab (origin/destination) was targeted. */
     void locationPicked(long location_id, boolean is_origin) {
-    	
+
+    	if (location_id != ListActivityLocations.INVALID_LOCATION_ID) {
+    		this.selector_layouts[is_origin ? 0 : 1].setLocation(location_id);
+
+    	} else {
+    		Log.e(TAG, "Got an invalid location.");
+    	}
     	
     }
     

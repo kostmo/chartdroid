@@ -250,8 +250,14 @@ public class Map extends MapActivity {
   	   	switch (requestCode) {
    		case REQUEST_CODE_CONTACT_LOCATION_SELECTION:
    		{
-   			contactLocationPicked(data);
+   			String address = contactLocationPicked(data);
 
+
+//   	    	double lat = this.my_location_overlay.getLastFix().getLatitude();
+//   	    	double lon = this.my_location_overlay.getLastFix().getLongitude();
+
+   	    	insertAndReturnLocation(0, 0, address);
+   			
    			break;
    		}
    		default:
