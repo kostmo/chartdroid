@@ -62,7 +62,7 @@ public class LocationConfiguratorLayout extends LinearLayout {
     
     ProgressBar progress_bar_gps;
 
-    private TextView mAddressView, mWifiView, departure_window_view;
+    private TextView mAddressView, mWifiView, departure_window_view, gps_lat, gps_lon;
     public Button mMapButton, mPickButton, mWifiButton, mDepartureWindowButton;
     public CheckBox checkbox_wireless_trigger;
     public EditText edittext_max_trip_minutes;
@@ -83,6 +83,11 @@ public class LocationConfiguratorLayout extends LinearLayout {
     	this.location_id = location_id;
     	
     	GeoAddress place = this.database.getLocationInfo(this.location_id);
+
+    	this.gps_lat.setText( Double.toString(place.latlon.lat) );
+    	this.gps_lon.setText( Double.toString(place.latlon.lon) );
+    	
+    	
     	setWifiNetwork(place.ssid);
 		setAddress(place.address);
     }
@@ -114,7 +119,10 @@ public class LocationConfiguratorLayout extends LinearLayout {
         LayoutInflater factory = LayoutInflater.from(context);
         View root = factory.inflate(R.layout.location_configurator, this);
         
-        
+
+        this.gps_lat = (TextView) root.findViewById(R.id.gps_lat);
+        this.gps_lon = (TextView) root.findViewById(R.id.gps_lon);
+		
         this.mPickButton = (Button) root.findViewById(R.id.button_choose_destination);
         this.mMapButton = (Button) root.findViewById(R.id.button_map_destination);
         this.mMapButton.setEnabled(false);

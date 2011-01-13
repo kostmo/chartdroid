@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
@@ -79,7 +81,7 @@ public class ListActivityLocations extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_new_location:
-  
+        {  
         	Intent result = new Intent();
         	result.putExtra(RouteConfigurator.EXTRA_IS_ORIGIN, getIntent().getBooleanExtra(RouteConfigurator.EXTRA_IS_ORIGIN, true));
         	setResult(RESULT_WANTS_NEW_LOCATION, result);
@@ -88,10 +90,21 @@ public class ListActivityLocations extends ListActivity {
 
         	return true;
         }
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
+	// ========================================================================
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	
+    	Intent result = new Intent();
+    	result.putExtra(EXTRA_LOCATION_ID, id);
+    	setResult(Activity.RESULT_OK, result);
+    	finish();
+    }
+    
     // ========================================================================
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
