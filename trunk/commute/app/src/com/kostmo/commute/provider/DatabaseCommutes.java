@@ -25,7 +25,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 
 
     static final String DATABASE_NAME = "COMMUTES";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 2;
 
     static final int INTEGER_FALSE = 0;
     static final int INTEGER_TRUE = 1;
@@ -38,6 +38,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     
 
     public static final String KEY_LOCATION_ID = "KEY_LOCATION_ID";
+    public static final String KEY_LOCATION_TITLE = "KEY_LOCATION_TITLE";
     public static final String KEY_STREET_ADDRESS = "KEY_STREET_ADDRESS";
     public static final String KEY_LATITUDE = "KEY_LATITUDE";
     public static final String KEY_LONGITUDE = "KEY_LONGITUDE";
@@ -107,6 +108,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     final static String SQL_CREATE_LOCATIONS_TABLE =
         "create table " + TABLE_LOCATIONS + " ("
         + KEY_LOCATION_ID + " integer primary key autoincrement, "
+        + KEY_LOCATION_TITLE + " text, "
         + KEY_WIRELESS_SSID + " text, "
         + KEY_STREET_ADDRESS + " text, "
         + KEY_LATITUDE + " float, "
@@ -298,12 +300,13 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     		SQLiteQueryBuilder query_builder = new SQLiteQueryBuilder();
 			query_builder.setTables(TABLE_LOCATIONS + " AS A1"
 					+ " LEFT JOIN " + TABLE_ROUTES + " AS A2"
-					+ " ON (A1." + KEY_LOCATION_ID + " = " + "A2." + "KEY_START_DESTINATION_ID"
-					+ " OR A1." + KEY_LOCATION_ID + " = " + "A2." + "KEY_END_DESTINATION_ID" + ")");
+					+ " ON (A1." + KEY_LOCATION_ID + " = " + "A2." + KEY_START_DESTINATION_ID
+					+ " OR A1." + KEY_LOCATION_ID + " = " + "A2." + KEY_END_DESTINATION_ID + ")");
 			
     		return query_builder.buildQuery(
     				new String[] {
     				KEY_LOCATION_ID,
+    				KEY_LOCATION_TITLE,
     				KEY_WIRELESS_SSID,
     				KEY_STREET_ADDRESS,
     				KEY_LATITUDE,
@@ -314,12 +317,10 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     				null, null, null);
     	}        	
     }
+
     
     // ============================================================
-    public int deleteRoute(long route_id) {
-
-    	SQLiteDatabase db = getWritableDatabase();
-		db.beginTransaction();
+    public int deleteRoute(SQLiteDatabase db, long route_id) {
 
 		int total_deletions = 0;
     	Cursor cursor = db.query(TABLE_TRIPS,
@@ -336,6 +337,17 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    total_deletions += db.delete(TABLE_TRIPS, KEY_TRIP_ID + "=?", new String[] {Long.toString(route_id)});
 	    total_deletions += db.delete(TABLE_ROUTES, "ROWID=?", new String[] {Long.toString(route_id)});
 		
+	    return total_deletions;
+    }
+    
+    // ============================================================
+    public int deleteRouteInTransaction(long route_id) {
+
+    	SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+
+		int total_deletions = deleteRoute(db, route_id);
+		
 	    try {
 	    	db.setTransactionSuccessful();
 	    } finally {
@@ -346,6 +358,38 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    return total_deletions;
     }
 
+    // ============================================================
+    /** all routes using this location will also be deleted */
+    public int deleteLocationInTransaction(long location_id) {
+
+    	SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+		
+		int total_deletions = 0;
+    	Cursor cursor = db.query(TABLE_ROUTES,
+    			new String[] {
+    				"ROWID"},
+    			KEY_START_DESTINATION_ID + " =? OR " + KEY_END_DESTINATION_ID + " =?",
+				new String[] {Long.toString(location_id), Long.toString(location_id)},
+				null, null, null);
+    	
+    	while (cursor.moveToNext())
+    		total_deletions += deleteRoute(db, cursor.getLong(0));
+	    cursor.close();
+
+	    total_deletions += db.delete(TABLE_LOCATIONS, KEY_LOCATION_ID + "=?", new String[] {Long.toString(location_id)});
+		
+	    try {
+	    	db.setTransactionSuccessful();
+	    } finally {
+	    	db.endTransaction();
+	    }
+	    db.close();
+	    
+	    return total_deletions;
+    }
+
+    
     // ============================================================
     /** Kind of a pointless function */
     public int deleteWithCount() {
@@ -381,7 +425,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    			KEY_STREET_ADDRESS,
 	    			KEY_LATITUDE,
 	    			KEY_LONGITUDE,
-	    			KEY_WIRELESS_SSID
+	    			KEY_WIRELESS_SSID,
+	    			KEY_LOCATION_TITLE,
 	    		},
 	    		KEY_LOCATION_ID + "=?",
     			new String[] {Long.toString(location_id)},
@@ -434,6 +479,7 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
     	Cursor cursor = db.query(VIEW_AGGREGATE_LOCATIONS,
     			new String[] {
     			KEY_LOCATION_ID + " AS " + BaseColumns._ID,
+    			KEY_LOCATION_TITLE,
     	        KEY_WIRELESS_SSID,
     	        KEY_STREET_ADDRESS,
     	        KEY_LATITUDE,

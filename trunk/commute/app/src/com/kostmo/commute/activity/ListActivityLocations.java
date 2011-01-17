@@ -6,13 +6,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.kostmo.commute.Market;
 import com.kostmo.commute.R;
@@ -36,11 +40,13 @@ public class ListActivityLocations extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        this.setContentView(R.layout.locations_list);
     	this.database = new DatabaseCommutes(this);
 
-    	Cursor cursor = this.database.getLocations();
-    	SimpleCursorAdapter sca = new SimpleCursorAdapter(this, R.layout.list_item_location, cursor,
+
+    	SimpleCursorAdapter sca = new SimpleCursorAdapter(this, R.layout.list_item_location, null,
     			new String[] {
+					DatabaseCommutes.KEY_LOCATION_TITLE,
     				DatabaseCommutes.KEY_WIRELESS_SSID,
     				DatabaseCommutes.KEY_STREET_ADDRESS,
     				DatabaseCommutes.KEY_LATITUDE,
@@ -48,6 +54,7 @@ public class ListActivityLocations extends ListActivity {
     				DatabaseCommutes.KEY_LOCATION_USE_COUNT
     			},
     			new int[] {
+					R.id.location_title,
     				R.id.location_wireless,
     				R.id.location_address,
     				R.id.gps_lat,
@@ -55,6 +62,49 @@ public class ListActivityLocations extends ListActivity {
     				R.id.location_route_usage_count});
     	
     	this.setListAdapter( sca );
+    	this.refreshCursor();
+    	
+
+		registerForContextMenu(getListView());
+    }
+
+	// ========================================================
+    void refreshCursor() {
+    	Cursor cursor = this.database.getLocations();
+    	((CursorAdapter) this.getListAdapter()).changeCursor(cursor);
+    }
+
+    // ========================================================================
+    public void onCreateContextMenu(ContextMenu menu, View v,
+    		ContextMenuInfo menuInfo) {
+    	super.onCreateContextMenu(menu, v, menuInfo);
+
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.context_locations, menu);
+
+    	menu.setHeaderIcon(android.R.drawable.ic_dialog_alert);
+    	menu.setHeaderTitle("Location action:");
+    }
+
+    // ========================================================================
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+    	AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+
+    	switch ( item.getItemId() ) {
+    	case R.id.menu_delete_location:
+    	{
+    		// TODO Show a warning dialog that explains that
+    		// all routes using this location will also be deleted
+    		this.database.deleteLocationInTransaction(info.id);
+    		refreshCursor();
+    		break;
+    	}
+    	default:
+    		break;
+    	}
+
+    	return super.onContextItemSelected(item);
     }
 
     // ======================================================================== 

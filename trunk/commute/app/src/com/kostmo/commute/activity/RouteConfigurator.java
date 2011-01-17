@@ -187,6 +187,10 @@ public class RouteConfigurator extends TabActivity {
 	// ========================================================================
     public static class LatLonDouble {
     	public double lat, lon;
+    	
+    	public boolean isUnset() {
+    		return this.lat == 0 && this.lon == 0;
+    	}
     }
 
 	// ========================================================================

@@ -48,7 +48,6 @@ import com.kostmo.commute.task.AddressReverseLookupTask;
 
 public class LocationConfiguratorLayout extends LinearLayout {
 	
-
     public static final String TAG = Market.TAG;
     
     Context context;
@@ -71,7 +70,6 @@ public class LocationConfiguratorLayout extends LinearLayout {
     
 
 	DatabaseCommutes database;
-	
     
 	// ========================================================
     public long getLocationId() {
@@ -79,14 +77,26 @@ public class LocationConfiguratorLayout extends LinearLayout {
     }
 
 	// ========================================================
+    void populateLatLonFields(LatLonDouble latlon) {
+    	this.gps_lat.setText( Double.toString(latlon.lat) );
+    	this.gps_lon.setText( Double.toString(latlon.lon) );
+    }
+    
+	// ========================================================
     public void setLocation(long location_id) {
     	this.location_id = location_id;
     	
     	GeoAddress place = this.database.getLocationInfo(this.location_id);
 
-    	this.gps_lat.setText( Double.toString(place.latlon.lat) );
-    	this.gps_lon.setText( Double.toString(place.latlon.lon) );
-    	
+    	if (place.latlon.isUnset()) {
+    		
+    		// TODO Perform this asynchronously
+    		
+    		setAddressAndGeo(place.address);
+    		
+    	} else {
+        	populateLatLonFields(place.latlon);    		
+    	}
     	
     	setWifiNetwork(place.ssid);
 		setAddress(place.address);
@@ -300,12 +310,6 @@ public class LocationConfiguratorLayout extends LinearLayout {
     	return this.address;
     }
 
-
-	// ========================================================
-    void lookupGeo(String address) {
-    	
-    }
-    
 	// ========================================================
     public void setAddressAndGeo(String address) {
 
@@ -318,20 +322,35 @@ public class LocationConfiguratorLayout extends LinearLayout {
 	    Log.d(TAG, "Address: " + address);
 	    
 	    if (has_address) {
-		    Geocoder gc = new Geocoder(this.context);
-		    try {
-				List<Address> matches = gc.getFromLocationName(address, 3);
-				if (matches.size() > 0) {
-					Address first_match = matches.get(0);
-					
-					this.latlon.lat = first_match.getLatitude();
-					this.latlon.lon = first_match.getLongitude();
-				}
-			} catch (IOException e) {
-
-				e.printStackTrace();
-			}
+	    	
+	    	populateLatLonFields( getGeoFromAddress(this.address) );
 	    }
+    }
+
+	// ========================================================
+    LatLonDouble getGeoFromAddress(String address) {
+    	
+    	
+
+	    Geocoder gc = new Geocoder(this.context);
+	    try {
+			List<Address> matches = gc.getFromLocationName(address, 3);
+			if (matches.size() > 0) {
+				Address first_match = matches.get(0);
+				
+				
+				this.latlon.lat = first_match.getLatitude();
+				this.latlon.lon = first_match.getLongitude();
+				
+				return this.latlon;
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+    	
+		
+		return null;
     }
     
 	// ========================================================
