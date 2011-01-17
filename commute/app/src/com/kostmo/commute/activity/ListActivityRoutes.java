@@ -66,7 +66,7 @@ public class ListActivityRoutes extends ListActivity implements Disablable {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.setContentView(R.layout.main);
+        this.setContentView(R.layout.routes_list);
     	this.database = new DatabaseCommutes(this);
         this.settings = PreferenceManager.getDefaultSharedPreferences(this);
         
@@ -316,7 +316,8 @@ public class ListActivityRoutes extends ListActivity implements Disablable {
 		}
 		case R.id.menu_delete_route:
 		{
-			this.database.deleteRoute(info.id);
+			this.database.deleteRouteInTransaction(info.id);
+			refreshCursor();
 			break;
 		}
 		case R.id.menu_start_logging_outbound:

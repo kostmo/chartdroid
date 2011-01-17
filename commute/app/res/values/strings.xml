@@ -20,6 +20,7 @@
     
     
     <string name="empty_route_list">No routes created</string>
+    <string name="empty_location_list">No locations created</string>
     
     <string name="location_provider_key_gps">gps</string>
     <string name="location_provider_key_network">network</string>
