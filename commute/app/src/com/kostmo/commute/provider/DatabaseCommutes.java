@@ -438,6 +438,8 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    	place.latlon.lat = cursor.getDouble(1);
 	    	place.latlon.lon = cursor.getDouble(2);
 	    	place.ssid = cursor.getString(3);
+	    	
+	    	Log.d(TAG, "Lat/lon retrieved: " + place.latlon);
     	}
 	    cursor.close();
 	       
@@ -620,6 +622,24 @@ public class DatabaseCommutes extends SQLiteOpenHelper {
 	    
 	    return update_count;
     }
+    
+
+    
+    // ============================================================
+    public int updateDestinationGeo(long location_id, LatLonDouble geo) {
+    	
+    	SQLiteDatabase db = getWritableDatabase();
+    	
+    	ContentValues cv = new ContentValues();
+    	cv.put(KEY_LATITUDE, geo.lat);
+    	cv.put(KEY_LONGITUDE, geo.lon);
+    	int update_count = db.update(TABLE_LOCATIONS, cv, KEY_LOCATION_ID + "=?", new String[] {Long.toString(location_id)});
+
+	    db.close();
+	    
+	    return update_count;
+    }
+    
     
     // ============================================================
     public long storeDestination(double lat, double lon, String address, String ssid) {
