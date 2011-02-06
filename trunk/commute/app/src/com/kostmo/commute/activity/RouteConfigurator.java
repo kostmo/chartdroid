@@ -115,16 +115,23 @@ public class RouteConfigurator extends TabActivity {
 				}
 
 				long[] destination_ids = new long[2];
-				int i=0;
-		    	for (int selector_id : COMPOUND_SELECTORS) {
-		        	LocationConfiguratorLayout compound_selector = (LocationConfiguratorLayout) findViewById(selector_id);
-		        	
+				
+		    	for (int i=0; i < COMPOUND_SELECTORS.length; i++) {
+		        	LocationConfiguratorLayout compound_selector = selector_layouts[i];
 		        	
 		        	destination_ids[i] = compound_selector.getLocationId();
 		        	int update_count = database.updateDestinationWireless(
 		        			destination_ids[i],
 		        			compound_selector.getWifiNetwork());
-		        	i++;
+
+		        	
+		        	if (!compound_selector.latlon.isUnset()) {
+			        	int update_count2 = database.updateDestinationGeo(
+			        			destination_ids[i],
+			        			compound_selector.latlon);
+			        	
+			        	Log.d(TAG, "Saved lat/lon.");
+		        	}
 		    	}
 
 
@@ -191,6 +198,11 @@ public class RouteConfigurator extends TabActivity {
     	public boolean isUnset() {
     		return this.lat == 0 && this.lon == 0;
     	}
+    	
+    	@Override
+    	public String toString() {
+    		return "(" + this.lat + ", " + this.lon + ")";
+    	}
     }
 
 	// ========================================================================
@@ -201,6 +213,7 @@ public class RouteConfigurator extends TabActivity {
     		this.address = address;
     	}
     	public LatLonDouble latlon = new LatLonDouble();
+    	
     }
     
 	// ========================================================================

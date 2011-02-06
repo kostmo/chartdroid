@@ -59,12 +59,18 @@ public class WifiReceiver extends BroadcastReceiver {
         	List<ScanResult> scan_results = wm.getScanResults();
         	
         	String concatenated = "";
-        	for (ScanResult result : scan_results) {
-        		Log.d(TAG, "Network: " + result.SSID);
-        		concatenated += "," + result.SSID;
+        	
+        	if (scan_results != null) {
+	        	for (ScanResult result : scan_results) {
+	        		Log.d(TAG, "Network: " + result.SSID);
+	        		concatenated += "," + result.SSID;
+	        	}
+	        	
+	        	details = concatenated;
+        	} else {
+        		details = null;
         	}
         	
-        	details = concatenated;getResultCode();
 
         } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intent.getAction())) {
 

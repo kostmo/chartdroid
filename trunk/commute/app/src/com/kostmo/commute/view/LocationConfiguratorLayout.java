@@ -322,15 +322,19 @@ public class LocationConfiguratorLayout extends LinearLayout {
 	    Log.d(TAG, "Address: " + address);
 	    
 	    if (has_address) {
-	    	
-	    	populateLatLonFields( getGeoFromAddress(this.address) );
+
+
+	    	LatLonDouble geo = getGeoFromAddress(this.address);
+	    	if (geo != null) {
+	    		this.latlon = geo;
+	    		populateLatLonFields( this.latlon );
+	    	} else
+	    		Log.e(TAG, "Couldn't get lat/lon");
 	    }
     }
 
 	// ========================================================
     LatLonDouble getGeoFromAddress(String address) {
-    	
-    	
 
 	    Geocoder gc = new Geocoder(this.context);
 	    try {

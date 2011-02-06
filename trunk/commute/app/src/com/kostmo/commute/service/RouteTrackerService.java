@@ -10,8 +10,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -24,6 +27,7 @@ import com.kostmo.commute.activity.Disablable;
 import com.kostmo.commute.activity.ListActivityRoutes;
 import com.kostmo.commute.activity.TripSummaryActivity;
 import com.kostmo.commute.activity.RouteConfigurator.GeoAddress;
+import com.kostmo.commute.activity.RouteConfigurator.LatLonDouble;
 import com.kostmo.commute.activity.RouteConfigurator.LocationIdPair;
 import com.kostmo.commute.activity.prefs.TriggerPreferences;
 import com.kostmo.commute.provider.DatabaseCommutes;
@@ -56,6 +60,25 @@ public class RouteTrackerService extends Service {
 		this.disablable_host = host;
 	}
 
+
+	// ========================================================================
+	static class LocationProximityParameters {
+		float radius;
+    	long expiration;
+    	
+    	long trip_id;
+    	
+    	LatLonDouble latlon = new LatLonDouble();
+    	
+		public void dumpParameters() {
+
+	        Log.d(TAG, "Adding proximity alert with parameters:");
+	        Log.i(TAG, "Latitude: " + this.latlon.lat);
+	        Log.i(TAG, "Longitude: " + this.latlon.lon);
+	        Log.i(TAG, "Radius: " + this.radius);
+	        Log.i(TAG, "Expiration: " + this.expiration);
+		}
+	}
 
 	// ========================================================================
     @Override
@@ -114,21 +137,84 @@ public class RouteTrackerService extends Service {
 		} else {
 			long trip_id = this.database.startTrip(route_id);
 			
+			
+			final LocationProximityParameters proximity_parameters = new LocationProximityParameters();
 	    	
-	    	float radius = this.settings.getFloat(TriggerPreferences.PREFKEY_TRIP_COMPLETION_RADIUS, TriggerPreferences.DEFAULT_TRIP_COMPLETION_RADIUS);
-	    	long expiration = this.settings.getLong(TriggerPreferences.PREFKEY_TRIP_EXPIRATION_MS, TriggerPreferences.DEFAULT_TRIP_EXPIRATION_MS);
+			proximity_parameters.radius = this.settings.getFloat(TriggerPreferences.PREFKEY_TRIP_COMPLETION_RADIUS, TriggerPreferences.DEFAULT_TRIP_COMPLETION_RADIUS);
+			proximity_parameters.expiration = this.settings.getLong(TriggerPreferences.PREFKEY_TRIP_EXPIRATION_MS, TriggerPreferences.DEFAULT_TRIP_EXPIRATION_MS);
 	    	
 	    	
 			LocationIdPair pair = this.database.getLocationPair(route_id);
-//	    	GeoAddress place1 = this.database.getLocationInfo(pair.origin);
-	    	GeoAddress place2 = this.database.getLocationInfo(pair.destination);
+//	    	GeoAddress origin = this.database.getLocationInfo(pair.origin);
+			
+			Log.d(TAG, "Retrieving destination from database...");
+	    	GeoAddress destination = this.database.getLocationInfo(pair.destination);
+	    	proximity_parameters.latlon = destination.latlon;
+	    	proximity_parameters.trip_id = trip_id;
+	    	proximity_parameters.dumpParameters();
+	    	
+	        
+	        
+	        // XXX The ProximityAlert sometimes uses network location instead of GPS. In fact, the
+	        // inaccuracy in network location can be large (especially, I think, when you have
+	        // no cellular reception) -- it has located me at over two miles away from my actual
+	        // location, at my route destination in fact, when I was at the origin.
+	        // So, instead, I will re-implement something similar to ProximityAlert in my
+	        // own Service.
+//	        PendingIntent arrival_pending_intent = makePendingIntent(trip_id);
+//	    	this.location_manager.addProximityAlert(proximity_parameters.latlon.lat, proximity_parameters.latlon.lon, proximity_parameters.radius, proximity_parameters.expiration, arrival_pending_intent);
+	        
+	    	
+	    	String location_provider_source = this.settings.getString(TriggerPreferences.PREFKEY_LOCATION_SOURCE, TriggerPreferences.DEFAULT_LOCATION_SOURCE);
+	    	this.location_manager.requestLocationUpdates(location_provider_source, 0, 0, new LocationListener() {
+	    	    public void onLocationChanged(Location location) {
+	    	    	testLocationArrival(location, proximity_parameters);
+	      	    }
 
-	        PendingIntent arrival_pending_intent = makePendingIntent(trip_id);
-	    	this.location_manager.addProximityAlert(place2.latlon.lat, place2.latlon.lon, radius, expiration, arrival_pending_intent);
+	      	    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+	      	    public void onProviderEnabled(String provider) {}
+
+	      	    public void onProviderDisabled(String provider) {}
+	      	});
 		}
+    }
+    
+	// ========================================================
+    public void testLocationArrival(Location location, LocationProximityParameters proximity_parameters) {
+    	
+    	float[] results = new float[1];
+    	Location.distanceBetween(location.getLatitude(), location.getLongitude(), proximity_parameters.latlon.lat, proximity_parameters.latlon.lon, results);
+
+    	Log.d(TAG, "Distance in meters from destination: " + results[0]);
+    	
+    	if (results[0] <= proximity_parameters.radius) {
+    		indicateArrival(proximity_parameters.trip_id);
+    	} else {
+    	
+    		Log.i(TAG, "That does not meet the threshold of " + proximity_parameters.radius + " meters.");
+    	}
     }
 
 	// ========================================================
+    public void indicateArrival(long trip_id) {
+    	
+    	
+    	
+    	Log.i(TAG, "You have arrived!");
+    	
+
+		stopForeground(true);	// Is this necessary?
+		stopSelf();
+		
+    	
+    	Intent activity_intent = new Intent(this, TripSummaryActivity.class);
+    	activity_intent.putExtra(TripSummaryActivity.EXTRA_TRIP_ID, trip_id);
+    	startActivity(activity_intent);
+    }
+    
+	// ========================================================
+    @Deprecated
     public void cancelAllProximityAlerts() {
     	
     	Log.d(TAG, "Cancelling all proximity alerts...");
