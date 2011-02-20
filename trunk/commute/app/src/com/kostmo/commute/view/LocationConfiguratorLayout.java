@@ -87,19 +87,22 @@ public class LocationConfiguratorLayout extends LinearLayout {
     	this.location_id = location_id;
     	
     	GeoAddress place = this.database.getLocationInfo(this.location_id);
+    	if (place != null) {
 
-    	if (place.latlon.isUnset()) {
-    		
-    		// TODO Perform this asynchronously
-    		
-    		setAddressAndGeo(place.address);
-    		
-    	} else {
-        	populateLatLonFields(place.latlon);    		
+	    	if (this.latlon != null) {
+		    	if (place.latlon.isUnset()) {
+		    		
+		    		// TODO Perform this asynchronously
+		    		setAddressAndGeo(place.address);
+		    		
+		    	} else {
+			    		populateLatLonFields(place.latlon);    		
+		    	}
+	    	}
+	    	
+	    	setWifiNetwork(place.ssid);
+			setAddress(place.address);
     	}
-    	
-    	setWifiNetwork(place.ssid);
-		setAddress(place.address);
     }
     
 	// ========================================================
@@ -322,8 +325,6 @@ public class LocationConfiguratorLayout extends LinearLayout {
 	    Log.d(TAG, "Address: " + address);
 	    
 	    if (has_address) {
-
-
 	    	LatLonDouble geo = getGeoFromAddress(this.address);
 	    	if (geo != null) {
 	    		this.latlon = geo;
