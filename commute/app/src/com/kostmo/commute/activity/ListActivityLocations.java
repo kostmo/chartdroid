@@ -63,7 +63,6 @@ public class ListActivityLocations extends ListActivity {
     	
     	this.setListAdapter( sca );
     	this.refreshCursor();
-    	
 
 		registerForContextMenu(getListView());
     }
@@ -114,7 +113,7 @@ public class ListActivityLocations extends ListActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_locations, menu);
-                
+
         return true;
     }
 	

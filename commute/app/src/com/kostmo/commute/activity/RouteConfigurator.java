@@ -54,7 +54,6 @@ public class RouteConfigurator extends TabActivity {
 
         this.setContentView(R.layout.route_configurator);
 
-        
         TabHost tabHost = getTabHost();
         tabHost.addTab(tabHost.newTabSpec("tab1")
                 .setIndicator("Origin", getResources().getDrawable(R.drawable.ic_menu_home))
@@ -95,7 +94,6 @@ public class RouteConfigurator extends TabActivity {
         	});	
     	}
 
-
     	View save_button = findViewById(R.id.button_save_pair);
     	save_button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -133,7 +131,6 @@ public class RouteConfigurator extends TabActivity {
 			        	Log.d(TAG, "Saved lat/lon.");
 		        	}
 		    	}
-
 
 				if (!Intent.ACTION_EDIT.equals( getIntent().getAction() )) {
 			    	long pair_id = database.storePair(
