@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-	<string name="plot_date_range">%s to %s</string>
+	<string name="plot_date_range" formatted="false">%s to %s</string>
 
     <string name="app_name_full">DevRev: Developer Revenue Analysis</string>
     <string name="app_name_abbreviated">DevRev</string>
@@ -29,7 +29,7 @@
 
 
 
-	<string name="app_iterator">App %d of %d</string>
+	<string name="app_iterator" formatted="false">App %d of %d</string>
 
 	<string name="empty_comments_list">No comments to show</string>
 	<string name="empty_apps_list">No apps to show</string>
@@ -96,7 +96,7 @@
     
     <string name="task_complete_notification">Fetch complete</string>
     <string name="task_failed_notification">Fetch failed</string>
-    <string name="task_fetching_batches">Fetching batch %d of %d</string>
+    <string name="task_fetching_batches" formatted="false">Fetching batch %d of %d</string>
     
     
     <string name="task_failiure_title">Operation failed.</string>
