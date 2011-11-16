@@ -36,14 +36,14 @@ public class Market {
 
     // ========================================================================
 	public static void launchMarketSearch(Activity context, String search_phrase) {
-        // Launch market intent
-        Uri market_uri = Uri.parse(search_phrase);
-        Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
-        try {
-            context.startActivity(i);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, "Android Market not available.", Toast.LENGTH_LONG).show();
-        }
+		// Launch market intent
+		Uri market_uri = Uri.parse(search_phrase);
+		Intent i = new Intent(Intent.ACTION_VIEW, market_uri);
+		try {
+			context.startActivity(i);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(context, "Android Market not available.", Toast.LENGTH_LONG).show();
+		}
 	}
 	
     // ========================================================================

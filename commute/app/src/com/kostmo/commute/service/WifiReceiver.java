@@ -17,10 +17,6 @@ import com.kostmo.commute.provider.DatabaseCommutes;
 public class WifiReceiver extends BroadcastReceiver {
 	
 	static final String TAG = Market.TAG;
-
-	// NOTE: We also schedule the service from within an activity,
-	// because we want it to run even if the user has
-	// not restarted his phone yet.
 	
 	public static final String PREFKEY_CHECKIN_ALARM_SCHEDULED = "PREFKEY_CHECKIN_ALARM_SCHEDULED";
 
