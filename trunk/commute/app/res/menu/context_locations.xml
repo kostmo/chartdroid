@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_delete_location"
+          android:title="Delete location"
+          android:alphabeticShortcut="d"
+          android:icon="@drawable/ic_menu_delete" />
+
+</menu>
