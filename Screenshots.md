@@ -1,0 +1,4 @@
+![http://chartdroid.googlecode.com/svn/graphics/screenshots/chartlist.png](http://chartdroid.googlecode.com/svn/graphics/screenshots/chartlist.png)
+![http://chartdroid.googlecode.com/svn/graphics/screenshots/temperature.png](http://chartdroid.googlecode.com/svn/graphics/screenshots/temperature.png)
+![http://chartdroid.googlecode.com/svn/graphics/screenshots/pie_portrait.png](http://chartdroid.googlecode.com/svn/graphics/screenshots/pie_portrait.png)
+![http://chartdroid.googlecode.com/svn/graphics/screenshots/pie_landscape.png](http://chartdroid.googlecode.com/svn/graphics/screenshots/pie_landscape.png)
